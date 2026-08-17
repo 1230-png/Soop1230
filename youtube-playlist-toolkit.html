@@ -1159,8 +1159,8 @@ const topMarginRatioInput = document.getElementById('topMarginRatio');
 const FIXED_SUBTITLE = '전곡듣기 채널확인!';
 
 let rawOriginalImage = null;   // 업로드한 원본 — 절대 바꾸지 않는다
-let originalImage = null;      // 실제 변환에 쓰이는 이미지 (PLAYLIST 삽입 시 합성 캔버스로 교체됨)
 let overlayApplied = false;
+let segMask = null;            // 원본 해상도 기준 인물 마스크 (세그멘테이션 성공 시에만 채워짐)
 let segBusy = false;
 let convertedImages = {};
 
@@ -1186,8 +1186,8 @@ function handleImageFile(file){
     img.onerror = () => showImgError('이미지를 불러올 수 없습니다. 파일이 손상되었거나 지원하지 않는 형식일 수 있습니다.');
     img.onload = () => {
       rawOriginalImage = img;
-      originalImage = img;
       overlayApplied = false;
+      segMask = null;
       overlayBadge.style.display='none';
       undoOverlayBtn.disabled=true;
       segHint.textContent='';
@@ -1203,13 +1203,16 @@ function handleImageFile(file){
 }
 
 function drawWorkCanvas(){
-  const w = originalImage.naturalWidth || originalImage.width;
-  const h = originalImage.naturalHeight || originalImage.height;
+  const w = rawOriginalImage.naturalWidth || rawOriginalImage.width;
+  const h = rawOriginalImage.naturalHeight || rawOriginalImage.height;
   const maxW=640, maxH=420;
   const scale=Math.min(maxW/w, maxH/h, 1);
   workCanvas.width=Math.round(w*scale);
   workCanvas.height=Math.round(h*scale);
-  workCanvas.getContext('2d').drawImage(originalImage,0,0,workCanvas.width,workCanvas.height);
+  // 미리보기는 원본 비율 그대로(자르기 없이) 보여준다 — 실제 16:9·9:16 결과물은
+  // buildFrame()이 각 포맷의 최종 프레임 크기에 맞춰 문구를 다시 그린다
+  const frame = overlayApplied ? buildFrame(w,h) : rawOriginalImage;
+  workCanvas.getContext('2d').drawImage(frame,0,0,workCanvas.width,workCanvas.height);
 }
 
 /* ===== PLAYLIST 문구 삽입 — 인물 뒤 · 배경 앞 =====
@@ -1257,37 +1260,30 @@ async function applyPlaylistOverlay(){
   if(!rawOriginalImage || overlayApplied || segBusy) return;
   segBusy=true;
   workCanvas.classList.add('busy');
-  segHint.textContent='인물을 분석하는 중입니다…';
-  const w = rawOriginalImage.naturalWidth || rawOriginalImage.width;
-  const h = rawOriginalImage.naturalHeight || rawOriginalImage.height;
 
-  const base=document.createElement('canvas'); base.width=w; base.height=h;
-  const bctx=base.getContext('2d');
-  bctx.drawImage(rawOriginalImage,0,0,w,h);
-  drawPlaylistText(bctx,w,h);
+  // 마스크는 원본 해상도 기준으로 한 번만 계산해서 캐시해 둔다.
+  // 실제 문구 배치는 buildFrame()이 16:9·9:16 각 프레임 크기에 맞춰 그때그때 다시 계산하므로
+  // 원본 사진 비율이 최종 프레임과 달라도 문구가 항상 프레임 중앙에 오도록 맞춰진다.
+  if(!segMask){
+    segHint.textContent='인물을 분석하는 중입니다…';
+    try{
+      const w = rawOriginalImage.naturalWidth || rawOriginalImage.width;
+      const h = rawOriginalImage.naturalHeight || rawOriginalImage.height;
+      const res = await runSegmentation(rawOriginalImage);
 
-  try{
-    const res = await runSegmentation(rawOriginalImage);
-
-    // 마스크 경계를 살짝 흐려서 인물 윤곽이 자연스럽게 이어지도록 한다
-    const maskCanvas=document.createElement('canvas'); maskCanvas.width=w; maskCanvas.height=h;
-    const mctx=maskCanvas.getContext('2d');
-    mctx.filter='blur(4px)';
-    mctx.drawImage(res.segmentationMask,0,0,w,h);
-
-    const fg=document.createElement('canvas'); fg.width=w; fg.height=h;
-    const fctx=fg.getContext('2d');
-    fctx.drawImage(rawOriginalImage,0,0,w,h);
-    fctx.globalCompositeOperation='destination-in';
-    fctx.drawImage(maskCanvas,0,0,w,h);
-
-    bctx.drawImage(fg,0,0,w,h);
-    segHint.textContent='PLAYLIST 문구를 인물 뒤 · 배경 앞에 삽입했습니다';
-  }catch(e){
-    segHint.textContent='인물 분리 모델을 불러오지 못해 문구를 이미지 위에 그대로 얹었습니다 (인터넷 연결을 확인해주세요)';
+      // 마스크 경계를 살짝 흐려서 인물 윤곽이 자연스럽게 이어지도록 한다
+      const maskCanvas=document.createElement('canvas'); maskCanvas.width=w; maskCanvas.height=h;
+      const mctx=maskCanvas.getContext('2d');
+      mctx.filter='blur(4px)';
+      mctx.drawImage(res.segmentationMask,0,0,w,h);
+      segMask=maskCanvas;
+      segHint.textContent='PLAYLIST 문구를 인물 뒤 · 배경 앞에 삽입했습니다';
+    }catch(e){
+      segMask=null;
+      segHint.textContent='인물 분리 모델을 불러오지 못해 문구를 이미지 위에 그대로 얹었습니다 (인터넷 연결을 확인해주세요)';
+    }
   }
 
-  originalImage=base;
   overlayApplied=true;
   overlayBadge.style.display='';
   undoOverlayBtn.disabled=false;
@@ -1299,7 +1295,6 @@ async function applyPlaylistOverlay(){
 
 function undoOverlay(){
   if(!rawOriginalImage) return;
-  originalImage=rawOriginalImage;
   overlayApplied=false;
   overlayBadge.style.display='none';
   undoOverlayBtn.disabled=true;
@@ -1343,7 +1338,7 @@ function updateDimensions(){
 }
 
 convertBtn.addEventListener('click', ()=>{
-  if(!originalImage) return;
+  if(!rawOriginalImage) return;
   loadingBox.style.display='block';
   setTimeout(()=>{
     convertImages();
@@ -1361,12 +1356,9 @@ function convertImages(){
   displayPreviews();
 }
 
-function resizeImage(width,height){
-  const canvas=document.createElement('canvas');
-  const ctx=canvas.getContext('2d');
-  canvas.width=width; canvas.height=height;
-  const img=originalImage;
-  const imgW = img.naturalWidth || img.width, imgH = img.naturalHeight || img.height;
+// 원본 이미지를 target 프레임에 꽉 채우는 cover-crop 좌표를 계산한다.
+// 사진 마스크에도 같은 좌표를 그대로 써야 문구·마스크·사진이 어긋나지 않는다.
+function getCoverCropRect(imgW,imgH,width,height){
   const imgRatio=imgW/imgH, canvasRatio=width/height;
   let srcX,srcY,srcWidth,srcHeight;
   if(imgRatio>canvasRatio){
@@ -1374,10 +1366,49 @@ function resizeImage(width,height){
   } else {
     srcWidth=imgW; srcHeight=imgW/canvasRatio; srcX=0; srcY=(imgH-srcHeight)/2;
   }
-  ctx.drawImage(img, srcX,srcY,srcWidth,srcHeight, 0,0,width,height);
+  return {srcX,srcY,srcWidth,srcHeight};
+}
+function cropToCanvas(img,width,height,rect){
+  const canvas=document.createElement('canvas');
+  canvas.width=width; canvas.height=height;
+  canvas.getContext('2d').drawImage(img, rect.srcX,rect.srcY,rect.srcWidth,rect.srcHeight, 0,0,width,height);
   return canvas;
 }
-function convertTo16_9(width,height){ return resizeImage(width,height); }
+function resizeImage(width,height){
+  const img=rawOriginalImage;
+  const imgW = img.naturalWidth || img.width, imgH = img.naturalHeight || img.height;
+  return cropToCanvas(img,width,height,getCoverCropRect(imgW,imgH,width,height));
+}
+
+// 16:9·9:16 등 실제로 보이는 최종 프레임 크기가 정해진 "뒤"에 문구를 그린다.
+// 원본 사진 비율(예: 4:3, 세로 사진 등)이 최종 프레임과 달라 잘려나가더라도
+// 문구는 항상 지금 그리는 프레임 한가운데에 맞춰지므로 화면 밖으로 밀려나지 않는다.
+function buildFrame(width,height){
+  const clean=resizeImage(width,height);
+  if(!overlayApplied) return clean;
+
+  const out=document.createElement('canvas'); out.width=width; out.height=height;
+  const octx=out.getContext('2d');
+  octx.drawImage(clean,0,0);
+  drawPlaylistText(octx,width,height);
+
+  if(segMask){
+    const imgW = rawOriginalImage.naturalWidth || rawOriginalImage.width;
+    const imgH = rawOriginalImage.naturalHeight || rawOriginalImage.height;
+    const rect = getCoverCropRect(imgW,imgH,width,height);
+    const maskCropped = cropToCanvas(segMask,width,height,rect);
+
+    const fg=document.createElement('canvas'); fg.width=width; fg.height=height;
+    const fctx=fg.getContext('2d');
+    fctx.drawImage(clean,0,0);
+    fctx.globalCompositeOperation='destination-in';
+    fctx.drawImage(maskCropped,0,0);
+
+    octx.drawImage(fg,0,0);
+  }
+  return out;
+}
+function convertTo16_9(width,height){ return buildFrame(width,height); }
 function convertTo9_16(width,height){
   const canvas=document.createElement('canvas');
   const ctx=canvas.getContext('2d');
@@ -1386,8 +1417,8 @@ function convertTo9_16(width,height){
   ctx.fillRect(0,0,width,height);
   const topMarginRatio=getTopMarginRatioPercent()/100;
   const topMarginHeight=Math.round(height*topMarginRatio);
-  const resizedCanvas=resizeImage(width, height-topMarginHeight);
-  ctx.drawImage(resizedCanvas,0,topMarginHeight);
+  const photoFrame=buildFrame(width, height-topMarginHeight);
+  ctx.drawImage(photoFrame,0,topMarginHeight);
   drawTopText(ctx,width,topMarginHeight);
   return canvas;
 }
@@ -1451,7 +1482,7 @@ document.querySelectorAll('.btn[data-format]').forEach(btn=>{
 
 resetBtn.addEventListener('click', ()=>{
   imageInput.value='';
-  rawOriginalImage=null; originalImage=null; overlayApplied=false;
+  rawOriginalImage=null; overlayApplied=false; segMask=null;
   workArea.style.display='none';
   optionsCard.style.display='none';
   imgPreviewCard.style.display='none';
