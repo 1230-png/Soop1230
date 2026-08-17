@@ -139,7 +139,8 @@
 
   /* ===== 썸네일 · 숏츠 이미지 탭 ===== */
   .canvas-wrap{position:relative;background:#0B0E17;border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;justify-content:center;margin-top:10px}
-  .work-canvas{max-width:100%;max-height:440px;border-radius:6px;cursor:pointer;display:block}
+  .work-canvas{max-width:100%;max-height:440px;border-radius:6px;cursor:grab;display:block;touch-action:none}
+  .work-canvas.grabbing{cursor:grabbing}
   .work-canvas.busy{cursor:wait;opacity:.7}
   .canvas-overlay-badge{position:absolute;top:22px;left:22px;background:rgba(0,0,0,.6);color:#fff;font-size:11px;font-weight:700;letter-spacing:.06em;padding:5px 11px;border-radius:999px}
   .click-hint{font-size:12px;color:var(--ink-faint);margin-top:8px;text-align:center}
@@ -319,12 +320,13 @@
       <div class="error-box" id="errorMessage"></div>
 
       <div id="workArea" style="display:none">
-        <div class="seg-lab" style="margin-top:18px">작업 이미지 · 이미지를 누르면 PLAYLIST 문구가 자동으로 들어갑니다</div>
+        <div class="seg-lab" style="margin-top:18px">작업 이미지 · 클릭하면 PLAYLIST 삽입, 끌면 사진 위치를 옮깁니다</div>
         <div class="canvas-wrap">
           <canvas id="workCanvas" class="work-canvas"></canvas>
           <div class="canvas-overlay-badge" id="overlayBadge" style="display:none">PLAYLIST 삽입됨</div>
         </div>
-        <div class="click-hint">인물보다 뒤, 배경보다 앞에 반투명하게 자동 배치됩니다</div>
+        <div class="click-hint">실선 = 16:9에서 보이는 범위 · 점선 = 9:16에서 보이는 범위 · 흰 십자 = 자르기 기준점(끌어서 이동)</div>
+        <div class="click-hint">PLAYLIST 문구는 인물보다 뒤, 배경보다 앞에 반투명하게 배치됩니다</div>
         <div class="btn-row">
           <button class="btn slim" id="undoOverlayBtn" disabled>PLAYLIST 되돌리기</button>
         </div>
@@ -1164,6 +1166,12 @@ let segMask = null;            // 원본 해상도 기준 인물 마스크 (세�
 let segBusy = false;
 let convertedImages = {};
 
+// 자르기 기준점 (원본 이미지 기준 0~1 비율) — 기본은 정중앙, 사진을 끌면 이동한다.
+// 16:9·9:16 모두 이 점이 최대한 가운데 오도록 자르기 때문에 인물 얼굴이 잘리면 이 점을 옮기면 된다.
+let focalX = 0.5, focalY = 0.5;
+let dragging = false, dragMoved = false, dragStartPos = null;
+let workRedrawScheduled = false;
+
 function showImgError(text){ errorMessage.textContent=text; errorMessage.style.display='block'; }
 function clearImgError(){ errorMessage.style.display='none'; errorMessage.textContent=''; }
 
@@ -1188,6 +1196,7 @@ function handleImageFile(file){
       rawOriginalImage = img;
       overlayApplied = false;
       segMask = null;
+      focalX = 0.5; focalY = 0.5;
       overlayBadge.style.display='none';
       undoOverlayBtn.disabled=true;
       segHint.textContent='';
@@ -1209,10 +1218,40 @@ function drawWorkCanvas(){
   const scale=Math.min(maxW/w, maxH/h, 1);
   workCanvas.width=Math.round(w*scale);
   workCanvas.height=Math.round(h*scale);
+  const ctx = workCanvas.getContext('2d');
   // 미리보기는 원본 비율 그대로(자르기 없이) 보여준다 — 실제 16:9·9:16 결과물은
   // buildFrame()이 각 포맷의 최종 프레임 크기에 맞춰 문구를 다시 그린다
   const frame = overlayApplied ? buildFrame(w,h) : rawOriginalImage;
-  workCanvas.getContext('2d').drawImage(frame,0,0,workCanvas.width,workCanvas.height);
+  ctx.drawImage(frame,0,0,workCanvas.width,workCanvas.height);
+  drawCropGuides(ctx, workCanvas.width, workCanvas.height, w, h);
+}
+
+/* 16:9(실선) · 9:16(점선) 결과물에서 실제로 보이는 범위와, 그 범위의 기준이 되는
+   자르기 기준점(십자 마커)을 미리보기 위에 그려서 머리가 잘리는지 미리 확인할 수 있게 한다. */
+function drawCropGuides(ctx, dispW, dispH, imgW, imgH){
+  const scaleX = dispW/imgW, scaleY = dispH/imgH;
+
+  const w16 = getWidth16_9(), h16 = Math.round(w16*9/16);
+  const rect16 = getCoverCropRect(imgW, imgH, w16, h16);
+  ctx.save();
+  ctx.strokeStyle = 'rgba(79,214,224,.95)';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(rect16.srcX*scaleX, rect16.srcY*scaleY, rect16.srcWidth*scaleX, rect16.srcHeight*scaleY);
+
+  const w9 = getWidth9_16(), h9 = Math.round(w9*16/9);
+  const topMarginH = Math.round(h9*(getTopMarginRatioPercent()/100));
+  const rect9 = getCoverCropRect(imgW, imgH, w9, h9-topMarginH);
+  ctx.strokeStyle = 'rgba(240,169,59,.95)';
+  ctx.setLineDash([7,5]);
+  ctx.strokeRect(rect9.srcX*scaleX, rect9.srcY*scaleY, rect9.srcWidth*scaleX, rect9.srcHeight*scaleY);
+  ctx.setLineDash([]);
+
+  const fx = focalX*dispW, fy = focalY*dispH;
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.arc(fx,fy,7,0,Math.PI*2); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(fx-12,fy); ctx.lineTo(fx+12,fy); ctx.moveTo(fx,fy-12); ctx.lineTo(fx,fy+12); ctx.stroke();
+  ctx.restore();
 }
 
 /* ===== PLAYLIST 문구 삽입 — 인물 뒤 · 배경 앞 =====
@@ -1247,8 +1286,8 @@ function drawPlaylistText(ctx,w,h){
   ctx.textAlign='center';
   ctx.textBaseline='middle';
   ctx.font=`900 ${Math.round(h*0.4)}px Arial, 'Segoe UI', sans-serif`;
-  // 참고 이미지처럼 좌우가 살짝 잘리도록 캔버스보다 15% 넓게 걸치는 크기로 되짚어 계산
-  const targetWidth = w*1.15;
+  // 글자가 잘리지 않게 프레임 너비의 84%(좌우 여백 8%씩) 안에 딱 맞도록 크기를 되짚어 계산
+  const targetWidth = w*0.84;
   const measured = ctx.measureText('PLAYLIST').width;
   const size = Math.round(h*0.4*(targetWidth/measured));
   ctx.font=`900 ${size}px Arial, 'Segoe UI', sans-serif`;
@@ -1303,11 +1342,56 @@ function undoOverlay(){
   toast('원본 이미지로 되돌렸습니다');
 }
 
-workCanvas.addEventListener('click', ()=>{
+/* 클릭(움직임 거의 없음) = PLAYLIST 삽입, 드래그(일정 거리 이상 이동) = 자르기 기준점 이동 */
+function canvasFraction(e){
+  const rect = workCanvas.getBoundingClientRect();
+  const x = (e.clientX-rect.left) * (workCanvas.width/rect.width);
+  const y = (e.clientY-rect.top) * (workCanvas.height/rect.height);
+  return {
+    fx: Math.max(0, Math.min(1, x/workCanvas.width)),
+    fy: Math.max(0, Math.min(1, y/workCanvas.height))
+  };
+}
+function scheduleWorkCanvasRedraw(){
+  if(workRedrawScheduled) return;
+  workRedrawScheduled=true;
+  requestAnimationFrame(()=>{ workRedrawScheduled=false; drawWorkCanvas(); });
+}
+
+workCanvas.addEventListener('pointerdown', e=>{
   if(!rawOriginalImage) return;
-  if(overlayApplied){ toast('이미 삽입되어 있습니다 · 되돌리기 후 다시 눌러보세요'); return; }
-  applyPlaylistOverlay();
+  dragging=true; dragMoved=false;
+  dragStartPos={x:e.clientX,y:e.clientY};
+  workCanvas.setPointerCapture(e.pointerId);
 });
+workCanvas.addEventListener('pointermove', e=>{
+  if(!dragging) return;
+  if(!dragMoved){
+    const dx=e.clientX-dragStartPos.x, dy=e.clientY-dragStartPos.y;
+    if(Math.abs(dx)>4 || Math.abs(dy)>4) dragMoved=true;
+    workCanvas.classList.toggle('grabbing', dragMoved);
+  }
+  if(dragMoved){
+    const {fx,fy}=canvasFraction(e);
+    focalX=fx; focalY=fy;
+    scheduleWorkCanvasRedraw();
+  }
+});
+function endWorkCanvasDrag(){
+  if(!dragging) return;
+  dragging=false;
+  workCanvas.classList.remove('grabbing');
+  if(!dragMoved){
+    if(overlayApplied){ toast('이미 삽입되어 있습니다 · 되돌리기 후 다시 눌러보세요'); }
+    else applyPlaylistOverlay();
+  } else {
+    toast('사진 위치를 조정했습니다');
+  }
+  dragMoved=false;
+}
+workCanvas.addEventListener('pointerup', endWorkCanvasDrag);
+workCanvas.addEventListener('pointercancel', endWorkCanvasDrag);
+
 undoOverlayBtn.addEventListener('click', undoOverlay);
 
 /* ===== 크기 옵션 ===== */
@@ -1360,12 +1444,14 @@ function convertImages(){
 // 사진 마스크에도 같은 좌표를 그대로 써야 문구·마스크·사진이 어긋나지 않는다.
 function getCoverCropRect(imgW,imgH,width,height){
   const imgRatio=imgW/imgH, canvasRatio=width/height;
-  let srcX,srcY,srcWidth,srcHeight;
-  if(imgRatio>canvasRatio){
-    srcHeight=imgH; srcWidth=imgH*canvasRatio; srcX=(imgW-srcWidth)/2; srcY=0;
-  } else {
-    srcWidth=imgW; srcHeight=imgW/canvasRatio; srcX=0; srcY=(imgH-srcHeight)/2;
-  }
+  let srcWidth,srcHeight;
+  if(imgRatio>canvasRatio){ srcHeight=imgH; srcWidth=imgH*canvasRatio; }
+  else { srcWidth=imgW; srcHeight=imgW/canvasRatio; }
+  // focalX/focalY(자르기 기준점)가 최대한 가운데 오도록 잡되, 이미지 밖으로 나가지 않게 눌러준다
+  let srcX = focalX*imgW - srcWidth/2;
+  let srcY = focalY*imgH - srcHeight/2;
+  srcX = Math.max(0, Math.min(imgW-srcWidth, srcX));
+  srcY = Math.max(0, Math.min(imgH-srcHeight, srcY));
   return {srcX,srcY,srcWidth,srcHeight};
 }
 function cropToCanvas(img,width,height,rect){
