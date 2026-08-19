@@ -18,6 +18,7 @@ export default function BatchGenerator({ onBatchGenerated }: BatchGeneratorProps
   const handleGenerate = async () => {
     setLoading(true);
     setError('');
+    setBatchData(null);
 
     try {
       const response = await axios.post('http://localhost:8000/api/batch/generate', {

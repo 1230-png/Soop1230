@@ -14,34 +14,42 @@ class MasteringEngine:
 
     def process(self, input_path: str, output_path: str) -> dict:
         """전체 마스터링 처리"""
-        # 1. 오디오 로드
-        y, sr = librosa.load(input_path, sr=self.sr)
+        try:
+            # 1. 오디오 로드
+            y, sr = librosa.load(input_path, sr=self.sr)
 
-        # 2. 클립핑 감지 및 정규화
-        y = self._soft_clip(y)
+            # 2. 클립핑 감지 및 정규화
+            y = self._soft_clip(y)
 
-        # 3. 고급 EQ (멀티밴드)
-        y = self._multiband_eq(y, sr)
+            # 3. 고급 EQ (멀티밴드)
+            y = self._multiband_eq(y, sr)
 
-        # 4. 동적 범위 처리 (압축)
-        y = self._compression(y)
+            # 4. 동적 범위 처리 (압축)
+            y = self._compression(y)
 
-        # 5. 스테레오 처리 (모노 신호를 스테레오로 확장)
-        y_stereo = self._stereo_enhancement(y)
+            # 5. 스테레오 처리 (모노 신호를 스테레오로 확장)
+            y_stereo = self._stereo_enhancement(y)
 
-        # 6. 마스터링 체인 (제한기 + 정규화)
-        y_stereo = self._limiter(y_stereo)
-        y_stereo = self._loudness_normalization(y_stereo, sr)
+            # 6. 마스터링 체인 (제한기 + 정규화)
+            y_stereo = self._limiter(y_stereo)
+            y_stereo = self._loudness_normalization(y_stereo, sr)
 
-        # 7. 최종 파일 저장
-        sf.write(output_path, y_stereo, sr)
+            # 7. float32로 변환 및 저장
+            y_stereo = y_stereo.astype(np.float32)
+            sf.write(output_path, y_stereo.T, sr, subtype='PCM_16')
 
-        return {
-            "status": "completed",
-            "output_path": output_path,
-            "sample_rate": sr,
-            "target_loudness": self.loudness_target
-        }
+            return {
+                "status": "completed",
+                "output_path": output_path,
+                "sample_rate": sr,
+                "target_loudness": self.loudness_target
+            }
+        except Exception as e:
+            return {
+                "status": "error",
+                "message": str(e),
+                "output_path": output_path
+            }
 
     def _soft_clip(self, y: np.ndarray, threshold: float = 0.95) -> np.ndarray:
         """소프트 클리핑으로 클립핑 방지"""

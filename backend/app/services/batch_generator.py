@@ -59,9 +59,11 @@ class BatchGenerator:
                 "theme": theme,
                 "title": self._generate_title(theme, i),
                 "lyrics_outline": self._generate_lyrics_outline(theme),
+                "lyrics": self._generate_lyrics(theme, mood),
                 "suno_style": self._generate_suno_style(preset, theme),
                 "suno_exclude": "instrumental, voice only, spoken word, no instruments",
-                "bpm_target": 85 + (i % 3) * 5,  # 85, 90, 95
+                "bpm_target": 90,
+                "duration_target": "2:30-3:00",
                 "vocal_tone": preset["vocal_styles"][i % len(preset["vocal_styles"])]
             }
             songs.append(song)
@@ -99,6 +101,17 @@ class BatchGenerator:
             "거리의 이야기": "지나가는 사람들, 작은 이야기, 도시의 맥박",
         }
         return outlines.get(theme, "감정의 흐름을 따라가는 가사")
+
+    def _generate_lyrics(self, theme: str, mood: str) -> str:
+        """실제 가사 생성"""
+        lyrics_map = {
+            "밤거리 드라이브": "[Verse]\n불빛이 흐르는 도시 위로\n혼자만의 밤 거리를 걷고\n생각만 자꾸 맴도네\n이 도시의 소음 속에서\n\n[Chorus]\n밤거리를 헤매인다\n누군가의 손을 찾는다\n별빛 아래 멈춘 시간\n너만 생각하는 밤\n\n[Verse 2]\n가로등이 켜진 거리에서\n작은 발걸음을 멈춘다",
+            "도시의 외로움": "[Verse]\n수많은 사람들 사이에서\n혼자라는 생각에 잠긴다\n누구도 내 마음을 모르네\n이 도시의 수많은 방들 중\n\n[Chorus]\n외로움이 점점 커져\n가슴이 점점 미어져\n누군가는 나를 안아줄\n사람이 있을까",
+            "회상의 순간": "[Verse]\n그 시절로 돌아갈 수 있다면\n그때의 웃음이 그리워\n시간은 돌아오지 않는데\n추억만 자꾸 떠올라\n\n[Chorus]\n그때가 그리워\n그 순간으로 돌아가\n시간을 멈춰두고\n너와 함께 있고 싶어",
+            "누군가를 그리며": "[Verse]\n그 사람의 목소리가 들리고\n함께했던 시간들이 떠나\n지금 이 자리에 없어도\n내 마음은 그곳에\n\n[Chorus]\n그리움이 밤을 채우고\n그리움이 하루를 채운다\n언제쯤이면 다시 만날까\n네 이름만 부른다",
+            "새벽 감성": "[Verse]\n밤이 지나가고 새벽이 오면\n도시도 나도 조용해진다\n이 고요함 속에서 난\n너를 생각하고 있어\n\n[Chorus]\n새벽의 별빛 아래\n나만의 시간이 흐른다\n이 감정들을 담아\n내일을 향해 간다",
+        }
+        return lyrics_map.get(theme, "[Verse]\n감정의 결들을 모아\n하나의 노래로 만든다\n\n[Chorus]\n이 밤이 영원하면 좋겠어\n너와 함께 이 순간이")
 
     def _generate_suno_style(self, preset: Dict, theme: str) -> str:
         """Suno 스타일 프롬프트 생성"""
