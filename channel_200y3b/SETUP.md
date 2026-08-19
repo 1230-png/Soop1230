@@ -68,14 +68,35 @@ refresh_token: 1//xxxxxxxxxxxxxxxxxxxxx
    워크플로우 파일에서 `DEFAULT_PRIVACY_STATUS`를 `unlisted`로 바꿔주세요)
 3. `used_log.csv`에 사용한 문구/업로드 결과를 기록하고 자동 커밋
 
-기본 스케줄은 **매일 1편**입니다 (유튜브 정책상 저품질 대량 업로드는 오히려
-불리하므로 빈도를 일부러 낮게 잡았습니다).
+스케줄은 **하루 3편** (09:00 / 15:00 / 21:00 KST)입니다 — 성장 속도와
+스팸처럼 보이지 않는 선 사이의 균형점으로 잡았습니다.
 
 ## 비용 관련 정말 중요한 점
 
 - YouTube Data API 무료 할당량: 하루 10,000 유닛, 업로드 1회당 약 1,600 유닛 →
-  하루 1편은 여유롭게 무료 범위 안입니다.
-- GitHub Actions: 개인 계정 기준 매달 무료 분(private repo 2,000분)이 있고,
-  이 파이프라인은 1회 실행에 몇 분 이내라 무료 범위를 넘지 않습니다.
+  하루 3편(4,800 유닛)도 여유롭게 무료 범위 안입니다.
+- GitHub Actions: 이 저장소는 **public**이라 Actions 실행 시간이 완전 무제한
+  무료입니다 (private였다면 매달 2,000분 무료 한도가 있었을 거예요).
 - gTTS, Pillow, ffmpeg: 전부 무료/오픈소스, API 키나 결제 불필요.
 - **어디에도 신용카드 등록이나 유료 API 키가 필요한 구간이 없습니다.**
+
+## 채널 설정(키워드/설명) 자동 채우기 — 추가 인증 1번 필요
+
+`scripts/update_channel_settings.py`는 채널의 **비어있는** 키워드/설명/기본언어만
+채워 넣고, 이미 설정된 값은 절대 건드리지 않습니다. 다만 이 기능은 업로드 권한
+(`youtube.upload`)보다 넓은 **채널 관리 권한**(`youtube` 전체 스코프)이 필요해서,
+인증을 한 번 더 받아야 합니다.
+
+1. 로컬에서 다시 실행 (같은 `client_secret.json` 사용):
+   ```
+   py get_refresh_token.py --client-secret client_secret_7   # Tab으로 자동완성
+   ```
+2. 새로 나온 `refresh_token` 값으로, GitHub 저장소 Settings → Secrets and
+   variables → Actions에서 기존 **`YT_REFRESH_TOKEN`을 업데이트** (연필 아이콘
+   클릭 → 새 값 붙여넣기 → Update secret). `YT_CLIENT_ID`/`YT_CLIENT_SECRET`은
+   그대로 두시면 됩니다.
+3. GitHub 저장소 → Actions 탭 → **"Fill empty channel settings (@200-y3b)"**
+   워크플로우 → **Run workflow** 버튼으로 1회 수동 실행.
+
+이 스코프 확장은 업로드 워크플로우에도 그대로 적용되므로(더 넓은 권한이 좁은
+권한을 포함), 앞으로 업로드도 계속 문제없이 동작합니다.
