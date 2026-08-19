@@ -1,5 +1,6 @@
-"""Generate one 'One Line A Day' short: background image + Korean TTS narration
-muxed into a vertical mp4, plus a metadata JSON for the uploader.
+"""Generate one '매일 영어 한마디' short: an English expression + Korean meaning
++ example, narrated (EN/KO/EN) and muxed into a vertical mp4, plus a metadata
+JSON for the uploader.
 
 Pure open-source stack: Pillow (image/text), gTTS (free TTS, no API key),
 ffmpeg (mux). No paid API calls anywhere in this script.
@@ -17,19 +18,15 @@ from gtts import gTTS
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parent.parent
-CONTENT_BANK = ROOT / "scripts" / "content_bank.json"
+PHRASE_BANK = ROOT / "scripts" / "phrase_bank.json"
 USED_LOG = ROOT / "used_log.csv"
 OUTPUT_DIR = ROOT / "output"
 
 WIDTH, HEIGHT = 1080, 1920
 
-MOOD_PALETTES = {
-    "위로": ((70, 90, 150), (30, 35, 70)),
-    "동기부여": ((210, 130, 60), (90, 45, 20)),
-    "새벽감성": ((25, 30, 70), (5, 5, 20)),
-    "자기긍정": ((200, 110, 140), (70, 30, 55)),
-}
-DEFAULT_PALETTE = ((60, 60, 90), (20, 20, 35))
+# Fixed navy -> teal gradient for consistent, recognizable channel branding.
+TOP_COLOR = (18, 38, 68)
+BOTTOM_COLOR = (10, 58, 56)
 
 FONT_CANDIDATES = [
     "/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc",
@@ -55,11 +52,11 @@ def load_used_ids() -> set:
     if not USED_LOG.exists():
         return set()
     with open(USED_LOG, newline="", encoding="utf-8") as f:
-        return {row["quote_id"] for row in csv.DictReader(f)}
+        return {row["phrase_id"] for row in csv.DictReader(f)}
 
 
-def pick_next_quote() -> dict:
-    bank = json.loads(CONTENT_BANK.read_text(encoding="utf-8"))
+def pick_next_phrase() -> dict:
+    bank = json.loads(PHRASE_BANK.read_text(encoding="utf-8"))
     used = load_used_ids()
     for item in bank:
         if item["id"] not in used:
@@ -68,48 +65,78 @@ def pick_next_quote() -> dict:
     return bank[0]
 
 
-def make_background(mood: str) -> Image.Image:
-    top, bottom = MOOD_PALETTES.get(mood, DEFAULT_PALETTE)
-    img = Image.new("RGB", (WIDTH, HEIGHT), top)
+def make_background() -> Image.Image:
+    img = Image.new("RGB", (WIDTH, HEIGHT), TOP_COLOR)
     draw = ImageDraw.Draw(img)
     for y in range(HEIGHT):
         t = y / HEIGHT
-        r = int(top[0] + (bottom[0] - top[0]) * t)
-        g = int(top[1] + (bottom[1] - top[1]) * t)
-        b = int(top[2] + (bottom[2] - top[2]) * t)
+        r = int(TOP_COLOR[0] + (BOTTOM_COLOR[0] - TOP_COLOR[0]) * t)
+        g = int(TOP_COLOR[1] + (BOTTOM_COLOR[1] - TOP_COLOR[1]) * t)
+        b = int(TOP_COLOR[2] + (BOTTOM_COLOR[2] - TOP_COLOR[2]) * t)
         draw.line([(0, y), (WIDTH, y)], fill=(r, g, b))
     return img
 
 
-def draw_quote(img: Image.Image, text: str, font_path: str) -> None:
-    draw = ImageDraw.Draw(img)
-    font_size = 70
-    font = ImageFont.truetype(font_path, font_size)
-    wrapped = textwrap.fill(text, width=12)
+def draw_centered(draw, text, font, y, fill, wrap_width, line_gap=16):
+    wrapped = textwrap.fill(text, width=wrap_width)
     lines = wrapped.split("\n")
-
-    line_heights = [draw.textbbox((0, 0), line, font=font)[3] for line in lines]
-    total_height = sum(line_heights) + (len(lines) - 1) * 20
-    y = (HEIGHT - total_height) / 2
-
     for line in lines:
         bbox = draw.textbbox((0, 0), line, font=font)
         line_w = bbox[2] - bbox[0]
         x = (WIDTH - line_w) / 2
-        # soft shadow for readability, then the line itself
-        draw.text((x + 3, y + 3), line, font=font, fill=(0, 0, 0, 120))
-        draw.text((x, y), line, font=font, fill=(255, 255, 255))
-        y += bbox[3] + 20
+        draw.text((x + 2, y + 2), line, font=font, fill=(0, 0, 0))
+        draw.text((x, y), line, font=font, fill=fill)
+        y += (bbox[3] - bbox[1]) + line_gap
+    return y
 
-    brand_font = ImageFont.truetype(font_path, 36)
-    brand = "하루 한마디 · @200-y3b"
+
+def draw_content(img: Image.Image, phrase: dict, font_path: str) -> None:
+    draw = ImageDraw.Draw(img)
+
+    label_font = ImageFont.truetype(font_path, 42)
+    phrase_font = ImageFont.truetype(font_path, 78)
+    meaning_font = ImageFont.truetype(font_path, 52)
+    example_font = ImageFont.truetype(font_path, 36)
+    brand_font = ImageFont.truetype(font_path, 34)
+
+    y = 620
+    y = draw_centered(draw, "오늘의 표현", label_font, y, (150, 220, 210), wrap_width=20)
+    y += 40
+
+    y = draw_centered(draw, phrase["phrase_en"], phrase_font, y, (255, 255, 255), wrap_width=14)
+    y += 30
+
+    y = draw_centered(draw, phrase["meaning_ko"], meaning_font, y, (210, 235, 230), wrap_width=13)
+    y += 90
+
+    y = draw_centered(draw, phrase["example_en"], example_font, y, (235, 235, 235), wrap_width=28)
+    y += 10
+    y = draw_centered(draw, phrase["example_ko"], example_font, y, (180, 200, 195), wrap_width=22)
+
+    brand = "매일 영어 한마디 · @200-y3b"
     bbox = draw.textbbox((0, 0), brand, font=brand_font)
     bx = (WIDTH - (bbox[2] - bbox[0])) / 2
-    draw.text((bx, HEIGHT - 140), brand, font=brand_font, fill=(255, 255, 255, 180))
+    draw.text((bx, HEIGHT - 140), brand, font=brand_font, fill=(255, 255, 255))
 
 
-def synthesize_narration(text: str, out_path: Path) -> None:
-    gTTS(text=text, lang="ko").save(str(out_path))
+def synthesize_narration(phrase: dict, out_path: Path) -> None:
+    tmp_dir = out_path.parent
+    segments = [
+        ("en", phrase["phrase_en"]),
+        ("ko", phrase["meaning_ko"]),
+        ("en", phrase["phrase_en"]),
+        ("en", phrase["example_en"]),
+    ]
+    seg_paths = []
+    for i, (lang, text) in enumerate(segments):
+        seg_path = tmp_dir / f"{out_path.stem}_seg{i}.mp3"
+        gTTS(text=text, lang=lang).save(str(seg_path))
+        seg_paths.append(seg_path)
+
+    with open(out_path, "wb") as out_f:
+        for seg_path in seg_paths:
+            out_f.write(seg_path.read_bytes())
+            seg_path.unlink()
 
 
 def mux_video(image_path: Path, audio_path: Path, out_path: Path) -> None:
@@ -138,20 +165,27 @@ def append_log(row: dict) -> None:
         writer.writerow(row)
 
 
-def build_metadata(quote: dict, video_id: str) -> dict:
-    title = f"{quote['text'][:28]}{'…' if len(quote['text']) > 28 else ''} | 하루 한마디"
+def build_metadata(phrase: dict, video_id: str) -> dict:
+    title = f"\"{phrase['phrase_en']}\" 무슨 뜻일까? | 매일 영어 한마디"
     description = (
-        f"{quote['text']}\n\n"
-        "하루 한마디 — 매일 짧은 위로와 동기부여를 전하는 채널입니다.\n"
-        "#하루한마디 #위로 #동기부여 #힐링 #shorts"
+        f"오늘의 표현: {phrase['phrase_en']}\n"
+        f"뜻: {phrase['meaning_ko']}\n\n"
+        f"예문: {phrase['example_en']}\n"
+        f"해석: {phrase['example_ko']}\n\n"
+        "매일 영어 한마디 — 실생활에서 바로 쓰는 영어 표현을 매일 전해드립니다.\n"
+        "#영어공부 #영어회화 #매일영어한마디 #dailyenglish #영어표현 #shorts"
     )
-    tags = ["하루한마디", "위로", "동기부여", "힐링", "shorts", "명언", quote["mood"]]
+    tags = [
+        "영어공부", "영어회화", "매일영어한마디", "영어표현", "생활영어",
+        "english expressions", "daily english", "learn english", "korean english",
+        "shorts",
+    ]
     return {
         "video_id": video_id,
         "title": title,
         "description": description,
         "tags": tags,
-        "category_id": "22",
+        "category_id": "27",  # Education
     }
 
 
@@ -159,29 +193,30 @@ def main():
     OUTPUT_DIR.mkdir(exist_ok=True)
     font_path = find_korean_font()
 
-    quote = pick_next_quote()
+    phrase = pick_next_phrase()
     date_str = datetime.date.today().isoformat()
-    video_id = f"{date_str}_{quote['id']}"
+    video_id = f"{date_str}_{phrase['id']}"
 
     bg_path = OUTPUT_DIR / f"{video_id}.png"
     audio_path = OUTPUT_DIR / f"{video_id}.mp3"
     video_path = OUTPUT_DIR / f"{video_id}.mp4"
     meta_path = OUTPUT_DIR / f"{video_id}.json"
 
-    img = make_background(quote["mood"])
-    draw_quote(img, quote["text"], font_path)
+    img = make_background()
+    draw_content(img, phrase, font_path)
     img.save(bg_path)
 
-    synthesize_narration(quote["text"], audio_path)
+    synthesize_narration(phrase, audio_path)
     mux_video(bg_path, audio_path, video_path)
 
-    metadata = build_metadata(quote, video_id)
+    metadata = build_metadata(phrase, video_id)
     meta_path.write_text(json.dumps(metadata, ensure_ascii=False, indent=2), encoding="utf-8")
 
     append_log({
         "date": date_str,
-        "quote_id": quote["id"],
-        "text": quote["text"],
+        "phrase_id": phrase["id"],
+        "phrase_en": phrase["phrase_en"],
+        "meaning_ko": phrase["meaning_ko"],
         "video_title": metadata["title"],
         "video_file": str(video_path.relative_to(ROOT)),
         "youtube_video_id": "",

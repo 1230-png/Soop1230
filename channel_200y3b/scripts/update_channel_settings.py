@@ -1,10 +1,13 @@
-"""Fill in EMPTY channel branding fields only (keywords, description,
-default language) — never overwrites anything the channel owner already set.
+"""Fill in EMPTY channel branding fields (keywords, description, default
+language) by default — never overwrites anything the channel owner already
+set. Pass --force to overwrite keywords/description regardless (used once
+for the 하루 한마디 -> 매일 영어 한마디 content pivot).
 
 Requires a refresh token with the broader 'youtube' scope (not just
 'youtube.upload') — see SETUP.md.
 """
 
+import argparse
 import os
 import sys
 
@@ -15,14 +18,14 @@ from googleapiclient.discovery import build
 SCOPES = ["https://www.googleapis.com/auth/youtube"]
 
 DEFAULT_KEYWORDS = [
-    "하루한마디", "위로", "동기부여", "힐링", "명언", "쇼츠", "shorts",
-    "korean quotes", "motivation", "healing", "자기계발", "자존감",
-    "새벽감성", "감성쇼츠", "긍정에너지",
+    "영어공부", "영어회화", "매일영어한마디", "영어표현", "생활영어",
+    "english expressions", "daily english", "learn english", "korean english",
+    "영어단어", "영어숙어", "shorts",
 ]
 DEFAULT_DESCRIPTION = (
-    "하루 한마디 — 지친 하루 끝에 짧은 위로와 동기부여를 전하는 채널입니다.\n"
-    "매일 새로운 한 문장으로 오늘 하루를 다독여드릴게요.\n\n"
-    "#하루한마디 #위로 #동기부여 #힐링 #shorts"
+    "매일 영어 한마디 — 실생활에서 바로 쓰는 영어 표현을 매일 전해드립니다.\n"
+    "짧은 표현 하나, 뜻, 그리고 예문까지 30초 안에 배워가세요.\n\n"
+    "#영어공부 #영어회화 #매일영어한마디 #dailyenglish #shorts"
 )
 
 
@@ -44,6 +47,13 @@ def field(branding: dict, name: str) -> str:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--force", action="store_true",
+        help="Overwrite keywords/description even if already set (one-off use only).",
+    )
+    args = parser.parse_args()
+
     youtube = build("youtube", "v3", credentials=get_credentials())
 
     resp = youtube.channels().list(part="brandingSettings,snippet", mine=True).execute()
@@ -59,11 +69,11 @@ def main() -> int:
 
     changes = []
 
-    if not field(channel_branding, "keywords"):
+    if args.force or not field(channel_branding, "keywords"):
         channel_branding["keywords"] = " ".join(f'"{kw}"' for kw in DEFAULT_KEYWORDS)
         changes.append("keywords")
 
-    if not field(channel_branding, "description"):
+    if args.force or not field(channel_branding, "description"):
         channel_branding["description"] = DEFAULT_DESCRIPTION
         changes.append("description")
 

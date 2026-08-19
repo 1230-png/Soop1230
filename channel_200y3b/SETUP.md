@@ -1,8 +1,10 @@
 # @200-y3b 자동화 채널 — 설정 가이드 (전부 무료)
 
 채널: https://www.youtube.com/@200-y3b
-포맷: **하루 한마디 (One Line A Day)** — 30~40초 세로 쇼츠, 위로/동기부여 한 줄 문장 +
-잔잔한 배경 이미지 + 무료 TTS 내레이션 + 자막. 오리지널 문구만 사용(저작권 문제 없음).
+포맷: **매일 영어 한마디 (Daily English Phrase)** — 30초 세로 쇼츠. 실생활 영어 표현
+하나 + 한글 뜻 + 예문을 영어/한국어 내레이션으로. (2026-08-19: "하루 한마디" 감성
+문구 포맷에서 데이터 기반 피벗 — evergreen 검색 수요, 저경쟁 니치, 오리지널
+내레이션 알고리즘 보너스에 맞춰 전환)
 
 이 문서의 6단계만 완료하면, 이후 콘텐츠 생성/업로드/스케줄링은 GitHub Actions가
 자동으로 처리합니다. 전부 무료 등급 안에서만 동작하도록 설계했습니다.
@@ -61,7 +63,7 @@ refresh_token: 1//xxxxxxxxxxxxxxxxxxxxx
 
 `.github/workflows/auto_publish.yml`이 스케줄에 따라 자동 실행되어:
 
-1. `scripts/generate_video.py` — 아직 안 쓴 문구를 `content_bank.json`에서 하나 골라
+1. `scripts/generate_video.py` — 아직 안 쓴 표현을 `phrase_bank.json`에서 하나 골라
    배경 이미지 생성(Pillow) → 내레이션 생성(gTTS, 무료) → ffmpeg로 영상 합성
 2. `scripts/upload_video.py` — 저장된 시크릿으로 YouTube Data API를 통해 업로드
    (기본값: **public**, 바로 전체공개로 올라갑니다. 다시 검수 모드로 돌리고 싶으면

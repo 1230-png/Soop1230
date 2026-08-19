@@ -1,7 +1,13 @@
 name: Fill empty channel settings (@200-y3b)
 
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Overwrite keywords/description even if already set"
+        required: false
+        default: "false"
+        type: boolean
 
 permissions:
   contents: read
@@ -25,4 +31,9 @@ jobs:
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
-        run: python3 scripts/update_channel_settings.py
+        run: |
+          if [ "${{ github.event.inputs.force }}" = "true" ]; then
+            python3 scripts/update_channel_settings.py --force
+          else
+            python3 scripts/update_channel_settings.py
+          fi
