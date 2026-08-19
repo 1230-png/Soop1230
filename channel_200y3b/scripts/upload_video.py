@@ -18,7 +18,6 @@ from googleapiclient.http import MediaFileUpload
 
 ROOT = Path(__file__).resolve().parent.parent
 OUTPUT_DIR = ROOT / "output"
-USED_LOG = ROOT / "used_log.csv"
 
 SCOPES = ["https://www.googleapis.com/auth/youtube"]
 
@@ -40,7 +39,7 @@ def get_credentials() -> Credentials:
     return creds
 
 
-def upload(video_id: str, privacy_status: str) -> str:
+def upload(video_id: str, privacy_status: str, log_file: Path) -> str:
     video_path = OUTPUT_DIR / f"{video_id}.mp4"
     meta_path = OUTPUT_DIR / f"{video_id}.json"
     metadata = json.loads(meta_path.read_text(encoding="utf-8"))
@@ -67,21 +66,35 @@ def upload(video_id: str, privacy_status: str) -> str:
         _, response = request.next_chunk()
 
     youtube_video_id = response["id"]
-    update_log(video_id, youtube_video_id, "uploaded")
+    update_log(video_id, youtube_video_id, "uploaded", log_file)
+
+    thumbnail_rel = metadata.get("thumbnail_file")
+    if thumbnail_rel:
+        thumbnail_path = ROOT / thumbnail_rel
+        try:
+            youtube.thumbnails().set(
+                videoId=youtube_video_id,
+                media_body=MediaFileUpload(str(thumbnail_path), mimetype="image/jpeg"),
+            ).execute()
+        except Exception as exc:  # noqa: BLE001 - custom thumbnails need phone
+            # verification; don't fail the whole upload over a thumbnail.
+            print(f"Thumbnail upload skipped (custom thumbnails need a "
+                  f"phone-verified channel): {exc}", file=sys.stderr)
+
     return youtube_video_id
 
 
-def update_log(video_id: str, youtube_video_id: str, status: str) -> None:
-    if not USED_LOG.exists():
+def update_log(video_id: str, youtube_video_id: str, status: str, log_file: Path) -> None:
+    if not log_file.exists():
         return
-    with open(USED_LOG, newline="", encoding="utf-8") as f:
+    with open(log_file, newline="", encoding="utf-8") as f:
         rows = list(csv.DictReader(f))
         fieldnames = rows[0].keys() if rows else []
     for row in rows:
         if row["video_file"].endswith(f"{video_id}.mp4"):
             row["youtube_video_id"] = youtube_video_id
             row["status"] = status
-    with open(USED_LOG, "w", newline="", encoding="utf-8") as f:
+    with open(log_file, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(rows)
@@ -91,9 +104,10 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--video-id", required=True, help="e.g. 2026-08-19_L001")
     parser.add_argument("--privacy-status", default="unlisted", choices=["public", "unlisted", "private"])
+    parser.add_argument("--log-file", default="used_log.csv", help="Which used-log CSV to update")
     args = parser.parse_args()
 
-    youtube_video_id = upload(args.video_id, args.privacy_status)
+    youtube_video_id = upload(args.video_id, args.privacy_status, ROOT / args.log_file)
     print(f"Uploaded: https://youtube.com/watch?v={youtube_video_id}")
 
 
