@@ -1,2 +1,9 @@
 channel_200y3b/output/
+channel_food/output/
 __pycache__/
+*.pyc
+*.pyo
+.DS_Store
+client_secret*.json
+.env
+.env.local

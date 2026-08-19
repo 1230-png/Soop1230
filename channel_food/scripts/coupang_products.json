@@ -1,0 +1,109 @@
+{
+  "categories": {
+    "계란": [
+      {
+        "name": "무항생제 방목계란",
+        "link": "https://www.coupang.com/vp/products/영상내용에맞는계란상품링크",
+        "keywords": ["계란", "계란요리", "계란말이", "계란까스"]
+      },
+      {
+        "name": "계란 30구",
+        "link": "https://www.coupang.com/vp/products/계란세트링크",
+        "keywords": ["계란", "대량", "특가"]
+      }
+    ],
+    "라면": [
+      {
+        "name": "신라면 멀티팩",
+        "link": "https://www.coupang.com/vp/products/신라면링크",
+        "keywords": ["라면", "신라면", "라면요리"]
+      },
+      {
+        "name": "진라면 순한맛",
+        "link": "https://www.coupang.com/vp/products/진라면링크",
+        "keywords": ["라면", "진라면", "순한맛"]
+      },
+      {
+        "name": "컵라면 3종 세트",
+        "link": "https://www.coupang.com/vp/products/컵라면링크",
+        "keywords": ["컵라면", "라면", "간식"]
+      }
+    ],
+    "주방용품": [
+      {
+        "name": "테플론 코팅 팬 3종 세트",
+        "link": "https://www.coupang.com/vp/products/팬세트링크",
+        "keywords": ["팬", "논스틱팬", "조리", "계란말이"]
+      },
+      {
+        "name": "논스틱 냄비 세트",
+        "link": "https://www.coupang.com/vp/products/냄비링크",
+        "keywords": ["냄비", "조리", "요리"]
+      },
+      {
+        "name": "실리콘 조리도구 세트",
+        "link": "https://www.coupang.com/vp/products/조리도구링크",
+        "keywords": ["조리도구", "주방용품", "계란"]
+      }
+    ],
+    "에어프라이어": [
+      {
+        "name": "10L 디지털 에어프라이어",
+        "link": "https://www.coupang.com/vp/products/에어프라이어링크",
+        "keywords": ["에어프라이어", "튀김", "주방용품"]
+      },
+      {
+        "name": "6L 핫에어 프라이어",
+        "link": "https://www.coupang.com/vp/products/에어프라이어2링크",
+        "keywords": ["에어프라이어", "소형", "가성비"]
+      }
+    ],
+    "냉동식품": [
+      {
+        "name": "프리미엄 냉동만두",
+        "link": "https://www.coupang.com/vp/products/냉동만두링크",
+        "keywords": ["냉동만두", "만두", "편의식"]
+      },
+      {
+        "name": "새우튀김 냉동세트",
+        "link": "https://www.coupang.com/vp/products/냉동새우링크",
+        "keywords": ["냉동식품", "튀김", "간식"]
+      }
+    ],
+    "소시지": [
+      {
+        "name": "프리미엄 돈까스 소시지",
+        "link": "https://www.coupang.com/vp/products/소시지링크",
+        "keywords": ["소시지", "요리", "스파게티"]
+      }
+    ],
+    "파스타": [
+      {
+        "name": "스파게티 1kg",
+        "link": "https://www.coupang.com/vp/products/스파게티링크",
+        "keywords": ["스파게티", "파스타면", "야식"]
+      }
+    ],
+    "소스": [
+      {
+        "name": "토마토 파스타 소스",
+        "link": "https://www.coupang.com/vp/products/토마토소스링크",
+        "keywords": ["토마토소스", "파스타", "스파게티"]
+      }
+    ],
+    "편의점상품": [
+      {
+        "name": "인기 편의점 간식 세트",
+        "link": "https://www.coupang.com/vp/products/편의점간식링크",
+        "keywords": ["간식", "편의점", "신상"]
+      }
+    ]
+  },
+  "default_products": [
+    {
+      "name": "올리브영 선물세트",
+      "link": "https://www.coupang.com/vp/products/기본상품링크",
+      "keywords": ["간식", "상품", "리뷰"]
+    }
+  ]
+}
