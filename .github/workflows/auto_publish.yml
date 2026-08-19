@@ -1,0 +1,66 @@
+name: Auto-publish 하루 한마디 (@200-y3b)
+
+on:
+  schedule:
+    # 21:00 UTC = 06:00 KST — one short per day
+    - cron: "0 21 * * *"
+  workflow_dispatch:
+    inputs:
+      privacy_status:
+        description: "YouTube privacy status for this run"
+        required: false
+        default: "unlisted"
+        type: choice
+        options: [unlisted, public, private]
+
+# Default privacy for the scheduled (non-manual) runs. Start with "unlisted"
+# while reviewing output quality, then switch to "public" once satisfied —
+# see channel_200y3b/SETUP.md.
+env:
+  DEFAULT_PRIVACY_STATUS: unlisted
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install system dependencies (ffmpeg, Korean font)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-noto-cjk
+
+      - name: Install Python dependencies
+        run: pip install -r channel_200y3b/scripts/requirements.txt
+
+      - name: Generate today's short
+        id: generate
+        working-directory: channel_200y3b
+        run: |
+          video_id=$(python3 scripts/generate_video.py)
+          echo "video_id=$video_id" >> "$GITHUB_OUTPUT"
+
+      - name: Upload to YouTube
+        working-directory: channel_200y3b
+        env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+        run: |
+          privacy="${{ github.event.inputs.privacy_status || env.DEFAULT_PRIVACY_STATUS }}"
+          python3 scripts/upload_video.py --video-id "${{ steps.generate.outputs.video_id }}" --privacy-status "$privacy"
+
+      - name: Commit updated log
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add channel_200y3b/used_log.csv
+          git diff --cached --quiet || git commit -m "Auto-publish: ${{ steps.generate.outputs.video_id }}"
+          git push
