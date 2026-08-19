@@ -2,8 +2,10 @@ name: Auto-publish 하루 한마디 (@200-y3b)
 
 on:
   schedule:
-    # 21:00 UTC = 06:00 KST — one short per day
-    - cron: "0 21 * * *"
+    # 3 shorts/day: 00:00 / 06:00 / 12:00 UTC = 09:00 / 15:00 / 21:00 KST
+    - cron: "0 0 * * *"
+    - cron: "0 6 * * *"
+    - cron: "0 12 * * *"
   workflow_dispatch:
     inputs:
       privacy_status:
