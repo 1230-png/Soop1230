@@ -183,9 +183,16 @@ async def analyze_audio(file: UploadFile = File(...)):
 
 
 @app.post("/api/lyrics/generate")
-async def generate_lyrics(theme: str, mood: str, style: str = "랩"):
+async def generate_lyrics(request_body: dict):
     """AI 한국 가사 자동 생성 (Premium Feature 2)"""
     try:
+        theme = request_body.get("theme", "")
+        mood = request_body.get("mood", "감성")
+        style = request_body.get("style", "랩")
+
+        if not theme:
+            raise HTTPException(status_code=400, detail="테마를 입력해주세요")
+
         lyrics = lyrics_gen.generate(theme=theme, mood=mood, style=style)
         return lyrics
     except Exception as e:
@@ -193,9 +200,13 @@ async def generate_lyrics(theme: str, mood: str, style: str = "랩"):
 
 
 @app.post("/api/auto-complete")
-async def auto_complete_song(batch_id: str = None):
+async def auto_complete_song(request_body: dict = None):
     """원클릭 자동 완성 (Premium Feature 3)"""
     try:
+        batch_id = None
+        if request_body:
+            batch_id = request_body.get("batch_id")
+
         result = auto_complete.complete(batch_id=batch_id)
         return result
     except Exception as e:
