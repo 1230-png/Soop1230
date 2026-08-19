@@ -1,2 +1,27 @@
 channel_200y3b/output/
 __pycache__/
+
+# Backend
+backend/venv/
+backend/uploads/
+backend/.env
+backend/.env.local
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env.local
+frontend/.DS_Store
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
