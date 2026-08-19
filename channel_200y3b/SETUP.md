@@ -64,8 +64,8 @@ refresh_token: 1//xxxxxxxxxxxxxxxxxxxxx
 1. `scripts/generate_video.py` — 아직 안 쓴 문구를 `content_bank.json`에서 하나 골라
    배경 이미지 생성(Pillow) → 내레이션 생성(gTTS, 무료) → ffmpeg로 영상 합성
 2. `scripts/upload_video.py` — 저장된 시크릿으로 YouTube Data API를 통해 업로드
-   (기본값: **unlisted** — 처음 몇 개는 검수 후 공개로 바꾸는 걸 권장합니다.
-   문제없다 싶으면 워크플로우 파일에서 `PRIVACY_STATUS`를 `public`으로 바꿔주세요)
+   (기본값: **public**, 바로 전체공개로 올라갑니다. 다시 검수 모드로 돌리고 싶으면
+   워크플로우 파일에서 `DEFAULT_PRIVACY_STATUS`를 `unlisted`로 바꿔주세요)
 3. `used_log.csv`에 사용한 문구/업로드 결과를 기록하고 자동 커밋
 
 기본 스케줄은 **매일 1편**입니다 (유튜브 정책상 저품질 대량 업로드는 오히려
