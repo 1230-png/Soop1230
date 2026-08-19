@@ -48,9 +48,10 @@ jobs:
       - name: 유튜브 업로드 (쿠팡 링크 자동 삽입)
         working-directory: channel_food/scripts
         env:
-          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
-          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
-          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          FOOD_CLIENT_ID: ${{ secrets.FOOD_CLIENT_ID }}
+          FOOD_CLIENT_SECRET: ${{ secrets.FOOD_CLIENT_SECRET }}
+          FOOD_REFRESH_TOKEN: ${{ secrets.FOOD_REFRESH_TOKEN }}
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
         run: |
           python3 upload_food_video.py \
             --video-path "${{ steps.parse.outputs.video_path }}" \
