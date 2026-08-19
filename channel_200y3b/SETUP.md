@@ -64,14 +64,38 @@ refresh_token: 1//xxxxxxxxxxxxxxxxxxxxx
 `.github/workflows/auto_publish.yml`이 스케줄에 따라 자동 실행되어:
 
 1. `scripts/generate_video.py` — 아직 안 쓴 표현을 `phrase_bank.json`에서 하나 골라
-   배경 이미지 생성(Pillow) → 내레이션 생성(gTTS, 무료) → ffmpeg로 영상 합성
+   배경 이미지 생성(Pillow) → 내레이션 생성(edge-tts 뉴럴 음성, 무료) → ffmpeg로 영상 합성
 2. `scripts/upload_video.py` — 저장된 시크릿으로 YouTube Data API를 통해 업로드
    (기본값: **public**, 바로 전체공개로 올라갑니다. 다시 검수 모드로 돌리고 싶으면
    워크플로우 파일에서 `DEFAULT_PRIVACY_STATUS`를 `unlisted`로 바꿔주세요)
 3. `used_log.csv`에 사용한 문구/업로드 결과를 기록하고 자동 커밋
 
-스케줄은 **하루 3편** (09:00 / 15:00 / 21:00 KST)입니다 — 성장 속도와
+스케줄은 **하루 3편 쇼츠** (09:00 / 15:00 / 21:00 KST)입니다 — 성장 속도와
 스팸처럼 보이지 않는 선 사이의 균형점으로 잡았습니다.
+
+## 롱폼(긴 영상) — 광고 붙을 수 있는 길이
+
+`.github/workflows/longform_publish.yml`이 **매주 일요일 20:00 KST**에
+`scripts/generate_compilation.py`를 실행해, 그 주 표현 30개를 모아 인트로/
+아웃트로 포함 8~12분짜리 영상 1편을 만들어 업로드합니다. 유튜브 광고(특히
+중간광고)가 붙으려면 보통 8분 이상이 필요해서 그 기준에 맞춰 길이를 잡았고,
+쇼츠와 롱폼이 서로 다른 문구 사용 기록(`used_log_longform.csv`)을 관리해서
+겹치지 않게 순환합니다. 커스텀 썸네일도 함께 생성/업로드됩니다.
+
+## 목소리 — gTTS에서 edge-tts로 교체
+
+기존 gTTS는 티 나게 로봇 같은 음성이라, 더 자연스러운 무료 뉴럴 음성인
+**edge-tts**(Microsoft Edge "읽어주기" 기능과 동일한 음성 엔진, API 키 불필요,
+완전 무료)로 교체했습니다. 영어 문장은 `en-US-AvaMultilingualNeural`, 한국어
+설명은 `ko-KR-SunHiNeural`로 — 일부러 다른 화자를 써서 "한 로봇이 두 언어를
+읽는" 느낌 대신 두 사람이 설명해주는 느낌이 나도록 했습니다.
+
+## 채널 배너
+
+`.github/workflows/channel_banner.yml`을 수동 실행하면
+`scripts/update_channel_banner.py`가 채널 브랜드 컬러(네이비-틸 그라데이션)로
+배너 이미지를 생성해서 바로 채널에 적용합니다. 몇 번이고 재실행해서 다시
+바꿀 수 있어요.
 
 ## 비용 관련 정말 중요한 점
 
@@ -79,8 +103,17 @@ refresh_token: 1//xxxxxxxxxxxxxxxxxxxxx
   하루 3편(4,800 유닛)도 여유롭게 무료 범위 안입니다.
 - GitHub Actions: 이 저장소는 **public**이라 Actions 실행 시간이 완전 무제한
   무료입니다 (private였다면 매달 2,000분 무료 한도가 있었을 거예요).
-- gTTS, Pillow, ffmpeg: 전부 무료/오픈소스, API 키나 결제 불필요.
+- edge-tts, Pillow, ffmpeg: 전부 무료/오픈소스, API 키나 결제 불필요.
 - **어디에도 신용카드 등록이나 유료 API 키가 필요한 구간이 없습니다.**
+
+## 커스텀 썸네일 참고
+
+롱폼 영상에는 커스텀 썸네일을 자동 생성/업로드하도록 만들어뒀는데, 유튜브는
+**전화번호 인증이 안 된 채널**에는 커스텀 썸네일 업로드를 막습니다. 채널이
+인증 안 되어 있으면 썸네일 업로드 단계만 조용히 건너뛰고(에러 로그만 남기고)
+나머지 업로드는 정상 진행되도록 만들어뒀습니다. 썸네일까지 쓰고 싶으면
+YouTube Studio → 설정 → 채널 → 기능 사용 자격요건에서 전화번호 인증을
+해주시면 됩니다.
 
 ## 채널 설정(키워드/설명) 자동 채우기 — 추가 인증 1번 필요
 
