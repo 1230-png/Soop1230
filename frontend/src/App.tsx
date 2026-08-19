@@ -6,8 +6,9 @@ import BatchGenerator from './components/BatchGenerator';
 import MasteringStudio from './components/MasteringStudio';
 import CoverImageCreator from './components/CoverImageCreator';
 import MetadataEditor from './components/MetadataEditor';
+import LyricsGenerator from './components/LyricsGenerator';
 
-type TabType = 'dashboard' | 'batch' | 'mastering' | 'cover' | 'metadata';
+type TabType = 'dashboard' | 'batch' | 'mastering' | 'cover' | 'metadata' | 'lyrics';
 
 function App() {
   const [activeTab, setActiveTab] = useState<TabType>('dashboard');
@@ -51,6 +52,12 @@ function App() {
         >
           📝 메타데이터
         </button>
+        <button
+          className={`nav-btn ${activeTab === 'lyrics' ? 'active' : ''}`}
+          onClick={() => setActiveTab('lyrics')}
+        >
+          ✍️ AI 가사 생성
+        </button>
       </nav>
 
       <main className="app-content">
@@ -59,6 +66,7 @@ function App() {
         {activeTab === 'mastering' && <MasteringStudio />}
         {activeTab === 'cover' && <CoverImageCreator />}
         {activeTab === 'metadata' && <MetadataEditor />}
+        {activeTab === 'lyrics' && <LyricsGenerator />}
       </main>
     </div>
   );

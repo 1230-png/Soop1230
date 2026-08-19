@@ -9,6 +9,9 @@ from app.services.batch_generator import BatchGenerator
 from app.services.mastering import MasteringEngine
 from app.services.image_generator import ImageGenerator
 from app.services.metadata_generator import MetadataGenerator
+from app.services.audio_analyzer import AudioAnalyzer
+from app.services.lyrics_generator import LyricsGenerator
+from app.services.auto_complete import AutoCompleteService
 
 app = FastAPI(title="감성힙합 생성 도구")
 
@@ -33,6 +36,9 @@ batch_gen = BatchGenerator()
 mastering = MasteringEngine()
 image_gen = ImageGenerator()
 metadata_gen = MetadataGenerator()
+analyzer = AudioAnalyzer()
+lyrics_gen = LyricsGenerator()
+auto_complete = AutoCompleteService()
 
 
 @app.get("/")
@@ -150,6 +156,48 @@ async def generate_metadata(title: str, mood: str, bpm: int = 90):
     try:
         metadata = metadata_gen.generate(title=title, mood=mood, bpm=bpm)
         return metadata
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/analysis/analyze")
+async def analyze_audio(file: UploadFile = File(...)):
+    """오디오 파일 분석 및 프리셋 추천 (Premium Feature 1)"""
+    try:
+        file_id = str(uuid.uuid4())[:8]
+        temp_path = f"uploads/audio/{file_id}_temp.wav"
+
+        contents = await file.read()
+        with open(temp_path, 'wb') as f:
+            f.write(contents)
+
+        analysis = analyzer.analyze(temp_path)
+
+        # 임시 파일 삭제
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
+
+        return analysis
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/lyrics/generate")
+async def generate_lyrics(theme: str, mood: str, style: str = "랩"):
+    """AI 한국 가사 자동 생성 (Premium Feature 2)"""
+    try:
+        lyrics = lyrics_gen.generate(theme=theme, mood=mood, style=style)
+        return lyrics
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/auto-complete")
+async def auto_complete_song(batch_id: str = None):
+    """원클릭 자동 완성 (Premium Feature 3)"""
+    try:
+        result = auto_complete.complete(batch_id=batch_id)
+        return result
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

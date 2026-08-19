@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import '../styles/components.css';
 
 export default function Dashboard() {
+  const [loading, setLoading] = useState(false);
+  const [autoCompleteResult, setAutoCompleteResult] = useState<any>(null);
+  const [error, setError] = useState('');
+
   const [projects, setProjects] = useState([
     {
       id: 1,
@@ -28,9 +33,79 @@ export default function Dashboard() {
     totalTime: '5:42'
   };
 
+  const handleAutoComplete = async () => {
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await axios.post('http://localhost:8000/api/auto-complete');
+      setAutoCompleteResult(response.data);
+    } catch (err: any) {
+      setError(err.response?.data?.detail || '자동 완성 실패');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="component-container">
       <h2>📊 프로젝트 대시보드</h2>
+
+      {/* 원클릭 자동 완성 (Premium Feature 3) */}
+      <div className="auto-complete-banner">
+        <div className="banner-content">
+          <h3>⚡ 원클릭 자동 완성</h3>
+          <p>음악 생성부터 마스터링, 커버 이미지, 메타데이터까지 모든 것이 한 클릭으로 완성됩니다</p>
+        </div>
+        <button
+          className="btn btn-primary"
+          onClick={handleAutoComplete}
+          disabled={loading}
+          style={{ minWidth: '200px' }}
+        >
+          {loading ? '⏳ 처리 중...' : '🚀 지금 시작'}
+        </button>
+      </div>
+
+      {error && <div className="error-message">{error}</div>}
+
+      {autoCompleteResult && (
+        <div className="auto-complete-result">
+          <h3>✅ 자동 완성 완료!</h3>
+          <div className="completion-steps">
+            {autoCompleteResult.steps.map((step: any) => (
+              <div key={step.step} className="completion-step">
+                <span className="step-badge">{step.step}</span>
+                <div className="step-info">
+                  <div className="step-name">{step.name}</div>
+                  <div className="step-desc">{step.description}</div>
+                </div>
+                <span className="step-status">{step.status}</span>
+              </div>
+            ))}
+          </div>
+          <div className="summary-box">
+            <h4>📊 처리 결과 요약</h4>
+            <div className="summary-stats">
+              <div className="summary-stat">
+                <span>생성된 곡</span>
+                <span className="value">{autoCompleteResult.results.summary.total_songs}곡</span>
+              </div>
+              <div className="summary-stat">
+                <span>총 시간</span>
+                <span className="value">{autoCompleteResult.results.summary.total_duration}</span>
+              </div>
+              <div className="summary-stat">
+                <span>파일 크기</span>
+                <span className="value">{autoCompleteResult.results.summary.file_size}</span>
+              </div>
+            </div>
+            <p className="next-step">
+              💡 다음 단계: {autoCompleteResult.results.summary.next_step}
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* 통계 카드 */}
       <div className="stats-grid">

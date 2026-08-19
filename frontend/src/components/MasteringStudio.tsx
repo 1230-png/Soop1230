@@ -10,16 +10,31 @@ interface MasteringPreset {
   threshold: number;
 }
 
+interface AnalysisResult {
+  bpm: number;
+  key: string;
+  energy: number;
+  genre: string;
+  recommended_preset: string;
+  analysis_details: {
+    duration: number;
+    sample_rate: number;
+    confidence: string;
+  };
+}
+
 export default function MasteringStudio() {
   const [file, setFile] = useState<File | null>(null);
   const [originalAudioUrl, setOriginalAudioUrl] = useState('');
   const [masteredAudioUrl, setMasteredAudioUrl] = useState('');
   const [loading, setLoading] = useState(false);
+  const [analyzing, setAnalyzing] = useState(false);
   const [fileId, setFileId] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [preset, setPreset] = useState('감성');
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
 
   const presets: { [key: string]: MasteringPreset } = {
     감성: {
@@ -59,12 +74,45 @@ export default function MasteringStudio() {
     }
   };
 
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
       setFile(selectedFile);
       setOriginalAudioUrl(URL.createObjectURL(selectedFile));
       setError('');
+      setAnalysis(null);
+
+      // 자동으로 오디오 분석 시작
+      await analyzeAudio(selectedFile);
+    }
+  };
+
+  const analyzeAudio = async (audioFile: File) => {
+    setAnalyzing(true);
+    const formData = new FormData();
+    formData.append('file', audioFile);
+
+    try {
+      const response = await axios.post(
+        'http://localhost:8000/api/analysis/analyze',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      );
+
+      setAnalysis(response.data);
+      // 추천 프리셋으로 자동 선택
+      if (response.data.recommended_preset) {
+        setPreset(response.data.recommended_preset);
+      }
+    } catch (err: any) {
+      console.error('분석 실패:', err);
+      // 분석 실패해도 수동으로 진행 가능
+    } finally {
+      setAnalyzing(false);
     }
   };
 
@@ -123,6 +171,42 @@ export default function MasteringStudio() {
               {file ? `📁 ${file.name}` : '🎵 오디오 파일 선택 (WAV/MP3)'}
             </label>
           </div>
+
+          {analyzing && (
+            <div className="analysis-loading">
+              <div className="spinner"></div>
+              <p>🔍 오디오 분석 중...</p>
+            </div>
+          )}
+
+          {analysis && !analyzing && (
+            <div className="analysis-results">
+              <h4>🎵 음악 분석 결과</h4>
+              <div className="analysis-grid">
+                <div className="analysis-item">
+                  <span className="label">BPM</span>
+                  <span className="value">{analysis.bpm}</span>
+                </div>
+                <div className="analysis-item">
+                  <span className="label">Key</span>
+                  <span className="value">{analysis.key}</span>
+                </div>
+                <div className="analysis-item">
+                  <span className="label">Energy</span>
+                  <span className="value">{(analysis.energy * 100).toFixed(0)}%</span>
+                </div>
+                <div className="analysis-item">
+                  <span className="label">Genre</span>
+                  <span className="value">{analysis.genre}</span>
+                </div>
+              </div>
+              <div className="recommendation">
+                <span className="badge">✨ AI 추천</span>
+                <span className="preset-name">{analysis.recommended_preset}</span>
+                <span className="confidence">{analysis.analysis_details.confidence}</span>
+              </div>
+            </div>
+          )}
 
           <div className="preset-section">
             <h4>프리셋 선택</h4>
