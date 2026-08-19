@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './App.css';
+import Dashboard from './components/Dashboard';
 import BatchGenerator from './components/BatchGenerator';
 import MasteringStudio from './components/MasteringStudio';
 import CoverImageCreator from './components/CoverImageCreator';
 import MetadataEditor from './components/MetadataEditor';
 
-type TabType = 'batch' | 'mastering' | 'cover' | 'metadata';
+type TabType = 'dashboard' | 'batch' | 'mastering' | 'cover' | 'metadata';
 
 function App() {
-  const [activeTab, setActiveTab] = useState<TabType>('batch');
+  const [activeTab, setActiveTab] = useState<TabType>('dashboard');
   const [batchData, setBatchData] = useState<any>(null);
 
   return (
@@ -20,6 +21,12 @@ function App() {
       </header>
 
       <nav className="app-nav">
+        <button
+          className={`nav-btn ${activeTab === 'dashboard' ? 'active' : ''}`}
+          onClick={() => setActiveTab('dashboard')}
+        >
+          📊 대시보드
+        </button>
         <button
           className={`nav-btn ${activeTab === 'batch' ? 'active' : ''}`}
           onClick={() => setActiveTab('batch')}
@@ -47,6 +54,7 @@ function App() {
       </nav>
 
       <main className="app-content">
+        {activeTab === 'dashboard' && <Dashboard />}
         {activeTab === 'batch' && <BatchGenerator onBatchGenerated={setBatchData} />}
         {activeTab === 'mastering' && <MasteringStudio />}
         {activeTab === 'cover' && <CoverImageCreator />}
