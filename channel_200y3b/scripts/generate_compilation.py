@@ -98,13 +98,14 @@ def make_slide_clip(phrase: dict, index: int, total: int, font_path: str, out_di
 
     common.synthesize_narration(
         [
-            (common.EN_VOICE, phrase["phrase_en"]),
-            (common.KO_VOICE, phrase["meaning_ko"]),
-            (common.EN_VOICE, phrase["phrase_en"]),
-            (common.EN_VOICE, phrase["example_en"]),
+            ("en", phrase["phrase_en"]),
+            ("ko", phrase["meaning_ko"]),
+            ("en", phrase["phrase_en"]),
+            ("en", phrase["example_en"]),
         ],
         audio_path,
         trailing_silence=SLIDE_TRAILING_SILENCE,
+        use_elevenlabs_for_en=False,  # protect the free quota for the Shorts
     )
     common.mux_video(bg_path, audio_path, clip_path)
     bg_path.unlink()
@@ -134,7 +135,7 @@ def make_title_clip(text_lines, narration_text, font_path: str, out_dir: Path, s
     draw.text((bx, common.HEIGHT - 140), brand, font=brand_font, fill=(255, 255, 255))
 
     img.save(bg_path)
-    common.synthesize_narration([(common.KO_VOICE, narration_text)], audio_path, trailing_silence=1.0)
+    common.synthesize_narration([("ko", narration_text)], audio_path, trailing_silence=1.0)
     common.mux_video(bg_path, audio_path, clip_path)
     bg_path.unlink()
     audio_path.unlink()
