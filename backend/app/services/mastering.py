@@ -2,7 +2,6 @@ import librosa
 import numpy as np
 from scipy import signal
 import soundfile as sf
-import pyloudnorm as pyln
 from typing import Tuple
 
 
@@ -11,7 +10,6 @@ class MasteringEngine:
 
     def __init__(self):
         self.sr = 44100
-        self.meter = pyln.Meter(self.sr)
         self.loudness_target = -14.0  # LUFS
 
     def process(self, input_path: str, output_path: str) -> dict:
@@ -156,14 +154,8 @@ class MasteringEngine:
         return y_stereo
 
     def _loudness_normalization(self, y_stereo: np.ndarray, sr: int) -> np.ndarray:
-        """LUFS 기반 러드니스 정규화"""
-        try:
-            loudness = self.meter.integrated_loudness(y_stereo)
-            loudness_normalized = pyln.normalize.loudness(y_stereo, loudness, self.loudness_target)
-            return loudness_normalized
-        except:
-            # pyloudnorm 실패 시 간단한 RMS 정규화
-            rms = np.sqrt(np.mean(y_stereo ** 2))
-            if rms > 0:
-                y_stereo *= 0.1 / rms
-            return y_stereo
+        """간단한 RMS 정규화"""
+        rms = np.sqrt(np.mean(y_stereo ** 2))
+        if rms > 0:
+            y_stereo *= 0.1 / rms
+        return y_stereo
