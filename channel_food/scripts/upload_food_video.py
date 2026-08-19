@@ -24,9 +24,15 @@ SCOPES = ["https://www.googleapis.com/auth/youtube"]
 
 
 def get_credentials() -> Credentials:
-    client_id = os.environ["YT_CLIENT_ID"]
-    client_secret = os.environ["YT_CLIENT_SECRET"]
-    refresh_token = os.environ["YT_REFRESH_TOKEN"]
+    client_id = os.environ.get("FOOD_CLIENT_ID") or os.environ.get("YT_CLIENT_ID")
+    client_secret = os.environ.get("FOOD_CLIENT_SECRET") or os.environ.get("YT_CLIENT_SECRET")
+    refresh_token = os.environ.get("FOOD_REFRESH_TOKEN") or os.environ.get("YT_REFRESH_TOKEN")
+
+    if not all([client_id, client_secret, refresh_token]):
+        raise EnvironmentError(
+            "Missing YouTube credentials: set FOOD_CLIENT_ID, FOOD_CLIENT_SECRET, FOOD_REFRESH_TOKEN "
+            "or YT_CLIENT_ID, YT_CLIENT_SECRET, YT_REFRESH_TOKEN"
+        )
 
     creds = Credentials(
         token=None,

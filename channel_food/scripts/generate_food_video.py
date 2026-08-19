@@ -8,14 +8,20 @@ import asyncio
 import csv
 import datetime
 import json
+import os
 import random
+import ssl
 import sys
 from pathlib import Path
 
 from PIL import ImageDraw, ImageFont
+import aiohttp
 import edge_tts
 
 import common
+
+os.environ.setdefault("SSL_CERT_FILE", "/root/.ccr/ca-bundle.crt")
+os.environ.setdefault("REQUESTS_CA_BUNDLE", "/root/.ccr/ca-bundle.crt")
 
 ROOT = Path(__file__).resolve().parent.parent
 FOOD_BANK = ROOT / "scripts" / "food_content.json"
@@ -171,7 +177,9 @@ async def generate_narration(content):
 
 
 async def make_video(content, audio_files, products):
-    """ffmpeg로 최종 영상 생성"""
+    """ffmpeg로 최종 영상 생성 (이미지 + 음성)"""
+    import subprocess
+
     title_img = make_title_image(content)
     product_img = make_product_image(content, products)
 
@@ -180,9 +188,11 @@ async def make_video(content, audio_files, products):
     title_img.save(title_img_path)
     product_img.save(product_img_path)
 
-    await generate_narration_to_files(content, audio_files)
+    audio_generated = await generate_narration_to_files(content, audio_files)
 
     video_path = OUTPUT_DIR / f"food_shorts_{content['id']}.mp4"
+    video_no_audio_path = OUTPUT_DIR / f"food_shorts_{content['id']}_noaudio.mp4"
+    audio_concat_path = OUTPUT_DIR / f"audio_{content['id']}.mp3"
 
     concat_list = OUTPUT_DIR / "concat.txt"
     with open(concat_list, "w") as f:
@@ -194,41 +204,92 @@ async def make_video(content, audio_files, products):
             f.write(f"duration {duration}\n")
 
     cmd = [
-        "ffmpeg",
+        "ffmpeg", "-y",
         "-f", "concat",
         "-safe", "0",
         "-i", str(concat_list),
         "-pix_fmt", "yuv420p",
         "-vf", "scale=1080:1920",
-        "-shortest",
-        "-y",
-        str(video_path),
+        "-c:v", "libx264",
+        "-crf", "23",
+        str(video_no_audio_path),
     ]
 
-    import subprocess
-    subprocess.run(cmd, check=True)
+    subprocess.run(cmd, check=True, capture_output=True)
 
+    if audio_generated:
+        title_audio = OUTPUT_DIR / f"title_{content['id']}.mp3"
+        end_audio = OUTPUT_DIR / f"end_{content['id']}.mp3"
+        desc_audio = OUTPUT_DIR / f"desc_{content['id']}.mp3"
+
+        audio_files_to_concat = [title_audio, end_audio]
+        if desc_audio.exists():
+            audio_files_to_concat.insert(1, desc_audio)
+
+        if all(p.exists() for p in audio_files_to_concat):
+            audio_concat_list = OUTPUT_DIR / "audio_concat.txt"
+            with open(audio_concat_list, "w") as f:
+                for audio_path in audio_files_to_concat:
+                    f.write(f"file '{audio_path}'\n")
+
+            subprocess.run([
+                "ffmpeg", "-y",
+                "-f", "concat",
+                "-safe", "0",
+                "-i", str(audio_concat_list),
+                "-c", "copy",
+                str(audio_concat_path),
+            ], check=True, capture_output=True)
+
+            subprocess.run([
+                "ffmpeg", "-y",
+                "-i", str(video_no_audio_path),
+                "-i", str(audio_concat_path),
+                "-c:v", "copy",
+                "-c:a", "aac",
+                "-map", "0:v:0",
+                "-map", "1:a:0",
+                "-shortest",
+                str(video_path),
+            ], check=True, capture_output=True)
+
+            video_no_audio_path.unlink(missing_ok=True)
+            audio_concat_list.unlink(missing_ok=True)
+            audio_concat_path.unlink(missing_ok=True)
+        else:
+            video_path = video_no_audio_path
+    else:
+        video_path = video_no_audio_path
+
+    concat_list.unlink(missing_ok=True)
     return video_path
 
 
 async def generate_narration_to_files(content, audio_files):
-    """음성 파일 생성"""
+    """음성 파일 생성 (로컬 환경에서 실행 필요)"""
     title_ko = f"{content.get('korean', content['title'])}입니다."
     desc_ko = content.get("description", "")
 
-    title_path = OUTPUT_DIR / f"title_{content['id']}.mp3"
-    comm = edge_tts.Communicate(title_ko, common.KO_VOICE)
-    await comm.save(str(title_path))
+    try:
+        title_path = OUTPUT_DIR / f"title_{content['id']}.mp3"
+        comm = edge_tts.Communicate(title_ko, common.KO_VOICE)
+        await comm.save(str(title_path))
 
-    if desc_ko:
-        desc_path = OUTPUT_DIR / f"desc_{content['id']}.mp3"
-        comm = edge_tts.Communicate(desc_ko, common.KO_VOICE)
-        await comm.save(str(desc_path))
+        if desc_ko:
+            desc_path = OUTPUT_DIR / f"desc_{content['id']}.mp3"
+            comm = edge_tts.Communicate(desc_ko, common.KO_VOICE)
+            await comm.save(str(desc_path))
 
-    end_path = OUTPUT_DIR / f"end_{content['id']}.mp3"
-    end_text = "구독과 좋아요 부탁드립니다!"
-    comm = edge_tts.Communicate(end_text, common.KO_VOICE)
-    await comm.save(str(end_path))
+        end_path = OUTPUT_DIR / f"end_{content['id']}.mp3"
+        end_text = "구독과 좋아요 부탁드립니다!"
+        comm = edge_tts.Communicate(end_text, common.KO_VOICE)
+        await comm.save(str(end_path))
+        print(f"  ✓ 음성 생성 완료")
+        return True
+    except Exception as e:
+        print(f"  ⚠️  음성 생성 건너뜀 (원격 환경의 네트워크 제한)")
+        print(f"     로컬 Windows PC에서 실행하면 완벽한 음성이 포함됩니다.")
+        return False
 
 
 def log_usage(content, video_path, products):
