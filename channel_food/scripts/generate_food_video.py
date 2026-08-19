@@ -188,7 +188,7 @@ async def make_video(content, audio_files, products):
     title_img.save(title_img_path)
     product_img.save(product_img_path)
 
-    audio_generated = await generate_narration_to_files(content, audio_files)
+    audio_generated = generate_narration_to_files(content, audio_files)
 
     video_path = OUTPUT_DIR / f"food_shorts_{content['id']}.mp4"
     video_no_audio_path = OUTPUT_DIR / f"food_shorts_{content['id']}_noaudio.mp4"
@@ -265,30 +265,27 @@ async def make_video(content, audio_files, products):
     return video_path
 
 
-async def generate_narration_to_files(content, audio_files):
-    """음성 파일 생성 (로컬 환경에서 실행 필요)"""
+def generate_narration_to_files(content, audio_files):
+    """음성 파일 생성 (ElevenLabs 또는 edge-tts 사용)"""
     title_ko = f"{content.get('korean', content['title'])}입니다."
     desc_ko = content.get("description", "")
+    end_text = "구독과 좋아요 부탁드립니다!"
 
     try:
         title_path = OUTPUT_DIR / f"title_{content['id']}.mp3"
-        comm = edge_tts.Communicate(title_ko, common.KO_VOICE)
-        await comm.save(str(title_path))
+        common.tts_save_segment("ko", title_ko, title_path, use_elevenlabs_for_en=False)
 
         if desc_ko:
             desc_path = OUTPUT_DIR / f"desc_{content['id']}.mp3"
-            comm = edge_tts.Communicate(desc_ko, common.KO_VOICE)
-            await comm.save(str(desc_path))
+            common.tts_save_segment("ko", desc_ko, desc_path, use_elevenlabs_for_en=False)
 
         end_path = OUTPUT_DIR / f"end_{content['id']}.mp3"
-        end_text = "구독과 좋아요 부탁드립니다!"
-        comm = edge_tts.Communicate(end_text, common.KO_VOICE)
-        await comm.save(str(end_path))
+        common.tts_save_segment("ko", end_text, end_path, use_elevenlabs_for_en=False)
+
         print(f"  ✓ 음성 생성 완료")
         return True
     except Exception as e:
-        print(f"  ⚠️  음성 생성 건너뜀 (원격 환경의 네트워크 제한)")
-        print(f"     로컬 Windows PC에서 실행하면 완벽한 음성이 포함됩니다.")
+        print(f"  ⚠️  음성 생성 건너뜀: {str(e)[:80]}")
         return False
 
 
