@@ -120,6 +120,7 @@ def mux_video(image_path: Path, audio_path: Path, out_path: Path) -> None:
             "-i", str(audio_path),
             "-c:v", "libx264", "-tune", "stillimage", "-pix_fmt", "yuv420p",
             "-c:a", "aac", "-b:a", "192k",
+            "-af", "loudnorm=I=-14:TP=-1.0:LRA=11",
             "-shortest", "-vf", "fps=30",
             str(out_path),
         ],

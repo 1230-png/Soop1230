@@ -9,15 +9,13 @@ on:
       privacy_status:
         description: "YouTube privacy status for this run"
         required: false
-        default: "unlisted"
+        default: "public"
         type: choice
-        options: [unlisted, public, private]
+        options: [public, unlisted, private]
 
-# Default privacy for the scheduled (non-manual) runs. Start with "unlisted"
-# while reviewing output quality, then switch to "public" once satisfied —
-# see channel_200y3b/SETUP.md.
+# Default privacy for the scheduled (non-manual) runs.
 env:
-  DEFAULT_PRIVACY_STATUS: unlisted
+  DEFAULT_PRIVACY_STATUS: public
 
 permissions:
   contents: write
