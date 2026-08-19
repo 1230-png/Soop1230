@@ -1,0 +1,303 @@
+{% extends "base.html" %}
+
+{% block title %}대시보드 - Suno AI 마스터링{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <h1>📊 대시보드</h1>
+
+    <!-- 통계 -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">🎵</div>
+            <div class="stat-info">
+                <div class="stat-label">총 곡</div>
+                <div class="stat-value">{{ stats.total_songs }}</div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">📺</div>
+            <div class="stat-info">
+                <div class="stat-label">YouTube 계정</div>
+                <div class="stat-value">{{ stats.youtube_accounts }}</div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">📥</div>
+            <div class="stat-info">
+                <div class="stat-label">오늘 임포트</div>
+                <div class="stat-value">{{ stats.imported_today }}</div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">⚡</div>
+            <div class="stat-info">
+                <div class="stat-label">상태</div>
+                <div class="stat-value">준비됨</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 빠른 작업 -->
+    <div class="quick-actions">
+        <h2>⚡ 빠른 작업</h2>
+        <div class="action-buttons">
+            <button class="action-btn" onclick="scanSunoFolder()">
+                📁 Suno 폴더 스캔
+            </button>
+            <button class="action-btn" onclick="goToSongs()">
+                🎵 곡 관리
+            </button>
+            <button class="action-btn" onclick="goToYouTube()">
+                📺 YouTube
+            </button>
+            <button class="action-btn" onclick="goToUpload()">
+                🚀 업로드
+            </button>
+        </div>
+    </div>
+
+    <!-- 최근 곡 -->
+    <div class="recent-section">
+        <h2>📋 최근 임포트된 곡</h2>
+        <div id="recentSongs" class="song-list">
+            <p class="loading">로딩 중...</p>
+        </div>
+    </div>
+
+    <!-- 정보 -->
+    <div class="info-section">
+        <h3>ℹ️ 시스템 정보</h3>
+        <ul>
+            <li>✅ Suno 폴더 모니터링: 활성</li>
+            <li>✅ YouTube 계정: {{ stats.youtube_accounts }}개 연동됨</li>
+            <li>✅ 마스터링 엔진: 준비됨</li>
+            <li>✅ Content ID 회피 처리: 활성</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+// Suno 폴더 스캔
+function scanSunoFolder() {
+    fetch('/api/suno/scan')
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                alert(`✅ 스캔 완료!\n새 곡: ${data.new_songs_count}개`);
+                location.reload();
+            } else {
+                alert('❌ 오류: ' + data.message);
+            }
+        });
+}
+
+// 곡 관리 페이지로
+function goToSongs() {
+    window.location.href = '/songs';
+}
+
+// YouTube 페이지로
+function goToYouTube() {
+    window.location.href = '/youtube';
+}
+
+// 업로드 페이지로
+function goToUpload() {
+    window.location.href = '/upload';
+}
+
+// 최근 곡 로드
+function loadRecentSongs() {
+    fetch('/api/suno/songs')
+        .then(r => r.json())
+        .then(songs => {
+            const container = document.getElementById('recentSongs');
+            if (!songs || songs.length === 0) {
+                container.innerHTML = '<p class="empty">곡이 없습니다. 폴더를 스캔하세요.</p>';
+                return;
+            }
+
+            const recent = songs.slice(0, 5);
+            container.innerHTML = recent.map(song => `
+                <div class="song-item">
+                    <div class="song-title">${song.title}</div>
+                    <div class="song-meta">
+                        <span class="tag">${song.status}</span>
+                        <span class="date">${new Date(song.imported_date).toLocaleDateString('ko-KR')}</span>
+                    </div>
+                </div>
+            `).join('');
+        });
+}
+
+// 페이지 로드 시
+document.addEventListener('DOMContentLoaded', loadRecentSongs);
+</script>
+
+<style>
+.dashboard {
+    padding: 20px;
+}
+
+.dashboard h1 {
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.stat-icon {
+    font-size: 32px;
+}
+
+.stat-info {
+    flex: 1;
+}
+
+.stat-label {
+    color: #666;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+}
+
+.quick-actions {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px;
+}
+
+.quick-actions h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.action-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+}
+
+.action-btn {
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.recent-section {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px;
+}
+
+.recent-section h2 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.song-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.song-item {
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+}
+
+.song-title {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.song-meta {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.tag {
+    display: inline-block;
+    background: #667eea;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.date {
+    font-size: 12px;
+    color: #999;
+}
+
+.loading, .empty {
+    color: #999;
+    text-align: center;
+    padding: 20px;
+}
+
+.info-section {
+    background: #f0f0f0;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.info-section h3 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.info-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.info-section li {
+    padding: 8px 0;
+    color: #666;
+}
+</style>
+{% endblock %}

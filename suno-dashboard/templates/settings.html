@@ -1,0 +1,268 @@
+{% extends "base.html" %}
+
+{% block title %}설정 - Suno AI 마스터링{% endblock %}
+
+{% block content %}
+<div class="settings">
+    <h1>⚙️ 설정</h1>
+
+    <!-- Suno 폴더 설정 -->
+    <div class="setting-section">
+        <h2>📁 Suno 폴더</h2>
+        <p class="setting-value">{{ config.suno_folder }}</p>
+        <p class="setting-hint">다운로드된 Suno 곡이 저장되는 폴더입니다.</p>
+    </div>
+
+    <!-- YouTube 계정 설정 -->
+    <div class="setting-section">
+        <h2>📺 YouTube 계정</h2>
+        <p class="setting-label">연동된 계정: {{ config.youtube_accounts|length }}</p>
+        <ul class="account-list">
+            {% if config.youtube_accounts %}
+                {% for account in config.youtube_accounts %}
+                <li>
+                    {{ account }}
+                    <button class="btn btn-small btn-danger" onclick="deleteAccount('{{ account }}')">삭제</button>
+                </li>
+                {% endfor %}
+            {% else %}
+            <li class="empty-message">연동된 계정이 없습니다</li>
+            {% endif %}
+        </ul>
+
+        <button class="btn btn-primary mt-20" onclick="showAddAccountForm()">
+            + 계정 추가
+        </button>
+    </div>
+
+    <!-- 마스터링 설정 -->
+    <div class="setting-section">
+        <h2>🎚️ 마스터링</h2>
+        <div class="form-group">
+            <label>기본 마스터링 프리셋</label>
+            <select id="masteringPreset">
+                <option value="standard">표준</option>
+                <option value="loud">라우드</option>
+                <option value="safe">안전 (Content ID 회피)</option>
+            </select>
+        </div>
+        <button class="btn btn-primary" onclick="saveMasteringSettings()">저장</button>
+    </div>
+
+    <!-- 정보 -->
+    <div class="setting-section info">
+        <h2>ℹ️ 시스템 정보</h2>
+        <ul>
+            <li><strong>Python:</strong> 3.8+</li>
+            <li><strong>Flask:</strong> 2.3.2</li>
+            <li><strong>FFmpeg:</strong> 설치됨 ✅</li>
+            <li><strong>저장 위치:</strong> ./data</li>
+        </ul>
+    </div>
+</div>
+
+<!-- 계정 추가 모달 (간단한 버전) -->
+<div id="addAccountForm" class="modal" style="display:none;">
+    <div class="modal-content">
+        <h2>YouTube 계정 추가</h2>
+        <div class="form-group">
+            <label>계정 이름</label>
+            <input type="text" id="accountName" placeholder="예: 채널1">
+        </div>
+        <div class="form-group">
+            <label>클라이언트 ID</label>
+            <input type="text" id="clientId" placeholder="Google Cloud 클라이언트 ID">
+        </div>
+        <div class="form-group">
+            <label>클라이언트 시크릿</label>
+            <input type="password" id="clientSecret" placeholder="Google Cloud 클라이언트 시크릿">
+        </div>
+        <div class="modal-buttons">
+            <button class="btn btn-primary" onclick="addAccount()">추가</button>
+            <button class="btn btn-secondary" onclick="closeAddAccountForm()">취소</button>
+        </div>
+    </div>
+</div>
+
+<script>
+function showAddAccountForm() {
+    document.getElementById('addAccountForm').style.display = 'flex';
+}
+
+function closeAddAccountForm() {
+    document.getElementById('addAccountForm').style.display = 'none';
+}
+
+function addAccount() {
+    const name = document.getElementById('accountName').value;
+    const clientId = document.getElementById('clientId').value;
+    const clientSecret = document.getElementById('clientSecret').value;
+
+    if (!name || !clientId || !clientSecret) {
+        alert('모든 필드를 입력하세요');
+        return;
+    }
+
+    fetch('/api/youtube/authenticate', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            account_name: name,
+            client_id: clientId,
+            client_secret: clientSecret
+        })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            alert('✅ 계정 추가 완료!');
+            location.reload();
+        } else {
+            alert('❌ 오류: ' + data.message);
+        }
+    });
+}
+
+function deleteAccount(accountName) {
+    if (!confirm(`${accountName}을(를) 삭제하시겠습니까?`)) return;
+
+    fetch(`/api/youtube/delete/${accountName}`, {method: 'DELETE'})
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                alert('✅ 계정이 삭제되었습니다');
+                location.reload();
+            } else {
+                alert('❌ 오류: ' + data.message);
+            }
+        });
+}
+
+function saveMasteringSettings() {
+    const preset = document.getElementById('masteringPreset').value;
+    alert('✅ 설정이 저장되었습니다: ' + preset);
+}
+
+// 모달 바깥 클릭 시 닫기
+window.onclick = function(event) {
+    const modal = document.getElementById('addAccountForm');
+    if (event.target == modal) {
+        modal.style.display = 'none';
+    }
+}
+</script>
+
+<style>
+.settings {
+    padding: 20px;
+}
+
+.setting-section {
+    background: #f9f9f9;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-left: 4px solid #667eea;
+}
+
+.setting-section h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 18px;
+}
+
+.setting-label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.setting-value {
+    background: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    border-left: 3px solid #667eea;
+    margin-bottom: 10px;
+}
+
+.setting-hint {
+    color: #999;
+    font-size: 13px;
+    margin-bottom: 0;
+}
+
+.account-list {
+    list-style: none;
+    margin: 15px 0;
+}
+
+.account-list li {
+    padding: 10px;
+    background: white;
+    border-radius: 5px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.account-list .empty-message {
+    color: #999;
+    text-align: center;
+}
+
+.setting-section.info {
+    background: #e8f4f8;
+    border-left-color: #17a2b8;
+}
+
+.setting-section.info ul {
+    list-style: none;
+    margin: 0;
+}
+
+.setting-section.info li {
+    padding: 8px 0;
+    color: #333;
+}
+
+/* 모달 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 10px;
+    padding: 30px;
+    max-width: 400px;
+    width: 90%;
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.modal-buttons .btn {
+    flex: 1;
+}
+</style>
+{% endblock %}

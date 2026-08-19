@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="error-page">
+    <h1>😞 오류가 발생했습니다</h1>
+    <p class="error-message">{{ message }}</p>
+    <a href="{{ url_for('dashboard') }}" class="btn btn-primary">대시보드로 돌아가기</a>
+</div>
+
+<style>
+.error-page {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.error-page h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #dc3545;
+}
+
+.error-message {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.error-page .btn {
+    display: inline-block;
+}
+</style>
+{% endblock %}
