@@ -4,6 +4,7 @@ narrated with natural neural voices and muxed into a vertical mp4.
 Free stack: Pillow (image/text), edge-tts (neural TTS), ffmpeg (mux).
 """
 
+import asyncio
 import csv
 import datetime
 import json
@@ -12,6 +13,7 @@ import sys
 from pathlib import Path
 
 from PIL import ImageDraw, ImageFont
+import edge_tts
 
 import common
 
@@ -168,7 +170,7 @@ async def generate_narration(content):
     return audio_files
 
 
-def make_video(content, audio_files, products):
+async def make_video(content, audio_files, products):
     """ffmpeg로 최종 영상 생성"""
     title_img = make_title_image(content)
     product_img = make_product_image(content, products)
@@ -178,8 +180,7 @@ def make_video(content, audio_files, products):
     title_img.save(title_img_path)
     product_img.save(product_img_path)
 
-    import asyncio
-    asyncio.run(generate_narration_to_files(content, audio_files))
+    await generate_narration_to_files(content, audio_files)
 
     video_path = OUTPUT_DIR / f"food_shorts_{content['id']}.mp4"
 
@@ -216,15 +217,18 @@ async def generate_narration_to_files(content, audio_files):
     desc_ko = content.get("description", "")
 
     title_path = OUTPUT_DIR / f"title_{content['id']}.mp3"
-    await common.tts_save(title_ko, common.KO_VOICE, title_path)
+    comm = edge_tts.Communicate(title_ko, common.KO_VOICE)
+    await comm.save(str(title_path))
 
     if desc_ko:
         desc_path = OUTPUT_DIR / f"desc_{content['id']}.mp3"
-        await common.tts_save(desc_ko, common.KO_VOICE, desc_path)
+        comm = edge_tts.Communicate(desc_ko, common.KO_VOICE)
+        await comm.save(str(desc_path))
 
     end_path = OUTPUT_DIR / f"end_{content['id']}.mp3"
     end_text = "구독과 좋아요 부탁드립니다!"
-    await common.tts_save(end_text, common.KO_VOICE, end_path)
+    comm = edge_tts.Communicate(end_text, common.KO_VOICE)
+    await comm.save(str(end_path))
 
 
 def log_usage(content, video_path, products):
@@ -308,7 +312,7 @@ async def main():
     print(f"[생성] {content['type']}: {content['title']}")
     print(f"[상품] {len(products)}개 매칭됨")
 
-    video_path = make_video(content, [], products)
+    video_path = await make_video(content, [], products)
     print(f"[완료] {video_path}")
 
     metadata = make_metadata(content, video_path, products)
