@@ -1,15 +1,28 @@
 """Shared helpers for both the daily Shorts and the weekly long-form
-compilation: font lookup, background palettes, natural neural-voice TTS
-(edge-tts — free, no API key, much less robotic than gTTS), and ffmpeg
-muxing/concatenation.
+compilation: font lookup, background palettes, natural neural-voice TTS,
+and ffmpeg muxing/concatenation.
+
+Voice strategy (all free tiers, no payment):
+- English narration on the daily Shorts uses ElevenLabs (by far the most
+  natural-sounding free option) IF an ELEVENLABS_API_KEY secret is set —
+  its free plan is only 10,000 characters/month, which comfortably covers
+  the Shorts' English lines (~7,000 chars/month) but not the long-form
+  compilations too, so those stay on edge-tts to not blow the quota.
+- Everything else (Korean narration always, English whenever ElevenLabs
+  isn't configured or its call fails/quota runs out) falls back to
+  edge-tts — Microsoft's free neural "Read Aloud" voices, no API key,
+  still far more natural than gTTS.
 """
 
 import asyncio
+import os
 import subprocess
+import sys
 import textwrap
 from pathlib import Path
 
 import edge_tts
+import requests
 from PIL import Image, ImageDraw, ImageFont
 
 WIDTH, HEIGHT = 1080, 1920
@@ -28,6 +41,11 @@ PALETTES = [
 # narration feels like two people, not one robotic reader doing both.
 EN_VOICE = "en-US-AvaMultilingualNeural"
 KO_VOICE = "ko-KR-SunHiNeural"
+
+# ElevenLabs (optional, free-tier) — a warm, natural male voice well suited
+# to calm explainer narration. Override with ELEVENLABS_VOICE_ID if desired.
+ELEVENLABS_DEFAULT_VOICE_ID = "pNInz6obpgDQGcFmaJgB"  # "Adam", a standard premade voice
+ELEVENLABS_MODEL_ID = "eleven_multilingual_v2"
 
 FONT_CANDIDATES = [
     "/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc",
@@ -78,13 +96,51 @@ def draw_centered(draw, text, font, y, fill, wrap_width, line_gap=16, canvas_wid
     return y
 
 
-async def _tts_save(text: str, voice: str, out_path: Path) -> None:
+async def _tts_save_edge(text: str, voice: str, out_path: Path) -> None:
     communicate = edge_tts.Communicate(text, voice)
     await communicate.save(str(out_path))
 
 
 def tts_save(text: str, voice: str, out_path: Path) -> None:
-    asyncio.run(_tts_save(text, voice, out_path))
+    asyncio.run(_tts_save_edge(text, voice, out_path))
+
+
+def tts_save_elevenlabs(text: str, out_path: Path) -> None:
+    api_key = os.environ["ELEVENLABS_API_KEY"]
+    voice_id = os.environ.get("ELEVENLABS_VOICE_ID", ELEVENLABS_DEFAULT_VOICE_ID)
+    resp = requests.post(
+        f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}",
+        headers={
+            "xi-api-key": api_key,
+            "Content-Type": "application/json",
+            "Accept": "audio/mpeg",
+        },
+        json={
+            "text": text,
+            "model_id": ELEVENLABS_MODEL_ID,
+            "voice_settings": {"stability": 0.5, "similarity_boost": 0.75},
+        },
+        timeout=30,
+    )
+    resp.raise_for_status()
+    out_path.write_bytes(resp.content)
+
+
+def tts_save_segment(lang: str, text: str, out_path: Path, use_elevenlabs_for_en: bool = True) -> None:
+    """lang is 'en' or 'ko'. English tries ElevenLabs first (only when
+    use_elevenlabs_for_en and an API key is configured) and falls back to
+    edge-tts on any failure — missing key, exhausted free quota, network
+    error, whatever. Korean always uses edge-tts (see module docstring for
+    why the free-tier character budget is split this way)."""
+    if lang == "en" and use_elevenlabs_for_en and os.environ.get("ELEVENLABS_API_KEY"):
+        try:
+            tts_save_elevenlabs(text, out_path)
+            return
+        except Exception as exc:  # noqa: BLE001 - any failure just falls back
+            print(f"ElevenLabs TTS failed, falling back to edge-tts: {exc}", file=sys.stderr)
+
+    voice = EN_VOICE if lang == "en" else KO_VOICE
+    tts_save(text, voice, out_path)
 
 
 def generate_silence(duration_seconds: float, out_path: Path) -> None:
@@ -101,17 +157,17 @@ def generate_silence(duration_seconds: float, out_path: Path) -> None:
     )
 
 
-def synthesize_narration(segments, out_path: Path, trailing_silence: float = 0.0) -> None:
-    """segments: list of (voice, text). Concatenates the raw mp3 bytes —
-    edge-tts output is constant-bitrate mp3, so sequential concatenation
-    plays back fine, same trick used for the previous gTTS pipeline.
-    trailing_silence adds a pause at the end (e.g. reading time in a
-    compilation) by appending a generated silent clip."""
+def synthesize_narration(segments, out_path: Path, trailing_silence: float = 0.0, use_elevenlabs_for_en: bool = True) -> None:
+    """segments: list of (lang, text) where lang is 'en' or 'ko'. Concatenates
+    the raw mp3 bytes — both edge-tts and ElevenLabs output constant-bitrate
+    mp3, so sequential concatenation plays back fine (same trick used for the
+    previous gTTS pipeline). trailing_silence adds a pause at the end (e.g.
+    reading time in a compilation) by appending a generated silent clip."""
     tmp_dir = out_path.parent
     seg_paths = []
-    for i, (voice, text) in enumerate(segments):
+    for i, (lang, text) in enumerate(segments):
         seg_path = tmp_dir / f"{out_path.stem}_seg{i}.mp3"
-        tts_save(text, voice, seg_path)
+        tts_save_segment(lang, text, seg_path, use_elevenlabs_for_en)
         seg_paths.append(seg_path)
 
     if trailing_silence > 0:

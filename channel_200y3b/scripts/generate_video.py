@@ -123,12 +123,13 @@ def main():
 
     common.synthesize_narration(
         [
-            (common.EN_VOICE, phrase["phrase_en"]),
-            (common.KO_VOICE, phrase["meaning_ko"]),
-            (common.EN_VOICE, phrase["phrase_en"]),
-            (common.EN_VOICE, phrase["example_en"]),
+            ("en", phrase["phrase_en"]),
+            ("ko", phrase["meaning_ko"]),
+            ("en", phrase["phrase_en"]),
+            ("en", phrase["example_en"]),
         ],
         audio_path,
+        use_elevenlabs_for_en=True,  # Shorts get the higher-quality voice
     )
     common.mux_video(bg_path, audio_path, video_path)
 
