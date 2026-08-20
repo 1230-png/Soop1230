@@ -2,14 +2,13 @@
 compilation: font lookup, background palettes, natural neural-voice TTS,
 and ffmpeg muxing/concatenation.
 
-Voice strategy (cloud-based, monthly free tier: 1M characters):
-- All narration uses Google Cloud Text-to-Speech (monthly quota: 1M chars free)
-- English: Neural2 voices (en-US-Journey-D)
-- Korean: Neural2 voices (ko-KR-Neural2-A)
-- Falls back to ElevenLabs for English if configured and available (quota: 10k/month)
+Voice strategy (cloud-based, hybrid free tier):
+- English narration on Shorts uses ElevenLabs (10k chars/month free, warm & natural)
+  — fallback to edge-tts on any failure (missing key, quota exhausted, network error)
+- Korean narration always uses edge-tts (Microsoft neural voices, free, unlimited)
+- Long-form compilations use edge-tts exclusively to preserve ElevenLabs quota for Shorts
 """
 
-import json
 import os
 import subprocess
 import sys
@@ -17,8 +16,6 @@ import textwrap
 from pathlib import Path
 
 import requests
-from google.cloud import texttospeech
-from google.oauth2 import service_account
 from PIL import Image, ImageDraw, ImageFont
 
 WIDTH, HEIGHT = 1080, 1920
@@ -32,11 +29,11 @@ PALETTES = [
     ((16, 44, 40), (36, 30, 12)),    # deep teal -> warm bronze accent
 ]
 
-# Google Cloud TTS voices (neural, very natural)
-GCP_EN_VOICE = "en-US-Journey-D"  # Natural, expressive English voice
-GCP_KO_VOICE = "ko-KR-Neural2-A"  # Natural, clear Korean voice
+# edge-tts voices (free neural, no API key needed)
+EN_VOICE = "en-US-AvaMultilingualNeural"  # Natural English voice
+KO_VOICE = "ko-KR-SunHiNeural"  # Natural Korean voice
 
-# ElevenLabs (optional backup, free-tier) — fallback if GCP unavailable
+# ElevenLabs (free tier: 10k chars/month) — primary for Shorts English
 ELEVENLABS_DEFAULT_VOICE_ID = "pNInz6obpgDQGcFmaJgB"  # "Adam", warm & natural
 ELEVENLABS_MODEL_ID = "eleven_multilingual_v2"
 
@@ -89,32 +86,13 @@ def draw_centered(draw, text, font, y, fill, wrap_width, line_gap=16, canvas_wid
     return y
 
 
-def _get_gcp_client():
-    """Create Google Cloud TTS client from GOOGLE_CLOUD_TTS_KEY environment variable."""
-    key_json = os.environ.get("GOOGLE_CLOUD_TTS_KEY")
-    if not key_json:
-        raise SystemExit("GOOGLE_CLOUD_TTS_KEY environment variable not set")
-    key_data = json.loads(key_json)
-    credentials = service_account.Credentials.from_service_account_info(key_data)
-    return texttospeech.TextToSpeechClient(credentials=credentials)
-
-
-def tts_save_gcloud(text: str, language_code: str, voice_name: str, out_path: Path) -> None:
-    """Generate speech using Google Cloud Text-to-Speech."""
-    client = _get_gcp_client()
-    synthesis_input = texttospeech.SynthesisInput(text=text)
-    voice = texttospeech.VoiceSelectionParams(
-        language_code=language_code,
-        name=voice_name,
+def tts_save(text: str, voice: str, out_path: Path) -> None:
+    """Generate speech using edge-tts (free Microsoft neural voices)."""
+    subprocess.run(
+        ["edge-tts", "--text", text, "--voice", voice, "--write-media", str(out_path)],
+        check=True,
+        env={**os.environ, "PYTHONHTTPSVERIFY": "0"},
     )
-    audio_config = texttospeech.AudioConfig(
-        audio_encoding=texttospeech.AudioEncoding.MP3,
-        speaking_rate=1.0,
-    )
-    response = client.synthesize_speech(
-        input=synthesis_input, voice=voice, audio_config=audio_config
-    )
-    out_path.write_bytes(response.audio_content)
 
 
 def tts_save_elevenlabs(text: str, out_path: Path) -> None:
@@ -140,28 +118,18 @@ def tts_save_elevenlabs(text: str, out_path: Path) -> None:
 
 def tts_save_segment(lang: str, text: str, out_path: Path, use_elevenlabs_for_en: bool = True) -> None:
     """Generate TTS for a segment. lang is 'en' or 'ko'.
-    Tries Google Cloud TTS first (monthly free: 1M chars).
-    Falls back to ElevenLabs for English (if configured and API key available).
-    On any failure, raises exception so caller can handle."""
-    lang_code = "en-US" if lang == "en" else "ko-KR"
-    voice_name = GCP_EN_VOICE if lang == "en" else GCP_KO_VOICE
+    English tries ElevenLabs first (only when use_elevenlabs_for_en and API key configured)
+    and falls back to edge-tts on any failure — missing key, exhausted quota, network error, etc.
+    Korean always uses edge-tts."""
+    if lang == "en" and use_elevenlabs_for_en and os.environ.get("ELEVENLABS_API_KEY"):
+        try:
+            tts_save_elevenlabs(text, out_path)
+            return
+        except Exception as exc:
+            print(f"ElevenLabs TTS failed, falling back to edge-tts: {exc}", file=sys.stderr)
 
-    try:
-        tts_save_gcloud(text, lang_code, voice_name, out_path)
-        return
-    except Exception as gcp_exc:
-        if lang == "en" and use_elevenlabs_for_en and os.environ.get("ELEVENLABS_API_KEY"):
-            try:
-                print(f"Google Cloud TTS failed, trying ElevenLabs: {gcp_exc}", file=sys.stderr)
-                tts_save_elevenlabs(text, out_path)
-                return
-            except Exception as elevenlabs_exc:
-                raise SystemExit(
-                    f"All TTS methods failed. Google Cloud: {gcp_exc}. "
-                    f"ElevenLabs: {elevenlabs_exc}"
-                ) from elevenlabs_exc
-        else:
-            raise SystemExit(f"Google Cloud TTS failed and no ElevenLabs fallback: {gcp_exc}") from gcp_exc
+    voice = EN_VOICE if lang == "en" else KO_VOICE
+    tts_save(text, voice, out_path)
 
 
 def generate_silence(duration_seconds: float, out_path: Path) -> None:
