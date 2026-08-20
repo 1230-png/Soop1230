@@ -2,27 +2,23 @@
 compilation: font lookup, background palettes, natural neural-voice TTS,
 and ffmpeg muxing/concatenation.
 
-Voice strategy (all free tiers, no payment):
-- English narration on the daily Shorts uses ElevenLabs (by far the most
-  natural-sounding free option) IF an ELEVENLABS_API_KEY secret is set —
-  its free plan is only 10,000 characters/month, which comfortably covers
-  the Shorts' English lines (~7,000 chars/month) but not the long-form
-  compilations too, so those stay on edge-tts to not blow the quota.
-- Everything else (Korean narration always, English whenever ElevenLabs
-  isn't configured or its call fails/quota runs out) falls back to
-  edge-tts — Microsoft's free neural "Read Aloud" voices, no API key,
-  still far more natural than gTTS.
+Voice strategy (cloud-based, monthly free tier: 1M characters):
+- All narration uses Google Cloud Text-to-Speech (monthly quota: 1M chars free)
+- English: Neural2 voices (en-US-Journey-D)
+- Korean: Neural2 voices (ko-KR-Neural2-A)
+- Falls back to ElevenLabs for English if configured and available (quota: 10k/month)
 """
 
-import asyncio
+import json
 import os
 import subprocess
 import sys
 import textwrap
 from pathlib import Path
 
-import edge_tts
 import requests
+from google.cloud import texttospeech
+from google.oauth2 import service_account
 from PIL import Image, ImageDraw, ImageFont
 
 WIDTH, HEIGHT = 1080, 1920
@@ -36,15 +32,12 @@ PALETTES = [
     ((16, 44, 40), (36, 30, 12)),    # deep teal -> warm bronze accent
 ]
 
-# Natural free neural voices via edge-tts (Microsoft Edge Read Aloud voices,
-# no API key, no cost). Deliberately using two distinct voices so the EN/KO
-# narration feels like two people, not one robotic reader doing both.
-EN_VOICE = "en-US-AvaMultilingualNeural"
-KO_VOICE = "ko-KR-SunHiNeural"
+# Google Cloud TTS voices (neural, very natural)
+GCP_EN_VOICE = "en-US-Journey-D"  # Natural, expressive English voice
+GCP_KO_VOICE = "ko-KR-Neural2-A"  # Natural, clear Korean voice
 
-# ElevenLabs (optional, free-tier) — a warm, natural male voice well suited
-# to calm explainer narration. Override with ELEVENLABS_VOICE_ID if desired.
-ELEVENLABS_DEFAULT_VOICE_ID = "pNInz6obpgDQGcFmaJgB"  # "Adam", a standard premade voice
+# ElevenLabs (optional backup, free-tier) — fallback if GCP unavailable
+ELEVENLABS_DEFAULT_VOICE_ID = "pNInz6obpgDQGcFmaJgB"  # "Adam", warm & natural
 ELEVENLABS_MODEL_ID = "eleven_multilingual_v2"
 
 FONT_CANDIDATES = [
@@ -96,13 +89,32 @@ def draw_centered(draw, text, font, y, fill, wrap_width, line_gap=16, canvas_wid
     return y
 
 
-async def _tts_save_edge(text: str, voice: str, out_path: Path) -> None:
-    communicate = edge_tts.Communicate(text, voice)
-    await communicate.save(str(out_path))
+def _get_gcp_client():
+    """Create Google Cloud TTS client from GOOGLE_CLOUD_TTS_KEY environment variable."""
+    key_json = os.environ.get("GOOGLE_CLOUD_TTS_KEY")
+    if not key_json:
+        raise SystemExit("GOOGLE_CLOUD_TTS_KEY environment variable not set")
+    key_data = json.loads(key_json)
+    credentials = service_account.Credentials.from_service_account_info(key_data)
+    return texttospeech.TextToSpeechClient(credentials=credentials)
 
 
-def tts_save(text: str, voice: str, out_path: Path) -> None:
-    asyncio.run(_tts_save_edge(text, voice, out_path))
+def tts_save_gcloud(text: str, language_code: str, voice_name: str, out_path: Path) -> None:
+    """Generate speech using Google Cloud Text-to-Speech."""
+    client = _get_gcp_client()
+    synthesis_input = texttospeech.SynthesisInput(text=text)
+    voice = texttospeech.VoiceSelectionParams(
+        language_code=language_code,
+        name=voice_name,
+    )
+    audio_config = texttospeech.AudioConfig(
+        audio_encoding=texttospeech.AudioEncoding.MP3,
+        speaking_rate=1.0,
+    )
+    response = client.synthesize_speech(
+        input=synthesis_input, voice=voice, audio_config=audio_config
+    )
+    out_path.write_bytes(response.audio_content)
 
 
 def tts_save_elevenlabs(text: str, out_path: Path) -> None:
@@ -127,20 +139,29 @@ def tts_save_elevenlabs(text: str, out_path: Path) -> None:
 
 
 def tts_save_segment(lang: str, text: str, out_path: Path, use_elevenlabs_for_en: bool = True) -> None:
-    """lang is 'en' or 'ko'. English tries ElevenLabs first (only when
-    use_elevenlabs_for_en and an API key is configured) and falls back to
-    edge-tts on any failure — missing key, exhausted free quota, network
-    error, whatever. Korean always uses edge-tts (see module docstring for
-    why the free-tier character budget is split this way)."""
-    if lang == "en" and use_elevenlabs_for_en and os.environ.get("ELEVENLABS_API_KEY"):
-        try:
-            tts_save_elevenlabs(text, out_path)
-            return
-        except Exception as exc:  # noqa: BLE001 - any failure just falls back
-            print(f"ElevenLabs TTS failed, falling back to edge-tts: {exc}", file=sys.stderr)
+    """Generate TTS for a segment. lang is 'en' or 'ko'.
+    Tries Google Cloud TTS first (monthly free: 1M chars).
+    Falls back to ElevenLabs for English (if configured and API key available).
+    On any failure, raises exception so caller can handle."""
+    lang_code = "en-US" if lang == "en" else "ko-KR"
+    voice_name = GCP_EN_VOICE if lang == "en" else GCP_KO_VOICE
 
-    voice = EN_VOICE if lang == "en" else KO_VOICE
-    tts_save(text, voice, out_path)
+    try:
+        tts_save_gcloud(text, lang_code, voice_name, out_path)
+        return
+    except Exception as gcp_exc:
+        if lang == "en" and use_elevenlabs_for_en and os.environ.get("ELEVENLABS_API_KEY"):
+            try:
+                print(f"Google Cloud TTS failed, trying ElevenLabs: {gcp_exc}", file=sys.stderr)
+                tts_save_elevenlabs(text, out_path)
+                return
+            except Exception as elevenlabs_exc:
+                raise SystemExit(
+                    f"All TTS methods failed. Google Cloud: {gcp_exc}. "
+                    f"ElevenLabs: {elevenlabs_exc}"
+                ) from elevenlabs_exc
+        else:
+            raise SystemExit(f"Google Cloud TTS failed and no ElevenLabs fallback: {gcp_exc}") from gcp_exc
 
 
 def generate_silence(duration_seconds: float, out_path: Path) -> None:
