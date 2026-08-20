@@ -123,7 +123,7 @@ def upload_video(
 
     media = MediaFileUpload(video_path, mimetype="video/mp4", resumable=True)
 
-    print(f"📤 업로드: {title[:40]}...")
+    print(f"📤 업로드: {title[:40]}...", file=sys.stderr)
     request = youtube.videos().insert(
         part="snippet,status",
         body=body,
@@ -134,10 +134,10 @@ def upload_video(
     while response is None:
         status, response = request.next_chunk()
         if status:
-            print(f"  진행: {int(status.progress() * 100)}%", end="\r")
+            print(f"  진행: {int(status.progress() * 100)}%", end="\r", file=sys.stderr)
 
     video_id = response["id"]
-    print(f"✅ 완료: {video_id}                  ")
+    print(f"✅ 완료: {video_id}                  ", file=sys.stderr)
     return video_id
 
 

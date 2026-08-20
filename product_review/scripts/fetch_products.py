@@ -69,7 +69,7 @@ def load_products_from_csv(category: str = "electronics") -> list:
 
     # CSV 파일이 없으면 샘플 데이터 사용
     if not csv_path.exists():
-        print(f"📝 CSV 파일 없음, 샘플 데이터 사용: {category}")
+        print(f"📝 CSV 파일 없음, 샘플 데이터 사용: {category}", file=sys.stderr)
         return [p for p in SAMPLE_PRODUCTS if p["category"] == category]
 
     products = []
@@ -78,10 +78,10 @@ def load_products_from_csv(category: str = "electronics") -> list:
             reader = csv.DictReader(f)
             for row in reader:
                 products.append(row)
-        print(f"✅ {len(products)}개 제품 로드: {csv_path}")
+        print(f"✅ {len(products)}개 제품 로드: {csv_path}", file=sys.stderr)
         return products
     except Exception as e:
-        print(f"⚠️ CSV 로드 실패: {e}, 샘플 사용")
+        print(f"⚠️ CSV 로드 실패: {e}, 샘플 사용", file=sys.stderr)
         return [p for p in SAMPLE_PRODUCTS if p["category"] == category]
 
 
@@ -127,7 +127,6 @@ def fetch_products(category: str = "electronics", num_products: int = 3) -> list
 
     products = load_products_from_csv(category)
 
-    # 제한된 수만큼 반환
     selected = products[:num_products]
 
     for product in selected:

@@ -51,11 +51,11 @@ def download_product_image(image_url: str, product_id: str) -> str:
         img = img.crop((left, top, left + min_size, top + min_size))
 
         img.save(image_path, quality=95)
-        print(f"✅ 제품 이미지 다운로드: {image_path}")
+        print(f"✅ 제품 이미지 다운로드: {image_path}", file=sys.stderr)
         return str(image_path)
 
     except Exception as e:
-        print(f"⚠️ 이미지 다운로드 실패: {e} (폴백 생성)")
+        print(f"⚠️ 이미지 다운로드 실패: {e} (폴백 생성)", file=sys.stderr)
         return create_fallback_product_image(product_id)
 
 
@@ -115,11 +115,11 @@ def text_to_speech(text: str, product_id: str) -> str:
         with open(audio_path, "wb") as f:
             f.write(response.content)
 
-        print(f"✅ 음성 생성: {audio_path}")
+        print(f"✅ 음성 생성: {audio_path}", file=sys.stderr)
         return str(audio_path)
 
     except Exception as e:
-        print(f"⚠️ 음성 생성 실패: {e}")
+        print(f"⚠️ 음성 생성 실패: {e}", file=sys.stderr)
         return None
 
 
@@ -222,7 +222,7 @@ def create_review_video(
             output_video.unlink()
             output_video = final_output
 
-        print(f"✅ 영상 생성: {output_video}")
+        print(f"✅ 영상 생성: {output_video}", file=sys.stderr)
         return str(output_video)
 
     except subprocess.CalledProcessError as e:
@@ -244,12 +244,12 @@ def main():
         rating = review.get("rating", 4.0)
         image_url = review.get("image_url", "")
 
-        print(f"🎬 영상 생성: {product_name[:30]}...")
+        print(f"🎬 영상 생성: {product_name[:30]}...", file=sys.stderr)
 
         # 1단계: 이미지 다운로드
         image_path = download_product_image(image_url, product_id)
         if not image_path:
-            print(f"⚠️ {product_id} 스킵")
+            print(f"⚠️ {product_id} 스킵", file=sys.stderr)
             continue
 
         # 2단계: 음성 생성

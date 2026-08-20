@@ -63,12 +63,13 @@ def generate_review(product: dict) -> dict:
     "affiliate_tip": "구매 팁"
 }"""
 
+    specs_text = ", ".join(product.get('specs', []))
     prompt = f"""다음 제품에 대한 상세 리뷰를 작성하세요:
 
 제품명: {product['name']}
 카테고리: {product['category']}
-가격: {product['price']:,}원
-주요 기능: {", ".join(product.get('specs', []))}
+가격: {int(product.get('price', 0)):,}원
+주요 기능: {specs_text}
 기본 설명: {product['description']}
 현재 별점: {product.get('rating', 4.0)}/5
 
@@ -145,7 +146,7 @@ def main():
     reviews = []
 
     for product in products:
-        print(f"✍️ 리뷰 생성: {product['name'][:40]}...")
+        print(f"✍️ 리뷰 생성: {product['name'][:40]}...", file=sys.stderr)
 
         review = generate_review(product)
 
