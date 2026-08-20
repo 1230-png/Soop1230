@@ -8,3 +8,5 @@ __pycache__/
 client_secret*.json
 .env
 .env.local
+product_review/output/
+product_review/assets/
