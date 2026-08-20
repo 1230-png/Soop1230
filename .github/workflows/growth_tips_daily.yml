@@ -95,3 +95,4 @@ jobs:
           rm -f growth_tips/assets/*_bg.mp4
           rm -f growth_tips/assets/*_fallback.mp4
           echo "정리 완료: $(du -sh growth_tips/)"
+

@@ -101,3 +101,4 @@ jobs:
           rm -f news_summary/output/*.mp4
           rm -f news_summary/assets/*.jpg
           echo "✅ 정리 완료"
+
