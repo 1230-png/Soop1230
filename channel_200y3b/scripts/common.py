@@ -10,6 +10,7 @@ Voice strategy (free tier, ElevenLabs only):
 """
 
 import os
+import subprocess
 import sys
 import textwrap
 from pathlib import Path
