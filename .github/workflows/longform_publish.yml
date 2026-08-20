@@ -24,6 +24,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/setup-python@v5
         with:
@@ -60,4 +62,5 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add channel_200y3b/used_log_longform.csv channel_200y3b/longform_volume.txt
           git diff --cached --quiet || git commit -m "Auto-publish long-form: ${{ steps.generate.outputs.video_id }}"
+          git pull --rebase origin main || git pull --rebase origin master || true
           git push
