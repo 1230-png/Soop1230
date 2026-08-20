@@ -263,3 +263,195 @@ def concat_videos(clip_paths, out_path: Path) -> None:
         capture_output=True,
     )
     filelist.unlink()
+
+
+# ============================================================================
+# 🎵 Food Sound Effects System - ASMR 오디오 효과음 추가
+# ============================================================================
+
+FOOD_SOUND_LIBRARY = {
+    # Cooking sounds
+    "water_boiling": {"duration": 3.0, "volume": 0.4},
+    "soup_bubbling": {"duration": 2.5, "volume": 0.35},
+    "stew_simmering": {"duration": 4.0, "volume": 0.3},
+    "noodles_cooking": {"duration": 2.0, "volume": 0.35},
+    "noodles_stirring": {"duration": 2.5, "volume": 0.4},
+    "pasta_cooking": {"duration": 3.0, "volume": 0.35},
+
+    # Frying sounds
+    "sizzle_fry": {"duration": 3.0, "volume": 0.6},
+    "hot_oil_sizzle": {"duration": 3.5, "volume": 0.65},
+    "frying_crackling": {"duration": 4.0, "volume": 0.6},
+    "butter_sizzling": {"duration": 2.5, "volume": 0.5},
+    "dumpling_splashing": {"duration": 2.0, "volume": 0.45},
+
+    # Preparation sounds
+    "cutting_knife": {"duration": 2.0, "volume": 0.4},
+    "egg_beating": {"duration": 2.5, "volume": 0.45},
+    "egg_frying": {"duration": 1.5, "volume": 0.35},
+    "egg_dropping": {"duration": 0.8, "volume": 0.3},
+
+    # ASMR-style eating sounds
+    "chewing": {"duration": 2.0, "volume": 0.35},
+    "slurping": {"duration": 1.5, "volume": 0.4},
+    "crunching_coating": {"duration": 1.5, "volume": 0.45},
+    "sipping": {"duration": 1.2, "volume": 0.3},
+
+    # Ambient/machine sounds
+    "air_fryer_fan": {"duration": 3.0, "volume": 0.25},
+    "timer_beeping": {"duration": 0.5, "volume": 0.4},
+    "pan_clattering": {"duration": 1.0, "volume": 0.35},
+    "unwrapping_packaging": {"duration": 1.5, "volume": 0.3},
+    "sauce_pouring": {"duration": 1.5, "volume": 0.4},
+}
+
+
+def generate_food_sound_effect(sound_type: str, duration_sec: float, out_path: Path) -> Path:
+    """
+    음식 소리 효과를 ffmpeg 신테사이저로 생성합니다.
+    (프로토타입: 톤 기반 ASMR 배경음 생성)
+    """
+    sound_config = FOOD_SOUND_LIBRARY.get(sound_type, {"duration": 2.0, "volume": 0.4})
+
+    # 각 음식 소리 유형별 톤 주파수 할당 (ASMR 느낌)
+    frequencies = {
+        # 저음 (65-125 Hz) - 물 끓는 소리, 냄비 소리
+        "water_boiling": 85,
+        "soup_bubbling": 75,
+        "stew_simmering": 70,
+        "pan_clattering": 120,
+
+        # 중저음 (125-250 Hz) - 면 요리, 프라이
+        "noodles_cooking": 160,
+        "noodles_stirring": 150,
+        "pasta_cooking": 140,
+        "sizzle_fry": 200,
+        "hot_oil_sizzle": 180,
+
+        # 중음 (250-500 Hz) - 계란, 튀김
+        "egg_beating": 320,
+        "egg_frying": 300,
+        "frying_crackling": 280,
+        "butter_sizzling": 250,
+        "crunching_coating": 400,
+
+        # 중고음 (500-2000 Hz) - 식음 소리
+        "chewing": 600,
+        "slurping": 800,
+        "sipping": 700,
+
+        # 고음 (2000+ Hz) - 칼, 타이머
+        "cutting_knife": 2500,
+        "timer_beeping": 3000,
+        "egg_dropping": 1500,
+        "unwrapping_packaging": 1200,
+
+        # 기계음
+        "air_fryer_fan": 180,
+        "sauce_pouring": 400,
+        "dumpling_splashing": 250,
+    }
+
+    freq = frequencies.get(sound_type, 250)
+    volume = min(sound_config["volume"], 1.0)
+    actual_duration = min(duration_sec, sound_config["duration"])
+
+    # ffmpeg 신테사이저로 톤 생성 (ASMR 느낌)
+    subprocess.run(
+        [
+            "ffmpeg", "-y",
+            "-f", "lavfi", "-i", f"anoisesrc=a={volume}:r=44100:c=1",
+            "-f", "lavfi", "-i", f"sine=f={freq}:d={actual_duration}",
+            "-filter_complex", f"[1]volume={volume*0.7}[sine]; [0][sine]amix=inputs=2:duration=longest",
+            "-t", str(actual_duration),
+            "-q:a", "5",
+            "-acodec", "libmp3lame",
+            str(out_path),
+        ],
+        check=True,
+        capture_output=True,
+    )
+
+    return out_path
+
+
+def mix_food_sounds_asmr(sound_effects_list, duration_sec: float, output_dir: Path, content_id: int) -> Path:
+    """
+    음식 소리 효과들을 ASMR 스타일로 혼합합니다.
+
+    Args:
+        sound_effects_list: 사운드 효과 이름 리스트 (예: ["water_boiling", "sizzle_fry"])
+        duration_sec: 목표 비디오 길이 (초)
+        output_dir: 출력 디렉토리
+        content_id: 콘텐츠 ID
+
+    Returns:
+        혼합된 오디오 파일 경로
+    """
+    if not sound_effects_list:
+        # 기본 ASMR 배경음: 미묘한 주방 소음
+        sound_effects_list = ["soup_bubbling", "air_fryer_fan"]
+
+    # 각 사운드 효과 파일 생성
+    sound_files = []
+    for effect in sound_effects_list:
+        if effect in FOOD_SOUND_LIBRARY:
+            effect_path = output_dir / f"sfx_{content_id}_{effect}.mp3"
+            try:
+                generate_food_sound_effect(effect, duration_sec, effect_path)
+                sound_files.append(effect_path)
+            except Exception as e:
+                print(f"  ⚠️  음식 소리 생성 실패 ({effect}): {str(e)[:60]}", file=sys.stderr)
+
+    # 다중 효과음 혼합
+    output_path = output_dir / f"food_sounds_{content_id}.mp3"
+
+    if len(sound_files) == 0:
+        print(f"  ⚠️  음식 소리 효과 생성 건너뜀: 사용 가능한 사운드 없음", file=sys.stderr)
+        # 침묵 생성
+        subprocess.run(
+            [
+                "ffmpeg", "-y",
+                "-f", "lavfi", "-i", f"anullsrc=r=44100:cl=mono",
+                "-t", str(duration_sec),
+                "-q:a", "5",
+                "-acodec", "libmp3lame",
+                str(output_path),
+            ],
+            check=True,
+            capture_output=True,
+        )
+        return output_path
+
+    if len(sound_files) == 1:
+        # 단일 파일: 복사만
+        subprocess.run(["cp", str(sound_files[0]), str(output_path)], check=True)
+    else:
+        # 다중 파일: ffmpeg amix로 혼합
+        input_args = []
+        for i, f in enumerate(sound_files):
+            input_args.extend(["-i", str(f)])
+
+        # amix 필터: 모든 입력을 혼합
+        amix_filter = f"[0]" + "".join(f"[{i}]" for i in range(1, len(sound_files))) + \
+                     f"amix=inputs={len(sound_files)}:duration=longest"
+
+        subprocess.run(
+            [
+                "ffmpeg", "-y",
+                *input_args,
+                "-filter_complex", amix_filter,
+                "-t", str(duration_sec),
+                "-q:a", "5",
+                "-acodec", "libmp3lame",
+                str(output_path),
+            ],
+            check=True,
+            capture_output=True,
+        )
+
+    # 임시 파일 정리
+    for f in sound_files:
+        f.unlink(missing_ok=True)
+
+    return output_path

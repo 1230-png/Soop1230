@@ -1,7 +1,7 @@
 """Generate a food content Shorts: recipe / review / product demo,
-narrated with natural neural voices and muxed into a vertical mp4.
+with ASMR food sound effects and muxed into a vertical mp4.
 
-Free stack: Pillow (image/text), edge-tts (neural TTS), ffmpeg (mux).
+Free stack: Pillow (image/text), ffmpeg (sound synthesis & mux).
 """
 
 import asyncio
@@ -16,7 +16,6 @@ from pathlib import Path
 
 from PIL import ImageDraw, ImageFont
 import aiohttp
-import edge_tts
 
 import common
 
@@ -150,34 +149,8 @@ def make_product_image(content, products):
     return img
 
 
-async def generate_narration(content):
-    """음성 나레이션 생성"""
-    narrations = {}
-
-    title_ko = f"{content.get('korean', content['title'])}입니다."
-    desc_ko = content.get("description", "")
-
-    audio_files = []
-
-    title_path = OUTPUT_DIR / f"title_{content['id']}.mp3"
-    await common.tts_save(title_ko, common.KO_VOICE, title_path)
-    audio_files.append((title_path, 2))
-
-    if desc_ko:
-        desc_path = OUTPUT_DIR / f"desc_{content['id']}.mp3"
-        await common.tts_save(desc_ko, common.KO_VOICE, desc_path)
-        audio_files.append((desc_path, 3))
-
-    end_path = OUTPUT_DIR / f"end_{content['id']}.mp3"
-    end_text = "구독과 좋아요 부탁드립니다!"
-    await common.tts_save(end_text, common.KO_VOICE, end_path)
-    audio_files.append((end_path, 2))
-
-    return audio_files
-
-
 async def make_video(content, audio_files, products):
-    """ffmpeg로 최종 영상 생성 (이미지 + 음성)"""
+    """ffmpeg로 최종 영상 생성 (이미지 + 음식 소리 효과)"""
     import subprocess
 
     title_img = make_title_image(content)
@@ -188,13 +161,11 @@ async def make_video(content, audio_files, products):
     title_img.save(title_img_path)
     product_img.save(product_img_path)
 
-    audio_generated = await generate_narration_to_files(content, audio_files)
-
     video_path = OUTPUT_DIR / f"food_shorts_{content['id']}.mp4"
     video_no_audio_path = OUTPUT_DIR / f"food_shorts_{content['id']}_noaudio.mp4"
-    audio_concat_path = OUTPUT_DIR / f"audio_{content['id']}.mp3"
 
     concat_list = OUTPUT_DIR / "concat.txt"
+    total_duration = 0
     with open(concat_list, "w") as f:
         for img_path, duration in [
             (title_img_path, 3),
@@ -202,6 +173,7 @@ async def make_video(content, audio_files, products):
         ]:
             f.write(f"file '{img_path}'\n")
             f.write(f"duration {duration}\n")
+            total_duration += duration
 
     cmd = [
         "ffmpeg", "-y",
@@ -217,79 +189,28 @@ async def make_video(content, audio_files, products):
 
     subprocess.run(cmd, check=True, capture_output=True)
 
-    if audio_generated:
-        title_audio = OUTPUT_DIR / f"title_{content['id']}.mp3"
-        end_audio = OUTPUT_DIR / f"end_{content['id']}.mp3"
-        desc_audio = OUTPUT_DIR / f"desc_{content['id']}.mp3"
+    sound_effects_list = content.get("sound_effects", [])
+    audio_path = common.mix_food_sounds_asmr(sound_effects_list, total_duration, OUTPUT_DIR, content["id"])
 
-        audio_files_to_concat = [title_audio, end_audio]
-        if desc_audio.exists():
-            audio_files_to_concat.insert(1, desc_audio)
+    if audio_path and audio_path.exists():
+        subprocess.run([
+            "ffmpeg", "-y",
+            "-i", str(video_no_audio_path),
+            "-i", str(audio_path),
+            "-c:v", "copy",
+            "-c:a", "aac",
+            "-map", "0:v:0",
+            "-map", "1:a:0",
+            "-shortest",
+            str(video_path),
+        ], check=True, capture_output=True)
 
-        if all(p.exists() for p in audio_files_to_concat):
-            audio_concat_list = OUTPUT_DIR / "audio_concat.txt"
-            with open(audio_concat_list, "w") as f:
-                for audio_path in audio_files_to_concat:
-                    f.write(f"file '{audio_path}'\n")
-
-            subprocess.run([
-                "ffmpeg", "-y",
-                "-f", "concat",
-                "-safe", "0",
-                "-i", str(audio_concat_list),
-                "-c", "copy",
-                str(audio_concat_path),
-            ], check=True, capture_output=True)
-
-            subprocess.run([
-                "ffmpeg", "-y",
-                "-i", str(video_no_audio_path),
-                "-i", str(audio_concat_path),
-                "-c:v", "copy",
-                "-c:a", "aac",
-                "-map", "0:v:0",
-                "-map", "1:a:0",
-                "-shortest",
-                str(video_path),
-            ], check=True, capture_output=True)
-
-            video_no_audio_path.unlink(missing_ok=True)
-            audio_concat_list.unlink(missing_ok=True)
-            audio_concat_path.unlink(missing_ok=True)
-        else:
-            video_path = video_no_audio_path
+        video_no_audio_path.unlink(missing_ok=True)
     else:
         video_path = video_no_audio_path
 
     concat_list.unlink(missing_ok=True)
     return video_path
-
-
-async def generate_narration_to_files(content, audio_files):
-    """음성 파일 생성 (ElevenLabs 또는 edge-tts 사용)"""
-    title_ko = f"{content.get('korean', content['title'])}입니다."
-    desc_ko = content.get("description", "")
-    end_text = "구독과 좋아요 부탁드립니다!"
-
-    try:
-        title_path = OUTPUT_DIR / f"title_{content['id']}.mp3"
-        comm = edge_tts.Communicate(title_ko, common.KO_VOICE)
-        await comm.save(str(title_path))
-
-        if desc_ko:
-            desc_path = OUTPUT_DIR / f"desc_{content['id']}.mp3"
-            comm = edge_tts.Communicate(desc_ko, common.KO_VOICE)
-            await comm.save(str(desc_path))
-
-        end_path = OUTPUT_DIR / f"end_{content['id']}.mp3"
-        comm = edge_tts.Communicate(end_text, common.KO_VOICE)
-        await comm.save(str(end_path))
-
-        print(f"  ✓ 음성 생성 완료")
-        return True
-    except Exception as e:
-        print(f"  ⚠️  음성 생성 건너뜀: {str(e)[:80]}")
-        return False
 
 
 def log_usage(content, video_path, products):
@@ -346,11 +267,19 @@ def make_metadata(content, video_path, products):
         for p in matched_products[:3]
     ])
 
-    description = f"""{content.get('description', '')}
+    asmr_note = "🎧 음식 소리로 즐기는 ASMR 영상입니다.\n\n"
+
+    description = f"""{asmr_note}{content.get('description', '')}
 
 {product_links}
 
-#음식 #요리 #쿠팡 #추천 {hashtags}
+━━━━━━━━━━━━━━━━━━━━
+📺 오늘뭐먹지? (@오늘뭐먹지-f2d)
+맛있게 먹는 일상 영상 채널
+구독 👉 https://youtube.com/@오늘뭐먹지-f2d
+━━━━━━━━━━━━━━━━━━━━
+
+#음식 #요리 #ASMR #쿠팡 #추천 {hashtags}
 """
 
     metadata = {

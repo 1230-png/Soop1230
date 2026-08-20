@@ -9,7 +9,8 @@
     "ingredients": ["계란 2개", "소금", "식용유"],
     "coupang_keywords": ["계란", "논스틱팬", "계란말이 도구"],
     "duration_sec": 30,
-    "hashtags": ["#요리", "#계란요리", "#간단요리"]
+    "hashtags": ["#요리", "#계란요리", "#간단요리"],
+    "sound_effects": ["butter_sizzling", "eggs_frying", "pan_clattering"]
   },
   {
     "id": 2,
@@ -21,7 +22,8 @@
     "ingredients": ["라면", "계란", "고추"],
     "coupang_keywords": ["라면", "계란", "라면양념"],
     "duration_sec": 30,
-    "hashtags": ["#라면", "#라면요리", "#직장인음식"]
+    "hashtags": ["#라면", "#라면요리", "#직장인음식"],
+    "sound_effects": ["water_boiling", "noodles_stirring", "egg_dropping", "soup_bubbling"]
   },
   {
     "id": 3,
@@ -33,7 +35,8 @@
     "products": ["김밥", "김치라면", "닭꼬치"],
     "coupang_keywords": ["편의점 상품", "간식", "라면"],
     "duration_sec": 30,
-    "hashtags": ["#신상", "#편의점", "#먹어본후기"]
+    "hashtags": ["#신상", "#편의점", "#먹어본후기"],
+    "sound_effects": ["chewing", "sipping", "unwrapping_packaging"]
   },
   {
     "id": 4,
@@ -45,7 +48,8 @@
     "product_name": "10L 대용량 에어프라이어",
     "coupang_keywords": ["에어프라이어", "주방용품", "조리기구"],
     "duration_sec": 30,
-    "hashtags": ["#에어프라이어", "#주방용품", "#제품리뷰"]
+    "hashtags": ["#에어프라이어", "#주방용품", "#제품리뷰"],
+    "sound_effects": ["air_fryer_fan", "frying_crackling", "timer_beeping"]
   },
   {
     "id": 5,
@@ -57,7 +61,8 @@
     "ingredients": ["스파게티면", "소시지", "토마토소스"],
     "coupang_keywords": ["스파게티", "파스타면", "소시지"],
     "duration_sec": 30,
-    "hashtags": ["#야식", "#간편식", "#밤식"]
+    "hashtags": ["#야식", "#간편식", "#밤식"],
+    "sound_effects": ["water_boiling", "pasta_cooking", "sizzle_fry", "sauce_pouring"]
   },
   {
     "id": 6,
@@ -69,7 +74,8 @@
     "product_name": "프리미엄 냉동만두",
     "coupang_keywords": ["냉동만두", "만두", "편의식"],
     "duration_sec": 30,
-    "hashtags": ["#만두", "#냉동식품", "#간식"]
+    "hashtags": ["#만두", "#냉동식품", "#간식"],
+    "sound_effects": ["hot_oil_sizzle", "frying_crackling", "dumpling_splashing"]
   },
   {
     "id": 7,
@@ -81,7 +87,8 @@
     "ingredients": ["계란", "식빵", "소시지"],
     "coupang_keywords": ["계란", "식빵", "조리도구"],
     "duration_sec": 30,
-    "hashtags": ["#까스", "#계란요리", "#간단요리"]
+    "hashtags": ["#까스", "#계란요리", "#간단요리"],
+    "sound_effects": ["egg_beating", "oil_frying", "crunching_coating"]
   },
   {
     "id": 8,
@@ -93,6 +100,7 @@
     "products": ["신라면컵", "진라면컵", "안성탕면컵"],
     "coupang_keywords": ["컵라면", "라면", "간식"],
     "duration_sec": 30,
-    "hashtags": ["#라면", "#컵라면", "#순위"]
+    "hashtags": ["#라면", "#컵라면", "#순위"],
+    "sound_effects": ["water_boiling", "noodles_cooking", "chewing", "slurping"]
   }
 ]
