@@ -34,7 +34,7 @@ jobs:
       - name: 영상 생성
         working-directory: channel_food/scripts
         run: |
-          python3 generate_food_video.py > result.json 2>&1
+          python3 generate_food_video.py > result.json
           cat result.json
 
       - name: 결과 파싱

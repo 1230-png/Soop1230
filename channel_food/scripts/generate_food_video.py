@@ -370,11 +370,11 @@ async def main():
     content = pick_unused_content()
     products = match_coupang_products(content)
 
-    print(f"[생성] {content['type']}: {content['title']}")
-    print(f"[상품] {len(products)}개 매칭됨")
+    print(f"[생성] {content['type']}: {content['title']}", file=sys.stderr)
+    print(f"[상품] {len(products)}개 매칭됨", file=sys.stderr)
 
     video_path = await make_video(content, [], products)
-    print(f"[완료] {video_path}")
+    print(f"[완료] {video_path}", file=sys.stderr)
 
     metadata = make_metadata(content, video_path, products)
     metadata_path = OUTPUT_DIR / f"metadata_{content['id']}.json"
