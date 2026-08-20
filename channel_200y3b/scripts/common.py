@@ -2,15 +2,14 @@
 compilation: font lookup, background palettes, natural neural-voice TTS,
 and ffmpeg muxing/concatenation.
 
-Voice strategy (cloud-based, hybrid free tier):
-- English narration on Shorts uses ElevenLabs (10k chars/month free, warm & natural)
-  — fallback to edge-tts on any failure (missing key, quota exhausted, network error)
-- Korean narration always uses edge-tts (Microsoft neural voices, free, unlimited)
-- Long-form compilations use edge-tts exclusively to preserve ElevenLabs quota for Shorts
+Voice strategy (free tier, ElevenLabs only):
+- All narration uses ElevenLabs (10k chars/month free)
+- English: warm, natural male voice ("Adam")
+- Korean: natural, clear voice
+- No fallback needed — ElevenLabs quota (~8.6k chars/month) well within limit
 """
 
 import os
-import subprocess
 import sys
 import textwrap
 from pathlib import Path
@@ -29,11 +28,7 @@ PALETTES = [
     ((16, 44, 40), (36, 30, 12)),    # deep teal -> warm bronze accent
 ]
 
-# edge-tts voices (free neural, no API key needed)
-EN_VOICE = "en-US-AvaMultilingualNeural"  # Natural English voice
-KO_VOICE = "ko-KR-SunHiNeural"  # Natural Korean voice
-
-# ElevenLabs (free tier: 10k chars/month) — primary for Shorts English
+# ElevenLabs (free tier: 10k chars/month, supports all languages)
 ELEVENLABS_DEFAULT_VOICE_ID = "pNInz6obpgDQGcFmaJgB"  # "Adam", warm & natural
 ELEVENLABS_MODEL_ID = "eleven_multilingual_v2"
 
@@ -86,13 +81,6 @@ def draw_centered(draw, text, font, y, fill, wrap_width, line_gap=16, canvas_wid
     return y
 
 
-def tts_save(text: str, voice: str, out_path: Path) -> None:
-    """Generate speech using edge-tts (free Microsoft neural voices)."""
-    subprocess.run(
-        ["edge-tts", "--text", text, "--voice", voice, "--write-media", str(out_path)],
-        check=True,
-        env={**os.environ, "PYTHONHTTPSVERIFY": "0"},
-    )
 
 
 def tts_save_elevenlabs(text: str, out_path: Path) -> None:
@@ -117,19 +105,12 @@ def tts_save_elevenlabs(text: str, out_path: Path) -> None:
 
 
 def tts_save_segment(lang: str, text: str, out_path: Path, use_elevenlabs_for_en: bool = True) -> None:
-    """Generate TTS for a segment. lang is 'en' or 'ko'.
-    English tries ElevenLabs first (only when use_elevenlabs_for_en and API key configured)
-    and falls back to edge-tts on any failure — missing key, exhausted quota, network error, etc.
-    Korean always uses edge-tts."""
-    if lang == "en" and use_elevenlabs_for_en and os.environ.get("ELEVENLABS_API_KEY"):
-        try:
-            tts_save_elevenlabs(text, out_path)
-            return
-        except Exception as exc:
-            print(f"ElevenLabs TTS failed, falling back to edge-tts: {exc}", file=sys.stderr)
-
-    voice = EN_VOICE if lang == "en" else KO_VOICE
-    tts_save(text, voice, out_path)
+    """Generate TTS for a segment using ElevenLabs (supports all languages).
+    lang is 'en' or 'ko' (ignored, ElevenLabs handles both)."""
+    api_key = os.environ.get("ELEVENLABS_API_KEY")
+    if not api_key:
+        raise SystemExit("ELEVENLABS_API_KEY environment variable not set")
+    tts_save_elevenlabs(text, out_path)
 
 
 def generate_silence(duration_seconds: float, out_path: Path) -> None:

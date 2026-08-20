@@ -106,7 +106,7 @@ def make_slide_clip(phrase: dict, index: int, total: int, font_path: str, out_di
         ],
         audio_path,
         trailing_silence=SLIDE_TRAILING_SILENCE,
-        use_elevenlabs_for_en=False,  # protect the free quota for the Shorts
+        use_elevenlabs_for_en=True,  # ElevenLabs for all languages
     )
     common.mux_video(bg_path, audio_path, clip_path)
     bg_path.unlink()
