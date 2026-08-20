@@ -1,9 +1,6 @@
 name: Weekly long-form compilation (@200-y3b)
 
 on:
-  schedule:
-    # Sunday 11:00 UTC = 20:00 KST — one ~8-12 min compilation per week
-    - cron: "0 11 * * 0"
   workflow_dispatch:
     inputs:
       privacy_status:
