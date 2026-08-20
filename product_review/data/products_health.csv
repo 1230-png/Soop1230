@@ -1,0 +1,11 @@
+id,name,category,price,amazon_link,coupang_link,description,image_url,specs
+PROD_301,스마트 혈압계 자동,health,125000,https://amazon.com/dp/H01BBBBBB,https://coupang.com/vp/products/BBBBBB,정확한 측정 블루투스 연동,https://via.placeholder.com/400x300?text=Blood+Pressure+Monitor,"[""정확한 측정"",""블루투스 연동"",""앱 저장"",""대형 디스플레이""]"
+PROD_302,체중계 스마트 체성분,health,95000,https://amazon.com/dp/H02CCCCCC,https://coupang.com/vp/products/CCCCCC,체지방 근육량 측정 13가지 지표,https://via.placeholder.com/400x300?text=Smart+Scale,"[""13가지 지표"",""자동 동기화"",""가족 공유"",""고정밀""]"
+PROD_303,공기청정기 음이온,health,280000,https://amazon.com/dp/H03DDDDDD,https://coupang.com/vp/products/DDDDDD,음이온 발생 알레르기 제거,https://via.placeholder.com/400x300?text=Negative+Ion+Purifier,"[""음이온 발생"",""알레르기 제거"",""저소음"",""에너지 절감""]"
+PROD_304,마사지 건 고속 진동,health,285000,https://amazon.com/dp/H04EEEEEE,https://coupang.com/vp/products/EEEEEE,5단계 속도 조절 무음 작동,https://via.placeholder.com/400x300?text=Massage+Gun,"[""5단계 속도"",""무음 작동"",""2시간 배터리"",""여러 헤드""]"
+PROD_305,휴대용 공기청정기 UV,health,165000,https://amazon.com/dp/H05FFFFFF,https://coupang.com/vp/products/FFFFFF,UV 살균 초미세먼지 제거,https://via.placeholder.com/400x300?text=Portable+Air+Cleaner,"[""UV 살균"",""초미세먼지 제거"",""휴대용"",""충전식""]"
+PROD_306,수면유도 무음 가습기,health,185000,https://amazon.com/dp/H06GGGGGG,https://coupang.com/vp/products/GGGGGG,초음파 무음 자동 꺼짐,https://via.placeholder.com/400x300?text=Humidifier,"[""초음파 무음"",""자동 꺼짐"",""습도 조절"",""대용량""]"
+PROD_307,스트레스 해소 명상 램프,health,75000,https://amazon.com/dp/H07HHHHHH,https://coupang.com/vp/products/HHHHHH,명상 사운드 컬러 라이팅,https://via.placeholder.com/400x300?text=Meditation+Lamp,"[""명상 사운드"",""컬러 라이팅"",""타이머"",""터치 제어""]"
+PROD_308,온열 베개 원적외선,health,125000,https://amazon.com/dp/H08IIIIII,https://coupang.com/vp/products/IIIIII,원적외선 목 어깨 피로 회복,https://via.placeholder.com/400x300?text=Heated+Pillow,"[""원적외선"",""3단계 온도"",""자동 타이머"",""편안함""]"
+PROD_309,피부관리기 LED 미용,health,245000,https://amazon.com/dp/H09JJJJJJ,https://coupang.com/vp/products/JJJJJJ,LED 광선 미백 주름 개선,https://via.placeholder.com/400x300?text=LED+Beauty+Device,"[""LED 광선"",""미백 효과"",""주름 개선"",""안전 인증""]"
+PROD_310,칫솔 소닉 진동식,health,85000,https://amazon.com/dp/H10KKKKKK,https://coupang.com/vp/products/KKKKKK,고속 진동 스마트 타이머,https://via.placeholder.com/400x300?text=Sonic+Toothbrush,"[""고속 진동"",""스마트 타이머"",""2주 배터리"",""충전식""]"

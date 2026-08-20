@@ -1,0 +1,98 @@
+name: AI Stories - 감성 이야기 자동 업로드
+
+on:
+  schedule:
+    # 매일 12:00 KST (UTC 03:00)
+    - cron: '0 3 * * *'
+    # 매일 18:00 KST (UTC 09:00)
+    - cron: '0 9 * * *'
+  workflow_dispatch:  # 수동 실행 가능
+
+jobs:
+  generate-and-upload:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: 저장소 클론
+        uses: actions/checkout@v4
+
+      - name: Python 설정 (3.11)
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: 의존성 설치
+        working-directory: ./ai_stories
+        run: |
+          pip install -r scripts/requirements.txt
+          apt-get update
+          apt-get install -y ffmpeg ffprobe
+
+      - name: 1️⃣ 감성 이야기 생성
+        working-directory: ./ai_stories
+        id: generate
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: |
+          python3 scripts/generate_story.py > story.json 2>&1
+          cat story.json
+          echo "story_generated=true" >> $GITHUB_OUTPUT
+
+      - name: 2️⃣ 영상 생성 (음성 + 배경 + 자막)
+        working-directory: ./ai_stories
+        id: video
+        if: steps.generate.outputs.story_generated == 'true'
+        env:
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+        run: |
+          python3 scripts/generate_video.py < story.json > video.json 2>&1
+          cat video.json
+          echo "video_created=true" >> $GITHUB_OUTPUT
+
+      - name: 3️⃣ YouTube 업로드
+        working-directory: ./ai_stories
+        id: upload
+        if: steps.video.outputs.video_created == 'true'
+        env:
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+        run: |
+          python3 scripts/upload_to_youtube.py < video.json > upload_result.json 2>&1
+          cat upload_result.json
+
+      - name: 📊 성공 로그 기록
+        if: steps.upload.outputs.video_created == 'true'
+        run: |
+          echo "✅ $(date '+%Y-%m-%d %H:%M:%S') - 업로드 성공" >> ai_stories/upload.log
+          git config user.name "Claude Automation"
+          git config user.email "automation@claude.ai"
+          git add ai_stories/upload.log
+          git commit -m "📊 Auto-upload log: $(date '+%Y-%m-%d %H:%M')" || true
+          git push
+
+      - name: ❌ 실패 알림
+        if: failure()
+        run: |
+          echo "⚠️ AI Stories 업로드 실패"
+          echo "시간: $(date '+%Y-%m-%d %H:%M:%S')"
+          echo "로그: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+  # 일일 정리 (오래된 임시 파일 삭제)
+  cleanup:
+    runs-on: ubuntu-latest
+    needs: generate-and-upload
+    if: always()
+    steps:
+      - name: 저장소 클론
+        uses: actions/checkout@v4
+
+      - name: 임시 파일 정리
+        run: |
+          rm -f ai_stories/output/*.mp4
+          rm -f ai_stories/output/*.mp3
+          rm -f ai_stories/output/*.srt
+          echo "정리 완료"
