@@ -77,6 +77,24 @@ def load_products_from_csv(category: str = "electronics") -> list:
         with open(csv_path, "r", encoding="utf-8") as f:
             reader = csv.DictReader(f)
             for row in reader:
+                # JSON 파싱: specs는 JSON 문자열로 저장됨
+                if "specs" in row and isinstance(row["specs"], str):
+                    try:
+                        row["specs"] = json.loads(row["specs"])
+                    except:
+                        # JSON 파싱 실패 시 문자열을 리스트로 변환
+                        row["specs"] = [row["specs"]] if row["specs"] else []
+                # 숫자 필드 변환
+                if "price" in row:
+                    try:
+                        row["price"] = int(row["price"])
+                    except:
+                        pass
+                if "rating" in row:
+                    try:
+                        row["rating"] = float(row["rating"])
+                    except:
+                        row["rating"] = 4.0
                 products.append(row)
         print(f"✅ {len(products)}개 제품 로드: {csv_path}", file=sys.stderr)
         return products

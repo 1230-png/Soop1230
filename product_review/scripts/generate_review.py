@@ -63,7 +63,14 @@ def generate_review(product: dict) -> dict:
     "affiliate_tip": "구매 팁"
 }"""
 
-    specs_text = ", ".join(product.get('specs', []))
+    specs = product.get('specs', [])
+    # specs가 문자열인 경우 JSON으로 파싱
+    if isinstance(specs, str):
+        try:
+            specs = json.loads(specs)
+        except:
+            specs = [specs] if specs else []
+    specs_text = ", ".join(specs) if isinstance(specs, list) else str(specs)
     prompt = f"""다음 제품에 대한 상세 리뷰를 작성하세요:
 
 제품명: {product['name']}

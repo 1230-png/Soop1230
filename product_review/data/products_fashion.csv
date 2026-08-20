@@ -1,4 +1,4 @@
-id,name,category,price,amazon_link,coupang_link,description,image_url,specs,rating
-FASHION_001,방수 스포츠 시계,fashion,85000,https://amazon.com/dp/B004,https://coupang.com/vp/products/004,GPS 기능이 있는 방수 시계,https://via.placeholder.com/400x300?text=Sports+Watch,GPS,4.4
-FASHION_002,스마트 안경,fashion,280000,https://amazon.com/dp/B005,https://coupang.com/vp/products/005,AR 기능이 있는 스마트 안경,https://via.placeholder.com/400x300?text=Smart+Glasses,AR,4.2
-FASHION_003,무선 이어폰 케이스,fashion,45000,https://amazon.com/dp/B006,https://coupang.com/vp/products/006,LED 디스플레이가 있는 충전 케이스,https://via.placeholder.com/400x300?text=Earbud+Case,LED,4.6
+id,name,category,price,amazon_link,coupang_link,description,image_url,specs
+FASHION_001,방수 스포츠 시계,fashion,85000,https://amazon.com/dp/B004,https://coupang.com/vp/products/004,GPS 기능이 있는 방수 시계,https://via.placeholder.com/400x300?text=Sports+Watch,"[""GPS 기능"",""방수"",""심박 측정"",""배터리 오래""]"
+FASHION_002,스마트 안경,fashion,280000,https://amazon.com/dp/B005,https://coupang.com/vp/products/005,AR 기능이 있는 스마트 안경,https://via.placeholder.com/400x300?text=Smart+Glasses,"[""AR 디스플레이"",""음성 제어"",""스타일리시"",""빠른 연결""]"
+FASHION_003,무선 이어폰 케이스,fashion,45000,https://amazon.com/dp/B006,https://coupang.com/vp/products/006,LED 디스플레이가 있는 충전 케이스,https://via.placeholder.com/400x300?text=Earbud+Case,"[""LED 디스플레이"",""빠른 충전"",""무선 충전"",""컴팩트""]"

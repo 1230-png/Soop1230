@@ -1,4 +1,4 @@
-id,name,category,price,amazon_link,coupang_link,description,image_url,specs,rating
-HOME_001,스마트 조명 LED 벌브,home,35000,https://amazon.com/dp/B001,https://coupang.com/vp/products/001,음성 제어 가능한 스마트 LED 조명,https://via.placeholder.com/400x300?text=Smart+Light,스마트 제어,4.5
-HOME_002,공기청정기 IoT,home,120000,https://amazon.com/dp/B002,https://coupang.com/vp/products/002,APP으로 제어 가능한 공기청정기,https://via.placeholder.com/400x300?text=Air+Purifier,IoT연결,4.3
-HOME_003,무선 도어락,home,250000,https://amazon.com/dp/B003,https://coupang.com/vp/products/003,지문인식 무선 도어락,https://via.placeholder.com/400x300?text=Smart+Lock,보안,4.7
+id,name,category,price,amazon_link,coupang_link,description,image_url,specs
+HOME_001,스마트 조명 LED 벌브,home,35000,https://amazon.com/dp/B001,https://coupang.com/vp/products/001,음성 제어 가능한 스마트 LED 조명,https://via.placeholder.com/400x300?text=Smart+Light,"[""음성 제어"",""조광 기능"",""타이머"",""에너지 절감""]"
+HOME_002,공기청정기 IoT,home,120000,https://amazon.com/dp/B002,https://coupang.com/vp/products/002,APP으로 제어 가능한 공기청정기,https://via.placeholder.com/400x300?text=Air+Purifier,"[""APP 제어"",""자동 필터 교체 알림"",""공기질 모니터링"",""조용한 운전""]"
+HOME_003,무선 도어락,home,250000,https://amazon.com/dp/B003,https://coupang.com/vp/products/003,지문인식 무선 도어락,https://via.placeholder.com/400x300?text=Smart+Lock,"[""지문 인식"",""원격 제어"",""비상 충전 포트"",""내구성""]"
