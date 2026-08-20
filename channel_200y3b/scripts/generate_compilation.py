@@ -3,13 +3,14 @@
 YouTube ad breaks (targets 8+ minutes) and to give viewers something worth
 sitting through, not just another Short.
 
-Same free stack as the daily Shorts (Pillow + edge-tts + ffmpeg), reusing
-scripts/common.py so the two pipelines share font/voice/palette logic.
+Uses Google Cloud Text-to-Speech (1M chars/month free) for narration,
+Pillow + ffmpeg for video, YouTube Data API for upload.
 """
 
 import csv
 import datetime
 import json
+import subprocess
 import sys
 from pathlib import Path
 
@@ -227,8 +228,25 @@ def main():
     ])
     save_volume(volume)
 
-    print(f"Generated {video_path}", file=sys.stderr)
-    print(video_id)  # sole stdout line, captured by the workflow
+    try:
+        subprocess.run(
+            [
+                sys.executable, "-m", "upload_video",
+                str(video_path),
+                "--title", metadata["title"],
+                "--description", metadata["description"],
+                "--thumbnail", str(thumb_path),
+                "--log-file", str(LONGFORM_LOG),
+            ],
+            cwd=ROOT / "scripts",
+            check=True,
+        )
+        print(f"✅ Uploaded {video_path}", file=sys.stderr)
+    except subprocess.CalledProcessError as e:
+        print(f"❌ Upload failed: {e}", file=sys.stderr)
+        raise
+
+    print(video_id)  # sole stdout line
 
 
 if __name__ == "__main__":

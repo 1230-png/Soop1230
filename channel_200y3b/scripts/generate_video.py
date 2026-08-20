@@ -1,14 +1,15 @@
 """Generate one '매일 영어 한마디' short: an English expression + Korean meaning
 + example, narrated (EN/KO/EN) with natural neural voices and muxed into a
-vertical mp4, plus a metadata JSON for the uploader.
+vertical mp4, then upload to YouTube with Coupang Partners affiliate link.
 
-Pure free/open-source stack: Pillow (image/text), edge-tts (free neural TTS,
-no API key), ffmpeg (mux). No paid API calls anywhere in this script.
+Stack: Pillow (image/text), Google Cloud Text-to-Speech (neural TTS, 1M chars/month free),
+ffmpeg (mux), YouTube Data API (upload).
 """
 
 import csv
 import datetime
 import json
+import subprocess
 import sys
 from pathlib import Path
 
@@ -147,8 +148,24 @@ def main():
         "status": "generated",
     })
 
-    print(f"Generated {video_path}", file=sys.stderr)
-    print(video_id)  # sole stdout line, captured by the workflow
+    try:
+        subprocess.run(
+            [
+                sys.executable, "-m", "upload_video",
+                str(video_path),
+                "--title", metadata["title"],
+                "--description", metadata["description"],
+                "--log-file", str(USED_LOG),
+            ],
+            cwd=ROOT / "scripts",
+            check=True,
+        )
+        print(f"✅ Uploaded {video_path}", file=sys.stderr)
+    except subprocess.CalledProcessError as e:
+        print(f"❌ Upload failed: {e}", file=sys.stderr)
+        raise
+
+    print(video_id)  # sole stdout line
 
 
 if __name__ == "__main__":

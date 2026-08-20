@@ -26,33 +26,34 @@ SCOPES = ["https://www.googleapis.com/auth/youtube.upload"]
 
 # Coupang Partners affiliate info
 COUPANG_PARTNER_ID = "AF2646556"
-COUPANG_LINK = f"https://partners.coupang.com/ca/{COUPANG_PARTNER_ID}/category/1"
+COUPANG_LINK = f"https://coupa.ng/ca/{COUPANG_PARTNER_ID}/search/영어%20학습"
 
 CHANNEL_ID = "UCEHRa1rmhcZNVm5F7Zz_ycw"  # @200-y3b
 
 
 def get_youtube_client():
-    """Get authorized YouTube API client."""
-    token_path = Path.home() / ".youtube_token.json"
-    creds = None
+    """Get authorized YouTube API client using GitHub Secrets environment variables."""
+    client_id = os.environ.get("YT_CLIENT_ID")
+    client_secret = os.environ.get("YT_CLIENT_SECRET")
+    refresh_token = os.environ.get("YT_REFRESH_TOKEN")
 
-    # Load existing token
-    if token_path.exists():
-        creds = Credentials.from_authorized_user_file(str(token_path), SCOPES)
-
-    # Refresh if needed
-    if creds and creds.expired and creds.refresh_token:
-        creds.refresh(Request())
-    elif not creds:
+    if not all([client_id, client_secret, refresh_token]):
         raise SystemExit(
-            f"No YouTube credentials found at {token_path}. "
-            "Run get_refresh_token.py first."
+            "Missing YouTube OAuth credentials in environment:\n"
+            "  YT_CLIENT_ID\n"
+            "  YT_CLIENT_SECRET\n"
+            "  YT_REFRESH_TOKEN"
         )
 
-    # Save refreshed token
-    with open(token_path, "w") as f:
-        f.write(creds.to_json())
-
+    creds = Credentials(
+        token=None,
+        refresh_token=refresh_token,
+        token_uri="https://oauth2.googleapis.com/token",
+        client_id=client_id,
+        client_secret=client_secret,
+        scopes=SCOPES,
+    )
+    creds.refresh(Request())
     return build("youtube", "v3", credentials=creds)
 
 
