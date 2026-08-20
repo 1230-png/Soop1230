@@ -1,0 +1,75 @@
+name: Product Review Daily
+
+on:
+  schedule:
+    # 08:00, 14:00, 20:00 KST = 23:00, 05:00, 11:00 UTC (previous day, same day, same day)
+    - cron: '0 23 * * *'  # 08:00 KST
+    - cron: '0 5 * * *'   # 14:00 KST
+    - cron: '0 11 * * *'  # 20:00 KST
+  workflow_dispatch:
+
+jobs:
+  product-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      matrix:
+        category: [electronics, home, fashion]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests pillow google-auth-oauthlib google-api-python-client elevenlabs pydub
+
+      - name: Install FFmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      - name: Fetch products
+        id: fetch
+        run: |
+          python product_review/scripts/fetch_products.py "${{ matrix.category }}" 3 > products.json
+          cat products.json
+
+      - name: Generate reviews
+        id: review
+        run: |
+          cat products.json | python product_review/scripts/generate_review.py > reviews.json
+          cat reviews.json
+
+      - name: Generate videos
+        id: video
+        run: |
+          cat reviews.json | python product_review/scripts/generate_video.py > videos.json
+          cat videos.json
+
+      - name: Upload to YouTube
+        id: upload
+        env:
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          COUPANG_AFFILIATE_ID: ${{ secrets.COUPANG_AFFILIATE_ID }}
+        run: |
+          cat videos.json | python product_review/scripts/upload_review.py > upload_result.json
+          cat upload_result.json
+
+      - name: Report results
+        if: always()
+        run: |
+          echo "=== Product Review - ${{ matrix.category }} ===" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -f upload_result.json ]; then
+            echo "✅ Upload completed:" >> $GITHUB_STEP_SUMMARY
+            cat upload_result.json >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ No upload result found" >> $GITHUB_STEP_SUMMARY
+          fi
