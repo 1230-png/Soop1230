@@ -1,0 +1,103 @@
+name: News Summary - 뉴스 요약 Shorts + 분석 자동 업로드
+
+on:
+  schedule:
+    # 매일 아침 07:00 KST (UTC 22:00, 전날)
+    - cron: '0 22 * * *'
+    # 매일 정오 12:00 KST (UTC 03:00)
+    - cron: '0 3 * * *'
+    # 매일 저녁 19:00 KST (UTC 10:00)
+    - cron: '0 10 * * *'
+  workflow_dispatch:  # 수동 실행
+
+jobs:
+  fetch-summarize-upload:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      matrix:
+        # 여러 카테고리 동시 처리 (병렬)
+        category: [ai, crypto, startup]
+
+    steps:
+      - name: 저장소 클론
+        uses: actions/checkout@v4
+
+      - name: Python 설정 (3.11)
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: 의존성 설치
+        working-directory: ./news_summary
+        run: |
+          pip install -r scripts/requirements.txt
+          apt-get update
+          apt-get install -y ffmpeg ffprobe
+
+      - name: 1️⃣ 최신 뉴스 수집 (${{ matrix.category }})
+        working-directory: ./news_summary
+        id: fetch
+        env:
+          NEWSAPI_KEY: ${{ secrets.NEWSAPI_KEY }}
+        run: |
+          python3 scripts/fetch_news.py ${{ matrix.category }} 5 > news_${{ matrix.category }}.json 2>&1
+          echo "✅ 뉴스 수집 완료"
+          wc -l news_${{ matrix.category }}.json
+
+      - name: 2️⃣ 한국어로 요약 변환
+        working-directory: ./news_summary
+        id: summarize
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: |
+          python3 scripts/generate_summary.py < news_${{ matrix.category }}.json > summary_${{ matrix.category }}.json 2>&1
+          echo "✅ 요약 생성 완료"
+          cat summary_${{ matrix.category }}.json | head -50
+
+      - name: 3️⃣ 영상 생성 (Shorts + 분석)
+        working-directory: ./news_summary
+        id: videos
+        env:
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+        run: |
+          python3 scripts/generate_video.py < summary_${{ matrix.category }}.json > videos_${{ matrix.category }}.json 2>&1
+          echo "✅ 영상 생성 완료"
+          cat videos_${{ matrix.category }}.json | head -50
+
+      - name: 4️⃣ YouTube 업로드
+        working-directory: ./news_summary
+        id: upload
+        env:
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+        run: |
+          python3 scripts/upload_news.py < videos_${{ matrix.category }}.json > upload_${{ matrix.category }}.json 2>&1
+          cat upload_${{ matrix.category }}.json
+
+      - name: 📊 로그 기록
+        if: always()
+        run: |
+          echo "✅ $(date '+%Y-%m-%d %H:%M:%S') - ${{ matrix.category }} 업로드 완료" >> news_summary/upload.log
+          git config user.name "Claude Automation"
+          git config user.email "automation@claude.ai"
+          git add news_summary/upload.log || true
+          git commit -m "📊 News Summary (${{ matrix.category }}): $(date '+%Y-%m-%d %H:%M')" || true
+          git push || true
+
+  # 임시 파일 정리 (병렬 작업 모두 완료 후)
+  cleanup:
+    runs-on: ubuntu-latest
+    needs: fetch-summarize-upload
+    if: always()
+    steps:
+      - name: 저장소 클론
+        uses: actions/checkout@v4
+
+      - name: 임시 파일 정리
+        run: |
+          rm -f news_summary/output/*.mp4
+          rm -f news_summary/assets/*.jpg
+          echo "✅ 정리 완료"
