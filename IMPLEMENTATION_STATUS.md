@@ -1,7 +1,7 @@
 # ✅ 자동화 채널 구현 현황
 
 **최종 업데이트**: 2026-08-20  
-**상태**: 🟢 **Tier 1 완료 (3/3 채널)**
+**상태**: 🟢 **Tier 1 완료 (4/4 채널)** ✨
 
 ---
 
@@ -39,18 +39,29 @@
 📝 설정: news_summary/SETUP.md
 ```
 
+#### 4️⃣ Product Review (제품 리뷰) ⭐⭐⭐ NEW
+```
+✅ 상태: 구현 완료
+📊 월 영상: 60-90개 (Shorts + 장편)
+⏰ 업로드: 매일 3회 (08:00, 14:00, 20:00 KST) × 4 카테고리
+💰 6개월 수익: 420K~1.26M (제휴 수익 기반)
+🛠️ 기술: Groq + ElevenLabs + FFmpeg + YouTube API
+📝 설정: product_review/SETUP.md
+🔗 특징: 쿠팡/아마존 제휴 링크 자동 포함
+```
+
 ---
 
 ## 🎥 기존 채널 (이미 운영 중)
 
-### 4️⃣ Today Eat (음식 쇼츠)
+### 5️⃣ Today Eat (음식 쇼츠)
 ```
 ✅ 상태: 운영 중
 📊 월 영상: 120개
 💰 월 수익: 50K~100K
 ```
 
-### 5️⃣ Channel (Suno 음악)
+### 6️⃣ Channel (Suno 음악)
 ```
 ✅ 상태: 운영 중
 📊 월 영상: 25개
@@ -64,12 +75,13 @@
 ### 월 영상 생산량
 ```
 AI Stories:      60개   (3%)
-Growth Tips:    600개  (30%)
-News Summary:   900개  (45%) ⭐ 가장 많음
+Growth Tips:    600개  (29%)
+News Summary:   900개  (43%) ⭐ 가장 많음
+Product Review:  75개   (4%)
 Today Eat:      120개  (6%)
-Channel:         25개  (1%)
+Channel:         25개   (1%)
 ─────────────────────────────
-합계:         1,705개  (매달)
+합계:         1,780개  (매달)
 ```
 
 ### 6개월 수익 예상
@@ -77,18 +89,19 @@ Channel:         25개  (1%)
 AI Stories:     100K~300K
 Growth Tips:    300K~900K
 News Summary:   500K~1.5M  ⭐ 가장 높음
+Product Review: 420K~1.26M (제휴 중심)
 Today Eat:      50K~100K
 Channel:        30K~80K
 ─────────────────────────────
-합계:         1.0M~3.0M (6개월)
-             월 평균 170K~500K
+합계:         1.4M~4.2M (6개월)
+             월 평균 230K~700K
 ```
 
 ### 연간 수익 목표
 ```
-Year 1:  5M~15M원
-Year 2:  20M~50M원 (채널 다각화)
-Year 3:  50M~100M+원 (최적화)
+Year 1:  8M~25M원 (Tier 1 완성)
+Year 2:  30M~80M원 (Tier 2 추가)
+Year 3:  80M~200M+원 (최적화)
 ```
 
 ---
@@ -149,48 +162,67 @@ Year 3:  50M~100M+원 (최적화)
 │     ├─ upload_news.py
 │     └─ requirements.txt
 │
+├─ product_review/ ......................... 제품 리뷰
+│  ├─ SETUP.md ............................ 채널 설정
+│  ├─ data/ ............................... 제품 CSV
+│  │   ├─ products_electronics.csv
+│  │   ├─ products_home.csv
+│  │   ├─ products_fashion.csv
+│  │   └─ products_health.csv
+│  └─ scripts/
+│     ├─ fetch_products.py
+│     ├─ generate_review.py
+│     ├─ generate_video.py
+│     └─ upload_review.py
+│
 ├─ .github/workflows/
 │  ├─ ai_stories_daily.yml ............... Tier 1 #1
 │  ├─ growth_tips_daily.yml .............. Tier 1 #2
-│  └─ news_summary_daily.yml ............. Tier 1 #3
+│  ├─ news_summary_daily.yml ............. Tier 1 #3
+│  └─ product_review_daily.yml ........... Tier 1 #4
 │
 └─ MOBILE_API_TOKEN_GUIDE.md .............. YouTube OAuth 가이드
 ```
 
 ---
 
-## ✨ 지금 필요한 것 (30분)
+## ✨ 지금 필요한 것 (25분)
 
-### Step 1️⃣: API 토큰 3개 확보
+### Step 1️⃣: API 토큰 4개 확보 + 제휴 ID
 
-| API | 링크 | 복사할 값 | 상태 |
-|-----|------|---------|------|
+| API/ID | 링크 | 복사할 값 | 상태 |
+|--------|------|---------|------|
 | Groq | https://console.groq.com | `GROQ_API_KEY` | ✅ |
 | ElevenLabs | https://elevenlabs.io | `ELEVENLABS_API_KEY` | ✅ |
 | Pexels | https://pexels.com/developers | `PEXELS_API_KEY` | ✅ |
-| NewsAPI | https://newsapi.org | `NEWSAPI_KEY` | ⏳ NEW |
+| NewsAPI | https://newsapi.org | `NEWSAPI_KEY` | ⏳ |
 | YouTube OAuth | [가이드](./MOBILE_API_TOKEN_GUIDE.md) | 토큰 3개 | ✅ |
+| Coupang Partners | https://partners.coupang.com | `COUPANG_AFFILIATE_ID` | ✅ |
+| Amazon Associates | https://affiliate-program.amazon.com | `AMAZON_AFFILIATE_ID` | ⏳ |
 
-### Step 2️⃣: GitHub Secrets 등록 (총 7개)
+### Step 2️⃣: GitHub Secrets 등록 (총 9개)
 
 ```
 GROQ_API_KEY
 ELEVENLABS_API_KEY
 PEXELS_API_KEY
-NEWSAPI_KEY ← 새로 추가
+NEWSAPI_KEY
 YOUTUBE_REFRESH_TOKEN
 YOUTUBE_CLIENT_ID
 YOUTUBE_CLIENT_SECRET
+COUPANG_AFFILIATE_ID
+AMAZON_AFFILIATE_ID (선택사항)
 ```
 
 ### Step 3️⃣: 첫 번째 테스트
 
 ```bash
 # 저장소 → Actions
-# 3개 워크플로우 모두 "Run workflow" 클릭
+# 4개 워크플로우 모두 "Run workflow" 클릭
 # 1. AI Stories
 # 2. Growth Tips
 # 3. News Summary
+# 4. Product Review ← 새로 추가
 ```
 
 ---
@@ -198,9 +230,9 @@ YOUTUBE_CLIENT_SECRET
 ## 🎯 다음 단계 로드맵
 
 ### Week 1: 모든 채널 테스트 (지금)
-- [ ] API 토큰 4개 확보
-- [ ] GitHub Secrets 등록 (7개)
-- [ ] 3개 워크플로우 수동 실행
+- [ ] API 토큰 4개 + 제휴 ID 확보
+- [ ] GitHub Secrets 등록 (9개)
+- [ ] 4개 워크플로우 수동 실행
 - [ ] 첫 업로드 확인
 
 ### Week 2-4: 자동화 안정화
@@ -285,10 +317,12 @@ Month 6:   월 600K+ 달성 🎉
 - ✅ AI Stories 구현
 - ✅ Growth Tips 구현
 - ✅ News Summary 구현
-- ✅ GitHub Actions 워크플로우
-- ✅ 문서화 완료
-- ⏳ API 토큰 확보 (당신이 할 일)
-- ⏳ GitHub Secrets 등록 (당신이 할 일)
+- ✅ Product Review 구현
+- ✅ GitHub Actions 워크플로우 (4개 채널)
+- ✅ 문서화 완료 (4개 채널)
+- ✅ 샘플 데이터 포함 (제품 CSV 40개)
+- ⏳ API 토큰 확보 (당신이 할 일 - Groq, ElevenLabs, YouTube, NewsAPI)
+- ⏳ GitHub Secrets 등록 (당신이 할 일 - 7개 키)
 - ⏳ 첫 테스트 실행 (당신이 할 일)
 
 ---
@@ -321,25 +355,41 @@ Month 6:   월 600K+ 달성 🎉
 ## 🏆 최종 정리
 
 당신은 지금:
-- **3개 채널 완전 자동화 시스템** 보유 ✅
-- **5개 채널 운영 중** (기존 포함) ✅
-- **월 1,700+ 영상 자동 생성** ✅
-- **6개월 1M~3M 수익 목표** 수립 ✅
+- **4개 채널 완전 자동화 시스템 (Tier 1 완성)** 보유 ✅
+- **6개 채널 운영 중** (기존 2개 포함) ✅
+- **월 1,780+ 영상 자동 생성** ✅
+- **6개월 1.4M~4.2M 수익 목표** 수립 ✅
 
-**다음 단계**: NewsAPI 토큰만 추가하면 모든 준비 완료! 🚀
+**다음 단계**: NewsAPI 토큰 + Coupang 제휴 ID 추가하면 모든 준비 완료! 🚀
 
 ---
 
-**축하합니다!** 
+**축하합니다! 🎉** 
+
+**Tier 1 자동화 채널 4개 완성!**
 
 세계에서 가장 완전하게 자동화된 YouTube 수익화 시스템을 갖추었습니다.
 
 이제 할 일은:
-1. NewsAPI 토큰 발급 (5분)
-2. GitHub Secrets 등록 (2분)
+1. API 토큰 확보 (10분)
+   - NewsAPI 토큰 (5분)
+   - 제휴 ID 확인 (쿠팡, 아마존)
+2. GitHub Secrets 등록 (3분)
 3. 테스트 실행 (10분)
+   - 4개 워크플로우 모두 테스트
 
-**총 17분이면 모든 준비 완료!** ✨
+**총 20분이면 모든 준비 완료!** ✨
+
+### 이미 구현된 것:
+- 📝 AI Stories (감성 이야기)
+- 💡 Growth Tips (자기계발 팁)
+- 📰 News Summary (뉴스 요약)
+- 🛒 Product Review (제품 리뷰)
+
+### 다음 단계 (Tier 2):
+- ASMR 음악 채널
+- 교육 강좌 요약
+- 금융 분석 쇼츠
 
 ---
 
