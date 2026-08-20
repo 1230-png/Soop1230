@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "title": "집에서 만드는 마라탕",
+    "description": "마라향 가득한 집밥 마라탕\n\n🛒 마라 양념 추천상품: https://www.coupang.com/vp/products/example\n\n구독 & 좋아요 감사합니다!",
+    "tags": ["#마라탕", "#홈쿡", "#요리"]
+  },
+  {
+    "id": 2,
+    "title": "편의점 라면 업그레이드 하기",
+    "description": "편의점 라면을 고급진 요리로 변신!\n\n🛒 라면 양념 세트: https://www.coupang.com/vp/products/example\n\n구독 & 좋아요 감사합니다!",
+    "tags": ["#라면", "#업그레이드", "#요리"]
+  },
+  {
+    "id": 3,
+    "title": "집밥 버터치킨",
+    "description": "부드러운 버터소스의 치킨 요리\n\n🛒 치킨 조리 세트: https://www.coupang.com/vp/products/example\n\n구독 & 좋아요 감사합니다!",
+    "tags": ["#치킨", "#버터", "#요리"]
+  }
+]

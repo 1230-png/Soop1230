@@ -1,0 +1,75 @@
+name: Auto-publish Food Shorts
+
+on:
+  schedule:
+    # 4 shorts/day: 09:00 / 15:00 / 18:00 / 21:00 KST
+    # = 00:00 / 06:00 / 09:00 / 12:00 UTC
+    - cron: "0 0 * * *"
+    - cron: "0 6 * * *"
+    - cron: "0 9 * * *"
+    - cron: "0 12 * * *"
+  workflow_dispatch:
+    inputs:
+      privacy_status:
+        description: "YouTube privacy status for this run"
+        required: false
+        default: "public"
+        type: choice
+        options: [public, unlisted, private]
+
+# Default privacy for the scheduled (non-manual) runs.
+env:
+  DEFAULT_PRIVACY_STATUS: public
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install system dependencies (ffmpeg, Korean font)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-noto-cjk
+
+      - name: Install Python dependencies
+        run: pip install -r food_shorts/scripts/requirements.txt
+
+      - name: Generate today's food short
+        id: generate
+        working-directory: food_shorts/scripts
+        run: |
+          python3 generate_video.py > result.json
+          cat result.json
+          VIDEO_PATH=$(python3 -c "import json; r=json.load(open('result.json')); print(r['video_path'])")
+          METADATA_PATH=$(python3 -c "import json; r=json.load(open('result.json')); print(r['metadata_path'])")
+          echo "video_path=${VIDEO_PATH}" >> "$GITHUB_OUTPUT"
+          echo "metadata_path=${METADATA_PATH}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload to YouTube
+        working-directory: food_shorts/scripts
+        env:
+          FOOD_CLIENT_ID: ${{ secrets.FOOD_CLIENT_ID }}
+          FOOD_CLIENT_SECRET: ${{ secrets.FOOD_CLIENT_SECRET }}
+          FOOD_REFRESH_TOKEN: ${{ secrets.FOOD_REFRESH_TOKEN }}
+        run: |
+          privacy="${{ github.event.inputs.privacy_status || env.DEFAULT_PRIVACY_STATUS }}"
+          python3 upload_video.py \
+            --video-path "${{ steps.generate.outputs.video_path }}" \
+            --metadata-path "${{ steps.generate.outputs.metadata_path }}" \
+            --privacy-status "$privacy"
+
+      - name: Commit updated logs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add food_shorts/output/logs/ food_shorts/data/used_videos.csv
+          git diff --cached --quiet || git commit -m "Auto-publish: Food short"
+          git push
