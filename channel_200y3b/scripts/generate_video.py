@@ -14,7 +14,9 @@ from pathlib import Path
 
 from PIL import ImageDraw, ImageFont
 
-import common
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+from shared import common
 
 ROOT = Path(__file__).resolve().parent.parent
 PHRASE_BANK = ROOT / "scripts" / "phrase_bank.json"

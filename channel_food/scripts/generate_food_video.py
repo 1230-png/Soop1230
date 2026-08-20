@@ -18,7 +18,8 @@ from PIL import ImageDraw, ImageFont
 import aiohttp
 import edge_tts
 
-import common
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+from shared import common
 
 os.environ.setdefault("SSL_CERT_FILE", "/root/.ccr/ca-bundle.crt")
 os.environ.setdefault("REQUESTS_CA_BUNDLE", "/root/.ccr/ca-bundle.crt")
