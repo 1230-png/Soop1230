@@ -1,5 +1,6 @@
 channel_200y3b/output/
 channel_food/output/
+today_eat/output/
 __pycache__/
 *.pyc
 *.pyo

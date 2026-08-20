@@ -94,8 +94,8 @@ def generate_video(content_id, text):
             "edge-tts",
             "--text", text,
             "--voice", "ko-KR-InJoonNeural",
-            "--rate", "0",
-            "--output-file", str(audio_path)
+            "--rate", "+0%",
+            "--write-media", str(audio_path)
         ], check=True)
     except:
         print("⚠️ Warning: TTS failed, using silent video")
