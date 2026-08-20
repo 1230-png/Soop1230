@@ -350,6 +350,12 @@ def make_metadata(content, video_path, products):
 
 {product_links}
 
+━━━━━━━━━━━━━━━━━━━━
+📺 오늘뭐먹지? (@오늘뭐먹지-f2d)
+맛있게 먹는 일상 영상 채널
+구독 👉 https://youtube.com/@오늘뭐먹지-f2d
+━━━━━━━━━━━━━━━━━━━━
+
 #음식 #요리 #쿠팡 #추천 {hashtags}
 """
 
