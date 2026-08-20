@@ -198,9 +198,8 @@ Year 3:  80M~200M+원 (최적화)
 | NewsAPI | https://newsapi.org | `NEWSAPI_KEY` | ⏳ |
 | YouTube OAuth | [가이드](./MOBILE_API_TOKEN_GUIDE.md) | 토큰 3개 | ✅ |
 | Coupang Partners | https://partners.coupang.com | `COUPANG_AFFILIATE_ID` | ✅ |
-| Amazon Associates | https://affiliate-program.amazon.com | `AMAZON_AFFILIATE_ID` | ⏳ |
 
-### Step 2️⃣: GitHub Secrets 등록 (총 9개)
+### Step 2️⃣: GitHub Secrets 등록 (총 8개)
 
 ```
 GROQ_API_KEY
@@ -211,7 +210,6 @@ YOUTUBE_REFRESH_TOKEN
 YOUTUBE_CLIENT_ID
 YOUTUBE_CLIENT_SECRET
 COUPANG_AFFILIATE_ID
-AMAZON_AFFILIATE_ID (선택사항)
 ```
 
 ### Step 3️⃣: 첫 번째 테스트
