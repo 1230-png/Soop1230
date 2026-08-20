@@ -64,7 +64,7 @@ def pick_unused_content():
     available = [c for c in content if c["id"] not in used]
 
     if not available:
-        print("[warn] 모든 콘텐츠를 사용했습니다. 리셋 후 다시 시작합니다.")
+        print("[warn] 모든 콘텐츠를 사용했습니다. 리셋 후 다시 시작합니다.", file=sys.stderr)
         return random.choice(content)
 
     return random.choice(available)
@@ -285,10 +285,10 @@ async def generate_narration_to_files(content, audio_files):
         comm = edge_tts.Communicate(end_text, common.KO_VOICE)
         await comm.save(str(end_path))
 
-        print(f"  ✓ 음성 생성 완료")
+        print(f"  ✓ 음성 생성 완료", file=sys.stderr)
         return True
     except Exception as e:
-        print(f"  ⚠️  음성 생성 건너뜀: {str(e)[:80]}")
+        print(f"  ⚠️  음성 생성 건너뜀: {str(e)[:80]}", file=sys.stderr)
         return False
 
 
