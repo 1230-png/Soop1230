@@ -1,11 +1,4 @@
-id,name,category,price,amazon_link,coupang_link,description,image_url,specs
-PROD_101,스마트 조명 세트 16색,home,85000,https://amazon.com/dp/H01HHHHH,https://coupang.com/vp/products/HHHHH,음성 제어 자동 스케줄 기능,https://via.placeholder.com/400x300?text=Smart+Light,"[""16색 조명"",""음성 제어"",""자동 스케줄"",""에너지 절감""]"
-PROD_102,공기청정기 HEPA 필터,home,350000,https://amazon.com/dp/H02IIIII,https://coupang.com/vp/products/IIIII,실시간 공기질 모니터링 초강력 정화,https://via.placeholder.com/400x300?text=Air+Purifier,"[""HEPA 필터"",""초강력 정화"",""스마트 제어"",""저소음""]"
-PROD_103,로봇 청소기 자동 귀가,home,580000,https://amazon.com/dp/H03JJJJJ,https://coupang.com/vp/products/JJJJJ,앱 제어 매핑 기능 자동 먼지 버림,https://via.placeholder.com/400x300?text=Robot+Vacuum,"[""자동 귀가"",""매핑 기능"",""앱 제어"",""자동 먼지 버림""]"
-PROD_104,스마트 온도조절기,home,280000,https://amazon.com/dp/H04KKKKK,https://coupang.com/vp/products/KKKKK,에너지 절감 30% AI 학습 난방,https://via.placeholder.com/400x300?text=Smart+Thermostat,"[""AI 학습"",""에너지 절감"",""앱 제어"",""자동 스케줄""]"
-PROD_105,무드등 무선 스피커,home,125000,https://amazon.com/dp/H05LLLLL,https://coupang.com/vp/products/LLLLL,360도 발광 고음질 스테레오,https://via.placeholder.com/400x300?text=Mood+Light+Speaker,"[""360도 발광"",""스테레오 음성"",""무선 연결"",""터치 제어""]"
-PROD_106,커튼 모터 자동개폐,home,450000,https://amazon.com/dp/H06MMMMM,https://coupang.com/vp/products/MMMMM,음성 제어 타이머 자동 개폐,https://via.placeholder.com/400x300?text=Curtain+Motor,"[""자동 개폐"",""음성 제어"",""타이머"",""조용한 작동""]"
-PROD_107,스마트 냉장고 카메라,home,2500000,https://amazon.com/dp/H07NNNNN,https://coupang.com/vp/products/NNNNN,내부 카메라 외출 중 확인,https://via.placeholder.com/400x300?text=Smart+Fridge,"[""내부 카메라"",""음성 제어"",""에너지 절감"",""앱 제어""]"
-PROD_108,스마트 전등 스위치,home,95000,https://amazon.com/dp/H08OOOOO,https://coupang.com/vp/products/OOOOO,기존 스위치 교체 간단 설치,https://via.placeholder.com/400x300?text=Smart+Switch,"[""간단 설치"",""음성 제어"",""타이머"",""저전력""]"
-PROD_109,공기 중 세균 제거기,home,280000,https://amazon.com/dp/H09PPPPP,https://coupang.com/vp/products/PPPPP,UV-C 기술 99.9% 세균 제거,https://via.placeholder.com/400x300?text=Air+Sterilizer,"[""UV-C 기술"",""99.9% 제거"",""저소음"",""자동 타이머""]"
-PROD_110,스마트 플러그 다중,home,45000,https://amazon.com/dp/H10QQQQQ,https://coupang.com/vp/products/QQQQQ,전력 모니터링 원격 제어,https://via.placeholder.com/400x300?text=Smart+Plug,"[""전력 모니터링"",""원격 제어"",""타이머"",""과부하 보호""]"
+id,name,category,price,amazon_link,coupang_link,description,image_url,specs,rating
+HOME_001,스마트 조명 LED 벌브,home,35000,https://amazon.com/dp/B001,https://coupang.com/vp/products/001,음성 제어 가능한 스마트 LED 조명,https://via.placeholder.com/400x300?text=Smart+Light,스마트 제어,4.5
+HOME_002,공기청정기 IoT,home,120000,https://amazon.com/dp/B002,https://coupang.com/vp/products/002,APP으로 제어 가능한 공기청정기,https://via.placeholder.com/400x300?text=Air+Purifier,IoT연결,4.3
+HOME_003,무선 도어락,home,250000,https://amazon.com/dp/B003,https://coupang.com/vp/products/003,지문인식 무선 도어락,https://via.placeholder.com/400x300?text=Smart+Lock,보안,4.7

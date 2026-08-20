@@ -1,11 +1,4 @@
-id,name,category,price,amazon_link,coupang_link,description,image_url,specs
-PROD_201,스마트 워치 Pro Max,fashion,450000,https://amazon.com/dp/F01RRRRR,https://coupang.com/vp/products/RRRRR,운동 추적 심박수 모니터링 7일 배터리,https://via.placeholder.com/400x300?text=Smart+Watch,"[""심박수 모니터링"",""운동 추적"",""7일 배터리"",""방수""]"
-PROD_202,무선 이어폰 Pro,fashion,320000,https://amazon.com/dp/F02SSSSSS,https://coupang.com/vp/products/SSSSS,노이즈 캔슬링 48시간 배터리,https://via.placeholder.com/400x300?text=Wireless+Earbuds,"[""노이즈 캔슬링"",""48시간 배터리"",""편한 착용"",""투명 모드""]"
-PROD_203,가죽 백팩 방수,fashion,185000,https://amazon.com/dp/F03TTTTTT,https://coupang.com/vp/products/TTTTT,17인치 노트북 수납 방수 처리,https://via.placeholder.com/400x300?text=Leather+Backpack,"[""17인치 수납"",""방수 처리"",""가죽 재질"",""인체공학""]"
-PROD_204,스포츠 러닝화 경량,fashion,125000,https://amazon.com/dp/F04UUUUU,https://coupang.com/vp/products/UUUUU,쿠션 기술 통풍 메시 갑피,https://via.placeholder.com/400x300?text=Running+Shoes,"[""경량 디자인"",""쿠션 기술"",""통풍 메시"",""내구성""]"
-PROD_205,선글라스 UV400,fashion,95000,https://amazon.com/dp/F05VVVVV,https://coupang.com/vp/products/VVVVV,UV400 차단 편광 렌즈,https://via.placeholder.com/400x300?text=Sunglasses,"[""UV400 차단"",""편광 렌즈"",""스타일리시"",""가벼움""]"
-PROD_206,운동 레깅스 고급,fashion,78000,https://amazon.com/dp/F06WWWWW,https://coupang.com/vp/products/WWWWW,습기 흡수 빠른 건조 통기성,https://via.placeholder.com/400x300?text=Exercise+Leggings,"[""습기 흡수"",""빠른 건조"",""고신축"",""편한 착용""]"
-PROD_207,스마트 밴드 피트니스,fashion,195000,https://amazon.com/dp/F07XXXXXX,https://coupang.com/vp/products/XXXXXX,칼로리 측정 수면 추적,https://via.placeholder.com/400x300?text=Fitness+Band,"[""칼로리 측정"",""수면 추적"",""방수"",""14일 배터리""]"
-PROD_208,캐주얼 셔츠 크린 핏,fashion,65000,https://amazon.com/dp/F08YYYYYY,https://coupang.com/vp/products/YYYYYY,주름 방지 통기성 편한 핏,https://via.placeholder.com/400x300?text=Casual+Shirt,"[""주름 방지"",""통기성"",""편한 핏"",""다양한 색상""]"
-PROD_209,숄더백 비즈니스,fashion,245000,https://amazon.com/dp/F09ZZZZZZ,https://coupang.com/vp/products/ZZZZZZ,가죽 고급스러운 디자인 실용적,https://via.placeholder.com/400x300?text=Shoulder+Bag,"[""진정 가죽"",""고급스러움"",""실용성"",""내구성""]"
-PROD_210,스니커즈 프리미엄,fashion,320000,https://amazon.com/dp/F10AAAAAA,https://coupang.com/vp/products/AAAAAA,편한 쿠션 스타일리시한 디자인,https://via.placeholder.com/400x300?text=Premium+Sneakers,"[""프리미엄 디자인"",""편한 쿠션"",""내구성"",""다양한 색상""]"
+id,name,category,price,amazon_link,coupang_link,description,image_url,specs,rating
+FASHION_001,방수 스포츠 시계,fashion,85000,https://amazon.com/dp/B004,https://coupang.com/vp/products/004,GPS 기능이 있는 방수 시계,https://via.placeholder.com/400x300?text=Sports+Watch,GPS,4.4
+FASHION_002,스마트 안경,fashion,280000,https://amazon.com/dp/B005,https://coupang.com/vp/products/005,AR 기능이 있는 스마트 안경,https://via.placeholder.com/400x300?text=Smart+Glasses,AR,4.2
+FASHION_003,무선 이어폰 케이스,fashion,45000,https://amazon.com/dp/B006,https://coupang.com/vp/products/006,LED 디스플레이가 있는 충전 케이스,https://via.placeholder.com/400x300?text=Earbud+Case,LED,4.6
