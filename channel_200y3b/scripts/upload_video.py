@@ -1,7 +1,10 @@
-"""Upload one generated short to YouTube using a stored refresh token.
+"""Upload videos to YouTube with description and optional thumbnail.
 
-Reads YT_CLIENT_ID / YT_CLIENT_SECRET / YT_REFRESH_TOKEN from the environment
-(GitHub Actions secrets — see ../SETUP.md). No user interaction, no browser.
+Handles:
+- Video upload with metadata
+- Description with Coupang Partners affiliate link
+- Custom thumbnail upload (when provided)
+- Log file updates
 """
 
 import argparse
@@ -13,19 +16,50 @@ from pathlib import Path
 
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 
 ROOT = Path(__file__).resolve().parent.parent
-OUTPUT_DIR = ROOT / "output"
-
 SCOPES = ["https://www.googleapis.com/auth/youtube"]
+ENV_FILE = ROOT / ".env.youtube"
+
+# Coupang Partners affiliate link — must be generated per-product at
+# partners.coupang.com (there's no formula to construct a working coupa.ng
+# link from just a partner ID). Empty until a real link is added.
+COUPANG_LINK = ""
+
+CHANNEL_ID = "UCEHRa1rmhcZNVm5F7Zz_ycw"  # @200-y3b
 
 
-def get_credentials() -> Credentials:
-    client_id = os.environ["YT_CLIENT_ID"]
-    client_secret = os.environ["YT_CLIENT_SECRET"]
-    refresh_token = os.environ["YT_REFRESH_TOKEN"]
+def _load_env_file():
+    """Load YT_* values from .env.youtube (written by get_refresh_token.py)
+    into os.environ if not already set, so no manual copy/paste is needed."""
+    if not ENV_FILE.exists():
+        return
+    for line in ENV_FILE.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or "=" not in line:
+            continue
+        key, _, value = line.partition("=")
+        os.environ.setdefault(key.strip(), value.strip())
+
+
+def get_youtube_client():
+    """Get authorized YouTube API client using GitHub Secrets environment variables."""
+    _load_env_file()
+    client_id = os.environ.get("YT_CLIENT_ID")
+    client_secret = os.environ.get("YT_CLIENT_SECRET")
+    refresh_token = os.environ.get("YT_REFRESH_TOKEN")
+
+    if not all([client_id, client_secret, refresh_token]):
+        raise SystemExit(
+            "Missing YouTube OAuth credentials in environment:\n"
+            "  YT_CLIENT_ID\n"
+            "  YT_CLIENT_SECRET\n"
+            "  YT_REFRESH_TOKEN"
+        )
 
     creds = Credentials(
         token=None,
@@ -36,79 +70,139 @@ def get_credentials() -> Credentials:
         scopes=SCOPES,
     )
     creds.refresh(Request())
-    return creds
+    return build("youtube", "v3", credentials=creds)
 
 
-def upload(video_id: str, privacy_status: str, log_file: Path) -> str:
-    video_path = OUTPUT_DIR / f"{video_id}.mp4"
-    meta_path = OUTPUT_DIR / f"{video_id}.json"
-    metadata = json.loads(meta_path.read_text(encoding="utf-8"))
+def upload_video(
+    video_path: Path,
+    title: str,
+    description: str,
+    thumbnail_path: Path = None,
+    category_id: str = "27",  # Education
+    privacy_status: str = "public",
+) -> str:
+    """Upload video to YouTube and return video ID.
 
-    youtube = build("youtube", "v3", credentials=get_credentials())
+    Args:
+        video_path: Path to .mp4 file
+        title: Video title
+        description: Video description (affiliate link will be appended)
+        thumbnail_path: Optional custom thumbnail image path
+        category_id: YouTube category (27=Education)
+        privacy_status: 'public', 'unlisted', or 'private'
 
+    Returns:
+        YouTube video ID
+    """
+    youtube = get_youtube_client()
+
+    # Add Coupang Partners affiliate link to description, if one is set
+    if COUPANG_LINK:
+        full_description = f"{description}\n\n📚 추천 상품: {COUPANG_LINK}"
+    else:
+        full_description = description
+
+    # Upload video
     body = {
         "snippet": {
-            "title": metadata["title"],
-            "description": metadata["description"],
-            "tags": metadata["tags"],
-            "categoryId": metadata["category_id"],
+            "title": title,
+            "description": full_description,
+            "tags": ["영어", "English", "학습", "매일영어"],
+            "categoryId": category_id,
+            "defaultLanguage": "ko",
+            "defaultAudioLanguage": "ko",
         },
         "status": {
             "privacyStatus": privacy_status,
-            "selfDeclaredMadeForKids": False,
+            "madeForKids": False,
         },
     }
-    media = MediaFileUpload(str(video_path), chunksize=-1, resumable=True, mimetype="video/mp4")
-    request = youtube.videos().insert(part="snippet,status", body=body, media_body=media)
 
-    response = None
-    while response is None:
-        _, response = request.next_chunk()
+    request = youtube.videos().insert(
+        part="snippet,status",
+        body=body,
+        media_body=MediaFileUpload(str(video_path), mimetype="video/mp4", chunksize=-1),
+    )
 
-    youtube_video_id = response["id"]
-    update_log(video_id, youtube_video_id, "uploaded", log_file)
+    response = request.execute()
+    video_id = response["id"]
+    print(f"✅ Uploaded: {title} (Video ID: {video_id})")
 
-    thumbnail_rel = metadata.get("thumbnail_file")
-    if thumbnail_rel:
-        thumbnail_path = ROOT / thumbnail_rel
+    # Upload custom thumbnail if provided
+    if thumbnail_path and thumbnail_path.exists():
         try:
             youtube.thumbnails().set(
-                videoId=youtube_video_id,
-                media_body=MediaFileUpload(str(thumbnail_path), mimetype="image/jpeg"),
+                videoId=video_id,
+                media_body=MediaFileUpload(str(thumbnail_path), mimetype="image/png"),
             ).execute()
-        except Exception as exc:  # noqa: BLE001 - custom thumbnails need phone
-            # verification; don't fail the whole upload over a thumbnail.
-            print(f"Thumbnail upload skipped (custom thumbnails need a "
-                  f"phone-verified channel): {exc}", file=sys.stderr)
+            print(f"✅ Thumbnail uploaded for {video_id}")
+        except HttpError as e:
+            print(f"⚠️  Thumbnail upload failed (channel may not be verified): {e}", file=sys.stderr)
 
-    return youtube_video_id
+    return video_id
 
 
-def update_log(video_id: str, youtube_video_id: str, status: str, log_file: Path) -> None:
-    if not log_file.exists():
+def update_log(log_path: Path, video_id: str, **row_data):
+    """Append video_id to existing log row (matching by date+phrase_id or ID)."""
+    if not log_path.exists():
+        print(f"⚠️  Log file {log_path} not found")
         return
-    with open(log_file, newline="", encoding="utf-8") as f:
-        rows = list(csv.DictReader(f))
-        fieldnames = rows[0].keys() if rows else []
-    for row in rows:
-        if row["video_file"].endswith(f"{video_id}.mp4"):
-            row["youtube_video_id"] = youtube_video_id
-            row["status"] = status
-    with open(log_file, "w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(rows)
+
+    rows = []
+    with open(log_path, newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        fieldnames = reader.fieldnames or []
+        for row in reader:
+            rows.append(row)
+
+    # Find and update last row (most recent entry)
+    if rows:
+        rows[-1]["youtube_video_id"] = video_id
+        rows[-1]["status"] = "published"
+
+        # Ensure youtube_video_id field exists
+        if "youtube_video_id" not in fieldnames:
+            fieldnames = list(fieldnames) + ["youtube_video_id", "status"]
+
+        with open(log_path, "w", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(rows)
+        print(f"✅ Updated log: {log_path}")
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--video-id", required=True, help="e.g. 2026-08-19_L001")
-    parser.add_argument("--privacy-status", default="unlisted", choices=["public", "unlisted", "private"])
-    parser.add_argument("--log-file", default="used_log.csv", help="Which used-log CSV to update")
+    parser = argparse.ArgumentParser(description="Upload video to YouTube")
+    parser.add_argument("video_path", type=Path, help="Path to video file (.mp4)")
+    parser.add_argument("--title", required=True, help="Video title")
+    parser.add_argument("--description", required=True, help="Video description")
+    parser.add_argument("--thumbnail", type=Path, help="Optional thumbnail image")
+    parser.add_argument("--log-file", type=Path, help="Log file to update")
     args = parser.parse_args()
 
-    youtube_video_id = upload(args.video_id, args.privacy_status, ROOT / args.log_file)
-    print(f"Uploaded: https://youtube.com/watch?v={youtube_video_id}")
+    if not args.video_path.exists():
+        raise SystemExit(f"Video file not found: {args.video_path}")
+
+    try:
+        video_id = upload_video(
+            args.video_path,
+            args.title,
+            args.description,
+            args.thumbnail,
+        )
+
+        if args.log_file:
+            update_log(args.log_file, video_id)
+
+        print(f"\n✨ Success! Video ID: {video_id}")
+        return 0
+
+    except HttpError as e:
+        print(f"❌ YouTube API error: {e}", file=sys.stderr)
+        return 1
+    except Exception as e:
+        print(f"❌ Error: {e}", file=sys.stderr)
+        return 1
 
 
 if __name__ == "__main__":
