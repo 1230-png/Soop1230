@@ -4,6 +4,13 @@ on:
   schedule:
     - cron: '0 8,10,12,14 * * *'
   workflow_dispatch:
+    inputs:
+      privacy_status:
+        description: "YouTube 공개 범위"
+        required: false
+        default: unlisted
+        type: choice
+        options: [unlisted, private, public]
 
 permissions:
   contents: read
@@ -12,6 +19,10 @@ jobs:
   generate:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    # Job level so the upload step's `if` can read it: a step cannot test an
+    # env var declared in its own env block.
+    env:
+      FOOD_REFRESH_TOKEN: ${{ secrets.FOOD_REFRESH_TOKEN }}
 
     steps:
       - name: Checkout repository
@@ -39,9 +50,17 @@ jobs:
           pip install -r food_shorts/scripts/requirements.txt
 
       - name: Generate video
+        id: generate
         run: |
           cd food_shorts/scripts
-          python3 generate_video.py
+          python3 generate_video.py | tee "$RUNNER_TEMP/result.json"
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os
+          with open(os.environ["RUNNER_TEMP"] + "/result.json", encoding="utf-8") as f:
+              r = json.load(f)
+          print(f"video_path={r['video_path']}")
+          print(f"metadata_path={r['metadata_path']}")
+          PY
         env:
           PYTHONUNBUFFERED: '1'
           # All three are free-of-charge registrations, and all are optional:
@@ -59,6 +78,21 @@ jobs:
           echo ""
           echo "=== Usage Log ==="
           tail -5 food_shorts/data/used_videos.csv 2>/dev/null || echo "No log file"
+
+      - name: Upload to YouTube
+        # Skipped unless the channel's OAuth secrets are configured, so the
+        # generate-only run keeps working without them.
+        if: success() && env.FOOD_REFRESH_TOKEN != ''
+        run: |
+          pip install google-auth google-auth-oauthlib google-api-python-client
+          cd food_shorts/scripts
+          python3 upload_video.py \
+            --video-path "${{ steps.generate.outputs.video_path }}" \
+            --metadata-path "${{ steps.generate.outputs.metadata_path }}" \
+            --privacy-status "${{ inputs.privacy_status || 'unlisted' }}"
+        env:
+          FOOD_CLIENT_ID: ${{ secrets.FOOD_CLIENT_ID }}
+          FOOD_CLIENT_SECRET: ${{ secrets.FOOD_CLIENT_SECRET }}
 
       - name: Upload artifacts
         if: always()
