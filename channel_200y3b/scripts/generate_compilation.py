@@ -10,6 +10,7 @@ Pillow + ffmpeg for video, YouTube Data API for upload.
 import csv
 import datetime
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -229,6 +230,7 @@ def main():
     save_volume(volume)
 
     try:
+        env = {**os.environ, "PYTHONIOENCODING": "utf-8"}
         subprocess.run(
             [
                 sys.executable, "-m", "upload_video",
@@ -240,6 +242,7 @@ def main():
             ],
             cwd=ROOT / "scripts",
             check=True,
+            env=env,
         )
         print(f"✅ Uploaded {video_path}", file=sys.stderr)
     except subprocess.CalledProcessError as e:
