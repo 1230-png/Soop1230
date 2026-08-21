@@ -2,14 +2,8 @@ name: 🎬 Food Shorts ASMR 자동 생성
 
 on:
   schedule:
-    # 09:00 KST (00:00 UTC)
-    - cron: '0 0 * * *'
-    # 15:00 KST (06:00 UTC)
-    - cron: '0 6 * * *'
-    # 18:00 KST (09:00 UTC)
-    - cron: '0 9 * * *'
-    # 21:00 KST (12:00 UTC)
-    - cron: '0 12 * * *'
+    # UTC: 8, 10, 12, 14 = KST: 17:00, 19:00, 21:00, 23:00
+    - cron: '0 8,10,12,14 * * *'
   workflow_dispatch:
 
 permissions:
