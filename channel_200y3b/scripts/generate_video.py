@@ -1,14 +1,16 @@
 """Generate one '매일 영어 한마디' short: an English expression + Korean meaning
 + example, narrated (EN/KO/EN) with natural neural voices and muxed into a
-vertical mp4, plus a metadata JSON for the uploader.
+vertical mp4, then upload to YouTube with Coupang Partners affiliate link.
 
-Pure free/open-source stack: Pillow (image/text), edge-tts (free neural TTS,
-no API key), ffmpeg (mux). No paid API calls anywhere in this script.
+Stack: Pillow (image/text), Google Cloud Text-to-Speech (neural TTS, 1M chars/month free),
+ffmpeg (mux), YouTube Data API (upload).
 """
 
 import csv
 import datetime
 import json
+import os
+import subprocess
 import sys
 from pathlib import Path
 
@@ -19,7 +21,10 @@ import common
 ROOT = Path(__file__).resolve().parent.parent
 PHRASE_BANK = ROOT / "scripts" / "phrase_bank.json"
 USED_LOG = ROOT / "used_log.csv"
-OUTPUT_DIR = ROOT / "output"
+# Defaults to a repo-local folder for local runs; CI sets SHORTS_OUTPUT_DIR
+# to the runner's temp directory so generated videos/audio never get
+# committed to git.
+OUTPUT_DIR = Path(os.environ.get("SHORTS_OUTPUT_DIR", ROOT / "output"))
 
 WIDTH, HEIGHT = common.WIDTH, common.HEIGHT
 
@@ -104,7 +109,7 @@ def append_log(row: dict) -> None:
 
 
 def main():
-    OUTPUT_DIR.mkdir(exist_ok=True)
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     font_path = common.find_korean_font()
 
     phrase = pick_next_phrase()
@@ -142,13 +147,31 @@ def main():
         "phrase_en": phrase["phrase_en"],
         "meaning_ko": phrase["meaning_ko"],
         "video_title": metadata["title"],
-        "video_file": str(video_path.relative_to(ROOT)),
+        "video_file": os.path.relpath(video_path, ROOT),
         "youtube_video_id": "",
         "status": "generated",
     })
 
-    print(f"Generated {video_path}", file=sys.stderr)
-    print(video_id)  # sole stdout line, captured by the workflow
+    try:
+        env = {**os.environ, "PYTHONIOENCODING": "utf-8"}
+        subprocess.run(
+            [
+                sys.executable, "-m", "upload_video",
+                str(video_path),
+                "--title", metadata["title"],
+                "--description", metadata["description"],
+                "--log-file", str(USED_LOG),
+            ],
+            cwd=ROOT / "scripts",
+            check=True,
+            env=env,
+        )
+        print(f"✅ Uploaded {video_path}", file=sys.stderr)
+    except subprocess.CalledProcessError as e:
+        print(f"❌ Upload failed: {e}", file=sys.stderr)
+        raise
+
+    print(video_id)  # sole stdout line
 
 
 if __name__ == "__main__":
