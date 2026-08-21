@@ -3,13 +3,15 @@
 YouTube ad breaks (targets 8+ minutes) and to give viewers something worth
 sitting through, not just another Short.
 
-Same free stack as the daily Shorts (Pillow + edge-tts + ffmpeg), reusing
-scripts/common.py so the two pipelines share font/voice/palette logic.
+Uses Google Cloud Text-to-Speech (1M chars/month free) for narration,
+Pillow + ffmpeg for video, YouTube Data API for upload.
 """
 
 import csv
 import datetime
 import json
+import os
+import subprocess
 import sys
 from pathlib import Path
 
@@ -21,7 +23,10 @@ ROOT = Path(__file__).resolve().parent.parent
 PHRASE_BANK = ROOT / "scripts" / "phrase_bank.json"
 LONGFORM_LOG = ROOT / "used_log_longform.csv"
 VOLUME_FILE = ROOT / "longform_volume.txt"
-OUTPUT_DIR = ROOT / "output"
+# Defaults to a repo-local folder for local runs; CI sets SHORTS_OUTPUT_DIR
+# to the runner's temp directory so generated videos/audio never get
+# committed to git.
+OUTPUT_DIR = Path(os.environ.get("SHORTS_OUTPUT_DIR", ROOT / "output"))
 
 BATCH_SIZE = 30
 SLIDE_TRAILING_SILENCE = 2.0  # seconds of pause per slide for reading time
@@ -105,7 +110,7 @@ def make_slide_clip(phrase: dict, index: int, total: int, font_path: str, out_di
         ],
         audio_path,
         trailing_silence=SLIDE_TRAILING_SILENCE,
-        use_elevenlabs_for_en=False,  # protect the free quota for the Shorts
+        use_elevenlabs_for_en=True,  # ElevenLabs for all languages
     )
     common.mux_video(bg_path, audio_path, clip_path)
     bg_path.unlink()
@@ -176,7 +181,7 @@ def build_metadata(batch: list, volume: int, video_id: str) -> dict:
 
 
 def main():
-    OUTPUT_DIR.mkdir(exist_ok=True)
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     font_path = common.find_korean_font()
 
     batch = pick_batch()
@@ -209,7 +214,7 @@ def main():
     thumb_img.convert("RGB").save(thumb_path, quality=90)
 
     metadata = build_metadata(batch, volume, video_id)
-    metadata["thumbnail_file"] = str(thumb_path.relative_to(ROOT))
+    metadata["thumbnail_file"] = os.path.relpath(thumb_path, ROOT)
     meta_path = OUTPUT_DIR / f"{video_id}.json"
     meta_path.write_text(json.dumps(metadata, ensure_ascii=False, indent=2), encoding="utf-8")
 
@@ -219,7 +224,7 @@ def main():
             "phrase_id": p["id"],
             "phrase_en": p["phrase_en"],
             "volume": volume,
-            "video_file": str(video_path.relative_to(ROOT)),
+            "video_file": os.path.relpath(video_path, ROOT),
             "youtube_video_id": "",
             "status": "generated",
         }
@@ -227,8 +232,27 @@ def main():
     ])
     save_volume(volume)
 
-    print(f"Generated {video_path}", file=sys.stderr)
-    print(video_id)  # sole stdout line, captured by the workflow
+    try:
+        env = {**os.environ, "PYTHONIOENCODING": "utf-8"}
+        subprocess.run(
+            [
+                sys.executable, "-m", "upload_video",
+                str(video_path),
+                "--title", metadata["title"],
+                "--description", metadata["description"],
+                "--thumbnail", str(thumb_path),
+                "--log-file", str(LONGFORM_LOG),
+            ],
+            cwd=ROOT / "scripts",
+            check=True,
+            env=env,
+        )
+        print(f"✅ Uploaded {video_path}", file=sys.stderr)
+    except subprocess.CalledProcessError as e:
+        print(f"❌ Upload failed: {e}", file=sys.stderr)
+        raise
+
+    print(video_id)  # sole stdout line
 
 
 if __name__ == "__main__":
