@@ -20,6 +20,7 @@ import io
 from PIL import Image, ImageDraw, ImageFont
 
 ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY", "")
+ELEVENLABS_VOICE_ID = os.getenv("ELEVENLABS_VOICE_ID", "21m00Tcm4TlvDq8ikWAM")  # Rachel (기본 프리메이드 음성)
 
 OUTPUT_DIR = Path(__file__).parent.parent / "output"
 ASSETS_DIR = Path(__file__).parent.parent / "assets"
@@ -105,7 +106,7 @@ def text_to_speech(text: str, product_id: str) -> str:
 
     try:
         response = requests.post(
-            "https://api.elevenlabs.io/v1/text-to-speech/Josh",  # 남성 음성
+            f"https://api.elevenlabs.io/v1/text-to-speech/{ELEVENLABS_VOICE_ID}",
             headers=headers,
             json=data,
             timeout=60,
