@@ -1,4 +1,4 @@
-name: 🎬 Food Shorts ASMR 자동 생성
+name: Food Shorts ASMR Generate
 
 on:
   schedule:
