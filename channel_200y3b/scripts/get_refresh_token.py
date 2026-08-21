@@ -9,6 +9,7 @@ from Google Cloud Console (APIs & Services > Credentials).
 
 import argparse
 
+import requests
 from google_auth_oauthlib.flow import InstalledAppFlow
 
 SCOPES = ["https://www.googleapis.com/auth/youtube"]
@@ -37,6 +38,23 @@ def main():
     print(f"YT_CLIENT_ID:     {credentials.client_id}")
     print(f"YT_CLIENT_SECRET: {credentials.client_secret}")
     print(f"YT_REFRESH_TOKEN: {credentials.refresh_token}")
+
+    print("\nVerifying refresh token works (separate call, no manual copy)...")
+    resp = requests.post(
+        "https://oauth2.googleapis.com/token",
+        data={
+            "client_id": credentials.client_id,
+            "client_secret": credentials.client_secret,
+            "refresh_token": credentials.refresh_token,
+            "grant_type": "refresh_token",
+        },
+    )
+    print(f"Verification status: {resp.status_code}")
+    print(resp.text)
+    if resp.status_code == 200:
+        print("\n✅ Refresh token verified working.")
+    else:
+        print("\n❌ Refresh token verification FAILED — see response above.")
 
 
 if __name__ == "__main__":
