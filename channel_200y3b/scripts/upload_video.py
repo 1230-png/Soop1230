@@ -25,9 +25,10 @@ ROOT = Path(__file__).resolve().parent.parent
 SCOPES = ["https://www.googleapis.com/auth/youtube"]
 ENV_FILE = ROOT / ".env.youtube"
 
-# Coupang Partners affiliate info
-COUPANG_PARTNER_ID = "AF2646556"
-COUPANG_LINK = f"https://coupa.ng/ca/{COUPANG_PARTNER_ID}/search/영어%20학습"
+# Coupang Partners affiliate link — must be generated per-product at
+# partners.coupang.com (there's no formula to construct a working coupa.ng
+# link from just a partner ID). Empty until a real link is added.
+COUPANG_LINK = ""
 
 CHANNEL_ID = "UCEHRa1rmhcZNVm5F7Zz_ycw"  # @200-y3b
 
@@ -95,8 +96,11 @@ def upload_video(
     """
     youtube = get_youtube_client()
 
-    # Add Coupang Partners affiliate link to description
-    full_description = f"{description}\n\n📚 추천 상품: {COUPANG_LINK}"
+    # Add Coupang Partners affiliate link to description, if one is set
+    if COUPANG_LINK:
+        full_description = f"{description}\n\n📚 추천 상품: {COUPANG_LINK}"
+    else:
+        full_description = description
 
     # Upload video
     body = {
