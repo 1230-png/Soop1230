@@ -82,6 +82,8 @@ https://github.com/1230-png/Soop1230/actions/workflows/weird_shorts_publish.yml
 
 → **Run workflow** → 공개 범위 **private** (기본값) → 실행
 
+오디오 방식은 건드릴 필요 없습니다. 기본값 `narration`(나레이션 전용)으로 확정돼 있습니다.
+
 성공하면 YouTube Studio에 비공개 영상이 하나 올라와 있습니다. 확인 후 문제가 없으면
 다음부터는 매일 06:00(KST)에 자동으로 공개 업로드됩니다.
 

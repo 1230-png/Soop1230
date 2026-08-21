@@ -55,12 +55,15 @@ channel_food/
 
 ## 오디오
 
-`AUDIO_MODE` 환경변수로 고릅니다.
+**`narration`(나레이션 전용)으로 확정했습니다.** 별도로 설정할 것은 없습니다.
+
+`AUDIO_MODE` 환경변수로 바꿀 수 있지만, 두 값 모두 기본값이 `narration`이라
+그냥 두면 나레이션만 나옵니다.
 
 | 값 | 내용 |
 |---|---|
-| `narration` (기본) | edge-tts 한국어 나레이션만 |
-| `narration_ambience` | 나레이션 + 불길한 배경음 (`ambience` 필드 기준) |
+| `narration` (**확정된 기본값**) | edge-tts 한국어 나레이션만 |
+| `narration_ambience` (대안) | 나레이션 + 불길한 배경음 (`ambience` 필드 기준). 워크플로 수동 실행에서 골라 볼 수 있게 남겨 뒀습니다 |
 
 배경음 4종은 모두 ffmpeg로 실시간 합성합니다. 음원 파일도, 저작권도, API 키도 없습니다.
 
