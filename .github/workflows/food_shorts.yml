@@ -1,51 +1,77 @@
-name: 🍳 음식 쇼츠 생성 & 업로드
+name: Food Shorts ASMR Generate
+
 on:
   schedule:
-    - cron: '0 0,6,9,12 * * *'
+    - cron: '0 8,10,12,14 * * *'
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  publish:
+  generate:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v4
         with:
           python-version: '3.11'
-      - run: |
-          sudo apt-get update
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -qq
           sudo apt-get install -y ffmpeg fonts-noto-cjk
-      - working-directory: channel_food/scripts
+
+      - name: Create output directories
+        run: |
+          mkdir -p food_shorts/output/generated
+          mkdir -p food_shorts/output/logs
+          mkdir -p food_shorts/assets/sounds
+
+      - name: Install Python dependencies
         run: |
           pip install --upgrade pip
-          pip install -r requirements.txt
-      - working-directory: channel_food/scripts
+          pip install -r food_shorts/scripts/requirements.txt
+
+      - name: Generate video
         run: |
-          python3 generate_food_video.py > result.json
-          cat result.json
-      - id: parse
-        working-directory: channel_food/scripts
-        run: |
-          VIDEO_PATH=$(python3 -c "import json; r=json.load(open('result.json')); print(r['video_path'])")
-          METADATA_PATH=$(python3 -c "import json; r=json.load(open('result.json')); print(r['metadata_path'])")
-          echo "video_path=${VIDEO_PATH}" >> $GITHUB_OUTPUT
-          echo "metadata_path=${METADATA_PATH}" >> $GITHUB_OUTPUT
-      - working-directory: channel_food/scripts
+          cd food_shorts/scripts
+          python3 generate_video.py
         env:
-          FOOD_CLIENT_ID: ${{ secrets.FOOD_CLIENT_ID }}
-          FOOD_CLIENT_SECRET: ${{ secrets.FOOD_CLIENT_SECRET }}
-          FOOD_REFRESH_TOKEN: ${{ secrets.FOOD_REFRESH_TOKEN }}
+          PYTHONUNBUFFERED: '1'
+
+      - name: Check generated files
+        if: always()
         run: |
-          python3 upload_food_video.py \
-            --video-path "${{ steps.parse.outputs.video_path }}" \
-            --metadata-path "${{ steps.parse.outputs.metadata_path }}" \
-            --privacy-status public
-      - run: |
-          git config user.email "github-action@github.com"
-          git config user.name "GitHub Action"
-          git add channel_food/used_log.csv
-          git diff --cached --quiet || git commit -m "📹 음식 쇼츠 자동 생성 기록"
-          git push
+          echo "=== Generated Files ==="
+          ls -lh food_shorts/output/generated/ 2>/dev/null || echo "No files generated"
+          echo ""
+          echo "=== Usage Log ==="
+          tail -5 food_shorts/data/used_videos.csv 2>/dev/null || echo "No log file"
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: food-shorts-output
+          path: |
+            food_shorts/output/generated/
+            food_shorts/data/used_videos.csv
+          retention-days: 30
+
+      - name: Success notification
+        if: success()
+        run: |
+          echo "✅ Video generation completed successfully!"
+          echo "Files available in Artifacts: food-shorts-output"
+
+      - name: Failure notification
+        if: failure()
+        run: |
+          echo "❌ Video generation failed!"
+          echo "Check logs above for details."
