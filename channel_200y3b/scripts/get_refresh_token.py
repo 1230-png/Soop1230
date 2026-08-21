@@ -8,11 +8,13 @@ from Google Cloud Console (APIs & Services > Credentials).
 """
 
 import argparse
+from pathlib import Path
 
 import requests
 from google_auth_oauthlib.flow import InstalledAppFlow
 
 SCOPES = ["https://www.googleapis.com/auth/youtube"]
+ENV_FILE = Path(__file__).resolve().parent.parent / ".env.youtube"
 
 
 def main():
@@ -53,6 +55,13 @@ def main():
     print(resp.text)
     if resp.status_code == 200:
         print("\n✅ Refresh token verified working.")
+        ENV_FILE.write_text(
+            f"YT_CLIENT_ID={credentials.client_id}\n"
+            f"YT_CLIENT_SECRET={credentials.client_secret}\n"
+            f"YT_REFRESH_TOKEN={credentials.refresh_token}\n",
+            encoding="utf-8",
+        )
+        print(f"Saved to {ENV_FILE} — no manual copy/paste needed.")
     else:
         print("\n❌ Refresh token verification FAILED — see response above.")
 

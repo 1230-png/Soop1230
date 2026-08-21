@@ -23,6 +23,7 @@ from googleapiclient.http import MediaFileUpload
 
 ROOT = Path(__file__).resolve().parent.parent
 SCOPES = ["https://www.googleapis.com/auth/youtube.upload"]
+ENV_FILE = ROOT / ".env.youtube"
 
 # Coupang Partners affiliate info
 COUPANG_PARTNER_ID = "AF2646556"
@@ -31,8 +32,22 @@ COUPANG_LINK = f"https://coupa.ng/ca/{COUPANG_PARTNER_ID}/search/영어%20학습
 CHANNEL_ID = "UCEHRa1rmhcZNVm5F7Zz_ycw"  # @200-y3b
 
 
+def _load_env_file():
+    """Load YT_* values from .env.youtube (written by get_refresh_token.py)
+    into os.environ if not already set, so no manual copy/paste is needed."""
+    if not ENV_FILE.exists():
+        return
+    for line in ENV_FILE.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or "=" not in line:
+            continue
+        key, _, value = line.partition("=")
+        os.environ.setdefault(key.strip(), value.strip())
+
+
 def get_youtube_client():
     """Get authorized YouTube API client using GitHub Secrets environment variables."""
+    _load_env_file()
     client_id = os.environ.get("YT_CLIENT_ID")
     client_secret = os.environ.get("YT_CLIENT_SECRET")
     refresh_token = os.environ.get("YT_REFRESH_TOKEN")
