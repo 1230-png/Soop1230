@@ -131,20 +131,26 @@ JSON으로 반환하세요."""
         print(f"⚠️ Groq API 키 없음, fallback 리뷰 사용", file=sys.stderr)
 
     # Fallback
-        return {
-            "title": f"{product['name']} 리뷰",
-            "summary_short": product["description"],
-            "pros": product.get("specs", ["좋은 기능"])[:3],
-            "cons": ["더 알아봐야 함"],
-            "rating": 4.0,
-            "verdict": "좋은 제품입니다.",
-            "recommended_for": ["일반 사용자"],
-            "price_verdict": "합리적인 가격",
-            "affiliate_tip": "링크를 통해 구매하세요",
-            "product_name": product["name"],
-            "product_price": product["price"],
-            "generated_at": datetime.now().isoformat(),
-        }
+    specs_list = product.get("specs", ["좋은 기능"])
+    if isinstance(specs_list, str):
+        try:
+            specs_list = json.loads(specs_list)
+        except Exception:
+            specs_list = [specs_list] if specs_list else ["좋은 기능"]
+    return {
+        "title": f"{product['name']} 리뷰",
+        "summary_short": product["description"],
+        "pros": specs_list[:3],
+        "cons": ["더 알아봐야 함"],
+        "rating": 4.0,
+        "verdict": "좋은 제품입니다.",
+        "recommended_for": ["일반 사용자"],
+        "price_verdict": "합리적인 가격",
+        "affiliate_tip": "링크를 통해 구매하세요",
+        "product_name": product["name"],
+        "product_price": product["price"],
+        "generated_at": datetime.now().isoformat(),
+    }
 
 
 def main():
