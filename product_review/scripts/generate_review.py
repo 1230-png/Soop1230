@@ -84,48 +84,53 @@ def generate_review(product: dict) -> dict:
 
 JSON으로 반환하세요."""
 
-    try:
-        response = requests.post(
-            GROQ_API_URL,
-            headers={
-                "Authorization": f"Bearer {GROQ_API_KEY}",
-                "Content-Type": "application/json",
-            },
-            json={
-                "model": "mixtral-8x7b-32768",
-                "messages": [
-                    {"role": "system", "content": system_message},
-                    {"role": "user", "content": prompt},
-                ],
-                "temperature": 0.7,
-                "max_tokens": 800,
-            },
-            timeout=30,
-        )
+    # Groq API 사용 (API 키가 없으면 fallback 사용)
+    if GROQ_API_KEY and GROQ_API_KEY != "your_key":
+        try:
+            response = requests.post(
+                GROQ_API_URL,
+                headers={
+                    "Authorization": f"Bearer {GROQ_API_KEY}",
+                    "Content-Type": "application/json",
+                },
+                json={
+                    "model": "mixtral-8x7b-32768",
+                    "messages": [
+                        {"role": "system", "content": system_message},
+                        {"role": "user", "content": prompt},
+                    ],
+                    "temperature": 0.7,
+                    "max_tokens": 800,
+                },
+                timeout=30,
+            )
 
-        response.raise_for_status()
-        result = response.json()
+            response.raise_for_status()
+            result = response.json()
 
-        content = result["choices"][0]["message"]["content"]
+            content = result["choices"][0]["message"]["content"]
 
-        # JSON 파싱
-        if "```json" in content:
-            content = content.split("```json")[1].split("```")[0]
-        elif "```" in content:
-            content = content.split("```")[1].split("```")[0]
+            # JSON 파싱
+            if "```json" in content:
+                content = content.split("```json")[1].split("```")[0]
+            elif "```" in content:
+                content = content.split("```")[1].split("```")[0]
 
-        review = json.loads(content.strip())
+            review = json.loads(content.strip())
 
-        # 메타데이터 추가
-        review["product_name"] = product["name"]
-        review["product_price"] = product["price"]
-        review["generated_at"] = datetime.now().isoformat()
+            # 메타데이터 추가
+            review["product_name"] = product["name"]
+            review["product_price"] = product["price"]
+            review["generated_at"] = datetime.now().isoformat()
 
-        return review
+            return review
 
-    except Exception as e:
-        print(f"❌ Groq API 에러: {e}", file=sys.stderr)
-        # Fallback
+        except Exception as e:
+            print(f"⚠️ Groq API 에러: {e}, fallback 사용", file=sys.stderr)
+    else:
+        print(f"⚠️ Groq API 키 없음, fallback 리뷰 사용", file=sys.stderr)
+
+    # Fallback
         return {
             "title": f"{product['name']} 리뷰",
             "summary_short": product["description"],
