@@ -41,12 +41,16 @@ jobs:
 
       - name: Generate reviews
         id: review
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
         run: |
           cat products.json | python product_review/scripts/generate_review.py > reviews.json
           cat reviews.json
 
       - name: Generate videos
         id: video
+        env:
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
         run: |
           cat reviews.json | python product_review/scripts/generate_video.py > videos.json
           cat videos.json
