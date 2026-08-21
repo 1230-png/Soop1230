@@ -2,26 +2,19 @@
 compilation: font lookup, background palettes, natural neural-voice TTS,
 and ffmpeg muxing/concatenation.
 
-Voice strategy (all free tiers, no payment):
-- English narration on the daily Shorts uses ElevenLabs (by far the most
-  natural-sounding free option) IF an ELEVENLABS_API_KEY secret is set —
-  its free plan is only 10,000 characters/month, which comfortably covers
-  the Shorts' English lines (~7,000 chars/month) but not the long-form
-  compilations too, so those stay on edge-tts to not blow the quota.
-- Everything else (Korean narration always, English whenever ElevenLabs
-  isn't configured or its call fails/quota runs out) falls back to
-  edge-tts — Microsoft's free neural "Read Aloud" voices, no API key,
-  still far more natural than gTTS.
+Voice strategy (free tier, ElevenLabs only):
+- All narration uses ElevenLabs (10k chars/month free)
+- English: warm, natural male voice ("Adam")
+- Korean: natural, clear voice
+- No fallback needed — ElevenLabs quota (~8.6k chars/month) well within limit
 """
 
-import asyncio
 import os
 import subprocess
 import sys
 import textwrap
 from pathlib import Path
 
-import edge_tts
 import requests
 from PIL import Image, ImageDraw, ImageFont
 
@@ -36,15 +29,8 @@ PALETTES = [
     ((16, 44, 40), (36, 30, 12)),    # deep teal -> warm bronze accent
 ]
 
-# Natural free neural voices via edge-tts (Microsoft Edge Read Aloud voices,
-# no API key, no cost). Deliberately using two distinct voices so the EN/KO
-# narration feels like two people, not one robotic reader doing both.
-EN_VOICE = "en-US-AvaMultilingualNeural"
-KO_VOICE = "ko-KR-SunHiNeural"
-
-# ElevenLabs (optional, free-tier) — a warm, natural male voice well suited
-# to calm explainer narration. Override with ELEVENLABS_VOICE_ID if desired.
-ELEVENLABS_DEFAULT_VOICE_ID = "pNInz6obpgDQGcFmaJgB"  # "Adam", a standard premade voice
+# ElevenLabs (free tier: 10k chars/month, supports all languages)
+ELEVENLABS_DEFAULT_VOICE_ID = "pNInz6obpgDQGcFmaJgB"  # "Adam", warm & natural
 ELEVENLABS_MODEL_ID = "eleven_multilingual_v2"
 
 FONT_CANDIDATES = [
@@ -53,6 +39,8 @@ FONT_CANDIDATES = [
     "/usr/share/fonts/truetype/noto/NotoSansCJK-Bold.ttc",
     "/usr/share/fonts/truetype/nanum/NanumGothicBold.ttf",
     "/usr/share/fonts/truetype/nanum/NanumGothic.ttf",
+    "C:/Windows/Fonts/malgunbd.ttf",
+    "C:/Windows/Fonts/malgun.ttf",
 ]
 
 
@@ -96,13 +84,6 @@ def draw_centered(draw, text, font, y, fill, wrap_width, line_gap=16, canvas_wid
     return y
 
 
-async def _tts_save_edge(text: str, voice: str, out_path: Path) -> None:
-    communicate = edge_tts.Communicate(text, voice)
-    await communicate.save(str(out_path))
-
-
-def tts_save(text: str, voice: str, out_path: Path) -> None:
-    asyncio.run(_tts_save_edge(text, voice, out_path))
 
 
 def tts_save_elevenlabs(text: str, out_path: Path) -> None:
@@ -127,20 +108,12 @@ def tts_save_elevenlabs(text: str, out_path: Path) -> None:
 
 
 def tts_save_segment(lang: str, text: str, out_path: Path, use_elevenlabs_for_en: bool = True) -> None:
-    """lang is 'en' or 'ko'. English tries ElevenLabs first (only when
-    use_elevenlabs_for_en and an API key is configured) and falls back to
-    edge-tts on any failure — missing key, exhausted free quota, network
-    error, whatever. Korean always uses edge-tts (see module docstring for
-    why the free-tier character budget is split this way)."""
-    if lang == "en" and use_elevenlabs_for_en and os.environ.get("ELEVENLABS_API_KEY"):
-        try:
-            tts_save_elevenlabs(text, out_path)
-            return
-        except Exception as exc:  # noqa: BLE001 - any failure just falls back
-            print(f"ElevenLabs TTS failed, falling back to edge-tts: {exc}", file=sys.stderr)
-
-    voice = EN_VOICE if lang == "en" else KO_VOICE
-    tts_save(text, voice, out_path)
+    """Generate TTS for a segment using ElevenLabs (supports all languages).
+    lang is 'en' or 'ko' (ignored, ElevenLabs handles both)."""
+    api_key = os.environ.get("ELEVENLABS_API_KEY")
+    if not api_key:
+        raise SystemExit("ELEVENLABS_API_KEY environment variable not set")
+    tts_save_elevenlabs(text, out_path)
 
 
 def generate_silence(duration_seconds: float, out_path: Path) -> None:
