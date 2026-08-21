@@ -1,6 +1,7 @@
 channel_200y3b/output/
 channel_food/output/
 food_shorts/output/
+today_eat/output/
 __pycache__/
 *.pyc
 *.pyo
@@ -8,3 +9,5 @@ __pycache__/
 client_secret*.json
 .env
 .env.local
+product_review/output/
+product_review/assets/

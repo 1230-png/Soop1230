@@ -1,0 +1,98 @@
+name: Growth Tips - 자기계발 팁 Shorts 자동 업로드
+
+on:
+  schedule:
+    # 매일 10:00 KST (UTC 01:00) - 아침
+    - cron: '0 1 * * *'
+    # 매일 20:00 KST (UTC 11:00) - 저녁
+    - cron: '0 11 * * *'
+  workflow_dispatch:  # 수동 실행
+
+jobs:
+  generate-and-upload:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: 저장소 클론
+        uses: actions/checkout@v4
+
+      - name: Python 설정 (3.11)
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: 의존성 설치
+        working-directory: ./growth_tips
+        run: |
+          pip install -r scripts/requirements.txt
+          apt-get update
+          apt-get install -y ffmpeg ffprobe
+
+      - name: 1️⃣ 자기계발 팁 10개 생성
+        working-directory: ./growth_tips
+        id: generate
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: |
+          python3 scripts/generate_tips.py 10 > tips.json 2>&1
+          cat tips.json
+          echo "tips_generated=true" >> $GITHUB_OUTPUT
+
+      - name: 2️⃣ Shorts 영상 생성 (배경 + 텍스트)
+        working-directory: ./growth_tips
+        id: shorts
+        if: steps.generate.outputs.tips_generated == 'true'
+        env:
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+        run: |
+          python3 scripts/generate_shorts.py < tips.json > shorts.json 2>&1
+          cat shorts.json
+          echo "shorts_created=true" >> $GITHUB_OUTPUT
+
+      - name: 3️⃣ YouTube Shorts 일괄 업로드
+        working-directory: ./growth_tips
+        id: upload
+        if: steps.shorts.outputs.shorts_created == 'true'
+        env:
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+        run: |
+          python3 scripts/upload_shorts.py < shorts.json > upload_result.json 2>&1
+          cat upload_result.json
+
+      - name: 📊 성공 로그 기록
+        if: steps.upload.outputs.shorts_created == 'true'
+        run: |
+          echo "✅ $(date '+%Y-%m-%d %H:%M:%S') - 10개 Shorts 업로드 성공" >> growth_tips/upload.log
+          git config user.name "Claude Automation"
+          git config user.email "automation@claude.ai"
+          git add growth_tips/upload.log
+          git commit -m "📊 Growth Tips: $(date '+%Y-%m-%d %H:%M') - 10 shorts uploaded" || true
+          git push
+
+      - name: ❌ 실패 알림
+        if: failure()
+        run: |
+          echo "⚠️ Growth Tips 업로드 실패"
+          echo "시간: $(date '+%Y-%m-%d %H:%M:%S')"
+          echo "로그: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+  # 일일 정리
+  cleanup:
+    runs-on: ubuntu-latest
+    needs: generate-and-upload
+    if: always()
+    steps:
+      - name: 저장소 클론
+        uses: actions/checkout@v4
+
+      - name: 임시 파일 정리
+        run: |
+          rm -f growth_tips/output/*.mp4
+          rm -f growth_tips/assets/*_bg.mp4
+          rm -f growth_tips/assets/*_fallback.mp4
+          echo "정리 완료: $(du -sh growth_tips/)"
+
