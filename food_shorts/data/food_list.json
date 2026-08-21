@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "title": "집에서 만드는 마라탕",
+    "korean": "매콤한 마라탕",
+    "description": "마라향 가득한 집밥 마라탕. 채소와 두부를 듬뿍 넣어 건강하고 맛있게!",
+    "sound_type": "불,국물",
+    "steps": [
+      "야채 깎는 소리가 알싸한 마라탕",
+      "끓는 육수가 맴맴~ 곧 완성",
+      "입안에 톡 터지는 마라향"
+    ],
+    "tags": ["#마라탕", "#ASMR", "#요리"],
+    "coupang_link": "https://www.coupang.com/vp/products/example"
+  },
+  {
+    "id": 2,
+    "title": "편의점 라면 업그레이드 하기",
+    "korean": "고급진 라면 요리",
+    "description": "편의점 라면을 계란과 야채로 업그레이드! 집에서 쉽게 만드는 고급 요리.",
+    "sound_type": "불,기름,국물",
+    "steps": [
+      "물이 끓는 소리",
+      "야채 썰리는 소리",
+      "라면 국물이 졸아드는 소리"
+    ],
+    "tags": ["#라면", "#ASMR", "#요리"],
+    "coupang_link": "https://www.coupang.com/vp/products/example"
+  },
+  {
+    "id": 3,
+    "title": "초간단 계란말이 만드는법",
+    "korean": "촉촉한 계란말이",
+    "description": "누구나 쉽게 만들 수 있는 계란말이. 불에 구워지는 소리가 정말 ASMR!",
+    "sound_type": "기름,계란",
+    "steps": [
+      "계란을 풀때 나는 소리",
+      "팬에서 지글지글~ 계란 익는 소리",
+      "계란말이를 말때 나는 살랑거리는 소리"
+    ],
+    "tags": ["#계란말이", "#ASMR", "#요리"],
+    "coupang_link": "https://www.coupang.com/vp/products/example"
+  },
+  {
+    "id": 4,
+    "title": "바삭한 튀김의 정석",
+    "korean": "황금색 튀김",
+    "description": "기름에서 톡톡 터지는 소리가 매력적인 튀김. 정말 맛있어 보여요!",
+    "sound_type": "기름,불",
+    "steps": [
+      "재료를 입힐때의 소리",
+      "기름에서 튀길때 톡톡 터지는 소리",
+      "완성되어 식히는 소리"
+    ],
+    "tags": ["#튀김", "#ASMR", "#요리"],
+    "coupang_link": "https://www.coupang.com/vp/products/example"
+  }
+]
