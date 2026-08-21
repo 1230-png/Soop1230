@@ -22,7 +22,7 @@ from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 
 ROOT = Path(__file__).resolve().parent.parent
-SCOPES = ["https://www.googleapis.com/auth/youtube.upload"]
+SCOPES = ["https://www.googleapis.com/auth/youtube"]
 ENV_FILE = ROOT / ".env.youtube"
 
 # Coupang Partners affiliate info
