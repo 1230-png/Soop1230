@@ -64,7 +64,6 @@ def generate_review(product: dict) -> dict:
 }"""
 
     specs = product.get('specs', [])
-    # specs가 문자열인 경우 JSON으로 파싱
     if isinstance(specs, str):
         try:
             specs = json.loads(specs)
