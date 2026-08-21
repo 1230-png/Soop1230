@@ -18,47 +18,48 @@ jobs:
       - name: 📥 저장소 클론
         uses: actions/checkout@v4
 
-      - name: 🐍 Python 설정
+      - name: 🐍 Python 3.11 설정
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
-      - name: 📦 의존성 설치
+      - name: 🎬 FFmpeg 설치
         run: |
-          python -m pip install --upgrade pip
-          pip install -r food_shorts/scripts/requirements.txt
-
-      - name: 🎬 ffmpeg 설치
-        run: |
-          sudo apt-get update
+          sudo apt-get update -qq
           sudo apt-get install -y ffmpeg
 
       - name: 🌐 한글 폰트 설치
         run: |
           sudo apt-get install -y fonts-noto-cjk
 
-      - name: 📁 폴더 구조 생성
+      - name: 📦 Python 의존성 설치
         run: |
-          mkdir -p /tmp/food-shorts-output
+          pip install --upgrade pip
+          pip install -r food_shorts/scripts/requirements.txt
+
+      - name: 📁 출력 폴더 생성
+        run: |
+          mkdir -p food_shorts/output/generated
+          mkdir -p food_shorts/output/logs
           mkdir -p food_shorts/assets/sounds
 
       - name: 🎥 영상 생성
         run: |
-          cd /home/runner/work/Soop1230/Soop1230
-          python3 food_shorts/scripts/generate_video.py > /tmp/generate_output.json 2>&1
+          cd food_shorts/scripts
+          python3 generate_video.py
         env:
           PYTHONUNBUFFERED: '1'
 
-      - name: 📤 결과 확인
+      - name: 📋 생성 결과 확인
         if: always()
         run: |
-          echo "=== Generation Output ==="
-          cat /tmp/generate_output.json 2>/dev/null || echo "No output file"
+          echo "=== 생성된 파일 ==="
+          ls -lh food_shorts/output/generated/ 2>/dev/null || echo "파일 없음"
           echo ""
-          echo "=== Generated Files ==="
-          ls -lh food_shorts/output/generated/ 2>/dev/null || echo "No files generated"
+          echo "=== 사용 기록 ==="
+          cat food_shorts/data/used_videos.csv 2>/dev/null || echo "기록 없음"
 
-      - name: 💾 아티팩트 저장
+      - name: 💾 아티팩트 업로드
         if: always()
         uses: actions/upload-artifact@v3
         with:
@@ -68,22 +69,14 @@ jobs:
             food_shorts/data/used_videos.csv
           retention-days: 30
 
-      - name: 📝 로그 저장
-        if: always()
-        run: |
-          mkdir -p food_shorts/output/logs
-          echo "[$(date)] Video generation run completed" >> food_shorts/output/logs/github_actions.log
-          cat food_shorts/output/logs/github_actions.log >> /tmp/run.log 2>/dev/null || true
-
-      - name: ✅ 완료 알림
+      - name: ✅ 완료
         if: success()
         run: |
           echo "✅ 영상 생성 완료!"
-          echo "생성 폴더: food_shorts/output/generated/"
-          echo "메타데이터: food_shorts/output/generated/metadata_*.json"
+          echo "다운로드: Actions → Artifacts → food-shorts-output"
 
-      - name: ❌ 실패 알림
+      - name: ❌ 실패
         if: failure()
         run: |
           echo "❌ 영상 생성 실패!"
-          cat /tmp/generate_output.json 2>/dev/null || echo "No error log"
+          echo "로그 확인: Actions → 실행 기록 → 로그"
