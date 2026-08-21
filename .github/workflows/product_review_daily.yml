@@ -54,9 +54,9 @@ jobs:
       - name: Upload to YouTube
         id: upload
         env:
-          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
-          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
-          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          YOUTUBE_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
           COUPANG_AFFILIATE_ID: ${{ secrets.COUPANG_AFFILIATE_ID }}
         run: |
           cat videos.json | python product_review/scripts/upload_review.py > upload_result.json
