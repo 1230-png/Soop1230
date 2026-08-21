@@ -1,0 +1,82 @@
+name: 🎬 Food Shorts ASMR 자동 생성
+
+on:
+  schedule:
+    # UTC: 8, 10, 12, 14 = KST: 17:00, 19:00, 21:00, 23:00
+    - cron: '0 8,10,12,14 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  generate-video:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: 📥 저장소 클론
+        uses: actions/checkout@v4
+
+      - name: 🐍 Python 3.11 설정
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: 🎬 FFmpeg 설치
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg
+
+      - name: 🌐 한글 폰트 설치
+        run: |
+          sudo apt-get install -y fonts-noto-cjk
+
+      - name: 📦 Python 의존성 설치
+        run: |
+          pip install --upgrade pip
+          pip install -r food_shorts/scripts/requirements.txt
+
+      - name: 📁 출력 폴더 생성
+        run: |
+          mkdir -p food_shorts/output/generated
+          mkdir -p food_shorts/output/logs
+          mkdir -p food_shorts/assets/sounds
+
+      - name: 🎥 영상 생성
+        run: |
+          cd food_shorts/scripts
+          python3 generate_video.py
+        env:
+          PYTHONUNBUFFERED: '1'
+
+      - name: 📋 생성 결과 확인
+        if: always()
+        run: |
+          echo "=== 생성된 파일 ==="
+          ls -lh food_shorts/output/generated/ 2>/dev/null || echo "파일 없음"
+          echo ""
+          echo "=== 사용 기록 ==="
+          cat food_shorts/data/used_videos.csv 2>/dev/null || echo "기록 없음"
+
+      - name: 💾 아티팩트 업로드
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: food-shorts-output
+          path: |
+            food_shorts/output/generated/
+            food_shorts/data/used_videos.csv
+          retention-days: 30
+
+      - name: ✅ 완료
+        if: success()
+        run: |
+          echo "✅ 영상 생성 완료!"
+          echo "다운로드: Actions → Artifacts → food-shorts-output"
+
+      - name: ❌ 실패
+        if: failure()
+        run: |
+          echo "❌ 영상 생성 실패!"
+          echo "로그 확인: Actions → 실행 기록 → 로그"
