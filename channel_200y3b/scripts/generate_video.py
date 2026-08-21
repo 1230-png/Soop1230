@@ -21,7 +21,10 @@ import common
 ROOT = Path(__file__).resolve().parent.parent
 PHRASE_BANK = ROOT / "scripts" / "phrase_bank.json"
 USED_LOG = ROOT / "used_log.csv"
-OUTPUT_DIR = ROOT / "output"
+# Defaults to a repo-local folder for local runs; CI sets SHORTS_OUTPUT_DIR
+# to the runner's temp directory so generated videos/audio never get
+# committed to git.
+OUTPUT_DIR = Path(os.environ.get("SHORTS_OUTPUT_DIR", ROOT / "output"))
 
 WIDTH, HEIGHT = common.WIDTH, common.HEIGHT
 
@@ -106,7 +109,7 @@ def append_log(row: dict) -> None:
 
 
 def main():
-    OUTPUT_DIR.mkdir(exist_ok=True)
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     font_path = common.find_korean_font()
 
     phrase = pick_next_phrase()
@@ -144,7 +147,7 @@ def main():
         "phrase_en": phrase["phrase_en"],
         "meaning_ko": phrase["meaning_ko"],
         "video_title": metadata["title"],
-        "video_file": str(video_path.relative_to(ROOT)),
+        "video_file": os.path.relpath(video_path, ROOT),
         "youtube_video_id": "",
         "status": "generated",
     })
