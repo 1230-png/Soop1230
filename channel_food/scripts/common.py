@@ -1,24 +1,22 @@
-"""Shared helpers for both the daily Shorts and the weekly long-form
-compilation: font lookup, background palettes, natural neural-voice TTS,
-and ffmpeg muxing/concatenation.
+"""Shared helpers for the daily Shorts pipeline: font lookup, background
+palettes, free neural-voice TTS, ffmpeg muxing/concatenation, ambience
+synthesis, and the daily-upload guard.
 
-Voice strategy (all free tiers, no payment):
-- English narration on the daily Shorts uses ElevenLabs (by far the most
-  natural-sounding free option) IF an ELEVENLABS_API_KEY secret is set —
-  its free plan is only 10,000 characters/month, which comfortably covers
-  the Shorts' English lines (~7,000 chars/month) but not the long-form
-  compilations too, so those stay on edge-tts to not blow the quota.
-- Everything else (Korean narration always, English whenever ElevenLabs
-  isn't configured or its call fails/quota runs out) falls back to
-  edge-tts — Microsoft's free neural "Read Aloud" voices, no API key,
-  still far more natural than gTTS.
+Voice strategy (100% free, no API key, no payment):
+- All narration goes through edge-tts, Microsoft's free neural "Read Aloud"
+  voices. The ElevenLabs helpers below are retained for the sibling channel
+  that still uses them, but this channel never calls them —
+  `tts_save_segment(..., use_elevenlabs_for_en=False)` keeps that path cold.
 """
 
 import asyncio
+import csv
+import datetime
 import os
 import subprocess
 import sys
 import textwrap
+import zlib
 from pathlib import Path
 
 import edge_tts
@@ -34,6 +32,15 @@ PALETTES = [
     ((18, 38, 68), (10, 58, 56)),    # navy -> teal (primary)
     ((28, 24, 58), (12, 46, 58)),    # indigo -> teal
     ((16, 44, 40), (36, 30, 12)),    # deep teal -> warm bronze accent
+]
+
+# "기묘한 현실" 전용 팔레트. 위의 네이비/틸 계열은 밝고 정보성이라
+# 기괴한 현상 콘텐츠의 톤과 맞지 않아, 심연 블루/적갈색 계열로 따로 둔다.
+WEIRD_PALETTES = [
+    ((10, 12, 20), (28, 10, 14)),    # 심연 블랙 -> 마른 핏빛
+    ((8, 16, 24), (6, 30, 34)),      # 深海 블루 -> 차가운 청록
+    ((20, 10, 24), (34, 16, 10)),    # 자줏빛 어둠 -> 녹슨 적갈
+    ((14, 14, 14), (30, 26, 8)),     # 무채색 -> 병든 황토
 ]
 
 # Natural free neural voices via edge-tts (Microsoft Edge Read Aloud voices,
@@ -67,8 +74,14 @@ def find_korean_font() -> str:
     )
 
 
-def pick_palette(seed: str):
-    return PALETTES[hash(seed) % len(PALETTES)]
+def pick_palette(seed: str, palettes=None):
+    """seed에 대해 항상 같은 팔레트를 돌려준다.
+
+    hash()는 PYTHONHASHSEED로 프로세스마다 랜덤화되므로 실행할 때마다
+    색이 바뀐다. crc32는 프로세스와 무관하게 결정적이다.
+    """
+    table = PALETTES if palettes is None else palettes
+    return table[zlib.crc32(seed.encode("utf-8")) % len(table)]
 
 
 def make_background(top_color, bottom_color) -> Image.Image:
@@ -162,7 +175,11 @@ def synthesize_narration(segments, out_path: Path, trailing_silence: float = 0.0
     the raw mp3 bytes — both edge-tts and ElevenLabs output constant-bitrate
     mp3, so sequential concatenation plays back fine (same trick used for the
     previous gTTS pipeline). trailing_silence adds a pause at the end (e.g.
-    reading time in a compilation) by appending a generated silent clip."""
+    reading time in a compilation) by appending a generated silent clip.
+
+    주의: 이 바이트 접합 결과는 재생은 되지만 중간에 프레임 헤더가 남아
+    ffmpeg 필터에 넣으면 "Header missing"이 뜬다. 필터링할 오디오가
+    필요하면 concat_audio()를 쓸 것. (이 채널은 concat_audio만 쓴다.)"""
     tmp_dir = out_path.parent
     seg_paths = []
     for i, (lang, text) in enumerate(segments):
@@ -179,6 +196,28 @@ def synthesize_narration(segments, out_path: Path, trailing_silence: float = 0.0
         for seg_path in seg_paths:
             out_f.write(seg_path.read_bytes())
             seg_path.unlink()
+
+
+def concat_audio(parts, out_path: Path) -> Path:
+    """오디오 파일들을 이어 붙여 하나의 깨끗한 mp3로 만든다.
+
+    원시 mp3 바이트를 그냥 이어 붙이면 중간에 프레임 헤더가 남아
+    "Header missing"이 뜨고, 그 깨진 스트림을 libmp3lame으로 다시 인코딩하면
+    psymodel assertion으로 ffmpeg가 SIGABRT로 죽는다.
+    concat demuxer로 디코딩한 뒤 한 번에 재인코딩해야 안전하다.
+    """
+    filelist = out_path.parent / f"{out_path.stem}_concat.txt"
+    filelist.write_text(
+        "".join(f"file '{Path(p).resolve()}'\n" for p in parts), encoding="utf-8"
+    )
+    subprocess.run(
+        ["ffmpeg", "-y", "-hide_banner", "-loglevel", "error",
+         "-f", "concat", "-safe", "0", "-i", str(filelist),
+         "-acodec", "libmp3lame", "-q:a", "4", str(out_path)],
+        check=True, capture_output=True,
+    )
+    filelist.unlink(missing_ok=True)
+    return out_path
 
 
 def mux_video(image_path: Path, audio_path: Path, out_path: Path) -> None:
@@ -265,193 +304,168 @@ def concat_videos(clip_paths, out_path: Path) -> None:
     filelist.unlink()
 
 
+
 # ============================================================================
-# 🎵 Food Sound Effects System - ASMR 오디오 효과음 추가
+# 앰비언스 합성 — 샘플 파일 없이 ffmpeg만으로 불길한 배경음을 만든다.
+# 외부 API도, 저작권 있는 음원도 쓰지 않으므로 100% 무료다.
 # ============================================================================
 
-FOOD_SOUND_LIBRARY = {
-    # Cooking sounds
-    "water_boiling": {"duration": 3.0, "volume": 0.4},
-    "soup_bubbling": {"duration": 2.5, "volume": 0.35},
-    "stew_simmering": {"duration": 4.0, "volume": 0.3},
-    "noodles_cooking": {"duration": 2.0, "volume": 0.35},
-    "noodles_stirring": {"duration": 2.5, "volume": 0.4},
-    "pasta_cooking": {"duration": 3.0, "volume": 0.35},
-
-    # Frying sounds
-    "sizzle_fry": {"duration": 3.0, "volume": 0.6},
-    "hot_oil_sizzle": {"duration": 3.5, "volume": 0.65},
-    "frying_crackling": {"duration": 4.0, "volume": 0.6},
-    "butter_sizzling": {"duration": 2.5, "volume": 0.5},
-    "dumpling_splashing": {"duration": 2.0, "volume": 0.45},
-
-    # Preparation sounds
-    "cutting_knife": {"duration": 2.0, "volume": 0.4},
-    "egg_beating": {"duration": 2.5, "volume": 0.45},
-    "egg_frying": {"duration": 1.5, "volume": 0.35},
-    "egg_dropping": {"duration": 0.8, "volume": 0.3},
-
-    # ASMR-style eating sounds
-    "chewing": {"duration": 2.0, "volume": 0.35},
-    "slurping": {"duration": 1.5, "volume": 0.4},
-    "crunching_coating": {"duration": 1.5, "volume": 0.45},
-    "sipping": {"duration": 1.2, "volume": 0.3},
-
-    # Ambient/machine sounds
-    "air_fryer_fan": {"duration": 3.0, "volume": 0.25},
-    "timer_beeping": {"duration": 0.5, "volume": 0.4},
-    "pan_clattering": {"duration": 1.0, "volume": 0.35},
-    "unwrapping_packaging": {"duration": 1.5, "volume": 0.3},
-    "sauce_pouring": {"duration": 1.5, "volume": 0.4},
+# anoisesrc의 c= 는 채널 수가 아니라 노이즈 색이다(white/pink/brown/blue/violet).
+# 색을 골라 쓰면 EQ를 따로 걸지 않아도 대략의 대역이 잡힌다.
+AMBIENCE_LIBRARY = {
+    # 낮게 깔리는 지속음. 대부분의 영상에 바탕으로 깔린다.
+    "low_drone": [
+        "-f", "lavfi", "-i", "sine=f=45:d={d}",
+        "-f", "lavfi", "-i", "anoisesrc=a=0.25:r=44100:c=brown:d={d}",
+        "-filter_complex",
+        "[0]volume=0.5[s];[1]lowpass=f=200,volume=0.6[n];[s][n]amix=inputs=2:duration=shortest",
+    ],
+    # 72bpm 정도로 맥동하는 저음. 긴장감을 만든다.
+    "heartbeat": [
+        "-f", "lavfi", "-i", "sine=f=60:d={d}",
+        "-af", "apulsator=hz=1.2:amount=1,volume=0.6",
+    ],
+    # 바람이 새는 듯한 중저역 노이즈.
+    "wind_howl": [
+        "-f", "lavfi", "-i", "anoisesrc=a=0.4:r=44100:c=pink:d={d}",
+        "-af", "bandpass=f=140:width_type=o:w=2,volume=0.7",
+    ],
+    # 아주 옅은 고역 잡음. 오래된 녹음 같은 질감을 준다.
+    "static_hiss": [
+        "-f", "lavfi", "-i", "anoisesrc=a=0.15:r=44100:c=white:d={d}",
+        "-af", "highpass=f=3000,volume=0.4",
+    ],
 }
 
+# 나레이션 대비 배경음 비율. 말소리를 덮지 않도록 낮게 잡는다.
+AMBIENCE_GAIN = 0.18
 
-def generate_food_sound_effect(sound_type: str, duration_sec: float, out_path: Path) -> Path:
-    """
-    음식 소리 효과를 ffmpeg 신테사이저로 생성합니다.
-    (프로토타입: 톤 기반 ASMR 배경음 생성)
-    """
-    sound_config = FOOD_SOUND_LIBRARY.get(sound_type, {"duration": 2.0, "volume": 0.4})
 
-    # 각 음식 소리 유형별 톤 주파수 할당 (ASMR 느낌)
-    frequencies = {
-        # 저음 (65-125 Hz) - 물 끓는 소리, 냄비 소리
-        "water_boiling": 85,
-        "soup_bubbling": 75,
-        "stew_simmering": 70,
-        "pan_clattering": 120,
+def probe_duration(path: Path) -> float:
+    """ffprobe로 오디오/비디오 길이를 초 단위로 잰다. 실패하면 0.0."""
+    try:
+        out = subprocess.run(
+            [
+                "ffprobe", "-v", "error",
+                "-show_entries", "format=duration",
+                "-of", "default=noprint_wrappers=1:nokey=1",
+                str(path),
+            ],
+            check=True, capture_output=True, text=True,
+        )
+        return float(out.stdout.strip())
+    except (subprocess.CalledProcessError, ValueError):
+        return 0.0
 
-        # 중저음 (125-250 Hz) - 면 요리, 프라이
-        "noodles_cooking": 160,
-        "noodles_stirring": 150,
-        "pasta_cooking": 140,
-        "sizzle_fry": 200,
-        "hot_oil_sizzle": 180,
 
-        # 중음 (250-500 Hz) - 계란, 튀김
-        "egg_beating": 320,
-        "egg_frying": 300,
-        "frying_crackling": 280,
-        "butter_sizzling": 250,
-        "crunching_coating": 400,
-
-        # 중고음 (500-2000 Hz) - 식음 소리
-        "chewing": 600,
-        "slurping": 800,
-        "sipping": 700,
-
-        # 고음 (2000+ Hz) - 칼, 타이머
-        "cutting_knife": 2500,
-        "timer_beeping": 3000,
-        "egg_dropping": 1500,
-        "unwrapping_packaging": 1200,
-
-        # 기계음
-        "air_fryer_fan": 180,
-        "sauce_pouring": 400,
-        "dumpling_splashing": 250,
-    }
-
-    freq = frequencies.get(sound_type, 250)
-    volume = min(sound_config["volume"], 1.0)
-    actual_duration = min(duration_sec, sound_config["duration"])
-
-    # ffmpeg 신테사이저로 톤 생성 (ASMR 느낌)
+def generate_ambience(kind: str, duration_sec: float, out_path: Path) -> Path:
+    """앰비언스 한 종류를 duration_sec 길이로 합성한다."""
+    if kind not in AMBIENCE_LIBRARY:
+        raise KeyError(f"unknown ambience: {kind}")
+    d = f"{duration_sec:.2f}"
+    args = [a.replace("{d}", d) for a in AMBIENCE_LIBRARY[kind]]
     subprocess.run(
-        [
-            "ffmpeg", "-y",
-            "-f", "lavfi", "-i", f"anoisesrc=a={volume}:r=44100:c=1",
-            "-f", "lavfi", "-i", f"sine=f={freq}:d={actual_duration}",
-            "-filter_complex", f"[1]volume={volume*0.7}[sine]; [0][sine]amix=inputs=2:duration=longest",
-            "-t", str(actual_duration),
-            "-q:a", "5",
-            "-acodec", "libmp3lame",
-            str(out_path),
-        ],
-        check=True,
-        capture_output=True,
+        ["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", *args,
+         "-t", d, "-q:a", "5", "-acodec", "libmp3lame", str(out_path)],
+        check=True, capture_output=True,
     )
+    return out_path
+
+
+def mix_ambience(kinds, duration_sec: float, out_path: Path):
+    """여러 앰비언스를 겹쳐 한 트랙으로 만든다.
+
+    알 수 없는 종류는 건너뛰고, 하나도 못 만들면 None을 돌려준다
+    (호출부는 배경음 없이 나레이션만으로 진행한다).
+    """
+    tmp_dir = out_path.parent
+    made = []
+    for i, kind in enumerate(kinds):
+        if kind not in AMBIENCE_LIBRARY:
+            print(f"  [건너뜀] 알 수 없는 앰비언스: {kind}", file=sys.stderr)
+            continue
+        part = tmp_dir / f"{out_path.stem}_amb{i}.mp3"
+        try:
+            made.append(generate_ambience(kind, duration_sec, part))
+        except subprocess.CalledProcessError as exc:
+            print(f"  [건너뜀] 앰비언스 생성 실패 {kind}: {exc}", file=sys.stderr)
+
+    if not made:
+        return None
+
+    if len(made) == 1:
+        made[0].replace(out_path)
+    else:
+        inputs = []
+        for part in made:
+            inputs += ["-i", str(part)]
+        subprocess.run(
+            ["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", *inputs,
+             "-filter_complex", f"amix=inputs={len(made)}:duration=longest:normalize=0",
+             "-q:a", "5", "-acodec", "libmp3lame", str(out_path)],
+            check=True, capture_output=True,
+        )
+        for part in made:
+            part.unlink(missing_ok=True)
 
     return out_path
 
 
-def mix_food_sounds_asmr(sound_effects_list, duration_sec: float, output_dir: Path, content_id: int) -> Path:
+def mix_narration_with_ambience(narration_path: Path, ambience_path: Path, out_path: Path) -> Path:
+    """나레이션 위에 배경음을 낮게 깔아 하나의 트랙으로 만든다.
+
+    길이는 나레이션에 맞춘다(first). 배경음이 짧으면 apad로 늘린다.
     """
-    음식 소리 효과들을 ASMR 스타일로 혼합합니다.
+    subprocess.run(
+        [
+            "ffmpeg", "-y", "-hide_banner", "-loglevel", "error",
+            "-i", str(narration_path),
+            "-i", str(ambience_path),
+            "-filter_complex",
+            f"[1]volume={AMBIENCE_GAIN},apad[bg];"
+            f"[0][bg]amix=inputs=2:duration=first:normalize=0,"
+            f"loudnorm=I=-14:TP=-1.0:LRA=11",
+            "-q:a", "4", "-acodec", "libmp3lame",
+            str(out_path),
+        ],
+        check=True, capture_output=True,
+    )
+    return out_path
 
-    Args:
-        sound_effects_list: 사운드 효과 이름 리스트 (예: ["water_boiling", "sizzle_fry"])
-        duration_sec: 목표 비디오 길이 (초)
-        output_dir: 출력 디렉토리
-        content_id: 콘텐츠 ID
 
-    Returns:
-        혼합된 오디오 파일 경로
+# ============================================================================
+# 업로드 한도 방어
+# ============================================================================
+
+# YouTube videos.insert는 1회 1,600 units, 일일 기본 할당량은 10,000이다.
+# 하루 1편이면 1,600 units만 쓰므로 재시도 여유까지 충분히 남는다.
+MAX_DAILY_UPLOADS = 1
+
+
+def count_today_uploads(log_path: Path) -> int:
+    """used_log.csv에서 오늘 날짜로 기록된 행 수를 센다.
+
+    date 컬럼은 datetime.now().isoformat()으로 저장된 naive 로컬 시각이라
+    (예: 2026-08-21T10:58:17.246736) 오늘 날짜 접두사로 비교한다.
     """
-    if not sound_effects_list:
-        # 기본 ASMR 배경음: 미묘한 주방 소음
-        sound_effects_list = ["soup_bubbling", "air_fryer_fan"]
+    if not log_path.exists():
+        return 0
 
-    # 각 사운드 효과 파일 생성
-    sound_files = []
-    for effect in sound_effects_list:
-        if effect in FOOD_SOUND_LIBRARY:
-            effect_path = output_dir / f"sfx_{content_id}_{effect}.mp3"
-            try:
-                generate_food_sound_effect(effect, duration_sec, effect_path)
-                sound_files.append(effect_path)
-            except Exception as e:
-                print(f"  ⚠️  음식 소리 생성 실패 ({effect}): {str(e)[:60]}", file=sys.stderr)
+    today = datetime.date.today().isoformat()
+    count = 0
+    try:
+        with open(log_path, "r", encoding="utf-8", newline="") as f:
+            for row in csv.DictReader(f):
+                if (row.get("date") or "").startswith(today):
+                    count += 1
+    except (OSError, csv.Error, UnicodeDecodeError) as exc:
+        # 로그를 못 읽으면 "0건"으로 넘기지 않는다. 그랬다가는 손상된 로그가
+        # 곧바로 무제한 업로드로 이어진다. 한도에 도달한 것으로 간주해 막는다.
+        print(f"[경고] 업로드 로그를 읽을 수 없어 안전하게 차단합니다: {exc}", file=sys.stderr)
+        return MAX_DAILY_UPLOADS
 
-    # 다중 효과음 혼합
-    output_path = output_dir / f"food_sounds_{content_id}.mp3"
+    return count
 
-    if len(sound_files) == 0:
-        print(f"  ⚠️  음식 소리 효과 생성 건너뜀: 사용 가능한 사운드 없음", file=sys.stderr)
-        # 침묵 생성
-        subprocess.run(
-            [
-                "ffmpeg", "-y",
-                "-f", "lavfi", "-i", f"anullsrc=r=44100:cl=mono",
-                "-t", str(duration_sec),
-                "-q:a", "5",
-                "-acodec", "libmp3lame",
-                str(output_path),
-            ],
-            check=True,
-            capture_output=True,
-        )
-        return output_path
 
-    if len(sound_files) == 1:
-        # 단일 파일: 복사만
-        subprocess.run(["cp", str(sound_files[0]), str(output_path)], check=True)
-    else:
-        # 다중 파일: ffmpeg amix로 혼합
-        input_args = []
-        for i, f in enumerate(sound_files):
-            input_args.extend(["-i", str(f)])
-
-        # amix 필터: 모든 입력을 혼합
-        amix_filter = f"[0]" + "".join(f"[{i}]" for i in range(1, len(sound_files))) + \
-                     f"amix=inputs={len(sound_files)}:duration=longest"
-
-        subprocess.run(
-            [
-                "ffmpeg", "-y",
-                *input_args,
-                "-filter_complex", amix_filter,
-                "-t", str(duration_sec),
-                "-q:a", "5",
-                "-acodec", "libmp3lame",
-                str(output_path),
-            ],
-            check=True,
-            capture_output=True,
-        )
-
-    # 임시 파일 정리
-    for f in sound_files:
-        f.unlink(missing_ok=True)
-
-    return output_path
+def daily_quota_exhausted(log_path: Path) -> bool:
+    return count_today_uploads(log_path) >= MAX_DAILY_UPLOADS

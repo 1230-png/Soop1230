@@ -1,308 +1,145 @@
-# 🍳 음식 쇼츠 채널 자동화 — 설정 가이드 (전부 무료)
+# 기묘한 현실 — 설치 및 인증 안내
 
-**채널 포맷**: 간단한 요리 + 음식 리뷰 + 주방용품 소개 → 30초 수직 쇼츠  
-**자동화**: 하루 2-3편 자동 생성 & 업로드 (쿠팡 파트너스 링크 자동 삽입)  
-**수익화**: 유튜브 애드센스 + 쿠팡 파트너스 커미션
+## 0. 지금 겪는 `invalid_client` 오류부터
 
-이 문서의 설정을 완료하면, GitHub Actions이 매일 자동으로:
-1. 음식 콘텐츠 생성 (영상 + 음성)
-2. 쿠팡 상품 자동 매칭
-3. YouTube에 업로드 & 쿠팡 링크 삽입
-4. 기록 저장
+이 오류는 **자격증명이 만료돼서가 아니라, 시크릿 이름이 어긋나서** 났을 가능성이 큽니다.
 
-**비용**: 0원 (모든 서비스 무료 계층)
+기존 시크릿 이름은 `FOOD_YT_REFRESH_TOKEN`이었는데 코드가 읽던 이름은 `FOOD_REFRESH_TOKEN`이었습니다.
+이름이 맞지 않으면 예전 코드의 폴백(`or YT_CLIENT_ID`)이 작동해 **다른 채널(200y3b)의
+client_id/secret을 대신 집어왔습니다.** 한 프로젝트의 client_id에 다른 프로젝트의 refresh_token을
+붙이면 Google은 정확히 `invalid_client`를 돌려줍니다.
 
----
-
-## 1️⃣ YouTube 채널 준비
-
-### 1-1. 새 YouTube 계정 생성 (선택사항)
-- 기존 계정이 있으면 그 계정 사용 가능
-- 음식 채널용 새 계정을 원하면: [youtube.com](https://youtube.com) 방문 → 프로필 생성
-
-### 1-2. 채널 커스터마이즈
-- YouTube Studio 로그인
-- **채널 커스터마이즈**
-  - 프로필 사진: 음식 아이콘 또는 로고
-  - 배너: 음식/요리 테마
-  - 채널 설명: "맛있는 요리와 음식 리뷰"
+**이번 개편에서 그 폴백을 완전히 제거했습니다.** 이제 시크릿 이름이 틀리면 조용히 남의
+자격증명을 쓰는 대신 즉시 멈추고 어떤 이름이 없는지 알려 줍니다.
 
 ---
 
-## 2️⃣ Google Cloud 설정 (YouTube API)
+## 1. Google Cloud 프로젝트 만들기
 
-### 2-1. Google Cloud 프로젝트 생성
-1. https://console.cloud.google.com 방문
-2. **새 프로젝트** 클릭
-3. 프로젝트 이름: `food-shorts-automation` (또는 원하는 이름)
-4. **만들기** 클릭
+1. https://console.cloud.google.com 접속
+2. 상단 프로젝트 선택 → **새 프로젝트** → 이름은 아무거나 (예: `weird-shorts`)
+3. 좌측 **API 및 서비스 → 라이브러리** → `YouTube Data API v3` 검색 → **사용 설정**
 
-### 2-2. YouTube Data API v3 활성화
-1. 좌측 메뉴: **API 및 서비스** → **라이브러리**
-2. "YouTube Data API v3" 검색
-3. **사용 설정** 클릭
+## 2. OAuth 동의 화면 — ⚠️ 여기가 가장 중요합니다
 
-### 2-3. OAuth 동의 화면 설정
-1. **API 및 서비스** → **OAuth 동의 화면**
-2. **User Type**: 외부(External) 선택
-3. **기본 정보** 입력:
-   - 앱 이름: `Food Shorts Automation`
-   - 지원 이메일: 본인 이메일
-   - 개발자 연락처: 본인 이메일
-4. **게시 상태**: "테스트 중" (괜찮음)
-5. **테스트 사용자 추가**:
-   - 음식 채널을 관리할 Google 계정 이메일 추가
-6. **저장 후 계속**
+1. **API 및 서비스 → OAuth 동의 화면**
+2. User Type: **외부(External)** 선택 → 만들기
+3. 앱 이름, 사용자 지원 이메일, 개발자 연락처 입력 (나머지는 비워도 됩니다)
+4. **⚠️ 게시 상태를 "프로덕션"으로 전환하세요.**
 
-### 2-4. OAuth 클라이언트 ID 생성
-1. **API 및 서비스** → **사용자 인증 정보**
-2. **사용자 인증 정보 만들기** → **OAuth 클라이언트 ID**
-3. **애플리케이션 유형**: 데스크톱 앱
-4. **만들기** 클릭
-5. **JSON 다운로드** 클릭 → `client_secret.json` 저장
+> **"테스트 중" 상태로 두면 refresh token이 7일마다 만료됩니다.**
+> 매주 인증이 깨지는 원인이 바로 이것입니다. 반드시 **앱 게시** 버튼을 눌러
+> 상태를 **프로덕션**으로 바꿔 두세요.
+> 본인만 쓰는 앱이라 Google 심사는 필요 없습니다. 경고 화면이 떠도 그대로 진행하면 됩니다.
 
----
+## 3. OAuth 클라이언트 발급
 
-## 3️⃣ Refresh Token 발급
+1. **API 및 서비스 → 사용자 인증 정보 → 사용자 인증 정보 만들기 → OAuth 클라이언트 ID**
+2. 애플리케이션 유형: **데스크톱 앱**
+3. 만들어진 클라이언트의 **JSON 다운로드** → `client_secret.json` 으로 저장
 
-### 3-1. 로컬에서 한 번만 실행
+## 4. refresh token 발급 (로컬 PC에서 1회)
+
+이 단계는 브라우저 로그인이 필요해서 **본인 PC에서만** 됩니다. GitHub Actions에서는 못 합니다.
 
 ```bash
 cd channel_food/scripts
-pip install google-auth-oauthlib
-python3 get_refresh_token.py --client-secret /path/to/client_secret.json
+pip install -r requirements.txt
+python3 get_refresh_token.py --client-secret /경로/client_secret.json
 ```
 
-### 3-2. 결과 저장
-터미널에 아래처럼 출력됩니다:
+브라우저가 열리면 **이 채널의 구글 계정**으로 로그인하고 권한을 허용하세요.
+터미널에 세 값이 출력됩니다:
 
 ```
-client_id:     xxxxxxxxxxxxxxxx.apps.googleusercontent.com
-client_secret: xxxxxxxxxxxxxxxx
-refresh_token: 1//xxxxxxxxxxxxxxxxxxxxxxxx
+client_id     = ...apps.googleusercontent.com
+client_secret = GOCSPX-...
+refresh_token = 1//0e...
 ```
 
-**이 값들을 복사해두세요!** (다음 단계에서 필요)
+## 5. GitHub Secrets 등록 — 이름을 정확히 맞출 것
 
----
+https://github.com/1230-png/Soop1230/settings/secrets/actions
 
-## 4️⃣ GitHub Secrets 등록
+**New repository secret**으로 아래 3개를 등록합니다. 이름이 **한 글자라도 다르면 인증이 실패합니다.**
 
-### 4-1. 저장소 설정으로 이동
-1. GitHub: `1230-png/Soop1230` 저장소
-2. **Settings** → **Secrets and variables** → **Actions**
-3. **New repository secret** 클릭
-
-### 4-2. 3개의 Secret 추가
-
-| Secret 이름 | 값 (3-2에서 복사) |
+| Name (정확히 이대로) | Value |
 |---|---|
-| `YT_CLIENT_ID` | `xxxxxxxxxxxxxxxx.apps.googleusercontent.com` |
-| `YT_CLIENT_SECRET` | `xxxxxxxxxxxxxxxx` |
-| `YT_REFRESH_TOKEN` | `1//xxxxxxxxxxxxxxxxxxxxxxxx` |
+| `WEIRD_CLIENT_ID` | 위 `client_id` |
+| `WEIRD_CLIENT_SECRET` | 위 `client_secret` |
+| `WEIRD_REFRESH_TOKEN` | 위 `refresh_token` |
+
+**등록 후 기존 시크릿은 삭제하세요:**
+`FOOD_CLIENT_ID`, `FOOD_CLIENT_SECRET`, `FOOD_REFRESH_TOKEN`,
+`FOOD_YT_REFRESH_TOKEN`, `ELEVENLABS_API_KEY`
+
+> GitHub은 보안상 등록된 시크릿 값을 다시 보여 주지 않습니다. 값을 잊었다면
+> 4단계를 다시 실행해 새로 발급받으면 됩니다.
+
+## 6. 첫 실행 — 반드시 private으로 먼저
+
+https://github.com/1230-png/Soop1230/actions/workflows/weird_shorts_publish.yml
+
+→ **Run workflow** → 공개 범위 **private** (기본값) → 실행
+
+성공하면 YouTube Studio에 비공개 영상이 하나 올라와 있습니다. 확인 후 문제가 없으면
+다음부터는 매일 06:00(KST)에 자동으로 공개 업로드됩니다.
 
 ---
 
-## 5️⃣ 쿠팡 파트너스 설정 (선택사항)
+## 7. 채널 이름과 핸들 변경 — 수동으로만 가능합니다
 
-### 5-1. 쿠팡 파트너스 가입
-1. https://partners.coupang.com 방문
-2. **회원가입** → 일반 회원으로 가입
-3. **파트너스 신청** → 승인 대기 (보통 24시간)
+**YouTube Data API v3로는 채널 이름과 핸들을 바꿀 수 없습니다.**
+핸들 변경 엔드포인트가 API에 아예 없고, `brandingSettings.channel.title`도
+`channels.update`로 기록되지 않습니다. 스크립트로 자동화할 수 없는 부분입니다.
 
-### 5-2. 아이디 & 태그 받기
-- 승인 후, 파트너스 대시보드에서 **아이디** 및 **캠페인 태그** 확인
-- 상품 링크 생성 방법:
-  ```
-  https://www.coupang.com/vp/products/상품ID?&campaignId=YOUR_CAMPAIGN_ID
-  ```
+YouTube Studio에서 직접 바꾸세요 (각 1분):
 
-### 5-3. 링크 등록
-- `scripts/coupang_products.json`의 `link` 필드에 실제 쿠팡 파트너스 링크 입력
-
-**예시:**
-```json
-{
-  "name": "무항생제 계란",
-  "link": "https://www.coupang.com/vp/products/1234567890?&campaignId=YOUR_CAMPAIGN_ID",
-  "keywords": ["계란", "계란요리"]
-}
-```
-
----
-
-## 6️⃣ 콘텐츠 커스터마이즈
-
-### 6-1. 음식 콘텐츠 추가
-`scripts/food_content.json`에 새로운 항목 추가:
-
-```json
-{
-  "id": 9,
-  "type": "recipe",
-  "title": "5분 계란후라이",
-  "description": "완벽한 반숙 계란후라이 만드는 법",
-  "korean": "계란후라이",
-  "English": "Fried egg",
-  "ingredients": ["계란", "소금", "버터"],
-  "coupang_keywords": ["계란", "팬"],
-  "duration_sec": 30,
-  "hashtags": ["#계란", "#프라이", "#간단요리"]
-}
-```
-
-### 6-2. 쿠팡 상품 추가
-`scripts/coupang_products.json`에 상품 추가:
-
-```json
-{
-  "name": "고급 올리브유",
-  "link": "https://www.coupang.com/vp/products/...",
-  "keywords": ["요리", "기름", "올리브"]
-}
-```
-
----
-
-## 7️⃣ 수동 테스트 (첫 영상)
-
-### 7-1. 로컬에서 영상 생성
-```bash
-cd channel_food/scripts
-python3 generate_food_video.py
-```
-
-**출력:**
-```
-[생성] recipe: 1분 계란말이 만드는 법
-[상품] 2개 매칭됨
-[완료] /home/user/Soop1230/channel_food/output/food_shorts_1.mp4
-```
-
-### 7-2. 업로드
-```bash
-python3 upload_food_video.py \
-  --video-path channel_food/output/food_shorts_1.mp4 \
-  --metadata-path channel_food/output/metadata_1.json \
-  --privacy-status unlisted
-```
-
-✅ 성공하면: `https://youtube.com/watch?v=xxxxx` 링크 출력
-
----
-
-## 8️⃣ GitHub Actions 자동화
-
-### 8-1. 워크플로우 파일 생성
-`.github/workflows/food_shorts_publish.yml` 생성:
-
-```yaml
-name: 음식 쇼츠 자동 생성 & 업로드
-
-on:
-  schedule:
-    - cron: '0 9,15,21 * * *'  # 매일 09:00, 15:00, 21:00 (KST 기준)
-  workflow_dispatch:
-
-jobs:
-  publish:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      
-      - name: Python 설정
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-      
-      - name: 의존성 설치
-        run: |
-          cd channel_food/scripts
-          pip install -r requirements.txt
-      
-      - name: 영상 생성
-        run: |
-          cd channel_food/scripts
-          python3 generate_food_video.py > result.json
-      
-      - name: 유튜브 업로드
-        env:
-          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
-          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
-          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
-        run: |
-          cd channel_food/scripts
-          RESULT=$(cat result.json | python3 -c "import sys, json; r=json.load(sys.stdin); print(f\"{r['video_path']} {r['metadata_path']}\")")
-          python3 upload_food_video.py \
-            --video-path $(echo $RESULT | cut -d' ' -f1) \
-            --metadata-path $(echo $RESULT | cut -d' ' -f2) \
-            --privacy-status public
-      
-      - name: 변경사항 커밋
-        run: |
-          git config user.email "action@github.com"
-          git config user.name "GitHub Action"
-          git add channel_food/used_log.csv
-          git commit -m "📹 자동 생성 음식 쇼츠 기록" || true
-          git push
-```
-
-### 8-2. 설정
-1. 위 내용을 `.github/workflows/food_shorts_publish.yml`로 저장
-2. Git commit & push
-3. GitHub Actions 탭에서 "음식 쇼츠 자동 생성 & 업로드" 워크플로우 확인
-
----
-
-## 💡 팁 & 트러블슈팅
-
-### 영상 생성 실패?
-```bash
-# 폰트 설치
-sudo apt-get install -y fonts-noto-cjk
-
-# ffmpeg 설치
-sudo apt-get install -y ffmpeg
-```
-
-### 쿠팡 링크가 안 나온다?
-- `coupang_products.json`의 링크 형식 확인
-- `food_content.json`의 `coupang_keywords`가 카테고리와 매칭되는지 확인
-
-### YouTube 업로드 권한 오류?
-- `YT_REFRESH_TOKEN`이 올바르게 설정되었는지 확인
-- 음식 채널을 관리하는 Google 계정으로 다시 인증
-
-### 스케줄 시간 조정하기
-`food_shorts_publish.yml`의 `cron`을 수정:
-```yaml
-cron: '0 9 * * *'        # 매일 09:00 (1편)
-cron: '0 9,18 * * *'     # 매일 09:00, 18:00 (2편)
-cron: '0 9,15,21 * * *'  # 매일 09:00, 15:00, 21:00 (3편)
-```
-
----
-
-## 📊 수익 구조
-
-| 수입원 | 월 예상 수익 (구독자 10만 기준) |
+| 항목 | 경로 |
 |---|---|
-| YouTube 애드센스 | $500-1,000 |
-| 쿠팡 파트너스 | $200-500 |
-| **합계** | **$700-1,500** |
+| 채널 이름 | YouTube Studio → 맞춤설정 → 브랜딩 → 이름 |
+| 핸들(@) | YouTube Studio → 맞춤설정 → 기본 정보 → 핸들 |
 
-*(실제 수익은 채널 성장, CTR, 시청자층에 따라 다릅니다)*
+> 핸들은 **14일에 2회**까지만 바꿀 수 있습니다.
+
+바꾼 뒤 `channel_food/scripts/brand.py`의 `CHANNEL_NAME`과 `CHANNEL_HANDLE`을
+같은 값으로 맞춰 주세요. 이 두 상수만 고치면 영상 자막·설명문·채널 정보에 일괄 반영됩니다.
+
+**설명문과 키워드는 자동화됩니다:**
+https://github.com/1230-png/Soop1230/actions/workflows/channel_branding.yml
+→ Run workflow (이미 설정된 값을 덮어쓰려면 force 체크)
 
 ---
 
-## 📝 다음 단계
+## 비용
 
-1. ✅ YouTube 채널 준비
-2. ✅ Google Cloud & YouTube API 설정
-3. ✅ GitHub Secrets 등록
-4. ✅ 쿠팡 파트너스 가입
-5. ✅ 콘텐츠 커스터마이즈
-6. ✅ 수동 테스트
-7. ✅ GitHub Actions 자동화
+전부 무료입니다. 결제 수단을 등록할 곳이 없습니다.
 
-**모두 완료했다면, 채널이 매일 자동으로 영상을 생성하고 업로드합니다!** 🎉
+| 항목 | 사용하는 것 | 한도 |
+|---|---|---|
+| 음성 | edge-tts (Microsoft 무료 신경망 음성) | 무제한, API 키 불필요 |
+| 배경음 | ffmpeg 자체 합성 | 무제한, 음원 저작권 없음 |
+| 영상 | Pillow + ffmpeg | 무제한 |
+| 실행 | GitHub Actions | 공개 저장소는 무제한 / 비공개는 월 2,000분 |
+| 업로드 | YouTube Data API | 일 10,000 units, 업로드 1회당 1,600 |
+
+ElevenLabs는 쓰지 않습니다. 유료 전환 여지를 없애려고 API 키 주입 자체를 제거했습니다.
+
+## 안전장치
+
+- **하루 1편** (`common.py`의 `MAX_DAILY_UPLOADS`) — 생성 단계와 업로드 단계에서 각각 검사합니다.
+  수동으로 워크플로를 여러 번 눌러도 두 번째부터는 영상을 만들지 않고 종료합니다.
+- **할당량 초과 시 즉시 중단** — 재시도가 할당량을 더 태우므로 재시도하지 않습니다.
+- **로그가 손상되면 차단** — 읽을 수 없는 로그를 "0건"으로 넘기면 무제한 업로드로 이어지므로,
+  한도에 도달한 것으로 간주하고 막습니다.
+- **실행 시간 상한 15분** — 행이 걸린 잡이 무료 실행 시간을 태우지 않게 합니다.
+
+## 문제가 생기면
+
+| 증상 | 원인과 해결 |
+|---|---|
+| `invalid_client` | client_id/secret이 refresh_token과 다른 프로젝트의 것입니다. 4~5단계를 다시 하세요. |
+| `invalid_grant` | refresh token 만료. OAuth 동의 화면이 "테스트 중"이면 7일마다 만료됩니다 → **2단계에서 프로덕션으로 게시**하고 재발급하세요. |
+| `필수 시크릿이 없습니다` | 시크릿 이름 오타입니다. 5단계의 표와 정확히 대조하세요. |
+| `quotaExceeded` | 오늘 할당량 소진. 다음 날 자동으로 초기화됩니다. |
+| 업로드는 됐는데 로그가 안 남음 | `used_log.csv` 헤더에 `youtube_video_id`, `status` 컬럼이 있는지 확인하세요. |
