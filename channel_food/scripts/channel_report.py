@@ -77,8 +77,15 @@ def main() -> int:
     detail = youtube.videos().list(part="snippet,status", id=",".join(video_ids)).execute()
     print(f"\n올라가 있는 영상 {len(detail.get('items', []))}개:\n")
     for v in detail.get("items", []):
-        print(f"  [{v['status']['privacyStatus']:8}] {v['id']}  {v['snippet']['title']}")
-        print(f"             {v['snippet']['publishedAt']}")
+        st = v["status"]
+        print(f"  [{st['privacyStatus']:8}] {v['id']}  {v['snippet']['title']}")
+        print(f"             업로드: {v['snippet']['publishedAt']}")
+        # 예약 게시를 걸어두면 privacyStatus는 private이고 publishAt이 채워진다.
+        # 그 시각이 되면 유튜브가 자동으로 공개로 바꾼다.
+        if st.get("publishAt"):
+            print(f"             ⏰ 예약 공개: {st['publishAt']}  (UTC 기준)")
+        else:
+            print(f"             ⏰ 예약 공개: 없음")
 
     for vid in args.delete:
         try:
