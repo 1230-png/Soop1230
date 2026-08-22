@@ -1,0 +1,40 @@
+name: 🌘 현실 속 기괴한 현상 - 채널 상태 확인 / 영상 정리
+
+# 수동 전용. 채널에 무엇이 올라가 있는지 확인하고, 필요하면 영상을 지운다.
+on:
+  workflow_dispatch:
+    inputs:
+      delete_ids:
+        description: '삭제할 영상 ID (공백으로 구분). ⚠️ 되돌릴 수 없음. 비우면 조회만.'
+        type: string
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 의존성 설치
+        working-directory: channel_food/scripts
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 채널 조회 (및 지정 영상 삭제)
+        working-directory: channel_food/scripts
+        env:
+          WEIRD_CLIENT_ID: ${{ secrets.WEIRD_CLIENT_ID }}
+          WEIRD_CLIENT_SECRET: ${{ secrets.WEIRD_CLIENT_SECRET }}
+          WEIRD_REFRESH_TOKEN: ${{ secrets.WEIRD_REFRESH_TOKEN }}
+        run: |
+          python3 channel_report.py --delete ${{ inputs.delete_ids }}
