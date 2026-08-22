@@ -45,7 +45,11 @@ def load_content():
 
 
 def get_used_ids() -> set:
-    """이미 사용한 content_id 집합.
+    """업로드까지 끝난 content_id 집합.
+
+    status가 uploaded인 행만 센다. 생성은 됐지만 업로드가 막힌 편
+    (일일 한도, 할당량 초과, 인증 실패 등)을 소진 처리해 버리면
+    그 콘텐츠가 영영 방송되지 않는다.
 
     로그가 손상돼 읽히지 않으면 예외를 그대로 올린다. 조용히 빈 집합을
     돌려주면 이미 올린 콘텐츠를 중복 생성하게 된다.
@@ -57,7 +61,7 @@ def get_used_ids() -> set:
     with open(USED_LOG, "r", encoding="utf-8", newline="") as f:
         for row in csv.DictReader(f):
             raw = (row.get("content_id") or "").strip()
-            if raw:
+            if raw and row.get("status") == "uploaded":
                 used.add(int(raw))
     return used
 

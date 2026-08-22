@@ -164,7 +164,8 @@ def main() -> int:
 
     # 생성 단계에서 이미 검사하지만, 수동 workflow_dispatch 연타를 막기 위해 한 번 더 본다.
     # 오늘 생성된 이 영상 자신이 로그에 있으므로 uploaded 상태만 센다.
-    uploaded_today = _count_uploaded_today(log_path)
+    # SKIP_DAILY_GUARD는 수동 실행에서만 켜지며, 생성 단계와 같은 값을 본다.
+    uploaded_today = 0 if os.environ.get("SKIP_DAILY_GUARD") == "1" else _count_uploaded_today(log_path)
     if uploaded_today >= common.MAX_DAILY_UPLOADS:
         print(
             f"[중단] 오늘 이미 {uploaded_today}편을 업로드했습니다 "

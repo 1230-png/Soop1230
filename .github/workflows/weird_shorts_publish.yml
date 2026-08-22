@@ -80,6 +80,8 @@ jobs:
           WEIRD_CLIENT_ID: ${{ secrets.WEIRD_CLIENT_ID }}
           WEIRD_CLIENT_SECRET: ${{ secrets.WEIRD_CLIENT_SECRET }}
           WEIRD_REFRESH_TOKEN: ${{ secrets.WEIRD_REFRESH_TOKEN }}
+          # 생성 단계와 같은 값. 예약 실행에서는 항상 빈 값이다.
+          SKIP_DAILY_GUARD: ${{ inputs.skip_daily_guard && '1' || '' }}
         run: |
           python3 upload_weird_video.py \
             --video-path "${{ steps.generate.outputs.video_path }}" \
