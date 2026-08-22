@@ -1,8 +1,6 @@
 channel_200y3b/output/
 channel_200y3b/.env.youtube
 channel_food/output/
-food_shorts/assets/cache/
-food_shorts/output/
 __pycache__/
 *.pyc
 *.pyo
