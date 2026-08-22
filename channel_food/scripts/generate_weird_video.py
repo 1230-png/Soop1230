@@ -87,10 +87,17 @@ def narration_segments(item) -> list:
     return segments
 
 
-def make_slide(item, role: str, text: str, index: int):
-    """구간 하나에 대응하는 세로 슬라이드 한 장."""
+def make_slide(item, role: str, text: str, index: int, photo_path=None):
+    """구간 하나에 대응하는 세로 슬라이드 한 장.
+
+    photo_path가 있으면 사진을 배경으로 깔고, 없으면 그라데이션으로 되돌아간다.
+    팔레트는 구간마다 조금씩 다르게 골라, 같은 사진이라도 화면이 미세하게 변한다.
+    """
     palette = common.pick_palette(f"{item['id']}-{index}", common.WEIRD_PALETTES)
-    img = common.make_background(*palette)
+    if photo_path is not None:
+        img = common.make_photo_background(photo_path, *palette)
+    else:
+        img = common.make_background(*palette)
     draw = ImageDraw.Draw(img)
     font_path = common.find_korean_font()
 
@@ -245,14 +252,24 @@ def main() -> int:
 
     audio_path, durations = build_audio(item, segments, audio_mode)
 
+    # 배경 사진은 영상당 한 장만 받아 모든 슬라이드가 공유한다.
+    # 호출을 1회로 묶어 Pexels 무료 한도(시간당 200회)에 여유를 둔다.
+    photo_path = None
+    query = item.get("image_query", "")
+    if query:
+        candidate = OUTPUT_DIR / f"bg_{item['id']}.jpg"
+        photo_path = common.fetch_background_photo(query, candidate)
+
     slide_paths = []
     for i, (role, text) in enumerate(segments):
         slide_path = OUTPUT_DIR / f"slide_{item['id']}_{i}.png"
-        make_slide(item, role, text, i).save(slide_path)
+        make_slide(item, role, text, i, photo_path).save(slide_path)
         slide_paths.append(slide_path)
 
     video_path = OUTPUT_DIR / f"{prefix}_{item['id']}.mp4"
     build_video(item, slide_paths, durations, audio_path, video_path)
+    if photo_path is not None:
+        photo_path.unlink(missing_ok=True)
 
     metadata_path = OUTPUT_DIR / f"metadata_{item['id']}.json"
     with open(metadata_path, "w", encoding="utf-8") as f:

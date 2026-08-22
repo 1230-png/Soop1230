@@ -50,6 +50,8 @@ jobs:
         working-directory: channel_food/scripts
         env:
           AUDIO_MODE: ${{ inputs.audio_mode || 'narration' }}
+          # 없으면 그라데이션 배경으로 되돌아가므로 필수는 아니다.
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
         run: |
           python3 generate_weird_video.py > result.json
           cat result.json

@@ -21,7 +21,7 @@ from pathlib import Path
 
 import edge_tts
 import requests
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
 
 WIDTH, HEIGHT = 1080, 1920
 
@@ -469,3 +469,85 @@ def count_today_uploads(log_path: Path) -> int:
 
 def daily_quota_exhausted(log_path: Path) -> bool:
     return count_today_uploads(log_path) >= MAX_DAILY_UPLOADS
+
+
+# ============================================================================
+# 사진 배경 — Pexels에서 무료 사진을 받아 배경으로 쓴다.
+#
+# Pexels 라이선스는 상업적 사용을 허용하고 출처 표기를 요구하지 않아
+# 유튜브에 그대로 쓸 수 있다. 키가 없거나 실패하면 그라데이션으로 되돌아간다.
+# ============================================================================
+
+PEXELS_SEARCH_URL = "https://api.pexels.com/v1/search"
+
+# 사진 위에 글자를 얹어야 하므로 원본을 그대로 쓰면 안 읽힌다.
+PHOTO_BLUR_RADIUS = 5      # 배경 디테일이 글자와 경쟁하지 않게 흐린다
+PHOTO_BRIGHTNESS = 0.42    # 어둡게 눌러 흰 글자가 뜨게 한다
+PHOTO_TINT_ALPHA = 0.30    # 채널 팔레트 색을 얹어 톤을 통일한다
+
+
+def fetch_background_photo(query: str, out_path: Path):
+    """Pexels에서 세로 사진 한 장을 받아 저장한다. 실패하면 None."""
+    api_key = os.environ.get("PEXELS_API_KEY", "").strip()
+    if not api_key:
+        print("  [안내] PEXELS_API_KEY가 없어 그라데이션 배경을 씁니다.", file=sys.stderr)
+        return None
+
+    try:
+        resp = requests.get(
+            PEXELS_SEARCH_URL,
+            headers={"Authorization": api_key},
+            params={"query": query, "orientation": "portrait", "per_page": 15},
+            timeout=20,
+        )
+        resp.raise_for_status()
+        photos = resp.json().get("photos", [])
+        if not photos:
+            print(f"  [안내] '{query}' 검색 결과가 없어 그라데이션을 씁니다.", file=sys.stderr)
+            return None
+
+        # 같은 콘텐츠는 늘 같은 사진이 나오도록 결정적으로 고른다.
+        photo = photos[zlib.crc32(query.encode("utf-8")) % len(photos)]
+        src = photo.get("src", {})
+        url = src.get("large2x") or src.get("original") or src.get("large")
+        if not url:
+            return None
+
+        img = requests.get(url, timeout=30)
+        img.raise_for_status()
+        out_path.write_bytes(img.content)
+        print(f"  ✓ 배경 사진: {query} (by {photo.get('photographer', '?')})", file=sys.stderr)
+        return out_path
+    except Exception as exc:  # noqa: BLE001 - 어떤 실패든 그라데이션으로 되돌아간다
+        print(f"  [안내] 사진을 받지 못해 그라데이션을 씁니다: {str(exc)[:80]}", file=sys.stderr)
+        return None
+
+
+def make_photo_background(photo_path: Path, top_color, bottom_color) -> Image.Image:
+    """사진을 세로 화면에 맞춰 자르고, 글자가 읽히도록 눌러서 배경으로 만든다."""
+    img = Image.open(photo_path).convert("RGB")
+
+    # 화면을 꽉 채우도록 비율 유지하며 잘라낸다(cover).
+    scale = max(WIDTH / img.width, HEIGHT / img.height)
+    img = img.resize((round(img.width * scale), round(img.height * scale)), Image.LANCZOS)
+    left = (img.width - WIDTH) // 2
+    top = (img.height - HEIGHT) // 2
+    img = img.crop((left, top, left + WIDTH, top + HEIGHT))
+
+    img = img.filter(ImageFilter.GaussianBlur(PHOTO_BLUR_RADIUS))
+    img = ImageEnhance.Brightness(img).enhance(PHOTO_BRIGHTNESS)
+
+    # 채널 팔레트를 얹어 어떤 사진이 와도 같은 채널처럼 보이게 한다.
+    tint = make_background(top_color, bottom_color)
+    img = Image.blend(img, tint, PHOTO_TINT_ALPHA)
+
+    # 글자가 놓이는 중앙부를 한 번 더 눌러 대비를 확보한다.
+    scrim = Image.new("L", (WIDTH, HEIGHT), 0)
+    draw = ImageDraw.Draw(scrim)
+    for y in range(HEIGHT):
+        # 화면 중앙(0.25~0.75 구간)이 가장 어둡다
+        t = abs(y / HEIGHT - 0.5) * 2
+        draw.line([(0, y), (WIDTH, y)], fill=int(90 * (1 - t) ** 2))
+    img = Image.composite(Image.new("RGB", (WIDTH, HEIGHT), (0, 0, 0)), img, scrim)
+
+    return img

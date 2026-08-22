@@ -11,8 +11,15 @@
       "당신이 본 그 멈춘 1초는, 뇌가 사후에 만들어 넣은 시간입니다."
     ],
     "twist": "당신의 뇌는 이미 지나간 시간을 조작하고 있습니다.",
-    "ambience": ["low_drone", "heartbeat"],
-    "hashtags": ["#크로노스타시스", "#뇌과학"]
+    "ambience": [
+      "low_drone",
+      "heartbeat"
+    ],
+    "hashtags": [
+      "#크로노스타시스",
+      "#뇌과학"
+    ],
+    "image_query": "clock face macro dark"
   },
   {
     "id": 2,
@@ -26,8 +33,15 @@
       "수많은 사람이 존재한 적 없는 무늬를 똑같이 기억하는 것, 이걸 만델라 효과라고 부릅니다."
     ],
     "twist": "다수가 같은 것을 기억한다고 해서, 그것이 있었던 건 아닙니다.",
-    "ambience": ["static_hiss", "low_drone"],
-    "hashtags": ["#만델라효과", "#피카츄"]
+    "ambience": [
+      "static_hiss",
+      "low_drone"
+    ],
+    "hashtags": [
+      "#만델라효과",
+      "#피카츄"
+    ],
+    "image_query": "faded old photograph memory"
   },
   {
     "id": 3,
@@ -41,8 +55,14 @@
       "이걸 무주의 맹시라고 합니다. 보고 있어도, 주의하지 않으면 보이지 않습니다."
     ],
     "twist": "지금 이 순간에도 당신이 놓치고 있는 것이 있습니다.",
-    "ambience": ["low_drone"],
-    "hashtags": ["#무주의맹시", "#심리실험"]
+    "ambience": [
+      "low_drone"
+    ],
+    "hashtags": [
+      "#무주의맹시",
+      "#심리실험"
+    ],
+    "image_query": "basketball court empty"
   },
   {
     "id": 4,
@@ -56,8 +76,15 @@
       "듣는 사람에게는 분명히 존재하고, 듣지 못하는 사람에게는 존재하지 않습니다."
     ],
     "twist": "당신이 듣지 못한다고 해서, 소리가 없는 건 아닙니다.",
-    "ambience": ["low_drone", "wind_howl"],
-    "hashtags": ["#더험", "#미스터리"]
+    "ambience": [
+      "low_drone",
+      "wind_howl"
+    ],
+    "hashtags": [
+      "#더험",
+      "#미스터리"
+    ],
+    "image_query": "empty night street fog"
   },
   {
     "id": 5,
@@ -71,8 +98,14 @@
       "익숙함은 뇌가 계속 유지해 주는 상태이고, 그 유지가 끊기면 낯섦이 남습니다."
     ],
     "twist": "익숙함은 사실이 아니라, 뇌가 붙잡고 있는 감각입니다.",
-    "ambience": ["static_hiss"],
-    "hashtags": ["#자메뷰", "#인지현상"]
+    "ambience": [
+      "static_hiss"
+    ],
+    "hashtags": [
+      "#자메뷰",
+      "#인지현상"
+    ],
+    "image_query": "old book pages closeup"
   },
   {
     "id": 6,
@@ -86,8 +119,15 @@
       "사라진 부분을 뇌가 스스로 메우면서, 낯선 얼굴이 만들어집니다."
     ],
     "twist": "거울 속에 있던 건 당신이 아니라, 당신의 뇌가 그린 그림입니다.",
-    "ambience": ["low_drone", "heartbeat"],
-    "hashtags": ["#트록슬러효과", "#거울"]
+    "ambience": [
+      "low_drone",
+      "heartbeat"
+    ],
+    "hashtags": [
+      "#트록슬러효과",
+      "#거울"
+    ],
+    "image_query": "dark mirror reflection"
   },
   {
     "id": 7,
@@ -101,8 +141,15 @@
       "기대가 감각을 앞질러 만들어 내는 셈입니다."
     ],
     "twist": "기다리는 마음이 없던 신호를 만들어 냅니다.",
-    "ambience": ["static_hiss", "heartbeat"],
-    "hashtags": ["#팬텀진동", "#스마트폰"]
+    "ambience": [
+      "static_hiss",
+      "heartbeat"
+    ],
+    "hashtags": [
+      "#팬텀진동",
+      "#스마트폰"
+    ],
+    "image_query": "smartphone screen dark room"
   },
   {
     "id": 8,
@@ -116,8 +163,15 @@
       "이때 누군가 가슴을 누르는 듯한 환각이 함께 오는 경우가 많습니다."
     ],
     "twist": "그 방에 있던 존재는, 아직 끝나지 않은 꿈이었습니다.",
-    "ambience": ["low_drone", "heartbeat"],
-    "hashtags": ["#수면마비", "#가위눌림"]
+    "ambience": [
+      "low_drone",
+      "heartbeat"
+    ],
+    "hashtags": [
+      "#수면마비",
+      "#가위눌림"
+    ],
+    "image_query": "empty bedroom night moonlight"
   },
   {
     "id": 9,
@@ -131,8 +185,14 @@
       "얼굴을 놓치는 것보다 없는 얼굴을 보는 쪽이 생존에 유리했기 때문으로 설명됩니다."
     ],
     "twist": "뇌는 틀리는 쪽을 택하도록 설계되었습니다.",
-    "ambience": ["static_hiss"],
-    "hashtags": ["#파레이돌리아", "#착시"]
+    "ambience": [
+      "static_hiss"
+    ],
+    "hashtags": [
+      "#파레이돌리아",
+      "#착시"
+    ],
+    "image_query": "clouds sky dramatic"
   },
   {
     "id": 10,
@@ -146,8 +206,15 @@
       "즉 당신은 듣지 않았다고 생각한 대화도 이미 어느 정도 듣고 있었습니다."
     ],
     "twist": "의식하지 못했을 뿐, 당신은 계속 듣고 있었습니다.",
-    "ambience": ["static_hiss", "low_drone"],
-    "hashtags": ["#칵테일파티효과", "#청각"]
+    "ambience": [
+      "static_hiss",
+      "low_drone"
+    ],
+    "hashtags": [
+      "#칵테일파티효과",
+      "#청각"
+    ],
+    "image_query": "crowded cafe blurred people"
   },
   {
     "id": 11,
@@ -161,8 +228,15 @@
       "혜성 기원설 등이 제기됐지만 널리 받아들여지지는 않았습니다."
     ],
     "twist": "한 번 울리고 다시는 오지 않은 신호가, 아직 기록으로 남아 있습니다.",
-    "ambience": ["low_drone", "wind_howl"],
-    "hashtags": ["#와우시그널", "#우주"]
+    "ambience": [
+      "low_drone",
+      "wind_howl"
+    ],
+    "hashtags": [
+      "#와우시그널",
+      "#우주"
+    ],
+    "image_query": "radio telescope night sky"
   },
   {
     "id": 12,
@@ -176,8 +250,15 @@
       "기억은 저장된 파일이 아니라, 떠올릴 때마다 다시 만들어지는 재구성물이기 때문입니다."
     ],
     "twist": "떠올릴 때마다 당신의 기억은 조금씩 다시 쓰입니다.",
-    "ambience": ["static_hiss", "low_drone"],
-    "hashtags": ["#만델라효과", "#기억"]
+    "ambience": [
+      "static_hiss",
+      "low_drone"
+    ],
+    "hashtags": [
+      "#만델라효과",
+      "#기억"
+    ],
+    "image_query": "empty cinema seats dark"
   },
   {
     "id": 13,
@@ -191,8 +272,14 @@
       "반면 성으로서의 베이커는 아무 데도 연결되지 않은 채 떠 있습니다."
     ],
     "twist": "연결되지 않은 기억은 남지 않습니다.",
-    "ambience": ["low_drone"],
-    "hashtags": ["#베이커역설", "#기억"]
+    "ambience": [
+      "low_drone"
+    ],
+    "hashtags": [
+      "#베이커역설",
+      "#기억"
+    ],
+    "image_query": "bakery bread rustic"
   },
   {
     "id": 14,
@@ -206,8 +293,15 @@
       "다만 유령 목격과의 인과관계는 아직 확립된 정설은 아닙니다."
     ],
     "twist": "들리지 않는 소리가, 그 방의 공기를 바꿉니다.",
-    "ambience": ["low_drone", "wind_howl"],
-    "hashtags": ["#인프라사운드", "#저주파"]
+    "ambience": [
+      "low_drone",
+      "wind_howl"
+    ],
+    "hashtags": [
+      "#인프라사운드",
+      "#저주파"
+    ],
+    "image_query": "abandoned corridor dark"
   },
   {
     "id": 15,
@@ -221,7 +315,14 @@
       "실제 기억이 없는데 친숙함만 켜지면, 겪은 적 없는 일이 겪은 일처럼 느껴집니다."
     ],
     "twist": "기억보다 감각이 먼저 도착할 때, 없던 과거가 생깁니다.",
-    "ambience": ["low_drone", "heartbeat"],
-    "hashtags": ["#데자뷰", "#기억"]
+    "ambience": [
+      "low_drone",
+      "heartbeat"
+    ],
+    "hashtags": [
+      "#데자뷰",
+      "#기억"
+    ],
+    "image_query": "empty hallway perspective"
   }
 ]
