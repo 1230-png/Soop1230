@@ -5,6 +5,10 @@ on:
     # 매일 1회, 21:00 UTC = 06:00 KST.
     # MAX_DAILY_UPLOADS=1 과 실행 횟수를 일치시켜 헛도는 빌드를 없앤다.
     - cron: '0 21 * * *'
+
+  # ⚠️ 예약 실행은 현재 private으로 올린다 (아래 업로드 단계의 || 뒤 값).
+  # 검토가 끝나 공개 운영으로 전환할 때 그 값을 'public'으로 바꾸면 된다.
+  # 여기 한 곳만 고치면 되고, 수동 실행은 그대로 선택할 수 있다.
   workflow_dispatch:
     inputs:
       privacy_status:
@@ -86,7 +90,7 @@ jobs:
           python3 upload_weird_video.py \
             --video-path "${{ steps.generate.outputs.video_path }}" \
             --metadata-path "${{ steps.generate.outputs.metadata_path }}" \
-            --privacy-status "${{ inputs.privacy_status || 'public' }}"
+            --privacy-status "${{ inputs.privacy_status || 'private' }}"
 
       - name: 사용 기록 커밋
         if: steps.generate.outputs.skipped == 'false'
