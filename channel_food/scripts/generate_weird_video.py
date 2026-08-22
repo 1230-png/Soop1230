@@ -66,19 +66,31 @@ def get_used_ids() -> set:
     return used
 
 
-def pick_unused_content():
-    """아직 안 쓴 것 중 가장 작은 id를 고른다.
+# 남은 편이 이 수 이하로 떨어지면 미리 경고한다. 소진된 뒤에 알면 늦다.
+LOW_STOCK_WARNING = 5
 
-    무작위 대신 순차 선택이라 어떤 편이 다음에 나올지 예측 가능하고,
-    한 바퀴를 다 돌기 전에 같은 편이 다시 나오지 않는다.
+
+def pick_unused_content():
+    """아직 안 쓴 것 중 가장 작은 id를 고른다. 없으면 None.
+
+    순차 선택이라 어떤 편이 다음에 나올지 예측 가능하다.
+    소진돼도 처음으로 되돌아가지 않는다 — 같은 영상을 다시 올리면
+    채널에 중복이 쌓이고 시청자에게도 반복으로 보인다. 대신 아무것도
+    올리지 않고 멈춰서, 새 콘텐츠를 채울 때까지 기다린다.
     """
     content = load_content()
     used = get_used_ids()
     available = [c for c in content if c["id"] not in used]
 
     if not available:
-        print("[안내] 모든 콘텐츠를 한 바퀴 사용했습니다. 처음부터 다시 시작합니다.", file=sys.stderr)
-        available = content
+        return None
+
+    if len(available) <= LOW_STOCK_WARNING:
+        print(
+            f"[경고] 남은 콘텐츠가 {len(available)}편뿐입니다. "
+            "weird_content.json에 새 시나리오를 추가하세요.",
+            file=sys.stderr,
+        )
 
     return min(available, key=lambda c: c["id"])
 
@@ -251,6 +263,16 @@ def main() -> int:
         return 0
 
     item = pick_unused_content()
+    if item is None:
+        total = len(load_content())
+        print(
+            f"[중단] 준비된 {total}편을 모두 사용했습니다. 같은 영상을 다시 올리지 않도록\n"
+            "       업로드하지 않고 종료합니다. weird_content.json에 새 시나리오를 추가하세요.",
+            file=sys.stderr,
+        )
+        print(json.dumps({"skipped": True, "reason": "content_exhausted"}, ensure_ascii=False))
+        return 0
+
     segments = narration_segments(item)
     print(f"[생성] #{item['id']} {item['title']}  ({audio_mode}, {len(segments)}구간)", file=sys.stderr)
 
