@@ -1,0 +1,88 @@
+name: 🌘 기묘한 현실 - 쇼츠 자동 생성 & 업로드
+
+on:
+  schedule:
+    # 매일 1회, 21:00 UTC = 06:00 KST.
+    # MAX_DAILY_UPLOADS=1 과 실행 횟수를 일치시켜 헛도는 빌드를 없앤다.
+    - cron: '0 21 * * *'
+  workflow_dispatch:
+    inputs:
+      privacy_status:
+        description: '공개 범위 (처음에는 private로 시험해 볼 것)'
+        type: choice
+        default: 'private'
+        options: [private, unlisted, public]
+      audio_mode:
+        description: '오디오 방식'
+        type: choice
+        default: 'narration'
+        options: [narration, narration_ambience]
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    # 행이 걸린 잡이 무료 실행 시간을 태우지 않도록 상한을 둔다.
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: ffmpeg & 한글 폰트 설치
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-noto-cjk
+
+      - name: 의존성 설치
+        working-directory: channel_food/scripts
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 영상 생성
+        id: generate
+        working-directory: channel_food/scripts
+        env:
+          AUDIO_MODE: ${{ inputs.audio_mode || 'narration' }}
+        run: |
+          python3 generate_weird_video.py > result.json
+          cat result.json
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          r = json.load(open("result.json"))
+          print(f"skipped={str(r.get('skipped', False)).lower()}")
+          print(f"video_path={r.get('video_path', '')}")
+          print(f"metadata_path={r.get('metadata_path', '')}")
+          PY
+
+      - name: 일일 한도 도달 안내
+        if: steps.generate.outputs.skipped == 'true'
+        run: echo "오늘 몫은 이미 처리했습니다. 업로드를 건너뜁니다."
+
+      - name: 유튜브 업로드
+        if: steps.generate.outputs.skipped == 'false'
+        working-directory: channel_food/scripts
+        env:
+          WEIRD_CLIENT_ID: ${{ secrets.WEIRD_CLIENT_ID }}
+          WEIRD_CLIENT_SECRET: ${{ secrets.WEIRD_CLIENT_SECRET }}
+          WEIRD_REFRESH_TOKEN: ${{ secrets.WEIRD_REFRESH_TOKEN }}
+        run: |
+          python3 upload_weird_video.py \
+            --video-path "${{ steps.generate.outputs.video_path }}" \
+            --metadata-path "${{ steps.generate.outputs.metadata_path }}" \
+            --privacy-status "${{ inputs.privacy_status || 'public' }}"
+
+      - name: 사용 기록 커밋
+        if: steps.generate.outputs.skipped == 'false'
+        run: |
+          git config user.email "github-action@github.com"
+          git config user.name "GitHub Action"
+          git add channel_food/used_log.csv
+          git diff --cached --quiet || git commit -m "🌘 쇼츠 자동 생성 기록"
+          git push
