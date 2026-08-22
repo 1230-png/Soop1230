@@ -17,6 +17,10 @@ on:
         type: choice
         default: 'narration'
         options: [narration, narration_ambience]
+      skip_daily_guard:
+        description: '일일 1편 제한 무시 (수동 시험용)'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -52,6 +56,8 @@ jobs:
           AUDIO_MODE: ${{ inputs.audio_mode || 'narration' }}
           # 없으면 그라데이션 배경으로 되돌아가므로 필수는 아니다.
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          # 예약 실행에는 inputs가 없으므로 항상 빈 값 → 가드가 정상 작동한다.
+          SKIP_DAILY_GUARD: ${{ inputs.skip_daily_guard && '1' || '' }}
         run: |
           python3 generate_weird_video.py > result.json
           cat result.json
