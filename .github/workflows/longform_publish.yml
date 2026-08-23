@@ -42,6 +42,12 @@ jobs:
       - name: Generate and upload this week's compilation
         env:
           ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+          # See run_shorts.yml: Y3B_* are this channel's own credentials,
+          # YT_* remain only as a fallback because they are shared with
+          # other channels in this repo.
+          Y3B_CLIENT_ID: ${{ secrets.Y3B_CLIENT_ID }}
+          Y3B_CLIENT_SECRET: ${{ secrets.Y3B_CLIENT_SECRET }}
+          Y3B_REFRESH_TOKEN: ${{ secrets.Y3B_REFRESH_TOKEN }}
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
