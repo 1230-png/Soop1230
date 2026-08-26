@@ -46,19 +46,50 @@ def _load_env_file():
         os.environ.setdefault(key.strip(), value.strip())
 
 
+def _credential(name: str):
+    """Read one OAuth credential, preferring this channel's own secret.
+
+    Several channels in this repo upload to YouTube and all originally read the
+    same YT_* secrets. When another channel's credentials were rotated, these
+    uploads broke with invalid_client — and had the rotation been consistent,
+    they would instead have published @200-y3b videos to that other channel.
+    Y3B_* names give this channel its own slot; YT_* stays as a fallback so
+    nothing breaks before the dedicated secrets exist.
+    """
+    return os.environ.get(f"Y3B_{name}") or os.environ.get(f"YT_{name}")
+
+
+def _assert_target_channel(youtube) -> None:
+    """Abort unless the credentials actually belong to @200-y3b.
+
+    Uploading to the wrong channel is silent and hard to undo, so this is
+    checked before any upload rather than trusted."""
+    resp = youtube.channels().list(part="id,snippet", mine=True).execute()
+    items = resp.get("items", [])
+    if not items:
+        raise SystemExit("Could not determine which channel these credentials belong to.")
+    actual = items[0]["id"]
+    if actual != CHANNEL_ID:
+        title = items[0]["snippet"].get("title", "?")
+        raise SystemExit(
+            f"Refusing to upload: credentials belong to channel {actual} ({title}), "
+            f"not @200-y3b ({CHANNEL_ID}).\n"
+            "Set Y3B_CLIENT_ID / Y3B_CLIENT_SECRET / Y3B_REFRESH_TOKEN for this channel."
+        )
+
+
 def get_youtube_client():
     """Get authorized YouTube API client using GitHub Secrets environment variables."""
     _load_env_file()
-    client_id = os.environ.get("YT_CLIENT_ID")
-    client_secret = os.environ.get("YT_CLIENT_SECRET")
-    refresh_token = os.environ.get("YT_REFRESH_TOKEN")
+    client_id = _credential("CLIENT_ID")
+    client_secret = _credential("CLIENT_SECRET")
+    refresh_token = _credential("REFRESH_TOKEN")
 
     if not all([client_id, client_secret, refresh_token]):
         raise SystemExit(
-            "Missing YouTube OAuth credentials in environment:\n"
-            "  YT_CLIENT_ID\n"
-            "  YT_CLIENT_SECRET\n"
-            "  YT_REFRESH_TOKEN"
+            "Missing YouTube OAuth credentials in environment. Set either:\n"
+            "  Y3B_CLIENT_ID / Y3B_CLIENT_SECRET / Y3B_REFRESH_TOKEN  (preferred)\n"
+            "  YT_CLIENT_ID / YT_CLIENT_SECRET / YT_REFRESH_TOKEN     (shared fallback)"
         )
 
     creds = Credentials(
@@ -70,7 +101,9 @@ def get_youtube_client():
         scopes=SCOPES,
     )
     creds.refresh(Request())
-    return build("youtube", "v3", credentials=creds)
+    youtube = build("youtube", "v3", credentials=creds)
+    _assert_target_channel(youtube)
+    return youtube
 
 
 def upload_video(
