@@ -1,0 +1,32 @@
+# 전부 무료. 유료 API 클라이언트는 포함하지 않는다.
+
+# --- 백엔드 ---
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+pydantic-settings==2.7.0
+
+# --- DB ---
+sqlalchemy[asyncio]==2.0.36
+asyncpg==0.30.0
+alembic==1.14.0
+
+# --- Ollama 호출 ---
+httpx==0.28.1
+
+# --- 미디어 ---
+# edge-tts: 마이크로소프트 무료 신경망 음성. API 키 불필요.
+edge-tts==7.2.8
+Pillow==10.4.0
+requests==2.32.3
+# 영상 편집은 ffmpeg 직접 호출로 처리한다. MoviePy는 프레임을 파이썬으로
+# 왕복시켜 같은 결과를 몇 배 느리게 만들어 넣지 않았다.
+
+# --- YouTube (무료 할당량) ---
+google-auth==2.37.0
+google-auth-oauthlib==1.2.1
+google-api-python-client==2.156.0
+
+# --- 테스트 ---
+pytest==8.3.4
+pytest-asyncio==0.25.0

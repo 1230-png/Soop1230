@@ -12,3 +12,5 @@ client_secret*.json
 # 워크플로 생성 단계가 남기는 임시 산출물
 channel_food/scripts/result.json
 channel_200y3b/scripts/result.json
+shorts_engine/.env
+shorts_engine/.pytest_cache/
