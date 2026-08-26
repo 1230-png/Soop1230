@@ -23,6 +23,24 @@ PC를 켠 김에 대본 열 편을 만들어 두면, 그 뒤 열흘은 PC 없이
 
 ---
 
+## 배포 조합 (전부 무료, 결정 완료)
+
+| 구성 | 선택 | 이유 |
+|---|---|---|
+| DB | **Neon** | 유휴 시 자동 정지 후 **접속하면 ~1초에 자동 기동**. Supabase 무료 티어는 7일 뒤 정지되고 **수동 복구**가 필요해, 무인 파이프라인에 사람이 개입할 지점을 만든다 |
+| LLM | Ollama + Llama 3 (로컬) | API 키 없음 |
+| TTS | edge-tts | 마이크로소프트 무료 신경망 음성 |
+| 영상 | ffmpeg 직접 호출 | MoviePy는 프레임을 파이썬으로 왕복시켜 몇 배 느리다 |
+| 배경 | Pexels 무료 API | 없어도 그라데이션으로 자동 대체 |
+| 실행 | GitHub Actions | 공개 저장소 무제한 |
+
+Neon 접속 문자열은 **풀링 엔드포인트**(`-pooler`)를 쓴다. Actions처럼 매번 새로
+붙었다 끊는 환경에서 직접 연결을 쓰면 연결 수를 빠르게 소진한다.
+
+```
+DATABASE_URL=postgresql+asyncpg://user:pw@ep-xxx-pooler.region.aws.neon.tech/shorts?ssl=require
+```
+
 ## 시작하기
 
 ```bash
@@ -30,7 +48,7 @@ cd shorts_engine
 pip install -r requirements.txt
 cp .env.example .env          # DATABASE_URL 등을 채운다
 
-docker compose up -d db       # 로컬 개발용. 배포는 Neon/Supabase
+docker compose up -d db       # 로컬 개발용. 배포는 Neon (위 표 참고)
 alembic upgrade head
 python3 scripts/seed.py       # 카테고리 + 기존 콘텐츠 60편 적재
 
@@ -103,6 +121,7 @@ python3 -m pytest tests/ -q
 - `test_timeline.py` (24개) — 컷 계산. ffmpeg 불필요, 0.05초
 - `test_ollama_contract.py` (23개) — 프롬프트 주입, 깨진 JSON 처리. Ollama 불필요
 - `test_render_integration.py` (8개) — 실제 ffmpeg로 영상 생성. TTS만 스텁
+- `test_api_db.py` (3개) — 실제 PostgreSQL 상대. `DATABASE_URL` 없으면 자동 skip
 
 통합 테스트가 확인하는 것: 영상이 실제로 만들어지는지, 길이가 나레이션을 따르는지,
 첫 3초에 컷이 정확히 6개인지, 디코딩 오류가 없는지, 마지막 컷이 잘리지 않는지.

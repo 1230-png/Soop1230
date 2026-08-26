@@ -175,10 +175,6 @@ async def complete_script(
     script = await session.get(Script, script_id)
     if script is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, f"없는 대본: {script_id}")
-    if script.status == ScriptStatus.UPLOADED.value:
-        raise HTTPException(
-            status.HTTP_409_CONFLICT, f"이미 업로드된 대본입니다: {script_id}"
-        )
 
     session.add(
         Video(
@@ -191,7 +187,19 @@ async def complete_script(
         )
     )
     script.status = ScriptStatus.UPLOADED.value
-    await session.commit()
+    try:
+        await session.commit()
+    except IntegrityError as exc:
+        # 진짜 방어선은 videos.script_id / youtube_video_id 의 UNIQUE 제약이다.
+        # status만 보고 판단하면 둘이 어긋났을 때 500이 그대로 나간다.
+        # 업로드는 성공했는데 이 호출이 네트워크 문제로 실패해 재시도할 때 실제로 겪는다.
+        await session.rollback()
+        raise HTTPException(
+            status.HTTP_409_CONFLICT,
+            f"이미 기록된 업로드입니다 (대본 {script_id} "
+            f"또는 영상 {req.youtube_video_id}). 재시도라면 무시해도 됩니다.",
+        ) from exc
+
     await session.refresh(script)
     return ScriptOut.model_validate(script)
 
