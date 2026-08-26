@@ -81,7 +81,16 @@ def pick_palette(seed: str, palettes=None):
     색이 바뀐다. crc32는 프로세스와 무관하게 결정적이다.
     """
     table = PALETTES if palettes is None else palettes
-    return table[zlib.crc32(seed.encode("utf-8")) % len(table)]
+    return table[pick_palette_index(seed, table)]
+
+
+def pick_palette_index(seed: str, palettes=None) -> int:
+    """pick_palette와 같은 선택을 인덱스로 돌려준다.
+
+    이웃한 컷이 같은 색으로 걸리지 않게 순번으로 돌려 쓰려면 시작 위치가 필요하다.
+    """
+    table = PALETTES if palettes is None else palettes
+    return zlib.crc32(seed.encode("utf-8")) % len(table)
 
 
 def make_background(top_color, bottom_color) -> Image.Image:
