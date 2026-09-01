@@ -30,7 +30,7 @@ ENV_FILE = ROOT / ".env.youtube"
 # link from just a partner ID). Empty until a real link is added.
 COUPANG_LINK = ""
 
-CHANNEL_ID = "UCEHRa1rmhcZNVm5F7Zz_ycw"  # @200-y3b
+CHANNEL_ID = "UCeXsmdfyW4hoxgWV2K8EwFw"  # @200-y3b
 
 
 def _load_env_file():
