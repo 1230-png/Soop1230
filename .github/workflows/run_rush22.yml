@@ -1,0 +1,81 @@
+name: Rush22 Daily Shorts
+
+on:
+  schedule:
+    # KST = UTC+9. 07:00 and 18:00 KST = 22:00 (previous day) and 09:00 UTC.
+    # Deliberately offset from the @200-y3b slots (23:00 / 03:30 / 11:30 UTC)
+    # so the two channels never contend for the same daily YouTube API quota
+    # window. GitHub's scheduler commonly fires 25-70 minutes late; that is
+    # expected and does not need fixing.
+    - cron: '0 22 * * *'
+    - cron: '0 9 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: rush22-shorts
+  cancel-in-progress: false
+
+jobs:
+  generate-and-upload:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: channel_rush22
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install system dependencies (ffmpeg, Korean fonts)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-noto-cjk
+
+      - name: Install Python dependencies
+        run: pip install -r scripts/requirements.txt
+
+      - name: Validate content bank
+        # Fails before the upload quota is spent if an entry is malformed,
+        # duplicated, or too long to publish as a Short.
+        run: python scripts/validate_bank.py
+
+      - name: Generate and upload Short
+        env:
+          # This channel's own credentials. Other channels in this repo also
+          # publish to YouTube, and sharing one set of YT_* secrets has already
+          # broken uploads here once. There is no fallback on purpose: a
+          # missing secret must fail the run, never borrow another channel's
+          # credentials and publish to the wrong place.
+          RUSH_CLIENT_ID: ${{ secrets.RUSH_CLIENT_ID }}
+          RUSH_CLIENT_SECRET: ${{ secrets.RUSH_CLIENT_SECRET }}
+          RUSH_REFRESH_TOKEN: ${{ secrets.RUSH_REFRESH_TOKEN }}
+          # Optional. Pins the ownership check to a channel id instead of the
+          # handle, which the channel owner can rename.
+          RUSH_CHANNEL_ID: ${{ secrets.RUSH_CHANNEL_ID }}
+          # Rendered media goes to the runner's temp directory so nothing
+          # generated is ever committed back to the repository.
+          RUSH_OUTPUT_DIR: ${{ runner.temp }}/rush22-output
+        run: python scripts/generate_video.py
+
+      - name: Commit updated log
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add used_log.csv
+          if git diff --cached --quiet; then
+            echo "No log changes to commit."
+          else
+            git commit -m "chore: update rush22 used_log.csv [skip ci]"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push
+          fi
