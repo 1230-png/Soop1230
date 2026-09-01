@@ -43,7 +43,7 @@ YouTube 업로드 → `used_log.csv`에 기록 후 자동 커밋.
 |---|---|---|
 | `RUSH_CLIENT_ID` | ✅ | Google Cloud OAuth 클라이언트 ID |
 | `RUSH_CLIENT_SECRET` | ✅ | 〃 보안 비밀번호 |
-| `RUSH_REFRESH_TOKEN` | ✅ | 아래 3단계에서 발급 |
+| `RUSH_REFRESH_TOKEN` | ✅ | 아래 4단계에서 발급 |
 | `RUSH_CHANNEL_ID` | 선택 | 채널 ID로 업로드 대상을 고정 (권장) |
 
 **이름이 `RUSH_`로 시작하는 이유:** 이 저장소의 다른 채널도 유튜브에 업로드합니다.
@@ -81,11 +81,34 @@ YouTube 업로드 → `used_log.csv`에 기록 후 자동 커밋.
 > 보안 비밀번호는 생성 직후에만 전체가 보입니다. 놓쳤으면 클라이언트 상세 화면의
 > **"+ Add secret"**으로 새로 발급하세요.
 
-### 3. Refresh Token 발급 (본인 컴퓨터에서 한 번만)
+### 3. 앱을 프로덕션으로 게시 ⚠️ 건너뛰면 7일 뒤 멈춥니다
+
+"OAuth 동의 화면" → **앱 게시** → 프로덕션으로 전환.
+
+동의 화면 게시 상태가 **"테스트"**로 남아 있으면 Google이 **refresh token을
+7일마다 폐기합니다.** 자동화는 첫 주만 정상 동작하다가 8일째부터 모든 실행이
+`invalid_grant`으로 실패합니다. 코드에는 아무 문제가 없어서 원인을 찾기 어려운
+종류의 고장입니다.
+
+프로덕션으로 바꾸면 "확인되지 않은 앱" 경고가 뜨는데 정상입니다. 본인 계정
+하나만 쓰는 앱이라 Google 심사 없이 그대로 써도 되고, 로그인 화면에서
+**고급 → 이동(안전하지 않음)**으로 넘어가면 됩니다. 심사는 앱을 여러 사용자에게
+배포할 때 필요한 절차이지 토큰 유지 조건이 아닙니다.
+
+### 4. Refresh Token 발급 (본인 컴퓨터에서 한 번만)
+
+Google Cloud Console에서 받은 `client_secret_*.json` 파일을 그대로 쓰는 게
+가장 간단합니다.
 
 ```bash
 cd channel_rush22
 pip install -r scripts/requirements.txt
+python scripts/get_refresh_token.py --client-secret-file "client_secret_....json"
+```
+
+값을 직접 넣어도 됩니다.
+
+```bash
 python scripts/get_refresh_token.py --client-id "<ID>" --client-secret "<비밀번호>"
 ```
 
@@ -97,10 +120,15 @@ python scripts/get_refresh_token.py --client-id "<ID>" --client-secret "<비밀�
 
 출력된 값을 위 표대로 GitHub Secrets에 등록하세요.
 
-> `invalid_grant` 오류는 대부분 토큰을 옮겨 적다 생긴 오타입니다.
-> `✅ Refresh token verified working` 줄이 떴는지 먼저 확인하세요.
+> `invalid_grant` 오류는 원인이 둘입니다. 발급 직후라면 대부분 토큰을 옮겨
+> 적다 생긴 오타이니 `✅ Refresh token verified working` 줄이 떴는지 확인하세요.
+> **일주일쯤 잘 돌다가 갑자기** 나기 시작했다면 3단계(프로덕션 게시)를 건너뛴
+> 것이고, 게시 상태를 바꾼 뒤 토큰을 다시 발급해야 합니다.
+>
+> `redirect_uri_mismatch`가 나면 OAuth 클라이언트를 **데스크톱 앱**이 아니라
+> 웹 애플리케이션으로 만든 경우입니다. 데스크톱 앱으로 새로 만드세요.
 
-### 4. 동작 확인
+### 5. 동작 확인
 
 저장소 → Actions → **"Rush22 Daily Shorts"** → **Run workflow**.
 로그에 `🔒 Verified channel:`과 `✨ Success! https://youtube.com/shorts/...`가
