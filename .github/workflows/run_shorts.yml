@@ -1,24 +1,77 @@
-name: Daily Shorts Upload
+name: 200-y3b Daily Shorts
 
 on:
   schedule:
-    - cron: '0 22 * * *'   # 07:00 KST
-    - cron: '20 22 * * *'  # 07:20 KST
-    - cron: '40 22 * * *'  # 07:40 KST
-  workflow_dispatch:  # 수동 테스트용
+    # KST = UTC+9, so 08:00 / 12:30 / 20:30 KST = 23:00 (prev day) / 03:30 / 11:30 UTC
+    # Picked for commute / lunch / evening-peak traffic instead of the old
+    # 09:00/15:00/21:00 slots (15:00 KST was a low-traffic dead zone).
+    # GitHub's scheduler typically runs these 25-70 min late; that is normal.
+    - cron: '0 23 * * *'
+    - cron: '30 3 * * *'
+    - cron: '30 11 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: 200y3b-shorts
+  cancel-in-progress: false
 
 jobs:
-  upload-shorts:
+  generate-and-upload:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: channel_200y3b
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: pip install -r requirements.txt
-      - name: Upload short
+
+      - name: Install system dependencies (ffmpeg, Korean fonts)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-noto-cjk
+
+      - name: Install Python dependencies
+        run: pip install -r scripts/requirements.txt
+
+      - name: Generate and upload Shorts
         env:
+          # This channel's own credentials. Other channels in this repo also
+          # upload to YouTube, and sharing one set of YT_* secrets already
+          # broke these uploads once, so Y3B_* is preferred and YT_* is only
+          # a fallback. upload_video.py additionally refuses to upload if the
+          # credentials do not belong to @200-y3b.
+          Y3B_CLIENT_ID: ${{ secrets.Y3B_CLIENT_ID }}
+          Y3B_CLIENT_SECRET: ${{ secrets.Y3B_CLIENT_SECRET }}
+          Y3B_REFRESH_TOKEN: ${{ secrets.Y3B_REFRESH_TOKEN }}
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
-        run: python upload_shorts.py
+          # Generated video/audio/image files go to the runner's temp
+          # directory, never into the checked-out repo, so nothing large
+          # or generated ends up committed.
+          SHORTS_OUTPUT_DIR: ${{ runner.temp }}/shorts-output
+        run: python scripts/generate_video.py
+
+      - name: Commit updated log
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add used_log.csv
+          if git diff --cached --quiet; then
+            echo "No log changes to commit."
+          else
+            git commit -m "chore: update used_log.csv [skip ci]"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push
+          fi

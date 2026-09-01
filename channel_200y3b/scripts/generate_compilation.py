@@ -3,8 +3,8 @@
 YouTube ad breaks (targets 8+ minutes) and to give viewers something worth
 sitting through, not just another Short.
 
-Uses Google Cloud Text-to-Speech (1M chars/month free) for narration,
-Pillow + ffmpeg for video, YouTube Data API for upload.
+Uses edge-tts (free, unlimited) for narration, Pillow + ffmpeg for video,
+YouTube Data API for upload.
 """
 
 import csv
@@ -110,7 +110,6 @@ def make_slide_clip(phrase: dict, index: int, total: int, font_path: str, out_di
         ],
         audio_path,
         trailing_silence=SLIDE_TRAILING_SILENCE,
-        use_elevenlabs_for_en=True,  # ElevenLabs for all languages
     )
     common.mux_video(bg_path, audio_path, clip_path)
     bg_path.unlink()

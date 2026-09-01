@@ -2,7 +2,7 @@
 + example, narrated (EN/KO/EN) with natural neural voices and muxed into a
 vertical mp4, then upload to YouTube with Coupang Partners affiliate link.
 
-Stack: Pillow (image/text), Google Cloud Text-to-Speech (neural TTS, 1M chars/month free),
+Stack: Pillow (image/text), edge-tts (neural TTS, free/unlimited),
 ffmpeg (mux), YouTube Data API (upload).
 """
 
@@ -134,7 +134,6 @@ def main():
             ("en", phrase["example_en"]),
         ],
         audio_path,
-        use_elevenlabs_for_en=True,  # Shorts get the higher-quality voice
     )
     common.mux_video(bg_path, audio_path, video_path)
 
