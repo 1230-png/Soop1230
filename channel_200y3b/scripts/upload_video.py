@@ -106,6 +106,50 @@ def get_youtube_client():
     return youtube
 
 
+def _get_or_create_playlist(youtube, title: str) -> str:
+    """Return the id of the channel's playlist with this title, creating it
+    if it doesn't exist yet. Grouping videos into playlists gives autoplay-
+    into-next-video watch time (a real lever on watch hours, which is one of
+    the two YouTube Partner Program eligibility tracks)."""
+    page_token = None
+    while True:
+        resp = youtube.playlists().list(
+            part="id,snippet", mine=True, maxResults=50, pageToken=page_token
+        ).execute()
+        for item in resp.get("items", []):
+            if item["snippet"]["title"] == title:
+                return item["id"]
+        page_token = resp.get("nextPageToken")
+        if not page_token:
+            break
+
+    resp = youtube.playlists().insert(
+        part="snippet,status",
+        body={
+            "snippet": {"title": title},
+            "status": {"privacyStatus": "public"},
+        },
+    ).execute()
+    return resp["id"]
+
+
+def _add_to_playlist(youtube, video_id: str, playlist_title: str) -> None:
+    try:
+        playlist_id = _get_or_create_playlist(youtube, playlist_title)
+        youtube.playlistItems().insert(
+            part="snippet",
+            body={
+                "snippet": {
+                    "playlistId": playlist_id,
+                    "resourceId": {"kind": "youtube#video", "videoId": video_id},
+                }
+            },
+        ).execute()
+        print(f"✅ Added {video_id} to playlist '{playlist_title}'")
+    except HttpError as e:
+        print(f"⚠️  Could not add {video_id} to playlist '{playlist_title}': {e}", file=sys.stderr)
+
+
 def upload_video(
     video_path: Path,
     title: str,
@@ -113,6 +157,7 @@ def upload_video(
     thumbnail_path: Path = None,
     category_id: str = "27",  # Education
     privacy_status: str = "public",
+    playlist_title: str = None,
 ) -> str:
     """Upload video to YouTube and return video ID.
 
@@ -123,6 +168,7 @@ def upload_video(
         thumbnail_path: Optional custom thumbnail image path
         category_id: YouTube category (27=Education)
         privacy_status: 'public', 'unlisted', or 'private'
+        playlist_title: Optional playlist name to add this video to
 
     Returns:
         YouTube video ID
@@ -172,6 +218,9 @@ def upload_video(
         except HttpError as e:
             print(f"⚠️  Thumbnail upload failed (channel may not be verified): {e}", file=sys.stderr)
 
+    if playlist_title:
+        _add_to_playlist(youtube, video_id, playlist_title)
+
     return video_id
 
 
@@ -211,6 +260,7 @@ def main():
     parser.add_argument("--description", required=True, help="Video description")
     parser.add_argument("--thumbnail", type=Path, help="Optional thumbnail image")
     parser.add_argument("--log-file", type=Path, help="Log file to update")
+    parser.add_argument("--playlist", help="Optional playlist name to add this video to")
     args = parser.parse_args()
 
     if not args.video_path.exists():
@@ -222,6 +272,7 @@ def main():
             args.title,
             args.description,
             args.thumbnail,
+            playlist_title=args.playlist,
         )
 
         if args.log_file:

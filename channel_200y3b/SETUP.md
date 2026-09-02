@@ -14,7 +14,7 @@
 
 | 워크플로우 | 스케줄 | 하는 일 |
 |---|---|---|
-| `.github/workflows/run_shorts.yml` | 매일 08:00 / 12:30 / 20:30 KST | 쇼츠 1편 생성 + 업로드 |
+| `.github/workflows/run_shorts.yml` | 매일 09:00 / 15:00 / 21:00 KST | 쇼츠 1편 생성 + 업로드 |
 | `.github/workflows/longform_publish.yml` | 매주 일요일 20:00 KST | 표현 30개 모음 ~5분 롱폼 1편 생성 + 업로드 |
 | `.github/workflows/mega_compilation.yml` | 매월 1일 18:00 KST | 표현 뱅크를 순환하며 ~55~60분 총정리 영상 1편 생성 + 업로드 |
 

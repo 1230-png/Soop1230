@@ -108,6 +108,14 @@ def tts_save_segment(lang: str, text: str, out_path: Path, attempts: int = 3) ->
             time.sleep(2 * attempt)
 
 
+def clip_duration(path: Path) -> float:
+    out = subprocess.run(
+        ["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(path)],
+        check=True, capture_output=True, text=True,
+    )
+    return float(out.stdout.strip())
+
+
 def generate_silence(duration_seconds: float, out_path: Path) -> None:
     subprocess.run(
         [
