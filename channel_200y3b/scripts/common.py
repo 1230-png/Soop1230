@@ -12,6 +12,7 @@ import os
 import subprocess
 import sys
 import textwrap
+import time
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
@@ -84,14 +85,27 @@ def draw_centered(draw, text, font, y, fill, wrap_width, line_gap=16, canvas_wid
 
 
 
-def tts_save_segment(lang: str, text: str, out_path: Path) -> None:
-    """Generate TTS for one segment via edge-tts. lang is 'en' or 'ko'."""
+def tts_save_segment(lang: str, text: str, out_path: Path, attempts: int = 3) -> None:
+    """Generate TTS for one segment via edge-tts. lang is 'en' or 'ko'.
+
+    edge-tts occasionally fails a single call (Microsoft's endpoint is
+    unofficial and has no uptime guarantee) even when the vast majority of
+    calls in the same run succeed — a real, observed failure mode in a
+    ~240-call mega-compilation run. Retrying the one bad call is far cheaper
+    than aborting a run that's otherwise almost entirely generated."""
     voice = EDGE_VOICE_EN if lang == "en" else EDGE_VOICE_KO
-    subprocess.run(
-        ["edge-tts", "--voice", voice, "--text", text, "--write-media", str(out_path)],
-        check=True,
-        capture_output=True,
-    )
+    for attempt in range(1, attempts + 1):
+        try:
+            subprocess.run(
+                ["edge-tts", "--voice", voice, "--text", text, "--write-media", str(out_path)],
+                check=True,
+                capture_output=True,
+            )
+            return
+        except subprocess.CalledProcessError:
+            if attempt == attempts:
+                raise
+            time.sleep(2 * attempt)
 
 
 def generate_silence(duration_seconds: float, out_path: Path) -> None:
