@@ -1,0 +1,66 @@
+name: Mega compilation (@200-y3b)
+
+on:
+  schedule:
+    # Monthly, not weekly like the regular long-form: the phrase bank is a
+    # fixed pool rather than something that grows on its own, so this runs
+    # far less often to avoid repeat-heavy videos.
+    - cron: "0 9 1 * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: 200y3b-mega
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: channel_200y3b
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install system dependencies (ffmpeg, Korean fonts)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-noto-cjk
+
+      - name: Install Python dependencies
+        run: pip install -r scripts/requirements.txt
+
+      - name: Generate and upload mega compilation
+        env:
+          Y3B_CLIENT_ID: ${{ secrets.Y3B_CLIENT_ID }}
+          Y3B_CLIENT_SECRET: ${{ secrets.Y3B_CLIENT_SECRET }}
+          Y3B_REFRESH_TOKEN: ${{ secrets.Y3B_REFRESH_TOKEN }}
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          SHORTS_OUTPUT_DIR: ${{ runner.temp }}/mega-output
+        run: python scripts/generate_mega_compilation.py
+
+      - name: Commit updated log and state
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add used_log_mega.csv mega_state.json
+          if git diff --cached --quiet; then
+            echo "No log changes to commit."
+          else
+            git commit -m "chore: update mega compilation state [skip ci]"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push
+          fi
