@@ -30,7 +30,7 @@ ENV_FILE = ROOT / ".env.youtube"
 # link from just a partner ID). Empty until a real link is added.
 COUPANG_LINK = ""
 
-CHANNEL_ID = "UCEHRa1rmhcZNVm5F7Zz_ycw"  # @200-y3b
+CHANNEL_ID = "UCeXsmdfyW4hoxgWV2K8EwFw"  # @200-y3b
 
 
 def _load_env_file():
@@ -46,19 +46,50 @@ def _load_env_file():
         os.environ.setdefault(key.strip(), value.strip())
 
 
+def _credential(name: str):
+    """Read one OAuth credential, preferring this channel's own secret.
+
+    Several channels in this repo upload to YouTube and all originally read the
+    same YT_* secrets. When another channel's credentials were rotated, these
+    uploads broke with invalid_client — and had the rotation been consistent,
+    they would instead have published @200-y3b videos to that other channel.
+    Y3B_* names give this channel its own slot; YT_* stays as a fallback so
+    nothing breaks before the dedicated secrets exist.
+    """
+    return os.environ.get(f"Y3B_{name}") or os.environ.get(f"YT_{name}")
+
+
+def _assert_target_channel(youtube) -> None:
+    """Abort unless the credentials actually belong to @200-y3b.
+
+    Uploading to the wrong channel is silent and hard to undo, so this is
+    checked before any upload rather than trusted."""
+    resp = youtube.channels().list(part="id,snippet", mine=True).execute()
+    items = resp.get("items", [])
+    if not items:
+        raise SystemExit("Could not determine which channel these credentials belong to.")
+    actual = items[0]["id"]
+    if actual != CHANNEL_ID:
+        title = items[0]["snippet"].get("title", "?")
+        raise SystemExit(
+            f"Refusing to upload: credentials belong to channel {actual} ({title}), "
+            f"not @200-y3b ({CHANNEL_ID}).\n"
+            "Set Y3B_CLIENT_ID / Y3B_CLIENT_SECRET / Y3B_REFRESH_TOKEN for this channel."
+        )
+
+
 def get_youtube_client():
     """Get authorized YouTube API client using GitHub Secrets environment variables."""
     _load_env_file()
-    client_id = os.environ.get("YT_CLIENT_ID")
-    client_secret = os.environ.get("YT_CLIENT_SECRET")
-    refresh_token = os.environ.get("YT_REFRESH_TOKEN")
+    client_id = _credential("CLIENT_ID")
+    client_secret = _credential("CLIENT_SECRET")
+    refresh_token = _credential("REFRESH_TOKEN")
 
     if not all([client_id, client_secret, refresh_token]):
         raise SystemExit(
-            "Missing YouTube OAuth credentials in environment:\n"
-            "  YT_CLIENT_ID\n"
-            "  YT_CLIENT_SECRET\n"
-            "  YT_REFRESH_TOKEN"
+            "Missing YouTube OAuth credentials in environment. Set either:\n"
+            "  Y3B_CLIENT_ID / Y3B_CLIENT_SECRET / Y3B_REFRESH_TOKEN  (preferred)\n"
+            "  YT_CLIENT_ID / YT_CLIENT_SECRET / YT_REFRESH_TOKEN     (shared fallback)"
         )
 
     creds = Credentials(
@@ -70,7 +101,53 @@ def get_youtube_client():
         scopes=SCOPES,
     )
     creds.refresh(Request())
-    return build("youtube", "v3", credentials=creds)
+    youtube = build("youtube", "v3", credentials=creds)
+    _assert_target_channel(youtube)
+    return youtube
+
+
+def _get_or_create_playlist(youtube, title: str) -> str:
+    """Return the id of the channel's playlist with this title, creating it
+    if it doesn't exist yet. Grouping videos into playlists gives autoplay-
+    into-next-video watch time (a real lever on watch hours, which is one of
+    the two YouTube Partner Program eligibility tracks)."""
+    page_token = None
+    while True:
+        resp = youtube.playlists().list(
+            part="id,snippet", mine=True, maxResults=50, pageToken=page_token
+        ).execute()
+        for item in resp.get("items", []):
+            if item["snippet"]["title"] == title:
+                return item["id"]
+        page_token = resp.get("nextPageToken")
+        if not page_token:
+            break
+
+    resp = youtube.playlists().insert(
+        part="snippet,status",
+        body={
+            "snippet": {"title": title},
+            "status": {"privacyStatus": "public"},
+        },
+    ).execute()
+    return resp["id"]
+
+
+def _add_to_playlist(youtube, video_id: str, playlist_title: str) -> None:
+    try:
+        playlist_id = _get_or_create_playlist(youtube, playlist_title)
+        youtube.playlistItems().insert(
+            part="snippet",
+            body={
+                "snippet": {
+                    "playlistId": playlist_id,
+                    "resourceId": {"kind": "youtube#video", "videoId": video_id},
+                }
+            },
+        ).execute()
+        print(f"✅ Added {video_id} to playlist '{playlist_title}'")
+    except HttpError as e:
+        print(f"⚠️  Could not add {video_id} to playlist '{playlist_title}': {e}", file=sys.stderr)
 
 
 def upload_video(
@@ -80,6 +157,7 @@ def upload_video(
     thumbnail_path: Path = None,
     category_id: str = "27",  # Education
     privacy_status: str = "public",
+    playlist_title: str = None,
 ) -> str:
     """Upload video to YouTube and return video ID.
 
@@ -90,6 +168,7 @@ def upload_video(
         thumbnail_path: Optional custom thumbnail image path
         category_id: YouTube category (27=Education)
         privacy_status: 'public', 'unlisted', or 'private'
+        playlist_title: Optional playlist name to add this video to
 
     Returns:
         YouTube video ID
@@ -139,6 +218,9 @@ def upload_video(
         except HttpError as e:
             print(f"⚠️  Thumbnail upload failed (channel may not be verified): {e}", file=sys.stderr)
 
+    if playlist_title:
+        _add_to_playlist(youtube, video_id, playlist_title)
+
     return video_id
 
 
@@ -178,6 +260,7 @@ def main():
     parser.add_argument("--description", required=True, help="Video description")
     parser.add_argument("--thumbnail", type=Path, help="Optional thumbnail image")
     parser.add_argument("--log-file", type=Path, help="Log file to update")
+    parser.add_argument("--playlist", help="Optional playlist name to add this video to")
     args = parser.parse_args()
 
     if not args.video_path.exists():
@@ -189,6 +272,7 @@ def main():
             args.title,
             args.description,
             args.thumbnail,
+            playlist_title=args.playlist,
         )
 
         if args.log_file:

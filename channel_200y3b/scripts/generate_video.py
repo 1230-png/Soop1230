@@ -2,7 +2,7 @@
 + example, narrated (EN/KO/EN) with natural neural voices and muxed into a
 vertical mp4, then upload to YouTube with Coupang Partners affiliate link.
 
-Stack: Pillow (image/text), Google Cloud Text-to-Speech (neural TTS, 1M chars/month free),
+Stack: Pillow (image/text), edge-tts (neural TTS, free/unlimited),
 ffmpeg (mux), YouTube Data API (upload).
 """
 
@@ -69,7 +69,7 @@ def draw_content(img, phrase: dict, font_path: str) -> None:
     y += 10
     y = common.draw_centered(draw, phrase["example_ko"], example_font, y, (180, 200, 195), wrap_width=22)
 
-    brand = "매일 영어 한마디 · @200-y3b"
+    brand = "매일 영어 한마디 · @200-y3b · 구독🔔"
     bbox = draw.textbbox((0, 0), brand, font=brand_font)
     bx = (WIDTH - (bbox[2] - bbox[0])) / 2
     draw.text((bx, HEIGHT - 140), brand, font=brand_font, fill=(255, 255, 255))
@@ -134,7 +134,6 @@ def main():
             ("en", phrase["example_en"]),
         ],
         audio_path,
-        use_elevenlabs_for_en=True,  # Shorts get the higher-quality voice
     )
     common.mux_video(bg_path, audio_path, video_path)
 
@@ -161,6 +160,7 @@ def main():
                 "--title", metadata["title"],
                 "--description", metadata["description"],
                 "--log-file", str(USED_LOG),
+                "--playlist", "매일 영어 한마디 · 쇼츠 모음",
             ],
             cwd=ROOT / "scripts",
             check=True,

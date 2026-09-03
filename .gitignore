@@ -1,4 +1,16 @@
 channel_200y3b/output/
-__pycache__/
 channel_200y3b/.env.youtube
-channel_200y3b/client_secret.json
+channel_food/output/
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+client_secret*.json
+.env
+.env.local
+
+# 워크플로 생성 단계가 남기는 임시 산출물
+channel_food/scripts/result.json
+channel_200y3b/scripts/result.json
+shorts_engine/.env
+shorts_engine/.pytest_cache/

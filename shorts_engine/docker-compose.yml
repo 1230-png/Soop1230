@@ -1,0 +1,21 @@
+# 로컬 개발용 Postgres. 배포는 Neon/Supabase 무료 티어를 쓰고
+# DATABASE_URL만 바꿔 끼우면 된다.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: shorts
+      POSTGRES_PASSWORD: shorts
+      POSTGRES_DB: shorts
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U shorts"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  pgdata:

@@ -3,8 +3,8 @@
 YouTube ad breaks (targets 8+ minutes) and to give viewers something worth
 sitting through, not just another Short.
 
-Uses Google Cloud Text-to-Speech (1M chars/month free) for narration,
-Pillow + ffmpeg for video, YouTube Data API for upload.
+Uses edge-tts (free, unlimited) for narration, Pillow + ffmpeg for video,
+YouTube Data API for upload.
 """
 
 import csv
@@ -28,7 +28,7 @@ VOLUME_FILE = ROOT / "longform_volume.txt"
 # committed to git.
 OUTPUT_DIR = Path(os.environ.get("SHORTS_OUTPUT_DIR", ROOT / "output"))
 
-BATCH_SIZE = 30
+BATCH_SIZE = 35  # comfortably over the 8-minute mid-roll-ad threshold at edge-tts's pace
 SLIDE_TRAILING_SILENCE = 2.0  # seconds of pause per slide for reading time
 
 
@@ -55,6 +55,13 @@ def pick_batch() -> list:
                 batch.append(p)
                 batch_ids.add(p["id"])
     return batch
+
+
+def format_timestamp(seconds: float) -> str:
+    total = int(seconds)
+    h, rem = divmod(total, 3600)
+    m, s = divmod(rem, 60)
+    return f"{h}:{m:02d}:{s:02d}" if h else f"{m}:{s:02d}"
 
 
 def next_volume() -> int:
@@ -110,7 +117,6 @@ def make_slide_clip(phrase: dict, index: int, total: int, font_path: str, out_di
         ],
         audio_path,
         trailing_silence=SLIDE_TRAILING_SILENCE,
-        use_elevenlabs_for_en=True,  # ElevenLabs for all languages
     )
     common.mux_video(bg_path, audio_path, clip_path)
     bg_path.unlink()
@@ -156,12 +162,12 @@ def append_log(rows: list) -> None:
         writer.writerows(rows)
 
 
-def build_metadata(batch: list, volume: int, video_id: str) -> dict:
+def build_metadata(batch: list, volume: int, video_id: str, chapters: list) -> dict:
     title = f"실생활 영어 표현 {len(batch)}개 모음 Vol.{volume} | 매일 영어 한마디"
-    phrase_lines = "\n".join(f"{i+1}. {p['phrase_en']} — {p['meaning_ko']}" for i, p in enumerate(batch))
+    chapter_lines = "\n".join(f"{format_timestamp(t)} {label}" for t, label in chapters)
     description = (
         f"이번 영상에서 배우는 표현 {len(batch)}개:\n\n"
-        f"{phrase_lines}\n\n"
+        f"{chapter_lines}\n\n"
         "매일 영어 한마디 — 실생활에서 바로 쓰는 영어 표현을 매일 전해드립니다.\n"
         "매주 이번 주 표현을 모아 정리 영상으로 올려드려요.\n"
         "#영어공부 #영어회화 #매일영어한마디 #dailyenglish #영어표현모음"
@@ -190,18 +196,31 @@ def main():
     video_id = f"{date_str}_longform_vol{volume}"
 
     clip_paths = []
-    clip_paths.append(make_title_clip(
+    chapters = []
+    elapsed = 0.0
+
+    intro_path = make_title_clip(
         ["오늘 배우는", f"영어 표현 {len(batch)}개"],
         f"안녕하세요, 매일 영어 한마디입니다. 오늘은 실생활에서 자주 쓰는 표현 {len(batch)}개를 모아왔어요. 하나씩 같이 배워볼까요?",
         font_path, OUTPUT_DIR, f"{video_id}_intro",
-    ))
+    )
+    clip_paths.append(intro_path)
+    chapters.append((elapsed, "인트로"))
+    elapsed += common.clip_duration(intro_path)
+
     for i, phrase in enumerate(batch, start=1):
-        clip_paths.append(make_slide_clip(phrase, i, len(batch), font_path, OUTPUT_DIR))
-    clip_paths.append(make_title_clip(
+        clip_path = make_slide_clip(phrase, i, len(batch), font_path, OUTPUT_DIR)
+        clip_paths.append(clip_path)
+        chapters.append((elapsed, phrase["phrase_en"]))
+        elapsed += common.clip_duration(clip_path)
+
+    outro_path = make_title_clip(
         ["오늘 표현", "다 배우셨나요?"],
         "여기까지 오늘의 표현 모음이었습니다. 도움이 되셨다면 구독과 좋아요 부탁드려요. 다음 영상에서 또 만나요!",
         font_path, OUTPUT_DIR, f"{video_id}_outro",
-    ))
+    )
+    clip_paths.append(outro_path)
+    chapters.append((elapsed, "마무리"))
 
     video_path = OUTPUT_DIR / f"{video_id}.mp4"
     common.concat_videos(clip_paths, video_path)
@@ -213,7 +232,7 @@ def main():
     thumb_img = common.make_thumbnail(f"영어 표현 {len(batch)}개", sample_phrases, font_path, common.PALETTES[0])
     thumb_img.convert("RGB").save(thumb_path, quality=90)
 
-    metadata = build_metadata(batch, volume, video_id)
+    metadata = build_metadata(batch, volume, video_id, chapters)
     metadata["thumbnail_file"] = os.path.relpath(thumb_path, ROOT)
     meta_path = OUTPUT_DIR / f"{video_id}.json"
     meta_path.write_text(json.dumps(metadata, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -242,6 +261,7 @@ def main():
                 "--description", metadata["description"],
                 "--thumbnail", str(thumb_path),
                 "--log-file", str(LONGFORM_LOG),
+                "--playlist", "매일 영어 한마디 · 주간 표현 모음",
             ],
             cwd=ROOT / "scripts",
             check=True,

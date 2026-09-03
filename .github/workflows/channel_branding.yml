@@ -1,0 +1,40 @@
+name: 🌘 현실 속 기괴한 현상 - 채널 설명·키워드 적용
+
+# 수동 실행 전용. 채널 정보는 자주 바꿀 일이 없다.
+on:
+  workflow_dispatch:
+    inputs:
+      force:
+        description: '이미 설정된 키워드/설명문도 덮어쓰기'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  brand:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 의존성 설치
+        working-directory: channel_food/scripts
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 채널 설명·키워드 적용
+        working-directory: channel_food/scripts
+        env:
+          WEIRD_CLIENT_ID: ${{ secrets.WEIRD_CLIENT_ID }}
+          WEIRD_CLIENT_SECRET: ${{ secrets.WEIRD_CLIENT_SECRET }}
+          WEIRD_REFRESH_TOKEN: ${{ secrets.WEIRD_REFRESH_TOKEN }}
+        run: |
+          python3 update_channel_branding.py ${{ inputs.force && '--force' || '' }}
