@@ -22,16 +22,22 @@ SCOPES = ["https://www.googleapis.com/auth/youtube"]
 
 
 def load_client_config(client_secret_path):
-    """Load client config from Google Cloud Console's downloaded JSON file."""
-    with open(client_secret_path, encoding="utf-8") as f:
+    """Load and sanity-check Google Cloud Console's downloaded JSON file.
+
+    Returns the whole document, not the inner block: InstalledAppFlow expects
+    the "installed"/"web" wrapper key to still be there and raises a confusing
+    "Client secrets must be for a web or installed app" if it is unwrapped.
+    """
+    with open(client_secret_path, encoding="utf-8-sig") as f:
         data = json.load(f)
 
-    if "installed" in data:
-        return data["installed"]
-    elif "web" in data:
-        return data["web"]
-    else:
-        raise ValueError(f"Unrecognized client_secret.json format. Expected 'installed' or 'web' key.")
+    if "installed" not in data and "web" not in data:
+        raise SystemExit(
+            f"{client_secret_path} is not an OAuth client file — it has no "
+            "'installed' or 'web' key. Re-download it from Google Cloud Console "
+            "(APIs & Services > Credentials > your OAuth client > download icon)."
+        )
+    return data
 
 
 def main():
