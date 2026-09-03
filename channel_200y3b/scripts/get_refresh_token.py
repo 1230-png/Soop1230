@@ -1,69 +1,65 @@
 """One-time local script to obtain a YouTube upload refresh token.
 
-Run this on your own machine, once, using the CLIENT_ID and CLIENT_SECRET
-from Google Cloud Console (APIs & Services > Credentials).
+Run this on your own machine (Windows/Mac/Linux), once:
 
-    pip install google-auth-oauthlib
-    python3 get_refresh_token.py --client-id YOUR_ID --client-secret YOUR_SECRET
+    pip install google-auth-oauthlib requests
+    python get_refresh_token.py --client-secret client_secret.json
+
+The script will:
+1. Open a browser for you to authorize with your YouTube (@200-y3b) account
+2. Extract client_id and client_secret from the JSON file
+3. Get a refresh_token that never expires
+4. Output the 3 secrets to copy into GitHub repository Secrets
 """
 
 import argparse
+import json
 from pathlib import Path
 
-import requests
 from google_auth_oauthlib.flow import InstalledAppFlow
 
 SCOPES = ["https://www.googleapis.com/auth/youtube"]
-ENV_FILE = Path(__file__).resolve().parent.parent / ".env.youtube"
+
+
+def load_client_config(client_secret_path):
+    """Load client config from Google Cloud Console's downloaded JSON file."""
+    with open(client_secret_path, encoding="utf-8") as f:
+        data = json.load(f)
+
+    if "installed" in data:
+        return data["installed"]
+    elif "web" in data:
+        return data["web"]
+    else:
+        raise ValueError(f"Unrecognized client_secret.json format. Expected 'installed' or 'web' key.")
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--client-id", required=True)
-    parser.add_argument("--client-secret", required=True)
+    parser = argparse.ArgumentParser(description="Get YouTube refresh token from Google OAuth credentials")
+    parser.add_argument("--client-secret", default="client_secret.json",
+                        help="Path to client_secret.json from Google Cloud Console (default: client_secret.json)")
     args = parser.parse_args()
 
-    client_config = {
-        "installed": {
-            "client_id": args.client_id,
-            "client_secret": args.client_secret,
-            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-            "token_uri": "https://oauth2.googleapis.com/token",
-            "redirect_uris": ["http://localhost"],
-        }
-    }
+    client_secret_file = Path(args.client_secret)
+    if not client_secret_file.exists():
+        raise SystemExit(f"❌ File not found: {client_secret_file}\n"
+                        "Download client_secret.json from:\n"
+                        "  https://console.cloud.google.com/apis/credentials?project=y3b-506009")
 
+    print(f"📖 Reading credentials from: {client_secret_file}")
+    client_config = load_client_config(client_secret_file)
+
+    print("🔗 Opening browser for authorization...\n")
     flow = InstalledAppFlow.from_client_config(client_config, SCOPES)
     credentials = flow.run_local_server(port=0)
 
-    print("\nSave these as environment variables / GitHub secrets:\n")
-    print(f"YT_CLIENT_ID:     {credentials.client_id}")
-    print(f"YT_CLIENT_SECRET: {credentials.client_secret}")
-    print(f"YT_REFRESH_TOKEN: {credentials.refresh_token}")
+    print("\n" + "="*70)
+    print("✅ SUCCESS! Save these 3 values to GitHub repository Secrets:")
+    print("="*70)
+    print(f"\nY3B_CLIENT_ID:     {credentials.client_id}")
+    print(f"Y3B_CLIENT_SECRET: {credentials.client_secret}")
+    print(f"Y3B_REFRESH_TOKEN: {credentials.refresh_token}\n")
 
-    print("\nVerifying refresh token works (separate call, no manual copy)...")
-    resp = requests.post(
-        "https://oauth2.googleapis.com/token",
-        data={
-            "client_id": credentials.client_id,
-            "client_secret": credentials.client_secret,
-            "refresh_token": credentials.refresh_token,
-            "grant_type": "refresh_token",
-        },
-    )
-    print(f"Verification status: {resp.status_code}")
-    print(resp.text)
-    if resp.status_code == 200:
-        print("\n✅ Refresh token verified working.")
-        ENV_FILE.write_text(
-            f"YT_CLIENT_ID={credentials.client_id}\n"
-            f"YT_CLIENT_SECRET={credentials.client_secret}\n"
-            f"YT_REFRESH_TOKEN={credentials.refresh_token}\n",
-            encoding="utf-8",
-        )
-        print(f"Saved to {ENV_FILE} — no manual copy/paste needed.")
-    else:
-        print("\n❌ Refresh token verification FAILED — see response above.")
 
 
 if __name__ == "__main__":
