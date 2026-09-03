@@ -16,9 +16,11 @@ import argparse
 import json
 from pathlib import Path
 
+import requests
 from google_auth_oauthlib.flow import InstalledAppFlow
 
 SCOPES = ["https://www.googleapis.com/auth/youtube"]
+ENV_FILE = Path(__file__).resolve().parent.parent / ".env.youtube"
 
 
 def load_client_config(client_secret_path):
@@ -59,12 +61,40 @@ def main():
     flow = InstalledAppFlow.from_client_config(client_config, SCOPES)
     credentials = flow.run_local_server(port=0)
 
-    print("\n" + "="*70)
-    print("✅ SUCCESS! Save these 3 values to GitHub repository Secrets:")
-    print("="*70)
-    print(f"\nY3B_CLIENT_ID:     {credentials.client_id}")
-    print(f"Y3B_CLIENT_SECRET: {credentials.client_secret}")
-    print(f"Y3B_REFRESH_TOKEN: {credentials.refresh_token}\n")
+    # Prove the refresh token actually mints an access token before anyone
+    # copies it into GitHub Secrets. Without this check a token that is
+    # subtly wrong only shows up much later, as an invalid_grant inside a
+    # CI upload, where it looks like a pipeline bug rather than a bad paste.
+    print("\nVerifying the refresh token works...")
+    resp = requests.post(
+        "https://oauth2.googleapis.com/token",
+        data={
+            "client_id": credentials.client_id,
+            "client_secret": credentials.client_secret,
+            "refresh_token": credentials.refresh_token,
+            "grant_type": "refresh_token",
+        },
+    )
+    if resp.status_code != 200:
+        raise SystemExit(f"Refresh token verification FAILED ({resp.status_code}):\n{resp.text}")
+    print("Verified: the token mints an access token.")
+
+    # Write them to a file too. Copying a ~100-character refresh token out of
+    # a terminal by dragging across a wrapped line is how stray newlines get
+    # into the secret; opening this file and copying each line is not.
+    ENV_FILE.write_text(
+        f"Y3B_CLIENT_ID={credentials.client_id}\n"
+        f"Y3B_CLIENT_SECRET={credentials.client_secret}\n"
+        f"Y3B_REFRESH_TOKEN={credentials.refresh_token}\n",
+        encoding="utf-8",
+    )
+
+    print("\n" + "=" * 70)
+    print("SUCCESS — the 3 values were written to:")
+    print(f"  {ENV_FILE}")
+    print("Open that file, and copy each value (the part after '=') into the")
+    print("matching GitHub repository Secret. Do not retype them by hand.")
+    print("=" * 70)
 
 
 
