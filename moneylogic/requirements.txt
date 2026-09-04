@@ -22,14 +22,14 @@ openai==1.42.0
 
 # === 음성 합성 ===
 edge-tts==7.2.8
-elevenlabs==0.2.30
+elevenlabs==2.30.0
 
 # === 미디어 처리 ===
 moviepy==1.0.3
 decorator<5.0
 numpy==1.26.4
 Pillow==10.4.0
-imageio-ffmpeg==0.5.2
+imageio-ffmpeg==0.6.0
 
 # === 차트 생성 ===
 matplotlib==3.9.2
