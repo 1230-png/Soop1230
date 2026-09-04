@@ -55,6 +55,14 @@ jobs:
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          # ElevenLabs voice for the English lines. Optional: if the secret
+          # is unset (or the call fails for any reason) common.py falls back
+          # to free edge-tts, so a missing or exhausted key never fails a
+          # run. Deliberately NOT injected into longform_publish.yml or
+          # mega_compilation.yml — those narrate hundreds of segments and
+          # must stay on the free voice.
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+          ELEVENLABS_VOICE_ID: ${{ vars.ELEVENLABS_VOICE_ID }}
           # Generated video/audio/image files go to the runner's temp
           # directory, never into the checked-out repo, so nothing large
           # or generated ends up committed.

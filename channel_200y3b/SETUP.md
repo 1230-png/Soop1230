@@ -52,7 +52,22 @@
 `channels().list(mine=True)`로 실제 채널 ID를 확인해서, 자격 증명이 @200-y3b가
 아니면 업로드를 거부합니다.
 
-TTS(edge-tts)는 API 키가 필요 없습니다 — 무료·무제한, 별도 시크릿 없음.
+### 음성 관련 (선택)
+
+| 이름 | 등록 위치 | 발급처 |
+|---|---|---|
+| `ELEVENLABS_API_KEY` | Secrets 탭 | ElevenLabs → API Keys |
+| `ELEVENLABS_VOICE_ID` | Variables 탭 | ElevenLabs → Voices에서 목소리 선택 |
+
+둘 다 없어도 워크플로우는 그대로 돌아갑니다. 키가 없으면 영어 나레이션도
+edge-tts로 갑니다. `ELEVENLABS_VOICE_ID`는 비밀값이 아니므로 Secret이 아니라
+Variable로 등록하면 되고, 없으면 `common.py`의 기본값인 프리메이드 보이스
+"Adam"을 씁니다.
+
+로컬 `.env` 파일은 GitHub Actions가 읽지 못합니다. 자동 발행에 반영하려면
+반드시 위 화면에 등록해야 합니다.
+
+edge-tts 자체는 API 키가 필요 없습니다 — 무료·무제한, 별도 시크릿 없음.
 
 ---
 
@@ -101,15 +116,26 @@ python scripts/get_refresh_token.py --client-id "<클라이언트 ID>" --client-
 
 ---
 
-## 음성 — edge-tts
+## 음성 — edge-tts + ElevenLabs(영어 Shorts 한정)
 
-`common.py`가 영어/한국어 모두 Microsoft edge-tts(`en-US-GuyNeural` /
-`ko-KR-InJoonNeural`)로 생성합니다. API 키가 필요 없고 무료·무제한이라
-사용량 한도를 신경 쓸 필요가 없습니다.
+| 대상 | 엔진 |
+|---|---|
+| 데일리 Shorts 영어 | ElevenLabs (키가 있을 때) → 실패 시 edge-tts |
+| 데일리 Shorts 한국어 | edge-tts `ko-KR-InJoonNeural` |
+| 주간 컴필레이션 · 월간 메가 컴필레이션 | 전부 edge-tts |
+
+컴필레이션을 유료 음성에서 제외한 이유는 분량입니다. 메가 컴필레이션 한 번이
+약 240개 세그먼트를 읽는데, 이걸 ElevenLabs로 보내면 한 달 크레딧이 한 번의
+잡에서 사라집니다. `generate_compilation.py`가 `use_elevenlabs_for_en=False`를
+명시적으로 넘겨서 막고 있고, 워크플로우 쪽에서도 `longform_publish.yml` /
+`mega_compilation.yml`에는 키를 주입하지 않습니다. 둘 다 걸어 둔 건 한쪽만
+바뀌어도 사고가 나지 않게 하려는 것입니다.
 
 > 과거에는 ElevenLabs(월 10,000자 무료)를 썼지만, 키가 401을 반환하며 반복
 > 실패했습니다(무료 한도 초과 또는 다른 프로젝트와의 키 공유 충돌로 추정).
-> API 키 자체가 실패 지점이 되는 걸 없애기 위해 edge-tts로 완전히 교체했습니다.
+> 지금은 유료 요금제로 돌아왔고, 그때와 달리 `tts_save_segment()`가 어떤
+> 실패(401·크레딧 소진·네트워크 오류)든 잡아서 edge-tts로 내려갑니다.
+> ElevenLabs가 죽어도 발행은 계속됩니다.
 
 ---
 

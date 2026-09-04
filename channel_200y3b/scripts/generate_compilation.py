@@ -117,6 +117,10 @@ def make_slide_clip(phrase: dict, index: int, total: int, font_path: str, out_di
         ],
         audio_path,
         trailing_silence=SLIDE_TRAILING_SILENCE,
+        # Compilations stay on free edge-tts. A mega run narrates ~240
+        # segments; routing those through ElevenLabs would spend a month of
+        # credits in one job. Paid voice is for the daily Shorts only.
+        use_elevenlabs_for_en=False,
     )
     common.mux_video(bg_path, audio_path, clip_path)
     bg_path.unlink()
