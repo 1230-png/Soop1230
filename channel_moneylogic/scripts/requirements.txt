@@ -1,0 +1,31 @@
+# 머니로직 영상 생성 의존성
+
+# --- 렌더링 ---
+moviepy==1.0.3
+decorator<5.0
+numpy==1.26.4
+Pillow==10.4.0
+
+# --- 미디어 ---
+imageio-ffmpeg==0.5.2
+edge-tts==7.2.8
+
+# --- 차트 생성 ---
+matplotlib==3.9.2
+pandas==2.2.3
+
+# --- 데이터 수집 ---
+yfinance==0.2.43
+requests==2.34.2
+
+# --- 음성 생성 (프로덕션) ---
+elevenlabs==0.2.30
+
+# --- YouTube 업로드 ---
+google-auth==2.32.0
+google-auth-oauthlib==1.2.1
+google-api-python-client==2.140.0
+
+# --- DB ---
+sqlalchemy==2.0.36
+asyncpg==0.30.0
