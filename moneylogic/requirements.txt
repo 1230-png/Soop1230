@@ -1,0 +1,43 @@
+# === FastAPI & 웹 프레임워크 ===
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+pydantic-settings==2.7.0
+
+# === 데이터베이스 ===
+sqlalchemy[asyncio]==2.0.36
+asyncpg==0.30.0
+alembic==1.14.0
+psycopg2-binary==2.9.9
+
+# === 환경 설정 ===
+python-dotenv==1.0.1
+
+# === 데이터 수집 ===
+yfinance==0.2.43
+requests==2.34.2
+
+# === AI/LLM ===
+openai==1.42.0
+
+# === 음성 합성 ===
+edge-tts==7.2.8
+elevenlabs==0.2.30
+
+# === 미디어 처리 ===
+moviepy==1.0.3
+decorator<5.0
+numpy==1.26.4
+Pillow==10.4.0
+imageio-ffmpeg==0.5.2
+
+# === 차트 생성 ===
+matplotlib==3.9.2
+pandas==2.2.3
+
+# === 로깅 ===
+python-json-logger==2.0.7
+
+# === 테스트 ===
+pytest==8.3.4
+pytest-asyncio==0.25.0
