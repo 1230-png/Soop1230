@@ -1,6 +1,6 @@
 import pytest
 
-from src.validator import REQUIRED_HEADERS, validate
+from src.validator import REQUIRED_HEADERS, STRUCTURAL_NUMBERS, validate
 from tests.fixtures import BLOCK, SCRIPT
 
 
@@ -105,3 +105,35 @@ def test_multiple_violations_are_all_reported():
     assert "필수 헤더 누락: ## 7. 엔딩" in violations
     assert "금지어 사용: 급등" in violations
     assert "데이터 블록에 없는 숫자: 73.9" in violations
+
+
+def test_structural_allowlist_is_only_the_cut_numbers():
+    """허용셋이 넓어지면 환각 탐지가 헐거워진다. 넓힐 때는 이 테스트를 먼저 볼 것."""
+    assert STRUCTURAL_NUMBERS == {"1", "2", "3"}
+
+
+def test_block_does_not_need_an_allowlist_line():
+    assert "허용 숫자" not in BLOCK
+
+
+def test_cut_numbering_is_allowed_without_being_in_the_block():
+    assert "2" not in _block_numbers()
+    assert validate(SCRIPT, BLOCK) == []
+
+
+def test_duration_number_is_no_longer_allowed():
+    broken = SCRIPT.replace(
+        "## 숏폼 컷 3개\n", "## 숏폼 컷 3개\n각 컷은 60초 이내로 자른다.\n"
+    )
+    assert "데이터 블록에 없는 숫자: 60" in validate(broken, BLOCK)
+
+
+def test_section_number_beyond_three_is_not_allowed_in_body():
+    broken = SCRIPT.replace("표본은 12건입니다.", "표본은 12건이고 조건은 7가지입니다.")
+    assert "데이터 블록에 없는 숫자: 7" in validate(broken, BLOCK)
+
+
+def _block_numbers():
+    from src.validator import _extract_numbers
+
+    return _extract_numbers(BLOCK)

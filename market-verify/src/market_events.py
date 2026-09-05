@@ -13,10 +13,6 @@ MIN_GAP_TRADING_DAYS = 60
 MIN_SAMPLE_WARNING = 5
 SOURCE = "Yahoo Finance"
 
-# 대본이 구조상 쓸 수밖에 없는 숫자(섹션 번호, 컷 번호, 초 단위).
-# 블록에 명시해 두지 않으면 검증기가 전부 환각으로 잡는다.
-STRUCTURE_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 12, 60]
-
 
 def fetch_close(ticker, start, end=None):
     """일별 수정종가 시계열을 돌려준다."""
@@ -206,13 +202,7 @@ def to_block(
             f"| {stat['min']:.2f} | {stat['max']:.2f} | {stat['positive_ratio']:.2f} |"
         )
 
-    lines += [
-        "",
-        "[대본 구조용 허용 숫자]",
-        " ".join(str(n) for n in STRUCTURE_NUMBERS),
-        "",
-        "=== 블록 끝 ===",
-    ]
+    lines += ["", "=== 블록 끝 ==="]
     return "\n".join(lines) + "\n"
 
 

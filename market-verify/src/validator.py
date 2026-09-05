@@ -28,6 +28,11 @@ MIN_VISUAL_CUES = 5
 
 OPERATOR_HEADER = "## 6. [운영자 코멘트]"
 
+# 헤더와 목록 번호를 지워도 본문에 남는 구조 숫자는 숏폼 컷 번호뿐이다.
+# ("컷 1:"은 줄 첫머리가 아니라 목록 번호로 지워지지 않는다.)
+# 여기에 숫자를 더 넣을수록 환각 탐지가 그만큼 헐거워진다.
+STRUCTURAL_NUMBERS = frozenset({"1", "2", "3"})
+
 DATE_RE = re.compile(r"\d{4}-\d{2}-\d{2}")
 NUMBER_RE = re.compile(r"\d+(?:\.\d+)?")
 LIST_MARKER_RE = re.compile(r"^\s*\d+[.)]\s+")
@@ -104,7 +109,8 @@ def validate(script, block):
 
     block_numbers = _extract_numbers(block)
     script_numbers = _extract_numbers(_strip_structural_text(script))
-    for number in sorted(script_numbers - block_numbers, key=float):
+    unknown = script_numbers - block_numbers - STRUCTURAL_NUMBERS
+    for number in sorted(unknown, key=float):
         violations.append(f"데이터 블록에 없는 숫자: {number}")
 
     return violations

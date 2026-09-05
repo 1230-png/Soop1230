@@ -232,7 +232,7 @@ def test_block_numbers_are_self_consistent_for_the_validator():
 
 
 def _minimal_script(date, sample_count):
-    cues = "\n".join(f"[자료 화면: 자료 {i} / 화면 텍스트 \"참고\"]" for i in range(1, 6))
+    cues = "\n".join('[자료 화면: 근거 자료 / 화면 텍스트 "참고"]' for _ in range(5))
     return f"""## 제목 3안
 1. 테스트 제목
 2. 테스트 제목
