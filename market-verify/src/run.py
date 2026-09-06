@@ -88,6 +88,9 @@ def _slug(text):
 
 
 def main(argv=None):
+    # 파일로 넘길 때 파이썬이 출력을 모아두는 바람에 진행 상황이 안 보인다.
+    # 몇 분 걸리는 작업이라 멈춘 것처럼 보인다. 줄 단위로 바로 내보낸다.
+    sys.stdout.reconfigure(line_buffering=True)
     args = parse_args(argv)
 
     close = me.fetch_close(args.ticker, args.start, args.end)
