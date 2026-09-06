@@ -4,15 +4,22 @@
 """
 
 import argparse
+import os
 import re
 import sys
 from datetime import datetime
 from pathlib import Path
 
 from src import market_events as me
-from src.writer import ScriptGenerationError, format_usage, write_script
+from src.writer import (
+    APICallError,
+    ScriptGenerationError,
+    format_usage,
+    write_script,
+)
 
 OUT_DIR = Path(__file__).resolve().parent.parent / "out"
+KEY_ENV = "ANTHROPIC_API_KEY"
 
 
 def parse_args(argv=None):
@@ -57,6 +64,25 @@ def resolve_events(close, args):
     )
 
 
+def check_api_key(env=None):
+    """호출 전에 키 형태를 본다. 문제가 없으면 None.
+
+    터미널에 붙여넣을 때 이스케이프 문자가 섞여 들어가는 일이 잦다.
+    그대로 요청을 보내면 서버가 400 만 돌려줘 원인을 찾기 어렵다.
+    """
+    key = (os.environ if env is None else env).get(KEY_ENV, "")
+    if not key:
+        return f"{KEY_ENV} 가 설정되지 않았다. export {KEY_ENV}='sk-ant-...' 로 넣을 것."
+    if any(ch in key for ch in "\x1b\r\n\t "):
+        return (
+            f"{KEY_ENV} 에 공백이나 제어문자가 섞여 있다. "
+            "터미널 붙여넣기가 이스케이프 문자를 끼워 넣은 경우다. 다시 설정할 것."
+        )
+    if not key.startswith("sk-ant-"):
+        return f"{KEY_ENV} 가 sk-ant- 로 시작하지 않는다. 값이 잘못됐다."
+    return None
+
+
 def _slug(text):
     return re.sub(r"[^A-Za-z0-9._-]+", "", text) or "ticker"
 
@@ -83,6 +109,12 @@ def main(argv=None):
         print("--block-only 이므로 대본은 만들지 않았다.")
         return 0
 
+    key_problem = check_api_key()
+    if key_problem:
+        print(f"실패: {key_problem}")
+        print("데이터 블록은 저장했으니 키만 고치고 다시 실행하면 된다.")
+        return 2
+
     usages = []
 
     def report(attempt, violations, usage):
@@ -102,6 +134,10 @@ def main(argv=None):
         # 실패해도 토큰은 나갔다. 얼마 썼는지 남긴다.
         print(format_usage(error.usages))
         return 1
+    except APICallError as error:
+        print("실패: API 를 호출하지 못했다. 대본을 저장하지 않는다.")
+        print(error)
+        return 3
 
     script_path = outdir / f"{stem}_script.md"
     script_path.write_text(script, encoding="utf-8")

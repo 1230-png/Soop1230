@@ -1,12 +1,14 @@
 import pytest
 
 from src.writer import (
+    APICallError,
     FEEDBACK_HEADER,
     MAX_TOKENS,
     MODEL,
     PRICE_PER_MTOK,
     ScriptGenerationError,
     build_user_message,
+    describe_api_error,
     estimate_cost_usd,
     format_usage,
     load_system_prompt,
@@ -225,3 +227,46 @@ def test_format_usage_omits_cost_for_unknown_model():
 
     line = format_usage([AttemptUsage(1000, 500)], "some-unlisted-model")
     assert "추정" not in line
+
+
+class FakeAnthropicError(Exception):
+    """anthropic SDK 예외를 흉내낸다. 모듈 이름으로 판별하므로 그것까지 맞춘다."""
+
+    __module__ = "anthropic"
+
+    def __init__(self, message, status_code):
+        super().__init__(message)
+        self.status_code = status_code
+
+
+def test_sdk_error_becomes_a_readable_message():
+    class BoomClient:
+        class messages:
+            @staticmethod
+            def create(**kwargs):
+                raise FakeAnthropicError("credit balance is too low", 400)
+
+    with pytest.raises(APICallError) as excinfo:
+        write_script(BLOCK, client=BoomClient, system_prompt="sys")
+    text = str(excinfo.value)
+    assert "HTTP 400" in text
+    assert "크레딧 잔액" in text
+    assert "credit balance is too low" in text
+
+
+def test_non_sdk_exception_is_not_swallowed():
+    """SDK 예외가 아닌 버그는 그대로 터져야 한다. 삼키면 원인을 못 찾는다."""
+
+    class BuggyClient:
+        class messages:
+            @staticmethod
+            def create(**kwargs):
+                raise ZeroDivisionError("코드 버그")
+
+    with pytest.raises(ZeroDivisionError):
+        write_script(BLOCK, client=BuggyClient, system_prompt="sys")
+
+
+def test_describe_api_error_handles_unknown_status():
+    line = describe_api_error(FakeAnthropicError("무슨 일", 418))
+    assert "HTTP 418" in line and "무슨 일" in line

@@ -2,7 +2,7 @@ import pandas as pd
 import pytest
 
 from src import run
-from src.writer import AttemptUsage, ScriptGenerationError
+from src.writer import APICallError, AttemptUsage, ScriptGenerationError
 from tests.fixtures import SCRIPT
 
 
@@ -17,6 +17,8 @@ def falling_close():
 def stub_market(monkeypatch):
     close = falling_close()
     monkeypatch.setattr(run.me, "fetch_close", lambda *a, **k: close)
+    # main() 은 API 호출 전에 키 형태를 본다. 테스트에는 형태만 맞는 값을 준다.
+    monkeypatch.setenv(run.KEY_ENV, "sk-ant-test-key")
     return close
 
 
@@ -159,3 +161,54 @@ def test_block_only_reports_no_usage(stub_market, tmp_path, capsys, monkeypatch)
         ]
     )
     assert "토큰" not in capsys.readouterr().out
+
+
+@pytest.mark.parametrize(
+    "value,expected",
+    [
+        ("", "설정되지 않았다"),
+        ("\x1b[200~sk-ant-api03-abc\x1b[201~", "제어문자"),
+        ("sk-ant-api03-abc ", "제어문자"),
+        ("복사가-잘못된-값", "sk-ant- 로 시작하지 않는다"),
+    ],
+)
+def test_check_api_key_rejects_broken_values(value, expected):
+    assert expected in run.check_api_key({run.KEY_ENV: value})
+
+
+def test_check_api_key_accepts_a_normal_key():
+    assert run.check_api_key({run.KEY_ENV: "sk-ant-api03-abc123"}) is None
+
+
+def test_pasted_escape_codes_stop_before_any_api_call(monkeypatch, tmp_path, capsys):
+    """붙여넣기로 깨진 키는 호출 전에 잡는다. 원인 모를 400 을 받지 않는다."""
+    monkeypatch.setattr(run.me, "fetch_close", lambda *a, **k: falling_close())
+    monkeypatch.setenv(run.KEY_ENV, "\x1b[200~sk-ant-api03-abc\x1b[201~")
+    monkeypatch.setattr(run, "write_script", lambda *a, **k: pytest.fail("호출되면 안 된다"))
+    code = run.main(
+        [
+            "--ticker", "^GSPC", "--condition", "down-weeks", "--n", "3",
+            "--start", "2000-01-01", "--outdir", str(tmp_path),
+        ]
+    )
+    assert code == 2
+    assert list(tmp_path.glob("*_script.md")) == []
+    assert len(list(tmp_path.glob("*_block.txt"))) == 1, "블록은 남아 있어야 한다"
+    assert "제어문자" in capsys.readouterr().out
+
+
+def test_api_failure_is_reported_readably(stub_market, tmp_path, capsys, monkeypatch):
+    def boom(block, on_attempt=None):
+        raise APICallError("API 호출 실패 (HTTP 400)\n크레딧 잔액이 0이거나...")
+
+    monkeypatch.setattr(run, "write_script", boom)
+    code = run.main(
+        [
+            "--ticker", "^GSPC", "--condition", "down-weeks", "--n", "3",
+            "--start", "2000-01-01", "--outdir", str(tmp_path),
+        ]
+    )
+    out = capsys.readouterr().out
+    assert code == 3
+    assert "HTTP 400" in out
+    assert list(tmp_path.glob("*_script.md")) == []

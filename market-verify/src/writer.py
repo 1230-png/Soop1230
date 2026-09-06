@@ -22,6 +22,20 @@ PRICE_PER_MTOK = {
 
 AttemptUsage = namedtuple("AttemptUsage", "input_tokens output_tokens")
 
+# 서버가 돌려준 상태 코드를 사람이 읽을 수 있는 원인으로 바꾼다.
+# 원문 예외만 던지면 스택트레이스만 남아 무엇을 고쳐야 할지 알 수 없다.
+_STATUS_HINTS = {
+    400: "요청이 거부됐다. 크레딧 잔액이 0이거나 API 키 값이 깨졌을 가능성이 높다.",
+    401: "API 키가 인증되지 않았다. ANTHROPIC_API_KEY 값을 다시 확인할 것.",
+    403: "이 키로는 접근 권한이 없다. 워크스페이스 설정을 확인할 것.",
+    429: "요청 한도를 넘었다. 잠시 뒤 다시 시도할 것.",
+    529: "서버가 과부하 상태다. 잠시 뒤 다시 시도할 것.",
+}
+
+
+class APICallError(RuntimeError):
+    """API 호출 자체가 실패했다. 대본 내용 문제가 아니라 키·크레딧·요청 문제다."""
+
 
 class ScriptGenerationError(RuntimeError):
     """검증을 통과한 대본을 만들지 못했다. 이 경우 대본을 저장하지 않는다."""
@@ -60,6 +74,24 @@ def _response_text(response):
         for block in response.content
         if getattr(block, "type", "text") == "text"
     )
+
+
+def _is_api_error(error):
+    """anthropic SDK 가 던진 예외인지 본다.
+
+    SDK 없이 가짜 클라이언트로 도는 테스트까지 삼키지 않으려고 모듈 이름으로 가른다.
+    """
+    return type(error).__module__.split(".")[0] == "anthropic"
+
+
+def describe_api_error(error):
+    status = getattr(error, "status_code", None)
+    lines = [f"API 호출 실패 (HTTP {status})" if status else "API 호출 실패"]
+    hint = _STATUS_HINTS.get(status)
+    if hint:
+        lines.append(hint)
+    lines.append(f"원문: {error}")
+    return "\n".join(lines)
 
 
 def _usage(response):
@@ -111,12 +143,19 @@ def write_script(
     violations = []
     usages = []
     for attempt in range(1, max_attempts + 1):
-        response = client.messages.create(
-            model=MODEL,
-            max_tokens=MAX_TOKENS,
-            system=system,
-            messages=[{"role": "user", "content": build_user_message(block, violations)}],
-        )
+        try:
+            response = client.messages.create(
+                model=MODEL,
+                max_tokens=MAX_TOKENS,
+                system=system,
+                messages=[
+                    {"role": "user", "content": build_user_message(block, violations)}
+                ],
+            )
+        except Exception as error:
+            if _is_api_error(error):
+                raise APICallError(describe_api_error(error)) from error
+            raise
         script = _response_text(response)
         usages.append(_usage(response))
         violations = validate(script, block)
