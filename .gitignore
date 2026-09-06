@@ -14,3 +14,7 @@ channel_food/scripts/result.json
 channel_200y3b/scripts/result.json
 shorts_engine/.env
 shorts_engine/.pytest_cache/
+
+# market-verify
+market-verify/out/
+market-verify/.pytest_cache/
