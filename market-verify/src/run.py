@@ -20,6 +20,14 @@ from src.writer import (
 
 OUT_DIR = Path(__file__).resolve().parent.parent / "out"
 KEY_ENV = "ANTHROPIC_API_KEY"
+OPERATOR_HEADER = "## 6. [운영자 코멘트]"
+# 저장할 때만 넣는 안내. 모델 출력에는 없고, 검증을 통과한 뒤에 붙는다.
+# HTML 주석이라 유튜브 대본으로 옮길 때 화면에 남지 않는다.
+OPERATOR_GUIDE = (
+    "<!-- 여기에 운영자 본인의 관점을 직접 씁니다. 쓰고 나면 이 안내 줄은 지우세요.\n"
+    "     위의 제목 줄은 지우지 마세요. 대본 구조가 매주 달라집니다.\n"
+     "     면책 문구는 이미 유튜브 설명란에 들어가 있으니 여기 또 쓸 필요는 없습니다. -->"
+)
 
 
 def parse_args(argv=None):
@@ -61,6 +69,19 @@ def resolve_events(close, args):
     return (
         me.threshold_break(close, args.level),
         f"{args.level:g} 이상 첫 돌파",
+    )
+
+
+def add_operator_guide(script):
+    """운영자 칸에 작성 안내를 넣어 저장한다.
+
+    빈 칸만 남겨 두면 무엇을 어떻게 쓰라는 건지 알 수 없어
+    제목 줄을 지우고 그 자리에 쓰게 된다. 실제로 그런 일이 있었다.
+    """
+    if OPERATOR_HEADER not in script:
+        return script
+    return script.replace(
+        OPERATOR_HEADER, f"{OPERATOR_HEADER}\n{OPERATOR_GUIDE}", 1
     )
 
 
@@ -145,7 +166,7 @@ def main(argv=None):
         return 3
 
     script_path = outdir / f"{stem}_script.md"
-    script_path.write_text(script, encoding="utf-8")
+    script_path.write_text(add_operator_guide(script), encoding="utf-8")
     print(f"대본 저장: {script_path}")
     print("최종 위반 0건")
     print(format_usage(usages))

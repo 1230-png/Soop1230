@@ -192,3 +192,20 @@ def test_violation_names_the_sentence_to_fix():
     assert hit, "36 을 잡지 못했다"
     assert "해당 문장:" in hit[0]
     assert "36년간의 기록입니다" in hit[0]
+
+
+def test_html_comment_under_operator_header_is_not_a_comment():
+    """저장할 때 넣는 작성 안내는 시청자에게 보이지 않는다. 위반이 아니다."""
+    ok = SCRIPT.replace(
+        "## 6. [운영자 코멘트]\n\n",
+        "## 6. [운영자 코멘트]\n<!-- 여기에 직접 쓰세요 -->\n\n",
+    )
+    assert validate(ok, BLOCK) == []
+
+
+def test_real_text_beside_an_html_comment_is_still_caught():
+    broken = SCRIPT.replace(
+        "## 6. [운영자 코멘트]\n\n",
+        "## 6. [운영자 코멘트]\n<!-- 안내 -->\n저는 이때 비중을 줄였습니다.\n\n",
+    )
+    assert any("운영자 코멘트] 섹션은 비워야 한다" in v for v in validate(broken, BLOCK))

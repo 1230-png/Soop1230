@@ -38,6 +38,9 @@ NUMBER_RE = re.compile(r"\d+(?:\.\d+)?")
 LIST_MARKER_RE = re.compile(r"^\s*\d+[.)]\s+")
 # 마크다운 구분선. 운영자 칸에 이게 있어도 사람이 쓴 코멘트는 아니다.
 HORIZONTAL_RULE_RE = re.compile(r"^\s*(?:-{3,}|\*{3,}|_{3,})\s*$", re.MULTILINE)
+# HTML 주석. 렌더링되지 않으므로 시청자에게 보이지 않는다.
+# 저장할 때 넣는 작성 안내가 여기 들어가며, 그건 운영자 코멘트가 아니다.
+HTML_COMMENT_RE = re.compile(r"<!--.*?-->", re.DOTALL)
 
 
 def _normalize_number(token):
@@ -128,8 +131,8 @@ def validate(script, block):
 
     body = _operator_section_body(script)
     if body is not None:
-        # 구분선은 지우고 본다. 모델이 섹션을 나누려고 넣은 것이지 코멘트가 아니다.
-        body = HORIZONTAL_RULE_RE.sub("", body)
+        # 구분선과 HTML 주석은 지우고 본다. 둘 다 코멘트 본문이 아니다.
+        body = HORIZONTAL_RULE_RE.sub("", HTML_COMMENT_RE.sub("", body))
     if body is not None and body.strip():
         violations.append(
             f"{OPERATOR_HEADER} 섹션은 비워야 한다. 사람이 채우는 칸이다. "

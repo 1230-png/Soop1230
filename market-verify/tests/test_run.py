@@ -90,7 +90,10 @@ def test_success_saves_block_and_script(stub_market, tmp_path, capsys, monkeypat
     )
     assert code == 0
     assert len(list(tmp_path.glob("*_block.txt"))) == 1
-    assert list(tmp_path.glob("*_script.md"))[0].read_text(encoding="utf-8") == SCRIPT
+    saved = list(tmp_path.glob("*_script.md"))[0].read_text(encoding="utf-8")
+    # 저장본은 운영자 칸 작성 안내만 더 들어간다. 나머지는 모델 출력 그대로다.
+    assert saved == run.add_operator_guide(SCRIPT)
+    assert saved.replace(run.OPERATOR_GUIDE + "\n", "") == SCRIPT
     assert "최종 위반 0건" in capsys.readouterr().out
 
 
@@ -212,3 +215,29 @@ def test_api_failure_is_reported_readably(stub_market, tmp_path, capsys, monkeyp
     assert code == 3
     assert "HTTP 400" in out
     assert list(tmp_path.glob("*_script.md")) == []
+
+
+def test_saved_script_carries_the_operator_guide(stub_market, tmp_path, monkeypatch):
+    monkeypatch.setattr(run, "write_script", lambda block, on_attempt=None: SCRIPT)
+    run.main(
+        [
+            "--ticker", "^GSPC", "--condition", "down-weeks", "--n", "3",
+            "--start", "2000-01-01", "--outdir", str(tmp_path),
+        ]
+    )
+    saved = list(tmp_path.glob("*_script.md"))[0].read_text(encoding="utf-8")
+    assert run.OPERATOR_HEADER in saved, "제목 줄은 그대로 남아야 한다"
+    assert "운영자 본인의 관점" in saved
+    assert saved.count(run.OPERATOR_HEADER) == 1
+
+
+def test_saved_script_still_passes_validation():
+    """안내를 넣어도 저장본을 다시 검사했을 때 통과해야 한다."""
+    from src.validator import validate
+    from tests.fixtures import BLOCK
+
+    assert validate(run.add_operator_guide(SCRIPT), BLOCK) == []
+
+
+def test_guide_is_skipped_when_the_header_is_missing():
+    assert run.add_operator_guide("헤더 없는 글") == "헤더 없는 글"
