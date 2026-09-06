@@ -123,6 +123,8 @@ def main(argv=None):
             f"시도 {attempt}: 위반 {len(violations)}건 "
             f"(입력 {usage.input_tokens:,} / 출력 {usage.output_tokens:,} 토큰)"
         )
+        if usage.stop_reason == "max_tokens":
+            print("  ! 출력이 상한에서 잘렸다. 대본 뒷부분이 통째로 없을 수 있다.")
         for violation in violations:
             print(f"  - {violation}")
 

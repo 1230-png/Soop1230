@@ -6,7 +6,7 @@ from pathlib import Path
 from src.validator import validate
 
 MODEL = "claude-sonnet-5"
-MAX_TOKENS = 8000
+MAX_TOKENS = 16000
 MAX_ATTEMPTS = 3
 FEEDBACK_HEADER = "[이전 시도에서 적발된 위반 — 이번엔 반드시 고친다]"
 PROMPT_PATH = Path(__file__).resolve().parent.parent / "prompts" / "script.md"
@@ -20,7 +20,9 @@ PRICE_PER_MTOK = {
     "claude-haiku-4-5": {"input": 1.0, "output": 5.0},
 }
 
-AttemptUsage = namedtuple("AttemptUsage", "input_tokens output_tokens")
+AttemptUsage = namedtuple(
+    "AttemptUsage", "input_tokens output_tokens stop_reason", defaults=(None,)
+)
 
 # 서버가 돌려준 상태 코드를 사람이 읽을 수 있는 원인으로 바꾼다.
 # 원문 예외만 던지면 스택트레이스만 남아 무엇을 고쳐야 할지 알 수 없다.
@@ -100,6 +102,7 @@ def _usage(response):
     return AttemptUsage(
         int(getattr(usage, "input_tokens", 0) or 0),
         int(getattr(usage, "output_tokens", 0) or 0),
+        getattr(response, "stop_reason", None),
     )
 
 

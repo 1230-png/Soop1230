@@ -36,6 +36,8 @@ STRUCTURAL_NUMBERS = frozenset({"1", "2", "3"})
 DATE_RE = re.compile(r"\d{4}-\d{2}-\d{2}")
 NUMBER_RE = re.compile(r"\d+(?:\.\d+)?")
 LIST_MARKER_RE = re.compile(r"^\s*\d+[.)]\s+")
+# 마크다운 구분선. 운영자 칸에 이게 있어도 사람이 쓴 코멘트는 아니다.
+HORIZONTAL_RULE_RE = re.compile(r"^\s*(?:-{3,}|\*{3,}|_{3,})\s*$", re.MULTILINE)
 
 
 def _normalize_number(token):
@@ -61,6 +63,35 @@ def _strip_structural_text(text):
 def _extract_numbers(text):
     without_dates = DATE_RE.sub(" ", text)
     return {_normalize_number(tok) for tok in NUMBER_RE.findall(without_dates)}
+
+
+def _block_numbers(block):
+    """블록이 허용하는 숫자.
+
+    날짜는 통째로 걷어내고 세지만, 연도만은 따로 넣어 준다.
+    "1990-01-02 ~ 2026-09-04" 를 두고 대본이 "1990년부터"라고 쓰는 것은
+    지어낸 수치가 아니라 블록에 적힌 연도를 그대로 부른 것이다.
+    월·일은 넣지 않는다. 그건 날짜를 그대로 인용하면 될 일이다.
+    """
+    numbers = _extract_numbers(block)
+    numbers.update(date[:4] for date in DATE_RE.findall(block))
+    return numbers
+
+
+def _number_contexts(text):
+    """숫자마다 처음 등장한 문장을 기억한다.
+
+    "블록에 없는 숫자: 36" 만 돌려주면 모델이 어디를 고쳐야 할지 모른다.
+    재시도할 때 문장을 같이 보여줘야 고칠 수 있다.
+    """
+    contexts = {}
+    for line in text.splitlines():
+        stripped = line.strip()
+        if not stripped:
+            continue
+        for token in NUMBER_RE.findall(DATE_RE.sub(" ", line)):
+            contexts.setdefault(_normalize_number(token), stripped[:80])
+    return contexts
 
 
 def _operator_section_body(script):
@@ -96,6 +127,9 @@ def validate(script, block):
         )
 
     body = _operator_section_body(script)
+    if body is not None:
+        # 구분선은 지우고 본다. 모델이 섹션을 나누려고 넣은 것이지 코멘트가 아니다.
+        body = HORIZONTAL_RULE_RE.sub("", body)
     if body is not None and body.strip():
         violations.append(
             f"{OPERATOR_HEADER} 섹션은 비워야 한다. 사람이 채우는 칸이다. "
@@ -107,10 +141,14 @@ def validate(script, block):
         if date not in block_dates:
             violations.append(f"데이터 블록에 없는 날짜: {date}")
 
-    block_numbers = _extract_numbers(block)
-    script_numbers = _extract_numbers(_strip_structural_text(script))
+    stripped_script = _strip_structural_text(script)
+    block_numbers = _block_numbers(block)
+    script_numbers = _extract_numbers(stripped_script)
     unknown = script_numbers - block_numbers - STRUCTURAL_NUMBERS
+    contexts = _number_contexts(stripped_script) if unknown else {}
     for number in sorted(unknown, key=float):
-        violations.append(f"데이터 블록에 없는 숫자: {number}")
+        context = contexts.get(number)
+        detail = f' (해당 문장: "{context}")' if context else ""
+        violations.append(f"데이터 블록에 없는 숫자: {number}{detail}")
 
     return violations
