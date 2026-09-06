@@ -4,8 +4,11 @@ from src.writer import (
     FEEDBACK_HEADER,
     MAX_TOKENS,
     MODEL,
+    PRICE_PER_MTOK,
     ScriptGenerationError,
     build_user_message,
+    estimate_cost_usd,
+    format_usage,
     load_system_prompt,
     write_script,
 )
@@ -19,9 +22,16 @@ class FakeBlock:
         self.text = text
 
 
+class FakeUsage:
+    def __init__(self, input_tokens, output_tokens):
+        self.input_tokens = input_tokens
+        self.output_tokens = output_tokens
+
+
 class FakeResponse:
-    def __init__(self, text):
+    def __init__(self, text, input_tokens=1000, output_tokens=500):
         self.content = [FakeBlock(text)]
+        self.usage = FakeUsage(input_tokens, output_tokens)
 
 
 class FakeMessages:
@@ -106,11 +116,14 @@ def test_on_attempt_callback_reports_each_round():
         BLOCK,
         client=client,
         system_prompt="sys",
-        on_attempt=lambda attempt, violations: seen.append((attempt, len(violations))),
+        on_attempt=lambda attempt, violations, usage: seen.append(
+            (attempt, len(violations), usage.output_tokens)
+        ),
     )
-    assert [a for a, _ in seen] == [1, 2]
+    assert [a for a, _, _ in seen] == [1, 2]
     assert seen[0][1] > 0
     assert seen[1][1] == 0
+    assert all(tokens == 500 for _, _, tokens in seen)
 
 
 def test_multiple_text_blocks_are_joined():
@@ -133,3 +146,82 @@ def test_build_user_message_lists_violations_verbatim():
     body = build_user_message(BLOCK, ["금지어 사용: 폭락", "필수 헤더 누락: ## 4. 결과"])
     assert "- 금지어 사용: 폭락" in body
     assert "- 필수 헤더 누락: ## 4. 결과" in body
+
+
+def test_usage_is_reported_for_every_attempt():
+    seen = []
+    client = FakeClient([BROKEN, SCRIPT])
+    write_script(
+        BLOCK,
+        client=client,
+        system_prompt="sys",
+        on_attempt=lambda attempt, violations, usage: seen.append(usage),
+    )
+    assert len(seen) == 2
+    assert [u.input_tokens for u in seen] == [1000, 1000]
+    assert [u.output_tokens for u in seen] == [500, 500]
+
+
+def test_failed_run_still_reports_what_it_spent():
+    """3회 실패해도 토큰은 나갔다. 얼마 썼는지 알 수 있어야 한다."""
+    client = FakeClient([BROKEN, BROKEN, BROKEN])
+    with pytest.raises(ScriptGenerationError) as excinfo:
+        write_script(BLOCK, client=client, system_prompt="sys")
+    usages = excinfo.value.usages
+    assert len(usages) == 3
+    assert sum(u.output_tokens for u in usages) == 1500
+
+
+def test_missing_usage_field_does_not_crash():
+    """usage 를 주지 않는 응답에도 죽지 않아야 한다."""
+
+    class NoUsageClient:
+        class messages:
+            @staticmethod
+            def create(**kwargs):
+                response = FakeResponse(SCRIPT)
+                del response.usage
+                return response
+
+    seen = []
+    write_script(
+        BLOCK,
+        client=NoUsageClient,
+        system_prompt="sys",
+        on_attempt=lambda a, v, u: seen.append(u),
+    )
+    assert seen[0].input_tokens == 0
+    assert seen[0].output_tokens == 0
+
+
+def test_cost_estimate_uses_the_price_table():
+    from src.writer import AttemptUsage
+
+    usages = [AttemptUsage(1_000_000, 1_000_000)]
+    price = PRICE_PER_MTOK[MODEL]
+    assert estimate_cost_usd(usages, MODEL) == pytest.approx(
+        price["input"] + price["output"]
+    )
+
+
+def test_cost_estimate_is_none_for_unknown_model():
+    from src.writer import AttemptUsage
+
+    assert estimate_cost_usd([AttemptUsage(10, 10)], "some-unlisted-model") is None
+
+
+def test_format_usage_shows_totals_and_flags_the_estimate():
+    from src.writer import AttemptUsage
+
+    line = format_usage([AttemptUsage(1000, 500), AttemptUsage(2000, 800)], MODEL)
+    assert "2회 누적" in line
+    assert "3,000" in line
+    assert "1,300" in line
+    assert "추정" in line and "콘솔" in line
+
+
+def test_format_usage_omits_cost_for_unknown_model():
+    from src.writer import AttemptUsage
+
+    line = format_usage([AttemptUsage(1000, 500)], "some-unlisted-model")
+    assert "추정" not in line

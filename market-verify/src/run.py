@@ -10,7 +10,7 @@ from datetime import datetime
 from pathlib import Path
 
 from src import market_events as me
-from src.writer import ScriptGenerationError, write_script
+from src.writer import ScriptGenerationError, format_usage, write_script
 
 OUT_DIR = Path(__file__).resolve().parent.parent / "out"
 
@@ -83,8 +83,14 @@ def main(argv=None):
         print("--block-only 이므로 대본은 만들지 않았다.")
         return 0
 
-    def report(attempt, violations):
-        print(f"시도 {attempt}: 위반 {len(violations)}건")
+    usages = []
+
+    def report(attempt, violations, usage):
+        usages.append(usage)
+        print(
+            f"시도 {attempt}: 위반 {len(violations)}건 "
+            f"(입력 {usage.input_tokens:,} / 출력 {usage.output_tokens:,} 토큰)"
+        )
         for violation in violations:
             print(f"  - {violation}")
 
@@ -93,12 +99,15 @@ def main(argv=None):
     except ScriptGenerationError as error:
         print(f"실패: {error.attempts}회 모두 검증을 통과하지 못했다. 대본을 저장하지 않는다.")
         print(f"최종 위반 {len(error.violations)}건")
+        # 실패해도 토큰은 나갔다. 얼마 썼는지 남긴다.
+        print(format_usage(error.usages))
         return 1
 
     script_path = outdir / f"{stem}_script.md"
     script_path.write_text(script, encoding="utf-8")
     print(f"대본 저장: {script_path}")
     print("최종 위반 0건")
+    print(format_usage(usages))
     return 0
 
 

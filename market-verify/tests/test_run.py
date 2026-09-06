@@ -2,7 +2,7 @@ import pandas as pd
 import pytest
 
 from src import run
-from src.writer import ScriptGenerationError
+from src.writer import AttemptUsage, ScriptGenerationError
 from tests.fixtures import SCRIPT
 
 
@@ -107,3 +107,55 @@ def test_failure_reports_count_and_saves_no_script(stub_market, tmp_path, capsys
     assert list(tmp_path.glob("*_script.md")) == [], "실패했는데 대본을 저장했다"
     assert len(list(tmp_path.glob("*_block.txt"))) == 1
     assert "최종 위반 2건" in capsys.readouterr().out
+
+
+def test_success_prints_per_attempt_and_total_usage(stub_market, tmp_path, capsys, monkeypatch):
+    def fake_write(block, on_attempt=None):
+        on_attempt(1, ["금지어 사용: 급등"], AttemptUsage(1000, 400))
+        on_attempt(2, [], AttemptUsage(1200, 600))
+        return SCRIPT
+
+    monkeypatch.setattr(run, "write_script", fake_write)
+    code = run.main(
+        [
+            "--ticker", "^GSPC", "--condition", "down-weeks", "--n", "3",
+            "--start", "2000-01-01", "--outdir", str(tmp_path),
+        ]
+    )
+    out = capsys.readouterr().out
+    assert code == 0
+    assert "시도 1: 위반 1건 (입력 1,000 / 출력 400 토큰)" in out
+    assert "시도 2: 위반 0건 (입력 1,200 / 출력 600 토큰)" in out
+    assert "입력 2,200 / 출력 1,000" in out
+    assert "추정 $" in out
+
+
+def test_failure_still_prints_what_it_spent(stub_market, tmp_path, capsys, monkeypatch):
+    def fail(block, on_attempt=None):
+        raise ScriptGenerationError(
+            ["금지어 사용: 폭락"], 3, [AttemptUsage(1000, 500)] * 3
+        )
+
+    monkeypatch.setattr(run, "write_script", fail)
+    code = run.main(
+        [
+            "--ticker", "^GSPC", "--condition", "down-weeks", "--n", "3",
+            "--start", "2000-01-01", "--outdir", str(tmp_path),
+        ]
+    )
+    out = capsys.readouterr().out
+    assert code == 1
+    assert list(tmp_path.glob("*_script.md")) == []
+    assert "입력 3,000 / 출력 1,500" in out
+    assert "추정 $" in out
+
+
+def test_block_only_reports_no_usage(stub_market, tmp_path, capsys, monkeypatch):
+    monkeypatch.setattr(run, "write_script", lambda *a, **k: pytest.fail("호출되면 안 된다"))
+    run.main(
+        [
+            "--ticker", "^GSPC", "--condition", "down-weeks", "--n", "3",
+            "--start", "2000-01-01", "--outdir", str(tmp_path), "--block-only",
+        ]
+    )
+    assert "토큰" not in capsys.readouterr().out
