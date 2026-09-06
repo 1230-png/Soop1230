@@ -1,4 +1,19 @@
+# 대본 생성
 anthropic>=0.40
 pandas>=2.0
-pytest>=8.0
 yfinance>=0.2.50
+
+# 영상 제작
+edge-tts>=7.0
+Pillow>=10.0
+
+# 유튜브 업로드
+google-api-python-client>=2.100
+google-auth-oauthlib>=1.2
+
+# 테스트
+pytest>=8.0
+
+# 이 밖에 시스템에 ffmpeg 와 한글 폰트가 필요하다.
+#   Ubuntu : sudo apt-get install -y ffmpeg fonts-noto-cjk
+#   Windows: ffmpeg.org 에서 받아 PATH 에 넣는다. 맑은 고딕은 이미 깔려 있다.

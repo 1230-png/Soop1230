@@ -11,7 +11,7 @@
 | `channel_200y3b/` | @200-y3b — 매일 영어 한마디 쇼츠 + 주간 롱폼 + 월간 총정리 | **가동 중** (GitHub Actions 무인 발행) |
 | `channel_food/` | 현실 속 기괴한 현상 — 매일 쇼츠 1편 | **가동 중** |
 | `channel/` | 새벽공기 — Suno 감성 힙합 플레이리스트 | 문서·기록 위주 (코드 없음) |
-| `market-verify/` | 주식·지수·코인 과거 사례 검증 롱폼 대본 생성 | 신규, 로컬 실행 |
+| `market-verify/` | 주식·지수·코인 과거 사례 검증 롱폼 — 대본·영상·업로드 | 신규, 로컬 실행 |
 | `shorts_engine/` | 피드백 루프 쇼츠 파이프라인 (FastAPI + Postgres 큐) | **참고 구현. 지금 돌지 않는다** |
 
 `shorts_engine/`은 규모가 커질 때를 위한 판이다. 매일 발행은 `channel_food/`가 한다.
@@ -25,7 +25,7 @@
 프로젝트마다 따로 돌린다.
 
 ```bash
-cd market-verify && python -m pytest      # 네트워크·API 안 탐
+cd market-verify && python -m pytest      # 네트워크·API 안 탐 (영상 조립까지 돌려 4분)
 cd shorts_engine && python -m pytest      # pythonpath=. , asyncio_mode=auto
 cd channel_food  && python -m pytest tests/   # ffmpeg·네트워크 불필요
 ```
@@ -70,6 +70,11 @@ cd channel_food  && python -m pytest tests/   # ffmpeg·네트워크 불필요
 장식이 아니다. 없으면 대본이 사실과 다른 말을 한다. 지울 때는 이유를 확인할 것.
 
 API 호출은 비용이 든다. 블록만 확인할 때는 `--block-only`를 쓴다.
+
+영상은 `src/produce.py` 가 만든다. 화면 문구는 대본의 `[자료 화면:]` 표기에서
+나오므로 따로 짓지 않는다. 업로드 기본값은 **비공개**이고, 공개 전환은 사람이 한다.
+`assert_target_channel` 로 엉뚱한 채널에 올라가는 것을 막는다 — 이 저장소는
+채널을 여러 개 운영한다.
 
 ### channel_food / shorts_engine
 
