@@ -4,7 +4,7 @@ import pandas as pd
 import pytest
 
 from src import strategies
-from src.strategies import MONTH_DAYS, build_block, compare, dca_vs_lumpsum, to_block
+from src.strategies import MONTH_DAYS, build_dca_block, compare, dca_vs_lumpsum, to_dca_block
 from src.validator import validate
 
 
@@ -112,7 +112,7 @@ def test_compare_handles_no_rows():
 
 def test_block_has_the_expected_shape():
     close = dip_then_recover(months=120)
-    block, rows, result = build_block(
+    block, rows, result = build_dca_block(
         close, ticker="^GSPC", contrib_months=12, hold_months=36,
         asof="2026-09-07", label="S&P 500",
     )
@@ -128,12 +128,12 @@ def test_block_has_the_expected_shape():
 
 def test_block_warns_below_five_start_points(capsys):
     close = rising(months=38)
-    build_block(close, ticker="^X", contrib_months=12, hold_months=36, asof="2026-09-07")
+    build_dca_block(close, ticker="^X", contrib_months=12, hold_months=36, asof="2026-09-07")
     assert "[경고]" in capsys.readouterr().err
 
 
 def test_block_stays_quiet_with_enough_start_points(capsys):
-    build_block(
+    build_dca_block(
         rising(months=200), ticker="^X", contrib_months=12, hold_months=36,
         asof="2026-09-07",
     )
@@ -143,7 +143,7 @@ def test_block_stays_quiet_with_enough_start_points(capsys):
 def test_block_numbers_are_usable_by_the_validator():
     """블록이 낸 수치를 그대로 쓴 대본은 통과해야 한다."""
     close = dip_then_recover(months=120)
-    block, rows, result = build_block(
+    block, rows, result = build_dca_block(
         close, ticker="^TEST", contrib_months=12, hold_months=36, asof="2026-09-07"
     )
     script = _minimal_script(
@@ -152,10 +152,10 @@ def test_block_numbers_are_usable_by_the_validator():
     assert validate(script, block) == []
 
 
-def test_to_block_accepts_an_injected_stream():
+def test_to_dca_block_accepts_an_injected_stream():
     rows = dca_vs_lumpsum(rising(months=200), 12, 36)
     buffer = io.StringIO()
-    to_block(
+    to_dca_block(
         ticker="^X", rows=rows, result=compare(rows), contrib_months=12, hold_months=36,
         data_start="2000-01-03", data_end="2020-01-03", asof="2026-09-07", stream=buffer,
     )
@@ -197,3 +197,162 @@ def _minimal_script(date, starts, win_ratio):
 ## 유튜브 설명란
 이 영상은 과거 데이터를 정리한 정보 제공 목적이며, 투자 권유나 조언이 아닙니다.
 """
+
+
+# ─── 리밸런싱 ────────────────────────────────────────────────────────
+
+import numpy as np
+
+from src.strategies import (
+    DEFAULT_INTERVALS,
+    NO_REBALANCE,
+    align,
+    build_rebalance_block,
+    compare_intervals,
+    interval_label,
+    rebalance_intervals,
+    simulate_rebalance,
+)
+
+HOLD = 60
+SPAN = HOLD * MONTH_DAYS
+
+
+def pair(values_a, values_b):
+    idx = pd.bdate_range("2000-01-03", periods=len(values_a))
+    return (
+        pd.Series([float(v) for v in values_a], index=idx),
+        pd.Series([float(v) for v in values_b], index=idx),
+    )
+
+
+def flat_pair(months=70):
+    n = months * MONTH_DAYS
+    return pair([100.0] * n, [50.0] * n)
+
+
+def one_side_rising(months=70, rate=1.0004):
+    n = months * MONTH_DAYS
+    return pair([100 * rate**i for i in range(n)], [50.0] * n)
+
+
+def one_side_swinging(months=70, amplitude=0.45):
+    n = months * MONTH_DAYS
+    return pair([100 * (1 + amplitude * np.sin(i / 70.0)) for i in range(n)], [50.0] * n)
+
+
+def test_align_keeps_only_shared_dates():
+    a = pd.Series([1.0, 2.0, 3.0], index=pd.bdate_range("2020-01-01", periods=3))
+    b = pd.Series([9.0, 8.0], index=pd.bdate_range("2020-01-02", periods=2))
+    aligned_a, aligned_b = align(a, b)
+    assert len(aligned_a) == len(aligned_b) == 2
+    assert list(aligned_a.index) == list(aligned_b.index)
+
+
+def test_flat_market_returns_nothing_at_any_interval():
+    a, b = flat_pair()
+    for months in DEFAULT_INTERVALS:
+        total, worst = simulate_rebalance(a.to_numpy(), b.to_numpy(), 0.6, months, 0, SPAN)
+        assert total == pytest.approx(0.0, abs=1e-9)
+        assert worst == pytest.approx(0.0, abs=1e-9)
+
+
+def test_rebalancing_trims_the_winner_so_it_earns_less():
+    """한쪽만 오르면 리밸런싱은 오른 쪽을 계속 덜어낸다."""
+    a, b = one_side_rising()
+    none_return, _ = simulate_rebalance(a.to_numpy(), b.to_numpy(), 0.6, NO_REBALANCE, 0, SPAN)
+    yearly, _ = simulate_rebalance(a.to_numpy(), b.to_numpy(), 0.6, 12, 0, SPAN)
+    quarterly, _ = simulate_rebalance(a.to_numpy(), b.to_numpy(), 0.6, 3, 0, SPAN)
+    assert none_return > yearly > quarterly
+
+
+def test_rebalancing_reduces_the_worst_drawdown():
+    """이게 리밸런싱의 요점이다. 수익률만 비교하면 놓친다."""
+    a, b = one_side_swinging()
+    _, none_dd = simulate_rebalance(a.to_numpy(), b.to_numpy(), 0.6, NO_REBALANCE, 0, SPAN)
+    _, quarterly_dd = simulate_rebalance(a.to_numpy(), b.to_numpy(), 0.6, 3, 0, SPAN)
+    assert quarterly_dd > none_dd, "리밸런싱이 낙폭을 줄이지 못했다"
+
+
+def test_drawdown_is_never_positive():
+    a, b = one_side_swinging()
+    for months in DEFAULT_INTERVALS:
+        _, worst = simulate_rebalance(a.to_numpy(), b.to_numpy(), 0.6, months, 0, SPAN)
+        assert worst <= 0.0
+
+
+def test_interval_longer_than_holding_never_rebalances():
+    a, b = one_side_rising()
+    none_return, _ = simulate_rebalance(a.to_numpy(), b.to_numpy(), 0.6, NO_REBALANCE, 0, SPAN)
+    same, _ = simulate_rebalance(a.to_numpy(), b.to_numpy(), 0.6, HOLD, 0, SPAN)
+    assert same == pytest.approx(none_return)
+
+
+def test_rows_carry_every_interval():
+    a, b = one_side_rising(months=120)
+    rows = rebalance_intervals(a, b, 0.6, HOLD, DEFAULT_INTERVALS)
+    assert rows
+    for row in rows:
+        assert set(row["returns"]) == set(DEFAULT_INTERVALS)
+        assert set(row["drawdowns"]) == set(DEFAULT_INTERVALS)
+
+
+def test_rejects_impossible_settings():
+    a, b = flat_pair()
+    with pytest.raises(ValueError):
+        rebalance_intervals(a, b, weight_a=0.0)
+    with pytest.raises(ValueError):
+        rebalance_intervals(a, b, weight_a=1.0)
+    with pytest.raises(ValueError):
+        rebalance_intervals(a, b, hold_months=12, intervals=(24,))
+    with pytest.raises(ValueError):
+        rebalance_intervals(a, b, intervals=(-3,))
+
+
+def test_interval_label_names_the_no_rebalance_case():
+    assert interval_label(NO_REBALANCE) == "리밸런싱 없음"
+    assert interval_label(12) == "12개월"
+
+
+def test_compare_intervals_reports_both_return_and_drawdown():
+    a, b = one_side_swinging(months=120)
+    rows = rebalance_intervals(a, b, 0.6, HOLD, DEFAULT_INTERVALS)
+    result = compare_intervals(rows, DEFAULT_INTERVALS)
+    for months in DEFAULT_INTERVALS:
+        assert result[months]["return"]["count"] == len(rows)
+        assert result[months]["drawdown"]["count"] == len(rows)
+
+
+def test_rebalance_block_has_the_expected_shape():
+    a, b = one_side_swinging(months=140)
+    block, rows, _ = build_rebalance_block(
+        a, b, ticker_a="^GSPC", ticker_b="AGG", asof="2026-09-07",
+        weight_a=0.6, hold_months=HOLD, label_a="S&P 500", label_b="미국 채권",
+    )
+    assert block.startswith("=== 데이터 블록 (이 안의 수치만 사용) ===")
+    assert block.rstrip().endswith("=== 블록 끝 ===")
+    assert "[분포 요약 — 최종 수익률 %]" in block
+    assert "[분포 요약 — 최대 낙폭 %]" in block
+    assert "리밸런싱 없음" in block
+    assert f"시작 시점 수: {len(rows)}" in block
+    assert "60 대 40" in block
+
+
+def test_rebalance_block_warns_below_five_start_points(capsys):
+    a, b = one_side_rising(months=62)
+    build_rebalance_block(a, b, ticker_a="^X", ticker_b="^Y", asof="2026-09-07",
+                          hold_months=HOLD)
+    assert "[경고]" in capsys.readouterr().err
+
+
+def test_rebalance_block_numbers_are_usable_by_the_validator():
+    a, b = one_side_swinging(months=140)
+    block, rows, result = build_rebalance_block(
+        a, b, ticker_a="^TEST", ticker_b="BOND", asof="2026-09-07", hold_months=HOLD
+    )
+    script = _minimal_script(
+        f"{rows[0]['date']:%Y-%m-%d}",
+        len(rows),
+        f"{result[NO_REBALANCE]['return']['median']:.2f}",
+    )
+    assert validate(script, block) == []

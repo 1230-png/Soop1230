@@ -95,3 +95,105 @@ def test_failure_saves_no_script_but_reports_the_spend(stub_market, tmp_path, ca
     assert code == 1
     assert list(tmp_path.glob("*_script.md")) == []
     assert "입력 3,000 / 출력 1,500" in out
+
+
+# ─── 리밸런싱 모드 ───────────────────────────────────────────────────
+
+import numpy as np
+
+from src.strategies import MONTH_DAYS as MD
+
+
+def swinging_pair(months=140):
+    n = months * MD
+    idx = pd.bdate_range("1990-01-02", periods=n)
+    a = pd.Series([100 * (1.0003**i) * (1 + 0.30 * np.sin(i / 85.0)) for i in range(n)], index=idx)
+    b = pd.Series([50 * (1.00008**i) for i in range(n)], index=idx)
+    return a, b
+
+
+@pytest.fixture
+def stub_pair(monkeypatch):
+    a, b = swinging_pair()
+    calls = []
+
+    def fake_fetch(ticker, *args, **kwargs):
+        calls.append(ticker)
+        return a if ticker == "^GSPC" else b
+
+    monkeypatch.setattr(run_strategy.me, "fetch_close", fake_fetch)
+    monkeypatch.setenv(run_strategy.KEY_ENV, "sk-ant-test-key")
+    return calls
+
+
+def test_rebalance_needs_a_second_ticker():
+    with pytest.raises(SystemExit):
+        run_strategy.parse_args(
+            ["--strategy", "rebalance", "--ticker", "^GSPC", "--start", "1990-01-01"]
+        )
+
+
+def test_weight_must_be_between_zero_and_one():
+    for bad in ["0", "1", "1.5"]:
+        with pytest.raises(SystemExit):
+            run_strategy.parse_args(
+                ["--strategy", "rebalance", "--ticker", "^A", "--ticker-b", "B",
+                 "--start", "1990-01-01", "--weight", bad]
+            )
+
+
+def test_intervals_must_parse_and_fit_the_holding_period():
+    for bad in ["0,three", "", "0,-3"]:
+        with pytest.raises(SystemExit):
+            run_strategy.parse_args(
+                ["--strategy", "rebalance", "--ticker", "^A", "--ticker-b", "B",
+                 "--start", "1990-01-01", "--intervals", bad]
+            )
+    with pytest.raises(SystemExit):
+        run_strategy.parse_args(
+            ["--strategy", "rebalance", "--ticker", "^A", "--ticker-b", "B",
+             "--start", "1990-01-01", "--hold-months", "12", "--intervals", "0,24"]
+        )
+
+
+def test_rebalance_fetches_both_assets(stub_pair, tmp_path):
+    run_strategy.main(
+        ["--strategy", "rebalance", "--ticker", "^GSPC", "--ticker-b", "AGG",
+         "--start", "1990-01-01", "--hold-months", "60",
+         "--outdir", str(tmp_path), "--block-only"]
+    )
+    assert stub_pair == ["^GSPC", "AGG"]
+
+
+def test_rebalance_block_reports_returns_and_drawdowns(stub_pair, tmp_path, capsys):
+    code = run_strategy.main(
+        ["--strategy", "rebalance", "--ticker", "^GSPC", "--ticker-b", "AGG",
+         "--start", "1990-01-01", "--hold-months", "60", "--label", "S&P 500",
+         "--outdir", str(tmp_path), "--block-only"]
+    )
+    assert code == 0
+    block = list(tmp_path.glob("*_block.txt"))[0].read_text(encoding="utf-8")
+    assert "[분포 요약 — 최대 낙폭 %]" in block
+    assert "리밸런싱 없음" in block
+    out = capsys.readouterr().out
+    assert "낙폭 중앙값" in out
+
+
+def test_rebalance_filename_records_the_weight(stub_pair, tmp_path):
+    run_strategy.main(
+        ["--strategy", "rebalance", "--ticker", "^GSPC", "--ticker-b", "AGG",
+         "--start", "1990-01-01", "--hold-months", "60", "--weight", "0.7",
+         "--outdir", str(tmp_path), "--block-only"]
+    )
+    assert list(tmp_path.glob("GSPC_reb70-hold60_*_block.txt"))
+
+
+def test_custom_intervals_reach_the_block(stub_pair, tmp_path):
+    run_strategy.main(
+        ["--strategy", "rebalance", "--ticker", "^GSPC", "--ticker-b", "AGG",
+         "--start", "1990-01-01", "--hold-months", "60", "--intervals", "0,6",
+         "--outdir", str(tmp_path), "--block-only"]
+    )
+    block = list(tmp_path.glob("*_block.txt"))[0].read_text(encoding="utf-8")
+    assert "6개월" in block
+    assert "3개월" not in block

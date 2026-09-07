@@ -76,7 +76,9 @@ cd channel_food  && python -m pytest tests/   # ffmpeg·네트워크 불필요
 API 호출은 비용이 든다. 블록만 확인할 때는 `--block-only`를 쓴다.
 
 검증은 둘이다. `run.py` 는 조건 검증(이 조건이 과거에 몇 번 있었나),
-`run_strategy.py` 는 전략 검증(같은 돈을 다르게 넣으면 어떻게 갈렸나).
+`run_strategy.py` 는 전략 검증(`--strategy dca` 분할 매수 대 일시 매수,
+`--strategy rebalance` 리밸런싱 주기 비교).
+리밸런싱은 수익률만 비교하면 요점을 놓친다. 최대 낙폭을 함께 내는 것이 핵심이다.
 검증기·작성기·프롬프트·영상 파이프라인을 공유하고 블록 내용만 다르다.
 
 영상은 `src/produce.py` 가 만든다. 화면 문구는 대본의 `[자료 화면:]` 표기에서
