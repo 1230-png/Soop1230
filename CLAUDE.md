@@ -11,7 +11,7 @@
 | `channel_200y3b/` | @200-y3b — 매일 영어 한마디 쇼츠 + 주간 롱폼 + 월간 총정리 | **가동 중** (GitHub Actions 무인 발행) |
 | `channel_food/` | 현실 속 기괴한 현상 — 매일 쇼츠 1편 | **가동 중** |
 | `channel/` | 새벽공기 — Suno 감성 힙합 플레이리스트 | 문서·기록 위주 (코드 없음) |
-| `market-verify/` | 주식·지수·코인 과거 사례 검증 롱폼 대본 생성 | 신규, 로컬 실행 |
+| `market-verify/` | 머니로직(MoneyLogic) 롱폼 — 대본·영상·업로드 | 신규, 로컬 실행 |
 | `shorts_engine/` | 피드백 루프 쇼츠 파이프라인 (FastAPI + Postgres 큐) | **참고 구현. 지금 돌지 않는다** |
 
 `shorts_engine/`은 규모가 커질 때를 위한 판이다. 매일 발행은 `channel_food/`가 한다.
@@ -25,7 +25,7 @@
 프로젝트마다 따로 돌린다.
 
 ```bash
-cd market-verify && python -m pytest      # 네트워크·API 안 탐
+cd market-verify && python -m pytest      # 네트워크·API 안 탐 (영상 조립까지 돌려 4분)
 cd shorts_engine && python -m pytest      # pythonpath=. , asyncio_mode=auto
 cd channel_food  && python -m pytest tests/   # ffmpeg·네트워크 불필요
 ```
@@ -36,7 +36,7 @@ cd channel_food  && python -m pytest tests/   # ffmpeg·네트워크 불필요
 
 **환경변수로만 다룬다. 코드·커밋·로그에 절대 넣지 않는다.**
 
-- `market-verify` → `ANTHROPIC_API_KEY`
+- `market-verify` → `ANTHROPIC_API_KEY`, `FRED_API_KEY`(매크로 검증)
 - `channel_200y3b` → `YT_CLIENT_ID` / `YT_CLIENT_SECRET` / `YT_REFRESH_TOKEN`
 - `channel_food` → `WEIRD_CLIENT_ID` / `WEIRD_CLIENT_SECRET` / `WEIRD_REFRESH_TOKEN`
 - `channel_food` TTS → `ELEVENLABS_API_KEY` (+ 선택 `ELEVENLABS_VOICE_ID`)
@@ -56,6 +56,10 @@ cd channel_food  && python -m pytest tests/   # ffmpeg·네트워크 불필요
 
 ### market-verify
 
+채널은 **머니로직 MoneyLogic**. 이름·소개·면책 문구는 `src/brand.py` 에서만 고친다.
+채널은 세 갈래(토크노믹스 / 매크로·유동성 / 수학적 전략 검증)를 다루는데,
+세 갈래 모두 도구가 있다. 채널 전체 파이프라인으로 착각하지 말 것.
+
 `NOTES.md`에 이유까지 적혀 있다. 요약하면:
 
 1. **숫자는 코드가 뽑는다.** LLM은 시계열 수치를 지어낸다. `market_events.py`가
@@ -70,6 +74,23 @@ cd channel_food  && python -m pytest tests/   # ffmpeg·네트워크 불필요
 장식이 아니다. 없으면 대본이 사실과 다른 말을 한다. 지울 때는 이유를 확인할 것.
 
 API 호출은 비용이 든다. 블록만 확인할 때는 `--block-only`를 쓴다.
+
+도구는 넷이다. `run.py` 는 조건 검증(이 조건이 과거에 몇 번 있었나),
+`run_strategy.py` 는 전략 검증(`--strategy dca` 분할 매수 대 일시 매수,
+`--strategy rebalance` 리밸런싱 주기 비교).
+리밸런싱은 수익률만 비교하면 요점을 놓친다. 최대 낙폭을 함께 내는 것이 핵심이다.
+`run_macro.py` 는 매크로 검증(지표가 이 상태였던 시점 이후 자산 분포).
+지표는 FRED(`FRED_API_KEY`), 결과는 야후에서 받는다. 상관계수는 내지 않는다 —
+인과로 읽히고, 이 채널은 예측을 하지 않는다.
+`run_tokenomics.py` 는 토크노믹스(발행 스케줄과 실측 희석률).
+발행 스케줄은 합의 규칙이라 외부 데이터 없이 계산한다 — API 를 붙이지 말 것.
+과거 반감기 날짜만 기록으로 두고 미도래 구간은 "미도래"로 적는다.
+검증기·작성기·프롬프트·영상 파이프라인을 공유하고 블록 내용만 다르다.
+
+영상은 `src/produce.py` 가 만든다. 화면 문구는 대본의 `[자료 화면:]` 표기에서
+나오므로 따로 짓지 않는다. 업로드 기본값은 **비공개**이고, 공개 전환은 사람이 한다.
+`assert_target_channel` 로 엉뚱한 채널에 올라가는 것을 막는다 — 이 저장소는
+채널을 여러 개 운영한다.
 
 ### channel_food / shorts_engine
 
