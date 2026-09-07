@@ -117,26 +117,48 @@ def forward_returns(close, dates):
     return rows
 
 
+def distribution(values):
+    """값 묶음 하나의 분포.
+
+    평균만 내면 -30%와 +50%가 +10%로 보인다. 그래서 중앙값과 양 끝을 함께 낸다.
+    """
+    values = [v for v in values if v is not None]
+    if not values:
+        return None
+    series = pd.Series(values)
+    return {
+        "count": len(values),
+        "median": float(series.median()),
+        "mean": float(series.mean()),
+        "min": float(series.min()),
+        "max": float(series.max()),
+        "positive_ratio": float((series > 0).sum()) / len(values) * 100.0,
+    }
+
+
 def summarize(rows):
-    """구간별 분포. 평균만 내면 -30%와 +50%가 +10%로 보인다."""
-    summary = {}
-    for horizon, _ in HORIZONS:
-        values = [
-            r["returns"][horizon] for r in rows if r["returns"][horizon] is not None
-        ]
-        if not values:
-            summary[horizon] = None
-            continue
-        series = pd.Series(values)
-        summary[horizon] = {
-            "count": len(values),
-            "median": float(series.median()),
-            "mean": float(series.mean()),
-            "min": float(series.min()),
-            "max": float(series.max()),
-            "positive_ratio": float((series > 0).sum()) / len(values) * 100.0,
-        }
-    return summary
+    """구간별 분포."""
+    return {
+        horizon: distribution([r["returns"][horizon] for r in rows])
+        for horizon, _ in HORIZONS
+    }
+
+
+def block_header(ticker, condition, data_start, data_end, asof, count,
+                 label=None, source=SOURCE, condition_label="조건",
+                 count_label="사례 수"):
+    """블록 머리말. 조건 검증과 전략 검증이 같은 형식을 쓴다."""
+    target = f"{ticker} ({label})" if label else ticker
+    return [
+        "=== 데이터 블록 (이 안의 수치만 사용) ===",
+        f"대상: {target}",
+        f"{condition_label}: {condition}",
+        f"데이터 기간: {data_start} ~ {data_end}",
+        f"출처: {source}",
+        f"조회일: {asof}",
+        "주가 기준: 수정주가",
+        f"{count_label}: {count}",
+    ]
 
 
 def _fmt(value):
@@ -165,17 +187,11 @@ def to_block(
             file=stream,
         )
 
-    target = f"{ticker} ({label})" if label else ticker
     header_cells = " | ".join(f"{h}거래일({name})" for h, name in HORIZONS)
-    lines = [
-        "=== 데이터 블록 (이 안의 수치만 사용) ===",
-        f"대상: {target}",
-        f"조건: {condition}",
-        f"데이터 기간: {data_start} ~ {data_end}",
-        f"출처: {source}",
-        f"조회일: {asof}",
-        "주가 기준: 수정주가",
-        f"사례 수: {len(rows)}",
+    lines = block_header(
+        ticker, condition, data_start, data_end, asof, len(rows),
+        label=label, source=source,
+    ) + [
         "",
         "[사례별 이후 수익률 %]",
         f"| 발생일 | {header_cells} |",
