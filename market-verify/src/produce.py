@@ -9,11 +9,10 @@ import sys
 import tempfile
 from pathlib import Path
 
-from src import render, script_parse, voice
+from src import brand, render, script_parse, voice
 from src.upload import UploadConfigError, check_credentials, upload
 
 OUT_DIR = Path(__file__).resolve().parent.parent / "out"
-DEFAULT_TAGS = ["주식", "지수", "과거데이터", "백테스트", "투자공부"]
 
 
 def parse_args(argv=None):
@@ -73,7 +72,7 @@ def build(script_text, outdir, stem, speak, voice_name, log=print):
         video_path = outdir / f"{stem}.mp4"
         render.concat(parts, video_path, tmp)
 
-    thumb_path = render.thumbnail(title, outdir / f"{stem}.jpg", subtitle="과거 사례 검증")
+    thumb_path = render.thumbnail(title, outdir / f"{stem}.jpg", subtitle=brand.NAME)
     log(f"영상 저장: {video_path}  ({total / 60:.1f}분)")
     log(f"썸네일 저장: {thumb_path}")
     return video_path, thumb_path
@@ -117,8 +116,8 @@ def main(argv=None):
         video_id = upload(
             video_path,
             title=(script_parse.titles(script_text) or [script_path.stem])[0],
-            description=script_parse.description(script_text),
-            tags=DEFAULT_TAGS,
+            description=brand.video_description(script_parse.description(script_text)),
+            tags=brand.TAGS,
             privacy=args.privacy,
             thumbnail_path=thumb_path,
         )

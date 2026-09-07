@@ -11,7 +11,7 @@
 | `channel_200y3b/` | @200-y3b — 매일 영어 한마디 쇼츠 + 주간 롱폼 + 월간 총정리 | **가동 중** (GitHub Actions 무인 발행) |
 | `channel_food/` | 현실 속 기괴한 현상 — 매일 쇼츠 1편 | **가동 중** |
 | `channel/` | 새벽공기 — Suno 감성 힙합 플레이리스트 | 문서·기록 위주 (코드 없음) |
-| `market-verify/` | 주식·지수·코인 과거 사례 검증 롱폼 — 대본·영상·업로드 | 신규, 로컬 실행 |
+| `market-verify/` | 머니로직(MoneyLogic) 롱폼 — 대본·영상·업로드 | 신규, 로컬 실행 |
 | `shorts_engine/` | 피드백 루프 쇼츠 파이프라인 (FastAPI + Postgres 큐) | **참고 구현. 지금 돌지 않는다** |
 
 `shorts_engine/`은 규모가 커질 때를 위한 판이다. 매일 발행은 `channel_food/`가 한다.
@@ -55,6 +55,10 @@ cd channel_food  && python -m pytest tests/   # ffmpeg·네트워크 불필요
 ## 프로젝트별 불변 규칙
 
 ### market-verify
+
+채널은 **머니로직 MoneyLogic**. 이름·소개·면책 문구는 `src/brand.py` 에서만 고친다.
+채널은 세 갈래(토크노믹스 / 매크로·유동성 / 수학적 전략 검증)를 다루는데,
+이 디렉터리는 세 번째의 일부만 만든다. 채널 전체 파이프라인으로 착각하지 말 것.
 
 `NOTES.md`에 이유까지 적혀 있다. 요약하면:
 

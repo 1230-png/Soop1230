@@ -1,6 +1,6 @@
 import pytest
 
-from src import produce, render, voice
+from src import brand, produce, render, voice
 from tests.fixtures import SCRIPT
 
 FILLED = SCRIPT.replace(
@@ -106,3 +106,6 @@ def test_upload_passes_private_by_default(tmp_path, monkeypatch):
     assert seen["privacy"] == "private"
     assert seen["title"].startswith("S&P 500")
     assert "투자 권유나 조언이 아닙니다" in seen["description"]
+    # 채널 표준 면책 문구가 영상마다 함께 나가야 한다.
+    assert seen["description"].endswith(brand.DISCLAIMER)
+    assert brand.NAME in seen["tags"]
