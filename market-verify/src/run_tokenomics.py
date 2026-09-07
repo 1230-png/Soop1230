@@ -43,7 +43,11 @@ def parse_args(argv=None):
         "--days", default="max", help="dilution: 받아올 기간. 기본은 전체."
     )
     parser.add_argument(
-        "--periods", type=int, default=365, help="dilution: 증가율을 재는 간격(일)"
+        "--periods",
+        type=int,
+        default=365,
+        help="dilution: 증가율을 재는 간격(일). 무료 티어는 받을 수 있는 기간이 "
+        "짧을 수 있다. 기록이 모자라면 90 등으로 줄일 것.",
     )
     parser.add_argument("--outdir", default=str(OUT_DIR))
     parser.add_argument(
@@ -69,6 +73,11 @@ def main(argv=None):
             print(f"수렴 총 발행량: {tokenomics.terminal_supply():,.2f}")
             name = f"schedule{args.epochs}"
         else:
+            # 다 만들고 나서 키가 없다고 하면 시간만 버린다. 먼저 본다.
+            key_problem = tokenomics.check_coingecko_key()
+            if key_problem:
+                print(f"실패: {key_problem}")
+                return 2
             price, cap = tokenomics.fetch_market_chart(args.coin, args.days)
             block, samples = tokenomics.build_dilution_block(
                 args.coin, args.asset, price, cap, asof, args.periods
