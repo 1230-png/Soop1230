@@ -18,6 +18,8 @@ import pandas as pd
 
 COINGECKO_URL = "https://api.coingecko.com/api/v3/coins/{coin_id}/market_chart"
 COINGECKO_SOURCE = "CoinGecko"
+# 코인게코는 무료(Demo) 티어에도 키를 요구한다. 없으면 401 을 돌려준다.
+COINGECKO_KEY_ENV = "COINGECKO_API_KEY"
 SCHEDULE_SOURCE = "합의 규칙에서 계산 (외부 데이터 없음)"
 
 # 비트코인 합의 규칙. 코드에 박힌 값이지 누가 정하는 수치가 아니다.
@@ -39,6 +41,25 @@ RECORDED_HALVINGS = {
 
 class TokenomicsError(RuntimeError):
     """공급 데이터를 만들지 못했다."""
+
+
+def check_coingecko_key(env=None):
+    """실측 희석률을 받기 전에 키를 본다. 문제가 없으면 None.
+
+    발행 스케줄 모드는 이 키가 필요 없다. 합의 규칙에서 계산하기 때문이다.
+    """
+    import os as _os
+
+    key = (_os.environ if env is None else env).get(COINGECKO_KEY_ENV, "")
+    if not key:
+        return (
+            f"{COINGECKO_KEY_ENV} 가 설정되지 않았다. 코인게코는 무료 Demo 티어에도 "
+            "키를 요구한다. coingecko.com 에서 발급받아 "
+            f"export {COINGECKO_KEY_ENV}='...' 로 넣을 것."
+        )
+    if any(ch in key for ch in "\x1b\r\n\t "):
+        return f"{COINGECKO_KEY_ENV} 에 공백이나 제어문자가 섞여 있다. 다시 설정할 것."
+    return None
 
 
 def epoch_years():
@@ -86,19 +107,45 @@ def terminal_supply(epochs=64):
 
 
 def _default_fetcher(coin_id, params):
+    import os as _os
+
     import requests
 
-    response = requests.get(
-        COINGECKO_URL.format(coin_id=coin_id), params=params, timeout=30
-    )
-    response.raise_for_status()
-    return response.json()
+    key = _os.environ.get(COINGECKO_KEY_ENV, "")
+    headers = {"x-cg-demo-api-key": key} if key else {}
+    try:
+        response = requests.get(
+            COINGECKO_URL.format(coin_id=coin_id),
+            params=params,
+            headers=headers,
+            timeout=30,
+        )
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.HTTPError as error:
+        status = getattr(error.response, "status_code", None)
+        raise TokenomicsError(_http_hint(status, coin_id)) from error
+    except requests.exceptions.RequestException as error:
+        raise TokenomicsError(f"코인게코에 연결하지 못했다: {error}") from error
+
+
+def _http_hint(status, coin_id):
+    """상태 코드를 사람이 읽을 수 있는 원인으로 바꾼다."""
+    hints = {
+        401: f"{COINGECKO_KEY_ENV} 가 없거나 잘못됐다. 무료 Demo 키를 발급해 넣을 것.",
+        429: "요청 한도를 넘었다. 무료 티어는 분당 호출 수가 제한된다. 잠시 뒤 다시 시도할 것.",
+        404: f"코인 ID '{coin_id}' 를 찾지 못했다. 예: bitcoin, ethereum, solana.",
+    }
+    hint = hints.get(status, "")
+    head = f"코인게코 요청 실패 (HTTP {status})" if status else "코인게코 요청 실패"
+    return f"{head}. {hint}".strip()
 
 
 def fetch_market_chart(coin_id, days="max", fetcher=None):
     """가격과 시가총액 시계열을 받는다. (price, market_cap)"""
     payload = (fetcher or _default_fetcher)(
-        coin_id, {"vs_currency": "usd", "days": days, "interval": "daily"}
+        # interval 은 유료 플랜에서만 받는 경우가 있다. 빼면 기간에 맞춰 알아서 준다.
+        coin_id, {"vs_currency": "usd", "days": days}
     )
     prices = payload.get("prices") or []
     caps = payload.get("market_caps") or []

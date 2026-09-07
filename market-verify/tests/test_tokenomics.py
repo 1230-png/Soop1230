@@ -177,3 +177,32 @@ def test_block_accepts_an_injected_stream():
     tk.to_schedule_block("비트코인", tk.halving_schedule(8), "2026-09-07",
                          tk.terminal_supply(), stream=buffer)
     assert "[참고]" in buffer.getvalue()
+
+
+# ─── 코인게코 키와 오류 안내 ─────────────────────────────────────────
+
+def test_coingecko_key_check_catches_the_usual_mistakes():
+    assert "설정되지 않았다" in tk.check_coingecko_key({})
+    assert "제어문자" in tk.check_coingecko_key({tk.COINGECKO_KEY_ENV: "\x1b[200~k\x1b[201~"})
+    assert tk.check_coingecko_key({tk.COINGECKO_KEY_ENV: "cg-demo-abc"}) is None
+
+
+@pytest.mark.parametrize(
+    "status,expected",
+    [
+        (401, tk.COINGECKO_KEY_ENV),
+        (429, "요청 한도"),
+        (404, "코인 ID"),
+        (500, "HTTP 500"),
+    ],
+)
+def test_http_status_becomes_a_readable_cause(status, expected):
+    """401 만 덩그러니 던지면 무엇을 고쳐야 할지 알 수 없다."""
+    assert expected in tk._http_hint(status, "bitcoin")
+
+
+def test_schedule_mode_never_needs_the_coingecko_key():
+    """발행 스케줄은 합의 규칙에서 계산한다. 키를 요구하면 안 된다."""
+    block, _ = tk.build_schedule_block("비트코인", "2026-09-07", epochs=6)
+    assert "CoinGecko" not in block
+    assert "외부 데이터 없음" in block

@@ -105,7 +105,12 @@ def check_api_key(env=None):
 
 
 def _slug(text):
-    return re.sub(r"[^A-Za-z0-9._-]+", "", text) or "ticker"
+    """파일명에 쓸 수 있게 다듬는다.
+
+    한글을 지우지 않는다. 지우면 자산명이 통째로 사라져 파일명이 "ticker" 가 된다.
+    \\w 는 파이썬 3 에서 유니코드를 포함하므로 한글이 남는다.
+    """
+    return re.sub(r"[^\w.\-]+", "", text, flags=re.UNICODE) or "ticker"
 
 
 def main(argv=None):

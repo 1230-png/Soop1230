@@ -27,6 +27,7 @@ def stub_coingecko(monkeypatch):
 
     monkeypatch.setattr(run_tokenomics.tokenomics, "fetch_market_chart", stubbed)
     monkeypatch.setenv(run_tokenomics.KEY_ENV, "sk-ant-test-key")
+    monkeypatch.setenv(tokenomics.COINGECKO_KEY_ENV, "cg-test-key")
 
 
 def test_dilution_needs_a_coin_id():
@@ -81,6 +82,7 @@ def test_coingecko_failure_is_reported_without_a_traceback(tmp_path, capsys, mon
     def boom(*a, **k):
         raise tokenomics.TokenomicsError("코인 ID 를 확인할 것")
 
+    monkeypatch.setenv(tokenomics.COINGECKO_KEY_ENV, "cg-test-key")
     monkeypatch.setattr(run_tokenomics.tokenomics, "fetch_market_chart", boom)
     code = run_tokenomics.main(
         ["--mode", "dilution", "--coin", "nope", "--asset", "X",
@@ -131,3 +133,36 @@ def test_failure_saves_no_script_but_reports_the_spend(tmp_path, capsys, monkeyp
     assert code == 1
     assert list(tmp_path.glob("*_script.md")) == []
     assert "입력 3,000 / 출력 1,500" in capsys.readouterr().out
+
+
+def test_missing_coingecko_key_stops_before_any_request(tmp_path, capsys, monkeypatch):
+    monkeypatch.delenv(tokenomics.COINGECKO_KEY_ENV, raising=False)
+    monkeypatch.setattr(
+        run_tokenomics.tokenomics,
+        "fetch_market_chart",
+        lambda *a, **k: pytest.fail("키 없이 요청하면 안 된다"),
+    )
+    code = run_tokenomics.main(
+        ["--mode", "dilution", "--coin", "bitcoin", "--asset", "비트코인",
+         "--outdir", str(tmp_path)]
+    )
+    assert code == 2
+    assert tokenomics.COINGECKO_KEY_ENV in capsys.readouterr().out
+
+
+def test_schedule_mode_runs_without_the_coingecko_key(tmp_path, monkeypatch):
+    monkeypatch.delenv(tokenomics.COINGECKO_KEY_ENV, raising=False)
+    code = run_tokenomics.main(
+        ["--mode", "schedule", "--asset", "비트코인",
+         "--outdir", str(tmp_path), "--block-only"]
+    )
+    assert code == 0
+
+
+def test_korean_asset_name_survives_in_the_filename(tmp_path):
+    """전에는 한글이 지워져 파일명이 ticker_ 로 떨어졌다."""
+    run_tokenomics.main(
+        ["--mode", "schedule", "--asset", "비트코인", "--epochs", "8",
+         "--outdir", str(tmp_path), "--block-only"]
+    )
+    assert list(tmp_path.glob("비트코인_schedule8_*_block.txt"))

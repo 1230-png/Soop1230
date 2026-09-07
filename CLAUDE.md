@@ -36,7 +36,7 @@ cd channel_food  && python -m pytest tests/   # ffmpeg·네트워크 불필요
 
 **환경변수로만 다룬다. 코드·커밋·로그에 절대 넣지 않는다.**
 
-- `market-verify` → `ANTHROPIC_API_KEY`, `FRED_API_KEY`(매크로 검증)
+- `market-verify` → `ANTHROPIC_API_KEY`, `FRED_API_KEY`(매크로), `COINGECKO_API_KEY`(실측 희석률)
 - `channel_200y3b` → `YT_CLIENT_ID` / `YT_CLIENT_SECRET` / `YT_REFRESH_TOKEN`
 - `channel_food` → `WEIRD_CLIENT_ID` / `WEIRD_CLIENT_SECRET` / `WEIRD_REFRESH_TOKEN`
 - `channel_food` TTS → `ELEVENLABS_API_KEY` (+ 선택 `ELEVENLABS_VOICE_ID`)
