@@ -36,7 +36,7 @@ cd channel_food  && python -m pytest tests/   # ffmpeg·네트워크 불필요
 
 **환경변수로만 다룬다. 코드·커밋·로그에 절대 넣지 않는다.**
 
-- `market-verify` → `ANTHROPIC_API_KEY`
+- `market-verify` → `ANTHROPIC_API_KEY`, `FRED_API_KEY`(매크로 검증)
 - `channel_200y3b` → `YT_CLIENT_ID` / `YT_CLIENT_SECRET` / `YT_REFRESH_TOKEN`
 - `channel_food` → `WEIRD_CLIENT_ID` / `WEIRD_CLIENT_SECRET` / `WEIRD_REFRESH_TOKEN`
 - `channel_food` TTS → `ELEVENLABS_API_KEY` (+ 선택 `ELEVENLABS_VOICE_ID`)
@@ -58,7 +58,7 @@ cd channel_food  && python -m pytest tests/   # ffmpeg·네트워크 불필요
 
 채널은 **머니로직 MoneyLogic**. 이름·소개·면책 문구는 `src/brand.py` 에서만 고친다.
 채널은 세 갈래(토크노믹스 / 매크로·유동성 / 수학적 전략 검증)를 다루는데,
-이 디렉터리는 세 번째의 일부만 만든다. 채널 전체 파이프라인으로 착각하지 말 것.
+이 디렉터리는 두 번째와 세 번째를 만든다. 첫 번째(토크노믹스)는 아직 없다. 채널 전체 파이프라인으로 착각하지 말 것.
 
 `NOTES.md`에 이유까지 적혀 있다. 요약하면:
 
@@ -75,10 +75,13 @@ cd channel_food  && python -m pytest tests/   # ffmpeg·네트워크 불필요
 
 API 호출은 비용이 든다. 블록만 확인할 때는 `--block-only`를 쓴다.
 
-검증은 둘이다. `run.py` 는 조건 검증(이 조건이 과거에 몇 번 있었나),
+검증은 셋이다. `run.py` 는 조건 검증(이 조건이 과거에 몇 번 있었나),
 `run_strategy.py` 는 전략 검증(`--strategy dca` 분할 매수 대 일시 매수,
 `--strategy rebalance` 리밸런싱 주기 비교).
 리밸런싱은 수익률만 비교하면 요점을 놓친다. 최대 낙폭을 함께 내는 것이 핵심이다.
+`run_macro.py` 는 매크로 검증(지표가 이 상태였던 시점 이후 자산 분포).
+지표는 FRED(`FRED_API_KEY`), 결과는 야후에서 받는다. 상관계수는 내지 않는다 —
+인과로 읽히고, 이 채널은 예측을 하지 않는다.
 검증기·작성기·프롬프트·영상 파이프라인을 공유하고 블록 내용만 다르다.
 
 영상은 `src/produce.py` 가 만든다. 화면 문구는 대본의 `[자료 화면:]` 표기에서

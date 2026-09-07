@@ -146,12 +146,17 @@ def summarize(rows):
 
 def block_header(ticker, condition, data_start, data_end, asof, count,
                  label=None, source=SOURCE, condition_label="조건",
-                 count_label="사례 수"):
-    """블록 머리말. 조건 검증과 전략 검증이 같은 형식을 쓴다."""
+                 count_label="사례 수", extra_lines=()):
+    """블록 머리말. 조건·전략·매크로 검증이 같은 형식을 쓴다.
+
+    extra_lines 는 대상 바로 아래에 끼워 넣는다. 매크로 검증은 여기에
+    지표 이름을 넣는다 — 지표와 대상 자산이 다르기 때문이다.
+    """
     target = f"{ticker} ({label})" if label else ticker
     return [
         "=== 데이터 블록 (이 안의 수치만 사용) ===",
         f"대상: {target}",
+        *extra_lines,
         f"{condition_label}: {condition}",
         f"데이터 기간: {data_start} ~ {data_end}",
         f"출처: {source}",
