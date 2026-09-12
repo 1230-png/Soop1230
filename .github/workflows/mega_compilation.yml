@@ -1,11 +1,12 @@
 name: Mega compilation (@200-y3b)
 
 on:
-  schedule:
     # Monthly, not weekly like the regular long-form: the phrase bank is a
     # fixed pool rather than something that grows on its own, so this runs
     # far less often to avoid repeat-heavy videos.
-    - cron: "0 9 1 * *"
+    # Superseded by longform.yml (monthly_master) on 2026-09-13.
+    # Kept for manual dispatch; uncomment to restore.
+    # - cron: "0 9 1 * *"
   workflow_dispatch: {}
 
 permissions:

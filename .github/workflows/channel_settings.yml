@@ -28,6 +28,11 @@ jobs:
       - name: Fill in empty branding fields
         working-directory: channel_200y3b
         env:
+          # Y3B_* is this channel's own slot; YT_* is shared and has been
+          # rotated out from under these calls before.
+          Y3B_CLIENT_ID: ${{ secrets.Y3B_CLIENT_ID }}
+          Y3B_CLIENT_SECRET: ${{ secrets.Y3B_CLIENT_SECRET }}
+          Y3B_REFRESH_TOKEN: ${{ secrets.Y3B_REFRESH_TOKEN }}
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
