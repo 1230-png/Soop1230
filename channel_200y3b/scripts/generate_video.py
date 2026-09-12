@@ -83,6 +83,15 @@ def build_metadata(phrase: dict, video_id: str) -> dict:
         f"예문: {phrase['example_en']}\n"
         f"해석: {phrase['example_ko']}\n\n"
         "매일 영어 한마디 — 실생활에서 바로 쓰는 영어 표현을 매일 전해드립니다.\n"
+        "\n"
+        # Shorts are the only traffic this channel has, and Shorts watch time
+        # does not count toward the Partner Programme's valid public watch
+        # hours. The long-form packs are where those hours accrue, so every
+        # Short carries a way through to them.
+        "▶ 모아듣기 · 쉐도잉 · 수면영어 (긴 영상)\n"
+        "https://www.youtube.com/@200-y3b/playlists\n"
+        "일 주간복습 · 월 쉐도잉 · 수 상황별 · 금 수면영어 · 매월 말 총정리\n"
+        "\n"
         "#영어공부 #영어회화 #매일영어한마디 #dailyenglish #영어표현 #shorts"
     )
     tags = [
