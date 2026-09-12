@@ -114,10 +114,12 @@ def build_segments(pack: dict, defaults: dict, picked: list, topic: str,
                    work: Path, offline: bool):
     """Expand intro + per-phrase recipe + outro into a flat segment list.
 
-    Returns (segments, chapters, total_seconds) where each segment is
-    {audio, seconds, card}.
+    Returns (segments, chapters, total_seconds, kept) where each segment is
+    {audio, seconds, card} and `kept` is the phrases that actually made it in
+    — a phrase whose TTS failed is dropped, so the title, the chapters and
+    used.json all have to count from this rather than from what was asked for.
     """
-    segments, chapters = [], []
+    segments, chapters, kept = [], [], []
     total = 0.0
     count = len(picked)
 
@@ -149,44 +151,59 @@ def build_segments(pack: dict, defaults: dict, picked: list, topic: str,
         return card_cache[key]
 
     for idx, phrase in enumerate(picked, start=1):
-        chapters.append((total, phrase["en"]))
+        # Build each phrase into the segment list, but be ready to take it
+        # back out. A 150-phrase sleep pack makes ~450 edge-tts calls, so one
+        # of them exhausting its retries is not a remote possibility — and
+        # losing a 35-minute pack over a single sentence is a worse outcome
+        # than shipping it one sentence short. Rolling back to the mark keeps
+        # a half-built phrase from appearing with its steps missing.
+        mark, mark_total = len(segments), total
         last_en_seconds = 0.0
 
-        for step in pack["recipe"]:
-            if step in SPOKEN:
-                kind, voice_key, rate_key = SPOKEN[step]
-                text = {
-                    "en": phrase["en"],
-                    "ko": phrase["ko"],
-                    "example": phrase.get("ex_en" if step == "example_en" else "ex_ko", ""),
-                }[kind]
-                if not text:
-                    continue  # phrase has no example; skip rather than emit silence
-                rate = defaults[rate_key] if rate_key else "+0%"
-                audio = tts.synthesize(text, defaults[voice_key], rate, offline=offline)
-                if kind == "en" or step == "example_en":
-                    last_en_seconds = tts.duration_of(audio)
-                add(audio, card_for(idx, phrase, STAGE[step]))
+        try:
+            for step in pack["recipe"]:
+                if step in SPOKEN:
+                    kind, voice_key, rate_key = SPOKEN[step]
+                    text = {
+                        "en": phrase["en"],
+                        "ko": phrase["ko"],
+                        "example": phrase.get("ex_en" if step == "example_en" else "ex_ko", ""),
+                    }[kind]
+                    if not text:
+                        continue  # phrase has no example; skip rather than emit silence
+                    rate = defaults[rate_key] if rate_key else "+0%"
+                    audio = tts.synthesize(text, defaults[voice_key], rate, offline=offline)
+                    if kind == "en" or step == "example_en":
+                        last_en_seconds = tts.duration_of(audio)
+                    add(audio, card_for(idx, phrase, STAGE[step]))
 
-            elif step == "shadow_gap":
-                # The whole point: long enough to actually say it back. A gap
-                # the same length as the audio is not — the learner is still
-                # drawing breath — hence the multiplier on top.
-                seconds = (last_en_seconds * defaults.get("shadow_mult", 1.0)
-                           + defaults["shadow_pad"])
-                audio = tts.make_silence(
-                    seconds, work / f"gap_{idx:03d}_{len(segments)}.mp3")
-                add(audio, card_for(idx, phrase, "shadow"))
+                elif step == "shadow_gap":
+                    # The whole point: long enough to actually say it back. A gap
+                    # the same length as the audio is not — the learner is still
+                    # drawing breath — hence the multiplier on top.
+                    seconds = (last_en_seconds * defaults.get("shadow_mult", 1.0)
+                               + defaults["shadow_pad"])
+                    audio = tts.make_silence(
+                        seconds, work / f"gap_{idx:03d}_{len(segments)}.mp3")
+                    add(audio, card_for(idx, phrase, "shadow"))
 
-            elif step.startswith("gap_") and step in defaults:
-                seconds = defaults[step]
-                audio = tts.make_silence(
-                    seconds, work / f"gap_{idx:03d}_{len(segments)}.mp3")
-                # Hold the last card rather than flashing a new one.
-                add(audio, segments[-1]["card"] if segments else intro_card)
+                elif step.startswith("gap_") and step in defaults:
+                    seconds = defaults[step]
+                    audio = tts.make_silence(
+                        seconds, work / f"gap_{idx:03d}_{len(segments)}.mp3")
+                    # Hold the last card rather than flashing a new one.
+                    add(audio, segments[-1]["card"] if segments else intro_card)
 
-            else:
-                raise SystemExit(f"Unknown recipe step: {step}")
+                else:
+                    raise SystemExit(f"Unknown recipe step: {step}")
+        except tts.TTSError as e:
+            print(f"[build] dropping {phrase['id']}: {e}", file=sys.stderr)
+            del segments[mark:]
+            total = mark_total
+            continue
+
+        chapters.append((mark_total, phrase["en"]))
+        kept.append(phrase)
 
     # Outro
     outro_card = cards.render_title(
@@ -198,7 +215,7 @@ def build_segments(pack: dict, defaults: dict, picked: list, topic: str,
     add(tts.synthesize(pack["outro_ko"], defaults["voice_ko"], offline=offline),
         outro_card)
 
-    return segments, chapters, total
+    return segments, chapters, total, kept
 
 
 def encode(segments: list, out_dir: Path, work: Path, fps: int) -> Path:
@@ -298,8 +315,14 @@ def main() -> int:
           + (f", topic={topic}" if topic else "")
           + (" (offline)" if args.offline else ""), file=sys.stderr)
 
-    segments, chapters, total = build_segments(
+    segments, chapters, total, picked = build_segments(
         pack, defaults, picked, topic, work, args.offline)
+    if len(picked) < count:
+        print(f"[build] {count - len(picked)} phrase(s) dropped on TTS failure",
+              file=sys.stderr)
+    count = len(picked)
+    if not count:
+        raise SystemExit("Every phrase failed to synthesize — nothing to publish.")
     print(f"[build] {len(segments)} segments, {total/60:.1f} min", file=sys.stderr)
 
     video = encode(segments, out_dir, work, defaults["fps"])
