@@ -7,6 +7,14 @@
 # Why the shadow_gap step matters: it is silence, but the viewer keeps
 # watching (and repeating the phrase out loud), so the time still accrues.
 # That is the core of this design, not padding.
+#
+# phrase_count is what actually sets a video's length — target_minutes is a
+# label. The first version of this file had them badly out of step (a pack
+# marked 62분 built an 8분 video) because nothing checked one against the
+# other, so build.py now warns when the finished video misses its target by
+# more than 30%. Length is bought with more phrases, not with more silence:
+# padding a video with dead air is what tanks retention, and retention is
+# what decides whether the watch hours ever arrive.
 
 defaults:
   voice_en: en-US-AriaNeural
@@ -19,33 +27,40 @@ defaults:
   # Silence inserted after a step, in seconds, when the recipe asks for it.
   gap_short: 0.45
   gap_long: 1.6
-  # shadow_gap lasts (length of the preceding English audio) + this.
-  shadow_pad: 0.7
+  # Sleep packs breathe more slowly; a 0.45s gap reads as rushed there.
+  gap_sleep: 3.0
+  # shadow_gap lasts (English audio x shadow_mult) + shadow_pad. At 1.0x the
+  # learner is still drawing breath when the next line starts, which defeats
+  # the point of the step.
+  shadow_mult: 1.5
+  shadow_pad: 1.2
 
-# Topic rotation for situation_pack. These match the `topic` values already
-# present in the phrase data, so filtering is an exact match, not a guess.
+# Topic rotation for situation_pack. Each entry is one video, and `include`
+# lists the `topic` values from the phrase data that feed it. The raw topics
+# hold 8-16 phrases each — far short of a pack — so they are grouped into
+# five buckets big enough to fill one, and related enough to sit under a
+# single title.
 topics:
-  - 공항·비행
-  - 호텔
-  - 식당·카페
-  - 쇼핑·환불
-  - 길찾기·교통
-  - 전화·이메일
-  - 직장·회의
-  - 병원·약국
-  - 은행·관공서
-  - 집·수리
-  - 학교·공부
-  - 기기·인터넷
-  - 약속·사교
-  - 감정·공감
+  - name: 여행·공항·호텔
+    include: [공항·비행, 호텔, 길찾기·교통]
+  - name: 직장·비즈니스
+    include: [직장·회의, 전화·이메일]
+  - name: 쇼핑·외식
+    include: [식당·카페, 쇼핑·환불]
+  - name: 생활·서비스
+    include: [병원·약국, 은행·관공서, 집·수리, 기기·인터넷]
+  - name: 사람·감정·일상
+    include: [감정·공감, 약속·사교, 학교·공부, 날씨·취미]
 
 packs:
   weekly_review:
     name: 주간 복습 몰아듣기
     target_minutes: 12
-    phrase_count: 7
+    # One week of Shorts is 21 phrases (3/day). 30 covers the week and
+    # carries a little of the one before it, which is what a review is for.
+    phrase_count: 30
     schedule: 매주 일요일
+    playlist: 주간 복습 몰아듣기
     title: "이번 주 영어 표현 {count}개 몰아듣기 | 매일 영어 한마디"
     intro_ko: 안녕하세요, 매일 영어 한마디입니다. 이번 주에 배운 표현들을 한 번에 복습해 볼게요. 편하게 따라 읽어 보세요.
     outro_ko: 오늘 복습은 여기까지입니다. 도움이 되셨다면 구독과 좋아요 부탁드려요. 다음 영상에서 또 만나요.
@@ -56,16 +71,21 @@ packs:
       - shadow_gap
       - example_en
       - example_ko
+      - en_normal
+      - shadow_gap
       - gap_long
 
   shadowing_drill:
     name: 쉐도잉 트레이닝
-    target_minutes: 28
-    phrase_count: 25
+    target_minutes: 22
+    phrase_count: 45
     schedule: 매주 월요일
+    playlist: 쉐도잉 트레이닝
     title: "영어 쉐도잉 훈련 {count}문장 | 따라 말하기 연습 | 매일 영어 한마디"
     intro_ko: 안녕하세요. 오늘은 쉐도잉 훈련입니다. 영어 문장이 나온 뒤 빈 구간이 나오면, 소리 내어 따라 말해 보세요. 소리를 내는 것이 가장 중요합니다.
     outro_ko: 수고하셨습니다. 매일 십 분씩만 따라 하셔도 입이 트입니다. 다음 훈련에서 또 만나요.
+    # Three passes over each sentence with a gap after every one. Repetition
+    # is the exercise here, not filler.
     recipe:
       - en_normal
       - shadow_gap
@@ -74,12 +94,16 @@ packs:
       - shadow_gap
       - en_normal
       - shadow_gap
+      - example_en
+      - shadow_gap
+      - gap_long
 
   situation_pack:
     name: 상황별 표현 팩
-    target_minutes: 35
+    target_minutes: 12
     phrase_count: 30
     schedule: 매주 수요일
+    playlist: 상황별 영어 표현
     title: "{topic} 영어 표현 {count}개 총정리 | 매일 영어 한마디"
     intro_ko: 안녕하세요. 오늘은 상황별 영어 표현입니다. 실제로 그 상황에 놓였을 때 바로 나오도록, 문장을 통째로 익혀 보세요.
     outro_ko: 오늘 표현들이 실제 상황에서 도움이 되길 바랍니다. 구독해 두시면 다음 상황편을 놓치지 않으실 거예요.
@@ -91,13 +115,18 @@ packs:
       - example_en
       - example_ko
       - en_normal
+      - shadow_gap
       - gap_long
 
   sleep_english:
     name: 수면 영어
-    target_minutes: 62
-    phrase_count: 60
-    schedule: 격주 금요일
+    target_minutes: 35
+    # The channel's best watch-time format by a distance: viewers leave it
+    # running. Length here comes from covering many phrases at an unhurried
+    # pace, not from stretching a few with silence.
+    phrase_count: 150
+    schedule: 매주 금요일
+    playlist: 자면서 듣는 영어
     title: "자면서 듣는 영어 표현 {count}개 | {minutes}분 흘려듣기 | 매일 영어 한마디"
     intro_ko: 안녕하세요. 편안하게 흘려듣는 영어입니다. 따라 말하지 않으셔도 됩니다. 그냥 틀어 두고 쉬세요.
     outro_ko: 오늘도 고생 많으셨습니다. 편안한 밤 되세요.
@@ -107,13 +136,17 @@ packs:
       - ko
       - gap_short
       - en_slow
-      - gap_long
+      - gap_sleep
+      - en_normal
+      - gap_sleep
 
   monthly_master:
     name: 월간 총정리
-    target_minutes: 70
-    phrase_count: 60
+    target_minutes: 26
+    # A month of Shorts is about 90 phrases, so this really is the month.
+    phrase_count: 90
     schedule: 매월 말
+    playlist: 월간 총정리
     title: "이번 달 영어 표현 {count}개 총정리 | {minutes}분 완전 복습 | 매일 영어 한마디"
     intro_ko: 안녕하세요. 이번 달에 다룬 표현들을 한 편에 모았습니다. 처음부터 끝까지 따라오시면 한 달치 복습이 끝납니다.
     outro_ko: 한 달 동안 정말 수고하셨습니다. 다음 달에도 매일 한 표현씩 함께해요.

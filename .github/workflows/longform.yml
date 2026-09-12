@@ -5,10 +5,12 @@ name: Long-form packs (@200-y3b)
 # that number moves. Runs early morning KST so a pack is up before commute.
 on:
   schedule:
-    # 21:00 UTC = 06:00 KST next day. Sun/Tue/Thu/Sat UTC = Mon/Wed/Fri/Sun KST.
-    - cron: "0 21 * * 0,2,4,6"
-    # Month-end slot; the pack chooser confirms it really is the last KST day.
-    - cron: "0 21 27-30 * *"
+    # One daily slot; the chooser below decides what (if anything) to build.
+    # This used to be two crons — weekdays plus a 27-30 month-end window —
+    # which both fire on the same day whenever the 27th-30th lands on a
+    # build weekday. That is 26 days a year, and each one starts two runs
+    # that pick the same pack and upload it twice. 21:00 UTC = 06:00 KST.
+    - cron: "0 21 * * *"
   workflow_dispatch:
     inputs:
       pack:
@@ -64,13 +66,12 @@ jobs:
           elif kst.day == last_day:
               pack = "monthly_master"
           else:
-              # Monday=0 … Sunday=6
+              # Monday=0 … Sunday=6. sleep_english is weekly rather than
+              # fortnightly: it is the longest pack and the one viewers leave
+              # running, so it earns more watch time per view than the rest.
               by_weekday = {6: "weekly_review", 0: "shadowing_drill",
-                            2: "situation_pack"}
+                            2: "situation_pack", 4: "sleep_english"}
               pack = by_weekday.get(kst.weekday(), "")
-              # sleep_english is fortnightly: even ISO weeks only.
-              if not pack and kst.weekday() == 4 and kst.isocalendar()[1] % 2 == 0:
-                  pack = "sleep_english"
 
           print(f"pack={pack}")
           print(f"date={kst.date().isoformat()}")

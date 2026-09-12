@@ -67,16 +67,25 @@ def save_used(state: dict) -> None:
 
 
 def pick_phrases(phrases: list, pack_id: str, count: int, state: dict,
-                 topic: str = "") -> list:
+                 include: list = None) -> list:
     """Unused-first selection, oldest-used as fallback.
 
     Recycling is per pack, so a phrase that appeared in a shadowing drill is
     still fresh for the monthly review — the two present it differently
     enough that a viewer would not read it as a repeat.
+
+    `include` is the list of `topic` values a themed pack draws from. A pack
+    can never return more phrases than its pool holds, so the pool has to be
+    the size of a video: the raw topics run 8-16 phrases, which is why
+    packs.yaml groups them before they get here.
     """
-    pool = [p for p in phrases if p.get("topic") == topic] if topic else list(phrases)
+    if include:
+        wanted = set(include)
+        pool = [p for p in phrases if p.get("topic") in wanted]
+    else:
+        pool = list(phrases)
     if not pool:
-        raise SystemExit(f"No phrases match topic {topic!r}")
+        raise SystemExit(f"No phrases match topics {include!r}")
 
     seen = state.get("packs", {}).get(pack_id, {})
     unused = [p for p in pool if p["id"] not in seen]
@@ -160,13 +169,16 @@ def build_segments(pack: dict, defaults: dict, picked: list, topic: str,
                 add(audio, card_for(idx, phrase, STAGE[step]))
 
             elif step == "shadow_gap":
-                # The whole point: long enough to actually say it back.
-                seconds = last_en_seconds + defaults["shadow_pad"]
+                # The whole point: long enough to actually say it back. A gap
+                # the same length as the audio is not — the learner is still
+                # drawing breath — hence the multiplier on top.
+                seconds = (last_en_seconds * defaults.get("shadow_mult", 1.0)
+                           + defaults["shadow_pad"])
                 audio = tts.make_silence(
                     seconds, work / f"gap_{idx:03d}_{len(segments)}.mp3")
                 add(audio, card_for(idx, phrase, "shadow"))
 
-            elif step in ("gap_short", "gap_long"):
+            elif step.startswith("gap_") and step in defaults:
                 seconds = defaults[step]
                 audio = tts.make_silence(
                     seconds, work / f"gap_{idx:03d}_{len(segments)}.mp3")
@@ -234,7 +246,11 @@ def build_description(pack: dict, chapters: list, count: int, topic: str) -> str
     lines += [
         "",
         "매일 영어 한마디 — 실생활에서 바로 쓰는 영어 표현을 매일 전해드립니다.",
-        "매일 09시 / 15시 / 21시에 쇼츠를, 주말에는 모아듣기 영상을 올립니다.",
+        "",
+        "[ 업로드 일정 ]",
+        "매일 09시·15시·21시 — 오늘의 표현 한 개 (쇼츠)",
+        "일요일 주간 복습 · 월요일 쉐도잉 · 수요일 상황별 · 금요일 수면 영어",
+        "매월 말 — 한 달 총정리",
         "",
         "#영어공부 #영어회화 #매일영어한마디 #영어듣기 #dailyenglish",
     ]
@@ -260,13 +276,17 @@ def main() -> int:
     phrases = load_phrases()
     state = load_used()
 
-    topic = ""
+    topic, include = "", None
     if args.pack == "situation_pack":
         topics = config["topics"]
-        topic = topics[state.get("topic_cursor", 0) % len(topics)]
+        entry = topics[state.get("topic_cursor", 0) % len(topics)]
+        topic, include = entry["name"], entry["include"]
 
     count = args.limit or pack["phrase_count"]
-    picked = pick_phrases(phrases, args.pack, count, state, topic)
+    picked = pick_phrases(phrases, args.pack, count, state, include)
+    if len(picked) < count:
+        print(f"[build] pool holds {len(picked)} of the {count} phrases asked "
+              f"for — the video will be correspondingly shorter", file=sys.stderr)
     count = len(picked)
 
     date_str = datetime.date.today().isoformat()
@@ -286,6 +306,12 @@ def main() -> int:
     duration = tts.duration_of(video)
     minutes = max(1, round(duration / 60))
 
+    target = pack.get("target_minutes")
+    if target and abs(minutes - target) / target > 0.3:
+        print(f"::warning::{args.pack} built {minutes}min against a "
+              f"target_minutes of {target}. Adjust phrase_count or the "
+              f"recipe so the label matches what viewers get.", file=sys.stderr)
+
     title = pack["title"].format(count=count, minutes=minutes, topic=topic)
     thumb = cards.render_thumbnail(
         out_dir / "thumbnail.png",
@@ -300,6 +326,9 @@ def main() -> int:
                  "english listening", "learn english", "shadowing"],
         "categoryId": "27",
         "privacyStatus": "public",
+        # Playlists chain one long-form into the next on autoplay, which is
+        # the cheapest watch-time lever available here.
+        "playlist": pack.get("playlist", ""),
         "duration_seconds": round(duration, 2),
         "phrase_ids": [p["id"] for p in picked],
         "file": str(video.relative_to(ROOT)),

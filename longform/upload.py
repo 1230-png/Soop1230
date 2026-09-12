@@ -94,6 +94,53 @@ def upload(youtube, video_path: Path, meta: dict) -> str:
     return response["id"]
 
 
+def get_or_create_playlist(youtube, title: str) -> str:
+    """Id of the channel playlist with this title, created if absent."""
+    page_token = None
+    while True:
+        resp = youtube.playlists().list(
+            part="id,snippet", mine=True, maxResults=50, pageToken=page_token
+        ).execute()
+        for item in resp.get("items", []):
+            if item["snippet"]["title"] == title:
+                return item["id"]
+        page_token = resp.get("nextPageToken")
+        if not page_token:
+            break
+
+    resp = youtube.playlists().insert(
+        part="snippet,status",
+        body={"snippet": {"title": title},
+              "status": {"privacyStatus": "public"}},
+    ).execute()
+    print(f"[upload] created playlist {title!r}", file=sys.stderr)
+    return resp["id"]
+
+
+def add_to_playlist(youtube, video_id: str, title: str) -> None:
+    """Chain this video onto its series.
+
+    A viewer who reaches the end of one pack autoplays into the next one
+    instead of leaving, so a playlist is worth more watch time here than
+    anything else this script does. The Shorts uploader already does this;
+    long-form was the side that did not.
+    """
+    try:
+        playlist_id = get_or_create_playlist(youtube, title)
+        youtube.playlistItems().insert(
+            part="snippet",
+            body={"snippet": {
+                "playlistId": playlist_id,
+                "resourceId": {"kind": "youtube#video", "videoId": video_id},
+            }},
+        ).execute()
+        print(f"[upload] added {video_id} to playlist {title!r}", file=sys.stderr)
+    except HttpError as e:
+        # The video is already public; a missing playlist entry is not worth
+        # failing the run over.
+        print(f"[upload] playlist failed (ignored): {e}", file=sys.stderr)
+
+
 def set_thumbnail(youtube, video_id: str, thumb: Path) -> None:
     try:
         youtube.thumbnails().set(
@@ -128,6 +175,10 @@ def main() -> int:
     thumb = args.dir / "thumbnail.png"
     if thumb.exists():
         set_thumbnail(youtube, video_id, thumb)
+
+    playlist = meta.get("playlist", "").strip()
+    if playlist:
+        add_to_playlist(youtube, video_id, playlist)
 
     meta["youtube_video_id"] = video_id
     meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n",
