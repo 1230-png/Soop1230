@@ -13,6 +13,7 @@ import argparse
 import json
 import os
 import sys
+import time
 from pathlib import Path
 
 from google.auth.transport.requests import Request
@@ -117,7 +118,16 @@ def get_or_create_playlist(youtube, title: str) -> str:
     return resp["id"]
 
 
-def add_to_playlist(youtube, video_id: str, title: str) -> None:
+# A playlist created seconds ago is not consistently visible to the next
+# call yet: the first situation_pack run created its playlist and then got
+# 409 SERVICE_UNAVAILABLE ("The operation was aborted.") inserting into it.
+# That is a propagation race, not a rejection, so it is worth waiting out —
+# and it recurs every time a pack publishes for the first time.
+RETRY_STATUSES = {409, 500, 502, 503}
+
+
+def add_to_playlist(youtube, video_id: str, title: str,
+                    attempts: int = 4) -> None:
     """Chain this video onto its series.
 
     A viewer who reaches the end of one pack autoplays into the next one
@@ -127,18 +137,35 @@ def add_to_playlist(youtube, video_id: str, title: str) -> None:
     """
     try:
         playlist_id = get_or_create_playlist(youtube, title)
-        youtube.playlistItems().insert(
-            part="snippet",
-            body={"snippet": {
-                "playlistId": playlist_id,
-                "resourceId": {"kind": "youtube#video", "videoId": video_id},
-            }},
-        ).execute()
-        print(f"[upload] added {video_id} to playlist {title!r}", file=sys.stderr)
     except HttpError as e:
-        # The video is already public; a missing playlist entry is not worth
-        # failing the run over.
-        print(f"[upload] playlist failed (ignored): {e}", file=sys.stderr)
+        print(f"[upload] could not resolve playlist {title!r} (ignored): {e}",
+              file=sys.stderr)
+        return
+
+    for attempt in range(1, attempts + 1):
+        try:
+            youtube.playlistItems().insert(
+                part="snippet",
+                body={"snippet": {
+                    "playlistId": playlist_id,
+                    "resourceId": {"kind": "youtube#video", "videoId": video_id},
+                }},
+            ).execute()
+            print(f"[upload] added {video_id} to playlist {title!r}",
+                  file=sys.stderr)
+            return
+        except HttpError as e:
+            retryable = e.resp.status in RETRY_STATUSES
+            if not retryable or attempt == attempts:
+                # The video is already public; a missing playlist entry is
+                # not worth failing the run over.
+                print(f"[upload] playlist failed (ignored): {e}",
+                      file=sys.stderr)
+                return
+            wait = 5 * attempt
+            print(f"[upload] playlist insert got {e.resp.status}, retrying "
+                  f"in {wait}s ({attempt}/{attempts - 1})", file=sys.stderr)
+            time.sleep(wait)
 
 
 def set_thumbnail(youtube, video_id: str, thumb: Path) -> None:

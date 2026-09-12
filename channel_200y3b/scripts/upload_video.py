@@ -12,6 +12,7 @@ import csv
 import json
 import os
 import sys
+import time
 from pathlib import Path
 
 from google.auth.transport.requests import Request
@@ -133,21 +134,44 @@ def _get_or_create_playlist(youtube, title: str) -> str:
     return resp["id"]
 
 
-def _add_to_playlist(youtube, video_id: str, playlist_title: str) -> None:
+# A playlist created seconds ago is not reliably visible to the very next
+# call: the long-form uploader created one and then got 409 SERVICE_UNAVAILABLE
+# ("The operation was aborted.") inserting into it. That is a propagation
+# race rather than a rejection, so it is worth waiting out. This side has not
+# hit it only because its playlists already exist.
+_RETRY_STATUSES = {409, 500, 502, 503}
+
+
+def _add_to_playlist(youtube, video_id: str, playlist_title: str,
+                     attempts: int = 4) -> None:
     try:
         playlist_id = _get_or_create_playlist(youtube, playlist_title)
-        youtube.playlistItems().insert(
-            part="snippet",
-            body={
-                "snippet": {
-                    "playlistId": playlist_id,
-                    "resourceId": {"kind": "youtube#video", "videoId": video_id},
-                }
-            },
-        ).execute()
-        print(f"✅ Added {video_id} to playlist '{playlist_title}'")
     except HttpError as e:
-        print(f"⚠️  Could not add {video_id} to playlist '{playlist_title}': {e}", file=sys.stderr)
+        print(f"⚠️  Could not resolve playlist '{playlist_title}': {e}", file=sys.stderr)
+        return
+
+    for attempt in range(1, attempts + 1):
+        try:
+            youtube.playlistItems().insert(
+                part="snippet",
+                body={
+                    "snippet": {
+                        "playlistId": playlist_id,
+                        "resourceId": {"kind": "youtube#video", "videoId": video_id},
+                    }
+                },
+            ).execute()
+            print(f"✅ Added {video_id} to playlist '{playlist_title}'")
+            return
+        except HttpError as e:
+            if e.resp.status not in _RETRY_STATUSES or attempt == attempts:
+                print(f"⚠️  Could not add {video_id} to playlist "
+                      f"'{playlist_title}': {e}", file=sys.stderr)
+                return
+            wait = 5 * attempt
+            print(f"⏳ Playlist insert got {e.resp.status}, retrying in {wait}s "
+                  f"({attempt}/{attempts - 1})", file=sys.stderr)
+            time.sleep(wait)
 
 
 def upload_video(
