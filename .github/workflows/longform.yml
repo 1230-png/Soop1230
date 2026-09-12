@@ -1,0 +1,169 @@
+name: Long-form packs (@200-y3b)
+
+# Why this exists: Shorts watch time does not count toward the Partner
+# Programme's 3,000 valid public watch hours, so long-form is the only way
+# that number moves. Runs early morning KST so a pack is up before commute.
+on:
+  schedule:
+    # 21:00 UTC = 06:00 KST next day. Sun/Tue/Thu/Sat UTC = Mon/Wed/Fri/Sun KST.
+    - cron: "0 21 * * 0,2,4,6"
+    # Month-end slot; the pack chooser confirms it really is the last KST day.
+    - cron: "0 21 27-30 * *"
+  workflow_dispatch:
+    inputs:
+      pack:
+        description: "Pack id (blank = pick by date)"
+        required: false
+        type: choice
+        default: ""
+        options:
+          - ""
+          - weekly_review
+          - shadowing_drill
+          - situation_pack
+          - sleep_english
+          - monthly_master
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: 200y3b-longform
+  cancel-in-progress: false
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    env:
+      # A step's `if:` cannot read that step's own `env:`, and the secrets
+      # context is not listed as available to a step `if:` at all — but a
+      # job-level env is. Resolving the secret to a boolean once, here, is
+      # what makes the upload/release branch below reliable.
+      HAS_YT_CREDS: ${{ secrets.Y3B_REFRESH_TOKEN != '' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Decide which pack to build
+        id: pick
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import calendar, datetime, os
+
+          forced = os.environ.get("FORCED_PACK", "").strip()
+          # The runner is UTC; the schedule is written for KST, so decide on
+          # the KST date or every weekday boundary lands a day early.
+          kst = datetime.datetime.utcnow() + datetime.timedelta(hours=9)
+          last_day = calendar.monthrange(kst.year, kst.month)[1]
+
+          if forced:
+              pack = forced
+          elif kst.day == last_day:
+              pack = "monthly_master"
+          else:
+              # Monday=0 … Sunday=6
+              by_weekday = {6: "weekly_review", 0: "shadowing_drill",
+                            2: "situation_pack"}
+              pack = by_weekday.get(kst.weekday(), "")
+              # sleep_english is fortnightly: even ISO weeks only.
+              if not pack and kst.weekday() == 4 and kst.isocalendar()[1] % 2 == 0:
+                  pack = "sleep_english"
+
+          print(f"pack={pack}")
+          print(f"date={kst.date().isoformat()}")
+          PY
+        env:
+          FORCED_PACK: ${{ inputs.pack }}
+
+      - name: Nothing scheduled for today
+        if: steps.pick.outputs.pack == ''
+        run: echo "No pack for this KST date — exiting cleanly."
+
+      - name: Set up Python
+        if: steps.pick.outputs.pack != ''
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install system dependencies
+        if: steps.pick.outputs.pack != ''
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg fonts-nanum
+          fc-cache -f
+
+      - name: Install Python dependencies
+        if: steps.pick.outputs.pack != ''
+        run: pip install -r longform/requirements.txt
+
+      - name: Build pack
+        id: build
+        if: steps.pick.outputs.pack != ''
+        run: |
+          OUT=$(python3 longform/build.py --pack "${{ steps.pick.outputs.pack }}")
+          echo "dir=$OUT" >> "$GITHUB_OUTPUT"
+
+      - name: Upload to YouTube
+        if: steps.pick.outputs.pack != '' && env.HAS_YT_CREDS == 'true'
+        env:
+          Y3B_CLIENT_ID: ${{ secrets.Y3B_CLIENT_ID }}
+          Y3B_CLIENT_SECRET: ${{ secrets.Y3B_CLIENT_SECRET }}
+          Y3B_REFRESH_TOKEN: ${{ secrets.Y3B_REFRESH_TOKEN }}
+          PYTHONIOENCODING: utf-8
+        run: python3 longform/upload.py --dir "${{ steps.build.outputs.dir }}"
+
+      # Path B: no credentials, so publish the artefacts to a monthly release
+      # and let the operator schedule them by hand in Studio.
+      - name: Publish to monthly release
+        if: steps.pick.outputs.pack != '' && env.HAS_YT_CREDS != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DIR: ${{ steps.build.outputs.dir }}
+          PACK: ${{ steps.pick.outputs.pack }}
+          DATE: ${{ steps.pick.outputs.date }}
+        run: |
+          TAG="longform-$(echo "$DATE" | cut -c1-7)"
+          gh release view "$TAG" >/dev/null 2>&1 \
+            || gh release create "$TAG" --title "Long-form $TAG" \
+                 --notes "@200-y3b long-form packs awaiting manual scheduling."
+          for f in video.mp4 metadata.json thumbnail.png; do
+            [ -f "$DIR/$f" ] && cp "$DIR/$f" "$DATE-$PACK-$f"
+          done
+          gh release upload "$TAG" "$DATE-$PACK-"* --clobber
+
+      - name: Commit used.json
+        if: steps.pick.outputs.pack != ''
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- longform/data/used.json; then
+            echo "used.json unchanged"
+            exit 0
+          fi
+          git add longform/data/used.json
+          git commit -m "chore(longform): ${{ steps.pick.outputs.pack }} ${{ steps.pick.outputs.date }} [skip ci]"
+          # A Shorts run may have pushed while this pack was encoding.
+          for i in 1 2 3; do
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && \
+              git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            sleep $((i * 5))
+          done
+          echo "::warning::could not push used.json"
+
+      - name: Open an issue on failure
+        if: failure() && steps.pick.outputs.pack != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue create \
+            --title "Long-form build failed: ${{ steps.pick.outputs.pack }} (${{ steps.pick.outputs.date }})" \
+            --body "Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+          Pack: \`${{ steps.pick.outputs.pack }}\`
+          KST date: ${{ steps.pick.outputs.date }}
+
+          Long-form is the only path to the 3,000 valid public watch hours, so a
+          silent gap here is worth looking at rather than waiting for the next run."
