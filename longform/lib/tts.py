@@ -32,6 +32,23 @@ def _key(text: str, voice: str, rate: str) -> str:
     return hashlib.sha1(f"{text}|{voice}|{rate}".encode("utf-8")).hexdigest()
 
 
+def build_command(text: str, voice: str, rate: str, out_path: Path) -> list:
+    """Assemble the edge-tts argv.
+
+    `--rate=-15%` must be one token: passed as two (`--rate`, `-15%`),
+    argparse reads the leading dash as the start of another option and exits
+    with status 2 before speaking a word. Same hazard for any text starting
+    with a dash, so both are attached with '='.
+    """
+    return [
+        "edge-tts",
+        f"--voice={voice}",
+        f"--rate={rate}",
+        f"--text={text}",
+        f"--write-media={out_path}",
+    ]
+
+
 def duration_of(path: Path) -> float:
     """Length of an audio file in seconds, via ffprobe."""
     out = subprocess.run(
@@ -72,11 +89,8 @@ def synthesize(text: str, voice: str, rate: str = "+0%", *,
     last = None
     for attempt in range(1, attempts + 1):
         try:
-            subprocess.run(
-                ["edge-tts", "--voice", voice, "--rate", rate,
-                 "--text", text, "--write-media", str(path)],
-                check=True, capture_output=True,
-            )
+            subprocess.run(build_command(text, voice, rate, path),
+                           check=True, capture_output=True)
             if path.exists() and path.stat().st_size > 0:
                 return path
             last = TTSError("edge-tts wrote an empty file")
