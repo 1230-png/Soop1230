@@ -25,10 +25,11 @@ audit 전체가 30단위 안쪽이다.
 """
 
 import argparse
+import json
 import os
 import re
 import sys
-from collections import defaultdict
+from collections import Counter, defaultdict
 
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
@@ -588,15 +589,24 @@ def cmd_retitle(youtube, channel, args) -> int:
     return 0
 
 
+def error_reason(e: HttpError) -> str:
+    """HttpError 에서 사유 문자열을 꺼낸다.
+
+    403 하나로는 댓글이 꺼진 것인지 할당량이 떨어진 것인지 권한이 없는
+    것인지 구분이 안 되고, 셋은 대응이 전부 다르다.
+    """
+    try:
+        errors = json.loads(e.content.decode("utf-8"))["error"]["errors"]
+        return errors[0].get("reason", "?")
+    except Exception:
+        return "?"
+
+
 def my_comment_exists(youtube, video_id: str) -> bool:
     """이 채널이 이미 이 영상에 댓글을 달았는지."""
-    try:
-        resp = youtube.commentThreads().list(
-            part="snippet", videoId=video_id, maxResults=100,
-            textFormat="plainText").execute()
-    except HttpError as e:
-        # 댓글이 꺼져 있거나(403) 삭제된 영상(404)이면 달 수도 없다.
-        raise
+    resp = youtube.commentThreads().list(
+        part="snippet", videoId=video_id, maxResults=100,
+        textFormat="plainText").execute()
     for thread in resp.get("items", []):
         top = thread["snippet"]["topLevelComment"]["snippet"]
         if top.get("authorChannelId", {}).get("value") == CHANNEL_ID:
@@ -626,7 +636,7 @@ def cmd_comment(youtube, channel, args) -> int:
                 skipped.append((vid, "이미 댓글 있음"))
                 continue
         except HttpError as e:
-            skipped.append((vid, f"확인 실패({e.resp.status})"))
+            skipped.append((vid, f"{e.resp.status} {error_reason(e)}"))
             continue
         todo.append((vid, item["snippet"]["title"]))
 
@@ -636,8 +646,9 @@ def cmd_comment(youtube, channel, args) -> int:
     if args.limit:
         todo = todo[:args.limit]
 
-    for vid, reason in skipped:
-        print(f"건너뜀: {vid}  {reason}")
+    tally = Counter(reason for _, reason in skipped)
+    for reason, n in tally.most_common():
+        print(f"건너뜀 {n:>3}편: {reason}")
     for vid, title in todo:
         print(f"{'단다' if args.apply else '달 것'}: {vid}  {title[:50]}")
 
@@ -665,7 +676,8 @@ def cmd_comment(youtube, channel, args) -> int:
             print(f"달았다: {vid}")
         except HttpError as e:
             # 한 편이 막혀도 나머지는 계속 단다.
-            print(f"실패(무시): {vid} — {e.resp.status}", file=sys.stderr)
+            print(f"실패(무시): {vid} — {e.resp.status} {error_reason(e)}",
+                  file=sys.stderr)
     print(f"\n{done}/{len(todo)}편에 달았다. 고정은 스튜디오에서만 된다.")
     return 0
 
