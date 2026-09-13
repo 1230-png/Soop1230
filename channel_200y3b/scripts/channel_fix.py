@@ -238,23 +238,35 @@ def cmd_audit(youtube, channel, args) -> int:
     details = video_details(youtube, ids)
 
     # 1) 업로드 기본값이 실제로 걸렸는지
-    wrong = []
+    #
+    # 비공개는 따로 센다. 중복 정리로 내린 것과 예전에 손으로 내린 것이 섞여
+    # 있어 매번 '어긋남'으로 뜨면, 정작 진짜 어긋난 건이 묻힌다.
+    wrong, private = [], []
     for vid, item in details.items():
         got = {
             "categoryId": item["snippet"].get("categoryId"),
             "privacyStatus": item["status"].get("privacyStatus"),
             "madeForKids": item["status"].get("madeForKids"),
         }
-        diff = {k: got[k] for k in EXPECTED if got[k] != EXPECTED[k]}
+        if got["privacyStatus"] != "public":
+            private.append((vid, item["snippet"]["title"][:50],
+                            got["privacyStatus"]))
+        diff = {k: got[k] for k in EXPECTED
+                if k != "privacyStatus" and got[k] != EXPECTED[k]}
         if diff:
             wrong.append((vid, item["snippet"]["title"][:40], diff))
+
     print(f"\n[업로드 설정] 기대값 {EXPECTED}")
     if wrong:
         print(f"  어긋난 영상 {len(wrong)}편:")
-        for vid, title, diff in wrong[:20]:
+        for vid, title, diff in wrong:
             print(f"    {vid} {title!r} → {diff}")
     else:
-        print("  전부 일치 — Studio 기본 설정을 만질 이유가 없다.")
+        print("  카테고리·아동용 전부 일치 — Studio 기본 설정은 수동 업로드에만"
+              " 걸리므로 만질 이유가 없다.")
+    print(f"  공개가 아닌 영상 {len(private)}편 (의도적일 수 있음):")
+    for vid, title, status in private:
+        print(f"    {vid} [{status}] {title}")
 
     # 2) 같은 표현이 두 번 올라갔는지
     groups = defaultdict(list)
