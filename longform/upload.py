@@ -22,13 +22,17 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 
-# 댓글 API(commentThreads)는 youtube 스코프로는 403 insufficientPermissions 를
-# 낸다. youtube.force-ssl 이 필요하고, 이쪽이 youtube 의 상위 집합이다.
+# 새로고침 요청에 스코프를 실어 보내지 않는다.
 #
-# 기존 토큰이 youtube 만 가지고 있어도 새로고침은 그대로 된다 — google-auth 는
-# 요청 스코프가 부여 스코프보다 넓으면 경고만 남긴다. 그래서 업로드는 지금도
-# 돌고, 토큰을 다시 발급받는 순간 댓글이 따라서 켜진다.
-SCOPES = ["https://www.googleapis.com/auth/youtube.force-ssl"]
+# google-auth 는 Credentials(scopes=...) 가 설정돼 있으면 그 값을 토큰 요청에
+# 그대로 넣고, 구글은 발급 때보다 넓은 스코프를 invalid_scope 로 거절한다.
+# force-ssl 을 여기 적었다가 모든 업로드가 RefreshError 로 죽었다.
+#
+# 스코프는 코드가 아니라 토큰에 붙어 있다. None 이면 스코프를 보내지 않으므로
+# 토큰이 실제로 가진 권한 그대로 새로고침되고, 토큰을 더 넓게 다시 발급받으면
+# 코드를 고치지 않아도 그 권한이 따라온다. 댓글에 필요한 force-ssl 은
+# get_refresh_token.py 가 발급 시점에 요청한다.
+SCOPES = None
 CHANNEL_ID = "UCeXsmdfyW4hoxgWV2K8EwFw"  # @200-y3b
 
 
