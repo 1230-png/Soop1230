@@ -464,6 +464,18 @@ def cmd_stats(youtube, channel, args) -> int:
     print(f"  최근 90일 쇼츠 조회수      "
           f"{sum(v for _, _, _, v in short_90):>8,} 회")
 
+    # 롱폼 편별 조회수가 결론을 좌우한다. 합계만 보면 '편수가 적어서'인지
+    # '편당 안 보여서'인지 구분이 안 된다.
+    print("\n[롱폼 편별]")
+    for vid, pub, secs, views in sorted(long_rows, key=lambda r: r[1]):
+        title = details[vid]["snippet"]["title"][:44]
+        print(f"  {pub.date()}  {secs // 60:>3}분  {views:>6,}회  {title}")
+    if short_rows:
+        sv = sorted(v for _, _, _, v in short_rows)
+        mid = sv[len(sv) // 2]
+        print(f"\n[쇼츠 편별] 중앙값 {mid:,}회, 최고 {sv[-1]:,}회, "
+              f"최저 {sv[0]:,}회 ({len(sv)}편)")
+
     print("\n[유효 공개 시청 시간 추정 — 최근 12개월 롱폼만]")
     raw = sum(v * s for _, _, s, v in long_12mo) / 3600
     print(f"  조회수 × 길이 (시청률 100% 가정, 상한)  {raw:>10.1f} 시간")
