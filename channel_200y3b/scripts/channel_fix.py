@@ -221,8 +221,9 @@ SHORTS_COMMENT = (
 SCOPE_HELP = """댓글 API 가 403 insufficientPermissions 를 냈다.
 
 commentThreads 는 youtube.force-ssl 스코프를 요구하는데 지금 refresh token 은
-youtube 만 가지고 있다. 코드는 이미 force-ssl 을 요청하도록 고쳐 뒀으므로,
-토큰만 다시 발급받아 GitHub Secret 을 갈아 끼우면 그 다음부터 댓글이 달린다.
+youtube 만 가지고 있다. 스코프는 코드가 아니라 토큰에 붙어 있어서 코드로는
+넓힐 수 없다 — 토큰을 다시 발급받아야 한다. get_refresh_token.py 가 이미
+force-ssl 을 요청하므로 아래를 돌리고 Secret 만 갈아 끼우면 된다.
 
     cd channel_200y3b
     python3 scripts/get_refresh_token.py \\
