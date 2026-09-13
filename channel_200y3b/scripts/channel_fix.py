@@ -225,9 +225,9 @@ youtube 만 가지고 있다. 스코프는 코드가 아니라 토큰에 붙어 
 넓힐 수 없다 — 토큰을 다시 발급받아야 한다. get_refresh_token.py 가 이미
 force-ssl 을 요청하므로 아래를 돌리고 Secret 만 갈아 끼우면 된다.
 
-    cd channel_200y3b
-    python3 scripts/get_refresh_token.py \\
-        --client-id "<Y3B_CLIENT_ID>" --client-secret "<Y3B_CLIENT_SECRET>"
+    pip install google-auth-oauthlib
+    python3 channel_200y3b/scripts/get_refresh_token.py \\
+        --client-id "<클라이언트 ID>" --client-secret "<보안 비밀번호>"
 
 브라우저에서 @200-y3b 를 관리하는 계정으로 로그인하고, 동의 화면에 '댓글'
 항목이 있는지 확인할 것. 출력된 refresh token 을 저장소 Settings → Secrets →

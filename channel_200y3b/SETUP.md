@@ -76,7 +76,13 @@ TTS(edge-tts)는 API 키가 필요 없습니다 — 무료·무제한, 별도 �
 
 ```bash
 pip install -r scripts/requirements.txt
-python scripts/get_refresh_token.py --client-id "<클라이언트 ID>" --client-secret "<보안 비밀번호>"
+
+# 값을 직접 넣거나
+python scripts/get_refresh_token.py \
+    --client-id "<클라이언트 ID>" --client-secret "<보안 비밀번호>"
+
+# Console 에서 받은 JSON 을 주거나
+python scripts/get_refresh_token.py --client-secret-file client_secret.json
 ```
 
 브라우저가 열리면 **반드시 `@200-y3b`를 관리하는 계정으로** 로그인하고 권한을
@@ -157,6 +163,71 @@ python scripts/get_refresh_token.py --client-id "<클라이언트 ID>" --client-
 댓글이 남고 다시 공개할 수 있습니다.
 
 먼저 올라간 영상이 항상 원본으로 남습니다.
+
+---
+
+## 손으로 해야 하는 두 가지 (따라 하기)
+
+API 가 없어서 자동화가 안 되는 작업입니다. 한 번만 하면 됩니다.
+둘 다 Google Cloud Console 을 거치므로 **한 번에 같이 하는 편이 낫습니다.**
+
+### A. Cloud Console 에서 클라이언트 정보 확인 + 옛 보안 비밀번호 삭제
+
+1. https://console.cloud.google.com/apis/credentials 접속.
+   @200-y3b 를 관리하는 **구글 계정으로 로그인**합니다.
+2. 화면 맨 위 프로젝트 선택기에서 이 채널을 만들 때 쓴 프로젝트를 고릅니다.
+   (프로젝트가 하나뿐이면 이미 선택돼 있습니다.)
+3. **"OAuth 2.0 클라이언트 ID"** 목록에서 이름을 눌러 상세 화면으로 들어갑니다.
+4. 오른쪽 위 **클라이언트 ID** 를 복사해 둡니다. (B 에서 씁니다.)
+5. **"클라이언트 보안 비밀번호"** 목록을 봅니다.
+   - **사용 중지됨(비활성)** 으로 표시된 `****FDrF` 오른쪽의 **휴지통 아이콘**을
+     눌러 삭제합니다. 사용 중인 것이 아니므로 지워도 발행이 멈추지 않습니다.
+   - 남은 **사용 설정됨** 항목의 값이 보이면 복사해 둡니다. 가려져 있으면
+     **"+ 보안 비밀번호 추가"** 로 새로 만들고 그 값을 복사합니다.
+     이 경우 GitHub Secret 의 `Y3B_CLIENT_SECRET` 도 새 값으로 바꿔야 합니다.
+6. 왼쪽 메뉴 **"OAuth 동의 화면"** → 게시 상태가 **"테스트"** 면
+   **"앱 게시"** 를 눌러 **프로덕션**으로 바꿉니다.
+   테스트 상태에서는 refresh token 이 **7일마다 만료**되어 발행이 멈춥니다.
+
+### B. Y3B_REFRESH_TOKEN 다시 발급
+
+댓글 API(`commentThreads`)는 `youtube.force-ssl` 스코프를 요구하는데 지금
+토큰은 `youtube` 만 가지고 있습니다. **스코프는 코드가 아니라 토큰에 붙어
+있어서 코드로는 넓힐 수 없고, 브라우저 동의가 필요해 자동화도 안 됩니다.**
+
+컴퓨터(윈도우/맥 아무거나)에서 한 번만 하면 됩니다.
+
+1. 파이썬이 없으면 https://www.python.org/downloads/ 에서 설치.
+   윈도우 설치 화면에서 **"Add python.exe to PATH"** 를 꼭 체크하세요.
+2. 터미널(윈도우는 PowerShell)을 열고:
+
+   ```bash
+   pip install google-auth-oauthlib
+   ```
+
+3. 이 저장소를 받았다면 그 폴더에서, 아니면
+   `channel_200y3b/scripts/get_refresh_token.py` 파일 하나만 받아서:
+
+   ```bash
+   python get_refresh_token.py \
+       --client-id "A-5에서 복사한 클라이언트 ID" \
+       --client-secret "A-5에서 복사한 보안 비밀번호"
+   ```
+
+4. 브라우저가 열립니다. **반드시 @200-y3b 를 관리하는 계정**으로 로그인하세요.
+   다른 계정으로 하면 업로드가 엉뚱한 채널로 가려다 채널 확인 로직에 막힙니다.
+5. 동의 화면에서 **항목을 하나도 끄지 말고** 전부 허용합니다.
+   하나라도 끄면 스크립트가 경고를 찍고, 나중에 댓글이 조용히 실패합니다.
+6. 터미널에 세 값이 찍힙니다. 그중 `Y3B_REFRESH_TOKEN` 값을 복사합니다.
+7. GitHub 저장소 → **Settings** → 왼쪽 **Secrets and variables** → **Actions**
+   → `Y3B_REFRESH_TOKEN` 의 연필 아이콘 → 값을 붙여넣고 **Update secret**.
+   (A-5 에서 보안 비밀번호를 새로 만들었다면 `Y3B_CLIENT_SECRET` 도 같이.)
+8. 확인: Actions 탭 → **"Channel housekeeping (@200-y3b)"** → Run workflow →
+   `comment-preview`. 403 안내 대신 "달 것: ..." 목록이 나오면 성공입니다.
+   이어서 `comment-apply` 를 돌리면 기존 쇼츠에 댓글이 달립니다.
+
+> **터미널에 찍힌 토큰은 비밀값입니다.** 채팅·이슈·커밋에 붙여넣지 마세요.
+> 붙여넣을 곳은 GitHub Secrets 한 곳뿐입니다.
 
 ---
 
