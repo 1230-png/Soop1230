@@ -2910,5 +2910,5093 @@
     "ex_en": "I binge-watched the whole series in one weekend.",
     "ex_ko": "주말 동안 그 시리즈를 정주행했어요.",
     "topic": "날씨·취미"
+  },
+  {
+    "id": "E365",
+    "en": "Let's circle back on this.",
+    "ko": "이 건은 나중에 다시 얘기하죠.",
+    "ex_en": "We're short on time, so let's circle back on this tomorrow.",
+    "ex_ko": "시간이 부족하니 이 건은 내일 다시 얘기하죠.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E366",
+    "en": "I'll take the minutes.",
+    "ko": "제가 회의록 쓸게요.",
+    "ex_en": "You lead the discussion and I'll take the minutes.",
+    "ex_ko": "진행은 맡아 주시면 제가 회의록 쓸게요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E367",
+    "en": "Can we table that for now?",
+    "ko": "그건 일단 보류할까요?",
+    "ex_en": "It's a good point, but can we table that for now?",
+    "ex_ko": "좋은 지적이지만 일단 보류할까요?",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E368",
+    "en": "I'm swamped this week.",
+    "ko": "이번 주는 일이 너무 많아요.",
+    "ex_en": "I'd love to help, but I'm swamped this week.",
+    "ex_ko": "돕고 싶은데 이번 주는 일이 너무 많아요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E369",
+    "en": "Let's sync up on Monday.",
+    "ko": "월요일에 한번 맞춰 봐요.",
+    "ex_en": "Nothing urgent — let's sync up on Monday.",
+    "ex_ko": "급한 건 아니니 월요일에 한번 맞춰 봐요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E370",
+    "en": "Who's the point of contact?",
+    "ko": "담당자가 누구예요?",
+    "ex_en": "If something breaks, who's the point of contact?",
+    "ex_ko": "문제가 생기면 담당자가 누구예요?",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E371",
+    "en": "I'll draft something up.",
+    "ko": "제가 초안 하나 잡아 볼게요.",
+    "ex_en": "Give me until Thursday and I'll draft something up.",
+    "ex_ko": "목요일까지만 주시면 제가 초안 하나 잡아 볼게요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E372",
+    "en": "That's not my call.",
+    "ko": "그건 제가 결정할 일이 아니에요.",
+    "ex_en": "I'd approve it myself, but that's not my call.",
+    "ex_ko": "저라면 승인하겠지만 제가 결정할 일이 아니에요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E373",
+    "en": "Let's get everyone on the same page.",
+    "ko": "다들 인식을 좀 맞추죠.",
+    "ex_en": "Before we start building, let's get everyone on the same page.",
+    "ex_ko": "만들기 시작하기 전에 다들 인식을 좀 맞추죠.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E374",
+    "en": "I'll circulate the deck.",
+    "ko": "자료는 제가 돌릴게요.",
+    "ex_en": "I'll circulate the deck before the meeting.",
+    "ex_ko": "회의 전에 자료는 제가 돌릴게요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E375",
+    "en": "Can you cover for me?",
+    "ko": "제 일 좀 대신 봐 주실 수 있어요?",
+    "ex_en": "I'm out Friday — can you cover for me?",
+    "ex_ko": "금요일에 자리를 비우는데 제 일 좀 대신 봐 주실 수 있어요?",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E376",
+    "en": "Let's park that idea.",
+    "ko": "그 아이디어는 잠시 접어 두죠.",
+    "ex_en": "Let's park that idea until we have the budget.",
+    "ex_ko": "예산이 잡힐 때까지 그 아이디어는 잠시 접어 두죠.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E377",
+    "en": "I'm on a call right now.",
+    "ko": "지금 통화 중이에요.",
+    "ex_en": "Sorry, I'm on a call right now — give me ten minutes.",
+    "ex_ko": "죄송해요, 지금 통화 중이라 십 분만요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E378",
+    "en": "Could you sign off on this?",
+    "ko": "이거 최종 승인해 주실 수 있어요?",
+    "ex_en": "The numbers are final — could you sign off on this?",
+    "ex_ko": "숫자는 확정됐어요. 최종 승인해 주실 수 있어요?",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E379",
+    "en": "Let's keep it brief.",
+    "ko": "짧게 갑시다.",
+    "ex_en": "We only have fifteen minutes, so let's keep it brief.",
+    "ex_ko": "십오 분밖에 없으니 짧게 갑시다.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E380",
+    "en": "I'll handle the rest.",
+    "ko": "나머지는 제가 처리할게요.",
+    "ex_en": "Just send me the file and I'll handle the rest.",
+    "ex_ko": "파일만 보내 주시면 나머지는 제가 처리할게요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E381",
+    "en": "We're behind on this one.",
+    "ko": "이 건은 일정이 밀렸어요.",
+    "ex_en": "I won't sugarcoat it — we're behind on this one.",
+    "ex_ko": "돌려 말하지 않을게요. 이 건은 일정이 밀렸어요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E382",
+    "en": "Let's set some ground rules.",
+    "ko": "기본 규칙부터 정하죠.",
+    "ex_en": "Before the workshop starts, let's set some ground rules.",
+    "ex_ko": "워크숍 시작 전에 기본 규칙부터 정하죠.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E383",
+    "en": "I'll ping you later.",
+    "ko": "이따 메시지 드릴게요.",
+    "ex_en": "I'm heading into a meeting — I'll ping you later.",
+    "ex_ko": "회의 들어가는 중이라 이따 메시지 드릴게요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E384",
+    "en": "That's above my pay grade.",
+    "ko": "그건 제 선에서 답할 수 없어요.",
+    "ex_en": "Honestly, that's above my pay grade.",
+    "ex_ko": "솔직히 그건 제 선에서 답할 수 없어요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E385",
+    "en": "Let's divide and conquer.",
+    "ko": "나눠서 처리하죠.",
+    "ex_en": "There's too much for one person — let's divide and conquer.",
+    "ex_ko": "혼자 하기엔 너무 많으니 나눠서 처리하죠.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E386",
+    "en": "I'll block off some time.",
+    "ko": "시간을 좀 비워 둘게요.",
+    "ex_en": "I'll block off some time Thursday afternoon.",
+    "ex_ko": "목요일 오후에 시간을 좀 비워 둘게요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E387",
+    "en": "Are we all set?",
+    "ko": "다 준비됐나요?",
+    "ex_en": "The client joins in five minutes — are we all set?",
+    "ex_ko": "오 분 뒤에 고객사가 들어와요. 다 준비됐나요?",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E388",
+    "en": "Let's not reinvent the wheel.",
+    "ko": "있는 걸 두고 처음부터 만들진 맙시다.",
+    "ex_en": "There's a template already — let's not reinvent the wheel.",
+    "ex_ko": "템플릿이 이미 있어요. 있는 걸 두고 처음부터 만들진 맙시다.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E389",
+    "en": "I'd like to weigh in on that.",
+    "ko": "그 부분에 의견을 좀 보태고 싶어요.",
+    "ex_en": "Before we vote, I'd like to weigh in on that.",
+    "ex_ko": "표결하기 전에 그 부분에 의견을 좀 보태고 싶어요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E390",
+    "en": "Let's take a five-minute break.",
+    "ko": "오 분만 쉬었다 하죠.",
+    "ex_en": "We've been at this for two hours — let's take a five-minute break.",
+    "ex_ko": "두 시간째예요. 오 분만 쉬었다 하죠.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E391",
+    "en": "I'll own that action item.",
+    "ko": "그 할 일은 제가 맡을게요.",
+    "ex_en": "Put my name down — I'll own that action item.",
+    "ex_ko": "제 이름으로 적어 주세요. 그 할 일은 제가 맡을게요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E392",
+    "en": "Can we get a headcount?",
+    "ko": "인원 파악 좀 할까요?",
+    "ex_en": "Before I book the room, can we get a headcount?",
+    "ex_ko": "회의실 잡기 전에 인원 파악 좀 할까요?",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E393",
+    "en": "That slipped through the cracks.",
+    "ko": "그건 관리에서 빠졌네요.",
+    "ex_en": "You're right, that slipped through the cracks — I'll fix it today.",
+    "ex_ko": "맞아요, 그건 관리에서 빠졌네요. 오늘 처리할게요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E394",
+    "en": "Let's raise the bar.",
+    "ko": "기준을 좀 더 높여 봅시다.",
+    "ex_en": "The last release was fine, but let's raise the bar.",
+    "ex_ko": "지난 릴리스도 괜찮았지만 기준을 좀 더 높여 봅시다.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E395",
+    "en": "I'm playing catch-up.",
+    "ko": "밀린 걸 따라잡는 중이에요.",
+    "ex_en": "I was out sick, so I'm playing catch-up.",
+    "ex_ko": "병가를 써서 밀린 걸 따라잡는 중이에요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E396",
+    "en": "Could you take this offline with him?",
+    "ko": "그건 그분과 따로 얘기해 주실래요?",
+    "ex_en": "It's a detail — could you take this offline with him?",
+    "ex_ko": "세부 사항이니 그건 그분과 따로 얘기해 주실래요?",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E397",
+    "en": "Let's move the needle on this.",
+    "ko": "이 건에서 실질적인 진전을 냅시다.",
+    "ex_en": "We've talked enough — let's move the needle on this.",
+    "ex_ko": "얘기는 충분히 했어요. 실질적인 진전을 냅시다.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E398",
+    "en": "I'll run it by my manager.",
+    "ko": "팀장님께 한번 여쭤 볼게요.",
+    "ex_en": "It sounds reasonable — I'll run it by my manager.",
+    "ex_ko": "합리적으로 들리네요. 팀장님께 한번 여쭤 볼게요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E399",
+    "en": "We're stretched thin.",
+    "ko": "인력이 너무 부족해요.",
+    "ex_en": "We can't take on another project — we're stretched thin.",
+    "ex_ko": "프로젝트를 더 받을 수 없어요. 인력이 너무 부족해요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E400",
+    "en": "Let's put a pin in it.",
+    "ko": "그건 표시해 두고 넘어가죠.",
+    "ex_en": "Interesting, but let's put a pin in it for now.",
+    "ex_ko": "흥미롭지만 일단 표시해 두고 넘어가죠.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E401",
+    "en": "I'll be out of office next week.",
+    "ko": "다음 주에 자리를 비웁니다.",
+    "ex_en": "Just so you know, I'll be out of office next week.",
+    "ex_ko": "참고로 다음 주에 자리를 비웁니다.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E402",
+    "en": "Could you double-check the numbers?",
+    "ko": "숫자 좀 다시 확인해 주실래요?",
+    "ex_en": "Before this goes out, could you double-check the numbers?",
+    "ex_ko": "발송 전에 숫자 좀 다시 확인해 주실래요?",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E403",
+    "en": "Let's keep the scope tight.",
+    "ko": "범위를 좁게 잡읍시다.",
+    "ex_en": "We only have a month, so let's keep the scope tight.",
+    "ex_ko": "한 달밖에 없으니 범위를 좁게 잡읍시다.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E404",
+    "en": "I'm not following.",
+    "ko": "이해가 잘 안 돼요.",
+    "ex_en": "Sorry, I'm not following — could you back up a step?",
+    "ex_ko": "죄송해요, 이해가 잘 안 돼요. 한 단계 앞으로 돌아가 주실래요?",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E405",
+    "en": "Let's revisit this next quarter.",
+    "ko": "다음 분기에 다시 보죠.",
+    "ex_en": "The timing isn't right — let's revisit this next quarter.",
+    "ex_ko": "시기가 안 맞네요. 다음 분기에 다시 보죠.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E406",
+    "en": "I'll escalate it.",
+    "ko": "윗선에 보고할게요.",
+    "ex_en": "If they don't respond by Friday, I'll escalate it.",
+    "ex_ko": "금요일까지 답이 없으면 윗선에 보고할게요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E407",
+    "en": "Can we timebox this?",
+    "ko": "이건 시간을 정해 놓고 할까요?",
+    "ex_en": "This could go on forever — can we timebox this to ten minutes?",
+    "ex_ko": "끝없이 갈 수 있으니 십 분으로 정해 놓고 할까요?",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E408",
+    "en": "Let's align on the goal first.",
+    "ko": "목표부터 맞추죠.",
+    "ex_en": "Before we argue about the method, let's align on the goal first.",
+    "ex_ko": "방법을 두고 다투기 전에 목표부터 맞추죠.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E409",
+    "en": "I'll take that as a yes.",
+    "ko": "동의하신 걸로 알겠습니다.",
+    "ex_en": "No objections? I'll take that as a yes.",
+    "ex_ko": "반대 없으시죠? 동의하신 걸로 알겠습니다.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E410",
+    "en": "We need to prioritize.",
+    "ko": "우선순위를 정해야 해요.",
+    "ex_en": "We can't do all five — we need to prioritize.",
+    "ex_ko": "다섯 개를 다 할 순 없어요. 우선순위를 정해야 해요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E411",
+    "en": "Let's do a quick round table.",
+    "ko": "돌아가면서 짧게 얘기해 보죠.",
+    "ex_en": "Before we close, let's do a quick round table.",
+    "ex_ko": "마치기 전에 돌아가면서 짧게 얘기해 보죠.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E412",
+    "en": "That's a hard deadline.",
+    "ko": "그건 조정 불가능한 마감이에요.",
+    "ex_en": "The launch is the fifteenth and that's a hard deadline.",
+    "ex_ko": "출시는 십오 일이고 조정 불가능한 마감이에요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E413",
+    "en": "I'll loop in the design team.",
+    "ko": "디자인팀도 참여시킬게요.",
+    "ex_en": "This affects the UI, so I'll loop in the design team.",
+    "ex_ko": "화면에 영향을 주니 디자인팀도 참여시킬게요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E414",
+    "en": "Let's not overengineer it.",
+    "ko": "너무 복잡하게 만들지 맙시다.",
+    "ex_en": "It's a one-off script — let's not overengineer it.",
+    "ex_ko": "한 번 쓰고 말 스크립트예요. 너무 복잡하게 만들지 맙시다.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E415",
+    "en": "Could you give me a ballpark?",
+    "ko": "대략적인 수치라도 알려 주실래요?",
+    "ex_en": "I don't need it exact — could you give me a ballpark?",
+    "ex_ko": "정확하지 않아도 돼요. 대략적인 수치라도 알려 주실래요?",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E416",
+    "en": "I'm heads-down on this.",
+    "ko": "이거에 집중하고 있어요.",
+    "ex_en": "I'm heads-down on this until lunch.",
+    "ex_ko": "점심때까지는 이거에 집중하고 있어요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E417",
+    "en": "Let's document that decision.",
+    "ko": "그 결정은 기록해 둡시다.",
+    "ex_en": "We'll forget the reasoning — let's document that decision.",
+    "ex_ko": "이유를 잊어버릴 거예요. 그 결정은 기록해 둡시다.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E418",
+    "en": "Thanks for flagging that.",
+    "ko": "짚어 주셔서 고마워요.",
+    "ex_en": "Thanks for flagging that — I hadn't noticed.",
+    "ex_ko": "짚어 주셔서 고마워요. 미처 못 봤어요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E419",
+    "en": "May I ask who's calling?",
+    "ko": "실례지만 누구시죠?",
+    "ex_en": "Good morning — may I ask who's calling?",
+    "ex_ko": "안녕하세요, 실례지만 누구시죠?",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E420",
+    "en": "I'll transfer you now.",
+    "ko": "바로 연결해 드릴게요.",
+    "ex_en": "That's the billing team — I'll transfer you now.",
+    "ex_ko": "청구 담당 부서네요. 바로 연결해 드릴게요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E421",
+    "en": "The line is busy.",
+    "ko": "통화 중이네요.",
+    "ex_en": "I tried twice, but the line is busy.",
+    "ex_ko": "두 번 걸었는데 통화 중이네요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E422",
+    "en": "Could I call you back in ten minutes?",
+    "ko": "십 분 뒤에 다시 걸어도 될까요?",
+    "ex_en": "I'm driving — could I call you back in ten minutes?",
+    "ex_ko": "운전 중이라서요. 십 분 뒤에 다시 걸어도 될까요?",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E423",
+    "en": "You have the wrong number.",
+    "ko": "전화 잘못 거셨어요.",
+    "ex_en": "There's no one here by that name — you have the wrong number.",
+    "ex_ko": "그런 분 안 계세요. 전화 잘못 거셨어요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E424",
+    "en": "I'm just calling to confirm.",
+    "ko": "확인차 전화드렸어요.",
+    "ex_en": "I'm just calling to confirm our appointment tomorrow.",
+    "ex_ko": "내일 예약 확인차 전화드렸어요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E425",
+    "en": "Let me check and get back to you.",
+    "ko": "확인해 보고 다시 연락드릴게요.",
+    "ex_en": "I don't have that in front of me — let me check and get back to you.",
+    "ex_ko": "지금 자료가 없어서요. 확인해 보고 다시 연락드릴게요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E426",
+    "en": "Sorry, we got disconnected.",
+    "ko": "죄송해요, 전화가 끊겼네요.",
+    "ex_en": "Sorry, we got disconnected — where were we?",
+    "ex_ko": "죄송해요, 전화가 끊겼네요. 어디까지 얘기했죠?",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E427",
+    "en": "Could you spell that for me?",
+    "ko": "철자 좀 불러 주시겠어요?",
+    "ex_en": "I want to get the name right — could you spell that for me?",
+    "ex_ko": "이름을 정확히 적고 싶어서요. 철자 좀 불러 주시겠어요?",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E428",
+    "en": "I'll keep this short.",
+    "ko": "짧게 말씀드릴게요.",
+    "ex_en": "I know you're busy, so I'll keep this short.",
+    "ex_ko": "바쁘신 거 아니까 짧게 말씀드릴게요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E429",
+    "en": "Please disregard my last email.",
+    "ko": "이전 메일은 무시해 주세요.",
+    "ex_en": "Please disregard my last email — I sent the wrong version.",
+    "ex_ko": "이전 메일은 무시해 주세요. 잘못된 버전을 보냈어요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E430",
+    "en": "I'm following up on my previous message.",
+    "ko": "지난 메일 관련해 다시 연락드립니다.",
+    "ex_en": "I'm following up on my previous message from last Tuesday.",
+    "ex_ko": "지난 화요일 메일 관련해 다시 연락드립니다.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E431",
+    "en": "Let me know a time that works.",
+    "ko": "편한 시간 알려 주세요.",
+    "ex_en": "I'm flexible this week — let me know a time that works.",
+    "ex_ko": "이번 주는 일정이 여유로워요. 편한 시간 알려 주세요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E432",
+    "en": "I've copied my colleague on this.",
+    "ko": "동료를 참조에 넣었습니다.",
+    "ex_en": "I've copied my colleague on this since she handles refunds.",
+    "ex_ko": "환불 담당이라 동료를 참조에 넣었습니다.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E433",
+    "en": "Apologies for the confusion.",
+    "ko": "혼선을 드려 죄송합니다.",
+    "ex_en": "Apologies for the confusion — here is the correct schedule.",
+    "ex_ko": "혼선을 드려 죄송합니다. 올바른 일정 보내 드립니다.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E434",
+    "en": "Could you confirm receipt?",
+    "ko": "수신 확인 부탁드려요.",
+    "ex_en": "The contract is attached — could you confirm receipt?",
+    "ex_ko": "계약서 첨부했습니다. 수신 확인 부탁드려요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E435",
+    "en": "I'm reaching out because of the delay.",
+    "ko": "지연 건으로 연락드립니다.",
+    "ex_en": "I'm reaching out because of the delay on order 3021.",
+    "ex_ko": "3021번 주문 지연 건으로 연락드립니다.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E436",
+    "en": "Feel free to reach out anytime.",
+    "ko": "언제든 편하게 연락 주세요.",
+    "ex_en": "That's all from me — feel free to reach out anytime.",
+    "ex_ko": "제 얘기는 여기까지예요. 언제든 편하게 연락 주세요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E437",
+    "en": "The file was too large to attach.",
+    "ko": "파일이 너무 커서 첨부가 안 됐어요.",
+    "ex_en": "The file was too large to attach, so here's a link instead.",
+    "ex_ko": "파일이 너무 커서 첨부가 안 돼서 링크로 보내요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E438",
+    "en": "Could we move this to a call?",
+    "ko": "통화로 얘기할까요?",
+    "ex_en": "This is getting complicated — could we move this to a call?",
+    "ex_ko": "내용이 복잡해지는데 통화로 얘기할까요?",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E439",
+    "en": "I'll cc you going forward.",
+    "ko": "앞으로는 참조에 넣어 드릴게요.",
+    "ex_en": "Sorry you missed that — I'll cc you going forward.",
+    "ex_ko": "놓치셨군요. 앞으로는 참조에 넣어 드릴게요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E440",
+    "en": "Your call is important to us.",
+    "ko": "고객님의 전화는 소중합니다.",
+    "ex_en": "Your call is important to us — please stay on the line.",
+    "ex_ko": "고객님의 전화는 소중합니다. 잠시만 기다려 주세요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E441",
+    "en": "I'd rather put that in writing.",
+    "ko": "그건 문서로 남기고 싶어요.",
+    "ex_en": "It's a big commitment — I'd rather put that in writing.",
+    "ex_ko": "중요한 약속이라 문서로 남기고 싶어요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E442",
+    "en": "Sorry, could you repeat the last part?",
+    "ko": "죄송한데 마지막 부분만 다시 말씀해 주실래요?",
+    "ex_en": "A truck went by — sorry, could you repeat the last part?",
+    "ex_ko": "트럭이 지나가서요. 죄송한데 마지막 부분만 다시 말씀해 주실래요?",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E443",
+    "en": "I'll send a calendar invite.",
+    "ko": "일정 초대 보내 드릴게요.",
+    "ex_en": "Thursday at three works — I'll send a calendar invite.",
+    "ex_ko": "목요일 세 시 좋아요. 일정 초대 보내 드릴게요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E444",
+    "en": "My inbox is a mess right now.",
+    "ko": "지금 메일함이 엉망이에요.",
+    "ex_en": "If I miss it, please nudge me — my inbox is a mess right now.",
+    "ex_ko": "놓치면 한 번 더 알려 주세요. 지금 메일함이 엉망이에요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E445",
+    "en": "Thanks for your patience.",
+    "ko": "기다려 주셔서 감사합니다.",
+    "ex_en": "Thanks for your patience — the issue is now resolved.",
+    "ex_ko": "기다려 주셔서 감사합니다. 문제는 해결됐습니다.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E446",
+    "en": "Could you put that in an email?",
+    "ko": "그거 메일로 보내 주실 수 있어요?",
+    "ex_en": "I want to make sure I get it right — could you put that in an email?",
+    "ex_ko": "정확히 하고 싶어서요. 그거 메일로 보내 주실 수 있어요?",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E447",
+    "en": "I'm out of the office until Monday.",
+    "ko": "월요일까지 부재중입니다.",
+    "ex_en": "I'm out of the office until Monday with limited access to email.",
+    "ex_ko": "월요일까지 부재중이라 메일 확인이 어렵습니다.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E448",
+    "en": "Just a quick question for you.",
+    "ko": "간단한 질문 하나만요.",
+    "ex_en": "Just a quick question for you before I submit this.",
+    "ex_ko": "제출하기 전에 간단한 질문 하나만요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E449",
+    "en": "I never received it.",
+    "ko": "저는 못 받았어요.",
+    "ex_en": "Could you resend? I never received it.",
+    "ex_ko": "다시 보내 주실래요? 저는 못 받았어요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E450",
+    "en": "Let's keep this thread going.",
+    "ko": "이 메일 흐름으로 계속 주고받죠.",
+    "ex_en": "Let's keep this thread going so nothing gets lost.",
+    "ex_ko": "놓치는 게 없게 이 메일 흐름으로 계속 주고받죠.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E451",
+    "en": "I'll answer point by point.",
+    "ko": "항목별로 답변드릴게요.",
+    "ex_en": "You asked four things — I'll answer point by point.",
+    "ex_ko": "네 가지를 물으셨네요. 항목별로 답변드릴게요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E452",
+    "en": "I'd like to close my account.",
+    "ko": "계좌를 해지하고 싶어요.",
+    "ex_en": "I'm moving abroad, so I'd like to close my account.",
+    "ex_ko": "해외로 이주해서 계좌를 해지하고 싶어요.",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E453",
+    "en": "Could I withdraw this in cash?",
+    "ko": "이거 현금으로 출금할 수 있을까요?",
+    "ex_en": "Could I withdraw this in cash, or do I need an appointment?",
+    "ex_ko": "현금으로 출금할 수 있을까요, 아니면 예약이 필요한가요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E454",
+    "en": "What documents do I need?",
+    "ko": "어떤 서류가 필요한가요?",
+    "ex_en": "To register the address, what documents do I need?",
+    "ex_ko": "주소 등록하려면 어떤 서류가 필요한가요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E455",
+    "en": "Is there an ATM nearby?",
+    "ko": "근처에 ATM 있나요?",
+    "ex_en": "Excuse me, is there an ATM nearby?",
+    "ex_ko": "실례합니다, 근처에 ATM 있나요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E456",
+    "en": "I'd like to transfer some money.",
+    "ko": "송금하고 싶어요.",
+    "ex_en": "I'd like to transfer some money to an overseas account.",
+    "ex_ko": "해외 계좌로 송금하고 싶어요.",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E457",
+    "en": "Could you check my balance?",
+    "ko": "잔액 좀 확인해 주실래요?",
+    "ex_en": "Before I pay, could you check my balance?",
+    "ex_ko": "결제하기 전에 잔액 좀 확인해 주실래요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E458",
+    "en": "I lost my card.",
+    "ko": "카드를 분실했어요.",
+    "ex_en": "I lost my card — could you cancel it right away?",
+    "ex_ko": "카드를 분실했어요. 바로 정지해 주실 수 있나요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E459",
+    "en": "Do I need to make an appointment?",
+    "ko": "예약이 필요한가요?",
+    "ex_en": "For a new passport, do I need to make an appointment?",
+    "ex_ko": "여권 신규 발급은 예약이 필요한가요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E460",
+    "en": "Where do I sign?",
+    "ko": "어디에 서명하면 되나요?",
+    "ex_en": "I've filled everything in — where do I sign?",
+    "ex_ko": "다 작성했어요. 어디에 서명하면 되나요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E461",
+    "en": "Could I get a receipt?",
+    "ko": "영수증 받을 수 있을까요?",
+    "ex_en": "Could I get a receipt for my records?",
+    "ex_ko": "기록용으로 영수증 받을 수 있을까요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E462",
+    "en": "Is this form up to date?",
+    "ko": "이 양식이 최신인가요?",
+    "ex_en": "I downloaded it last year — is this form up to date?",
+    "ex_ko": "작년에 받은 건데 이 양식이 최신인가요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E463",
+    "en": "I'm here to pick up a document.",
+    "ko": "서류 찾으러 왔어요.",
+    "ex_en": "I'm here to pick up a document I applied for last week.",
+    "ex_ko": "지난주에 신청한 서류 찾으러 왔어요.",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E464",
+    "en": "Take a number and wait.",
+    "ko": "번호표 뽑고 기다리세요.",
+    "ex_en": "Just take a number and wait — it shouldn't be long.",
+    "ex_ko": "번호표 뽑고 기다리세요. 오래 걸리진 않을 거예요.",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E465",
+    "en": "Could you notarize this?",
+    "ko": "이거 공증받을 수 있을까요?",
+    "ex_en": "Could you notarize this, or do I need to go elsewhere?",
+    "ex_ko": "이거 공증받을 수 있을까요, 아니면 다른 곳으로 가야 하나요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E466",
+    "en": "What's the interest rate?",
+    "ko": "금리가 어떻게 되나요?",
+    "ex_en": "For a two-year deposit, what's the interest rate?",
+    "ex_ko": "이 년 예금이면 금리가 어떻게 되나요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E467",
+    "en": "I'd like to set up automatic payments.",
+    "ko": "자동이체를 신청하고 싶어요.",
+    "ex_en": "I keep forgetting the due date, so I'd like to set up automatic payments.",
+    "ex_ko": "납부일을 자꾸 잊어서 자동이체를 신청하고 싶어요.",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E468",
+    "en": "There's a charge I don't recognize.",
+    "ko": "모르는 결제 내역이 있어요.",
+    "ex_en": "There's a charge I don't recognize from last Thursday.",
+    "ex_ko": "지난 목요일에 모르는 결제 내역이 있어요.",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E469",
+    "en": "Could you waive the fee?",
+    "ko": "수수료를 면제해 주실 수 있나요?",
+    "ex_en": "It was the bank's error — could you waive the fee?",
+    "ex_ko": "은행 착오였는데 수수료를 면제해 주실 수 있나요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E470",
+    "en": "Is the office open on Saturdays?",
+    "ko": "토요일에도 문 여나요?",
+    "ex_en": "I work weekdays — is the office open on Saturdays?",
+    "ex_ko": "평일에 일해서요. 토요일에도 문 여나요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E471",
+    "en": "I need to renew my visa.",
+    "ko": "비자를 연장해야 해요.",
+    "ex_en": "It expires next month, so I need to renew my visa.",
+    "ex_ko": "다음 달에 만료돼서 비자를 연장해야 해요.",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E472",
+    "en": "Can I do this online instead?",
+    "ko": "이거 온라인으로도 되나요?",
+    "ex_en": "The line is long — can I do this online instead?",
+    "ex_ko": "줄이 기네요. 이거 온라인으로도 되나요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E473",
+    "en": "Could you stamp this for me?",
+    "ko": "여기 도장 좀 찍어 주시겠어요?",
+    "ex_en": "The school needs proof — could you stamp this for me?",
+    "ex_ko": "학교에 증빙이 필요해서요. 여기 도장 좀 찍어 주시겠어요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E474",
+    "en": "My application was rejected.",
+    "ko": "신청이 반려됐어요.",
+    "ex_en": "My application was rejected — could you tell me why?",
+    "ex_ko": "신청이 반려됐는데 이유를 알 수 있을까요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E475",
+    "en": "How much can I withdraw per day?",
+    "ko": "하루 출금 한도가 얼마인가요?",
+    "ex_en": "How much can I withdraw per day from this account?",
+    "ex_ko": "이 계좌는 하루 출금 한도가 얼마인가요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E476",
+    "en": "I'd like to report a lost item.",
+    "ko": "분실물 신고를 하려고요.",
+    "ex_en": "I left a bag on the train — I'd like to report a lost item.",
+    "ex_ko": "기차에 가방을 두고 내려서 분실물 신고를 하려고요.",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E477",
+    "en": "Could you explain this charge?",
+    "ko": "이 항목이 뭔지 설명해 주시겠어요?",
+    "ex_en": "Could you explain this charge on the statement?",
+    "ex_ko": "명세서에 있는 이 항목이 뭔지 설명해 주시겠어요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E478",
+    "en": "Could we sit by the window?",
+    "ko": "창가 자리로 앉을 수 있을까요?",
+    "ex_en": "If anything's open, could we sit by the window?",
+    "ex_ko": "자리가 있으면 창가 자리로 앉을 수 있을까요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E479",
+    "en": "Do you have a menu in English?",
+    "ko": "영어 메뉴판 있나요?",
+    "ex_en": "Excuse me, do you have a menu in English?",
+    "ex_ko": "실례합니다, 영어 메뉴판 있나요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E480",
+    "en": "I'll start with a coffee.",
+    "ko": "우선 커피부터 주세요.",
+    "ex_en": "I'll start with a coffee while I look at the menu.",
+    "ex_ko": "메뉴 보는 동안 우선 커피부터 주세요.",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E481",
+    "en": "Could I see the dessert menu?",
+    "ko": "디저트 메뉴 볼 수 있을까요?",
+    "ex_en": "That was delicious — could I see the dessert menu?",
+    "ex_ko": "맛있었어요. 디저트 메뉴 볼 수 있을까요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E482",
+    "en": "Is service charge included?",
+    "ko": "봉사료가 포함인가요?",
+    "ex_en": "Before I tip, is service charge included?",
+    "ex_ko": "팁 드리기 전에요, 봉사료가 포함인가요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E483",
+    "en": "Could you make it less salty?",
+    "ko": "덜 짜게 해 주실 수 있어요?",
+    "ex_en": "Could you make it less salty? I'm watching my sodium.",
+    "ex_ko": "덜 짜게 해 주실 수 있어요? 나트륨을 줄이는 중이라서요.",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E484",
+    "en": "We're in a bit of a hurry.",
+    "ko": "저희가 좀 급해요.",
+    "ex_en": "We're in a bit of a hurry — what comes out fastest?",
+    "ex_ko": "저희가 좀 급한데 뭐가 제일 빨리 나오나요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E485",
+    "en": "Could I get a refill?",
+    "ko": "리필 되나요?",
+    "ex_en": "Could I get a refill on the water, please?",
+    "ex_ko": "물 좀 리필해 주실래요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E486",
+    "en": "What's in this dish?",
+    "ko": "이 요리에 뭐가 들어가나요?",
+    "ex_en": "What's in this dish? I'd like to avoid dairy.",
+    "ex_ko": "이 요리에 뭐가 들어가나요? 유제품을 피하고 싶어서요.",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E487",
+    "en": "I'd like it medium rare.",
+    "ko": "미디엄 레어로 해 주세요.",
+    "ex_en": "The steak, please — I'd like it medium rare.",
+    "ex_ko": "스테이크로 주세요. 미디엄 레어로 해 주세요.",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E488",
+    "en": "Could we get some napkins?",
+    "ko": "냅킨 좀 주시겠어요?",
+    "ex_en": "Excuse me, could we get some napkins?",
+    "ex_ko": "저기요, 냅킨 좀 주시겠어요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E489",
+    "en": "That's plenty, thank you.",
+    "ko": "그만하면 충분해요, 감사합니다.",
+    "ex_en": "That's plenty, thank you — I can't eat any more.",
+    "ex_ko": "그만하면 충분해요, 감사합니다. 더는 못 먹겠어요.",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E490",
+    "en": "Could I get the check, please?",
+    "ko": "계산서 좀 주시겠어요?",
+    "ex_en": "We're all done — could I get the check, please?",
+    "ex_ko": "다 먹었어요. 계산서 좀 주시겠어요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E491",
+    "en": "Do you have any tables outside?",
+    "ko": "야외 자리 있나요?",
+    "ex_en": "The weather's nice — do you have any tables outside?",
+    "ex_ko": "날씨가 좋네요. 야외 자리 있나요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E492",
+    "en": "I'd like to make a reservation for four.",
+    "ko": "네 명 예약하고 싶어요.",
+    "ex_en": "I'd like to make a reservation for four on Saturday.",
+    "ex_ko": "토요일에 네 명 예약하고 싶어요.",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E493",
+    "en": "Could you box up the leftovers?",
+    "ko": "남은 거 포장해 주시겠어요?",
+    "ex_en": "It was too much — could you box up the leftovers?",
+    "ex_ko": "양이 많았어요. 남은 거 포장해 주시겠어요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E494",
+    "en": "Is there a minimum order?",
+    "ko": "최소 주문 금액이 있나요?",
+    "ex_en": "For delivery, is there a minimum order?",
+    "ex_ko": "배달은 최소 주문 금액이 있나요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E495",
+    "en": "Could I switch the side dish?",
+    "ko": "사이드 메뉴를 바꿔도 될까요?",
+    "ex_en": "Could I switch the side dish to salad?",
+    "ex_ko": "사이드 메뉴를 샐러드로 바꿔도 될까요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E496",
+    "en": "This is cold.",
+    "ko": "이게 식었어요.",
+    "ex_en": "Sorry to bother you, but this is cold.",
+    "ex_ko": "번거롭게 해서 죄송한데 이게 식었어요.",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E497",
+    "en": "We'd like to split it three ways.",
+    "ko": "셋이서 나눠 낼게요.",
+    "ex_en": "We'd like to split it three ways, if that's okay.",
+    "ex_ko": "괜찮으시면 셋이서 나눠 낼게요.",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E498",
+    "en": "What's your most popular item?",
+    "ko": "제일 잘 나가는 메뉴가 뭐예요?",
+    "ex_en": "It's my first time here — what's your most popular item?",
+    "ex_ko": "처음 왔는데 제일 잘 나가는 메뉴가 뭐예요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E499",
+    "en": "Could I get that iced?",
+    "ko": "그거 아이스로 해 주실래요?",
+    "ex_en": "An americano, please — could I get that iced?",
+    "ex_ko": "아메리카노 하나요. 아이스로 해 주실래요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E500",
+    "en": "Is there a seat available?",
+    "ko": "자리 있나요?",
+    "ex_en": "It looks packed — is there a seat available?",
+    "ex_ko": "만석 같은데 자리 있나요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E501",
+    "en": "Do you have Wi-Fi here?",
+    "ko": "여기 와이파이 있나요?",
+    "ex_en": "Do you have Wi-Fi here, and what's the password?",
+    "ex_ko": "여기 와이파이 있나요? 비밀번호가 뭐예요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E502",
+    "en": "Could you hold the onions?",
+    "ko": "양파는 빼 주실 수 있어요?",
+    "ex_en": "Could you hold the onions on that burger?",
+    "ex_ko": "그 버거에 양파는 빼 주실 수 있어요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E503",
+    "en": "We didn't order this.",
+    "ko": "이건 저희가 주문한 게 아니에요.",
+    "ex_en": "Excuse me, we didn't order this.",
+    "ex_ko": "저기요, 이건 저희가 주문한 게 아니에요.",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E504",
+    "en": "How big is the portion?",
+    "ko": "양이 어느 정도예요?",
+    "ex_en": "How big is the portion? We might share.",
+    "ex_ko": "양이 어느 정도예요? 나눠 먹을까 해서요.",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E505",
+    "en": "Could we move to a bigger table?",
+    "ko": "더 큰 테이블로 옮겨도 될까요?",
+    "ex_en": "Two more people are coming — could we move to a bigger table?",
+    "ex_ko": "두 명 더 오는데 더 큰 테이블로 옮겨도 될까요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E506",
+    "en": "I'll have what she's having.",
+    "ko": "저분이랑 같은 걸로 주세요.",
+    "ex_en": "That looks great — I'll have what she's having.",
+    "ex_ko": "맛있어 보이네요. 저분이랑 같은 걸로 주세요.",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E507",
+    "en": "Do you serve breakfast all day?",
+    "ko": "아침 메뉴 종일 되나요?",
+    "ex_en": "It's past noon — do you serve breakfast all day?",
+    "ex_ko": "정오가 지났는데 아침 메뉴 종일 되나요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E508",
+    "en": "Could I get extra sauce on the side?",
+    "ko": "소스 따로 좀 더 주실 수 있어요?",
+    "ex_en": "Could I get extra sauce on the side, please?",
+    "ex_ko": "소스 따로 좀 더 주실 수 있어요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E509",
+    "en": "Is tap water okay?",
+    "ko": "수돗물이어도 괜찮으세요?",
+    "ex_en": "We only have tap water — is tap water okay?",
+    "ex_ko": "저희는 수돗물만 있는데 괜찮으세요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E510",
+    "en": "I'm allergic to shellfish.",
+    "ko": "저는 갑각류 알레르기가 있어요.",
+    "ex_en": "Please let the kitchen know — I'm allergic to shellfish.",
+    "ex_ko": "주방에 전해 주세요. 저는 갑각류 알레르기가 있어요.",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E511",
+    "en": "Could you bring it out together?",
+    "ko": "음식 다 같이 내주실 수 있어요?",
+    "ex_en": "We'd rather eat at the same time — could you bring it out together?",
+    "ex_ko": "같이 먹고 싶어서요. 음식 다 같이 내주실 수 있어요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E512",
+    "en": "How spicy is it on a scale of one to ten?",
+    "ko": "매운 정도가 십 점 만점에 몇 점이에요?",
+    "ex_en": "I can't handle much heat — how spicy is it on a scale of one to ten?",
+    "ex_ko": "매운 걸 잘 못 먹어요. 매운 정도가 십 점 만점에 몇 점이에요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E513",
+    "en": "Could I pay by card?",
+    "ko": "카드로 결제해도 될까요?",
+    "ex_en": "I don't have cash — could I pay by card?",
+    "ex_ko": "현금이 없는데 카드로 결제해도 될까요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E514",
+    "en": "Is there a dress code?",
+    "ko": "복장 규정이 있나요?",
+    "ex_en": "Before I book, is there a dress code?",
+    "ex_ko": "예약하기 전에요, 복장 규정이 있나요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E515",
+    "en": "Could we get one more chair?",
+    "ko": "의자 하나만 더 주시겠어요?",
+    "ex_en": "Could we get one more chair for the table?",
+    "ex_ko": "테이블에 의자 하나만 더 주시겠어요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E516",
+    "en": "Everything was great, thank you.",
+    "ko": "다 맛있었어요, 감사합니다.",
+    "ex_en": "Everything was great, thank you — we'll be back.",
+    "ex_ko": "다 맛있었어요, 감사합니다. 또 올게요.",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E517",
+    "en": "Do you have any specials today?",
+    "ko": "오늘의 특선 메뉴 있나요?",
+    "ex_en": "Do you have any specials today, or just the regular menu?",
+    "ex_ko": "오늘의 특선 메뉴 있나요, 아니면 일반 메뉴만 있나요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E518",
+    "en": "Could I get a straw?",
+    "ko": "빨대 하나 주시겠어요?",
+    "ex_en": "Could I get a straw with that, please?",
+    "ex_ko": "그거랑 빨대 하나 주시겠어요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E519",
+    "en": "I'd like to cancel my reservation.",
+    "ko": "예약을 취소하고 싶어요.",
+    "ex_en": "Something came up — I'd like to cancel my reservation.",
+    "ex_ko": "일이 생겨서 예약을 취소하고 싶어요.",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E520",
+    "en": "Is it made fresh?",
+    "ko": "바로 만드는 건가요?",
+    "ex_en": "Is it made fresh, or is it prepared in advance?",
+    "ex_ko": "바로 만드는 건가요, 아니면 미리 만들어 두나요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E521",
+    "en": "Could you turn down the music a little?",
+    "ko": "음악 소리 좀 줄여 주실 수 있어요?",
+    "ex_en": "We can't hear each other — could you turn down the music a little?",
+    "ex_ko": "대화가 안 들려서요. 음악 소리 좀 줄여 주실 수 있어요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E522",
+    "en": "Keep the change.",
+    "ko": "잔돈은 됐어요.",
+    "ex_en": "Here you go — keep the change.",
+    "ex_ko": "여기요. 잔돈은 됐어요.",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E523",
+    "en": "Are you still serving food?",
+    "ko": "아직 식사 주문 되나요?",
+    "ex_en": "It's almost closing — are you still serving food?",
+    "ex_ko": "마감 시간이 다 됐는데 아직 식사 주문 되나요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E524",
+    "en": "Could I have a to-go cup?",
+    "ko": "테이크아웃 컵에 담아 주실래요?",
+    "ex_en": "I have to run — could I have a to-go cup?",
+    "ex_ko": "가 봐야 해서요. 테이크아웃 컵에 담아 주실래요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E525",
+    "en": "How much is this?",
+    "ko": "이거 얼마예요?",
+    "ex_en": "Excuse me, how much is this one?",
+    "ex_ko": "실례합니다, 이거 얼마예요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E526",
+    "en": "Is this on sale?",
+    "ko": "이거 세일 중인가요?",
+    "ex_en": "The sign says fifty percent — is this on sale?",
+    "ex_ko": "오십 퍼센트라고 붙어 있는데 이거 세일 중인가요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E527",
+    "en": "Do you have this in another color?",
+    "ko": "이거 다른 색상 있나요?",
+    "ex_en": "I like the style — do you have this in another color?",
+    "ex_ko": "디자인이 마음에 드는데 다른 색상 있나요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E528",
+    "en": "Could you check the back?",
+    "ko": "창고에 있는지 확인해 주실래요?",
+    "ex_en": "The shelf is empty — could you check the back?",
+    "ex_ko": "진열대가 비었는데 창고에 있는지 확인해 주실래요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E529",
+    "en": "I'll take it.",
+    "ko": "이걸로 할게요.",
+    "ex_en": "It fits perfectly — I'll take it.",
+    "ex_ko": "딱 맞네요. 이걸로 할게요.",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E530",
+    "en": "I'll think about it.",
+    "ko": "좀 더 생각해 볼게요.",
+    "ex_en": "Thanks for your help — I'll think about it.",
+    "ex_ko": "도와주셔서 감사해요. 좀 더 생각해 볼게요.",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E531",
+    "en": "Could I get a discount?",
+    "ko": "할인 좀 받을 수 있을까요?",
+    "ex_en": "I'm buying three — could I get a discount?",
+    "ex_ko": "세 개 사는데 할인 좀 받을 수 있을까요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E532",
+    "en": "Does it come with a warranty?",
+    "ko": "보증이 되나요?",
+    "ex_en": "Does it come with a warranty, and for how long?",
+    "ex_ko": "보증이 되나요? 기간은 얼마나 되죠?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E533",
+    "en": "What's your return policy?",
+    "ko": "반품 규정이 어떻게 되나요?",
+    "ex_en": "It's a gift, so what's your return policy?",
+    "ex_ko": "선물용이라서요, 반품 규정이 어떻게 되나요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E534",
+    "en": "I have the receipt.",
+    "ko": "영수증 있어요.",
+    "ex_en": "I bought it on Monday and I have the receipt.",
+    "ex_ko": "월요일에 샀고 영수증 있어요.",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E535",
+    "en": "It arrived damaged.",
+    "ko": "파손된 채로 왔어요.",
+    "ex_en": "I opened the box and it arrived damaged.",
+    "ex_ko": "상자를 열어 보니 파손된 채로 왔어요.",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E536",
+    "en": "This is the wrong item.",
+    "ko": "주문한 물건이 아니에요.",
+    "ex_en": "I ordered the blue one — this is the wrong item.",
+    "ex_ko": "파란색을 주문했는데 주문한 물건이 아니에요.",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E537",
+    "en": "Could I get store credit instead?",
+    "ko": "대신 적립금으로 받을 수 있을까요?",
+    "ex_en": "If a refund isn't possible, could I get store credit instead?",
+    "ex_ko": "환불이 안 되면 대신 적립금으로 받을 수 있을까요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E538",
+    "en": "How long does shipping take?",
+    "ko": "배송이 얼마나 걸리나요?",
+    "ex_en": "If I order today, how long does shipping take?",
+    "ex_ko": "오늘 주문하면 배송이 얼마나 걸리나요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E539",
+    "en": "Is shipping free?",
+    "ko": "배송비 무료인가요?",
+    "ex_en": "Over fifty dollars, is shipping free?",
+    "ex_ko": "오십 달러 넘으면 배송비 무료인가요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E540",
+    "en": "Could you order it for me?",
+    "ko": "주문해 주실 수 있나요?",
+    "ex_en": "If it's out of stock, could you order it for me?",
+    "ex_ko": "품절이면 주문해 주실 수 있나요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E541",
+    "en": "I'm looking for something under fifty.",
+    "ko": "오십 이하로 찾고 있어요.",
+    "ex_en": "I'm looking for something under fifty — any suggestions?",
+    "ex_ko": "오십 이하로 찾고 있는데 추천해 주실 만한 게 있나요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E542",
+    "en": "Does this run small?",
+    "ko": "이거 작게 나오나요?",
+    "ex_en": "I usually wear a medium — does this run small?",
+    "ex_ko": "보통 미디엄을 입는데 이거 작게 나오나요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E543",
+    "en": "Could I return it without the box?",
+    "ko": "상자 없이도 반품되나요?",
+    "ex_en": "I threw the packaging away — could I return it without the box?",
+    "ex_ko": "포장을 버렸는데 상자 없이도 반품되나요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E544",
+    "en": "The zipper is broken.",
+    "ko": "지퍼가 고장 났어요.",
+    "ex_en": "I only wore it once and the zipper is broken.",
+    "ex_ko": "한 번 입었는데 지퍼가 고장 났어요.",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E545",
+    "en": "When does the sale end?",
+    "ko": "세일이 언제까지예요?",
+    "ex_en": "I might come back — when does the sale end?",
+    "ex_ko": "다시 올지도 몰라서요. 세일이 언제까지예요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E546",
+    "en": "Do you price match?",
+    "ko": "최저가 보상해 주나요?",
+    "ex_en": "It's cheaper online — do you price match?",
+    "ex_ko": "온라인이 더 싼데 최저가 보상해 주나요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E547",
+    "en": "Could I use this coupon?",
+    "ko": "이 쿠폰 쓸 수 있나요?",
+    "ex_en": "It expires tomorrow — could I use this coupon?",
+    "ex_ko": "내일 만료인데 이 쿠폰 쓸 수 있나요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E548",
+    "en": "I'd like to cancel my order.",
+    "ko": "주문을 취소하고 싶어요.",
+    "ex_en": "It hasn't shipped yet — I'd like to cancel my order.",
+    "ex_ko": "아직 발송 전이던데 주문을 취소하고 싶어요.",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E549",
+    "en": "Could you track my package?",
+    "ko": "배송 조회 좀 해 주실래요?",
+    "ex_en": "It's been a week — could you track my package?",
+    "ex_ko": "일주일 됐어요. 배송 조회 좀 해 주실래요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E550",
+    "en": "Is there a restocking fee?",
+    "ko": "반품 수수료가 있나요?",
+    "ex_en": "Before I send it back, is there a restocking fee?",
+    "ex_ko": "돌려보내기 전에요, 반품 수수료가 있나요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E551",
+    "en": "Could you take the tag off?",
+    "ko": "택 좀 떼 주시겠어요?",
+    "ex_en": "I'll wear it out — could you take the tag off?",
+    "ex_ko": "입고 나갈 거예요. 택 좀 떼 주시겠어요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E552",
+    "en": "Do you deliver?",
+    "ko": "배달해 주시나요?",
+    "ex_en": "It's too heavy to carry — do you deliver?",
+    "ex_ko": "들고 가기엔 너무 무거운데 배달해 주시나요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E553",
+    "en": "I bought it here last week.",
+    "ko": "지난주에 여기서 샀어요.",
+    "ex_en": "I bought it here last week and it already stopped working.",
+    "ex_ko": "지난주에 여기서 샀는데 벌써 작동이 안 돼요.",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E554",
+    "en": "Could I speak to the manager?",
+    "ko": "매니저와 얘기할 수 있을까요?",
+    "ex_en": "I'd like to sort this out — could I speak to the manager?",
+    "ex_ko": "해결하고 싶어서요. 매니저와 얘기할 수 있을까요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E555",
+    "en": "Is this the final price?",
+    "ko": "이게 최종 가격인가요?",
+    "ex_en": "With tax included, is this the final price?",
+    "ex_ko": "세금 포함해서 이게 최종 가격인가요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E556",
+    "en": "Could I get a bag?",
+    "ko": "봉투 하나 주실 수 있어요?",
+    "ex_en": "Could I get a bag, even if there's a charge?",
+    "ex_ko": "유료여도 괜찮으니 봉투 하나 주실 수 있어요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E557",
+    "en": "It's still under warranty.",
+    "ko": "아직 보증 기간이에요.",
+    "ex_en": "I bought it in March, so it's still under warranty.",
+    "ex_ko": "삼월에 샀으니 아직 보증 기간이에요.",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E558",
+    "en": "Could you show me how it works?",
+    "ko": "사용법 좀 보여 주실래요?",
+    "ex_en": "Before I buy it, could you show me how it works?",
+    "ex_ko": "사기 전에 사용법 좀 보여 주실래요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E559",
+    "en": "I changed my mind.",
+    "ko": "마음이 바뀌었어요.",
+    "ex_en": "I changed my mind — could I return this?",
+    "ex_ko": "마음이 바뀌었는데 반품할 수 있을까요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E560",
+    "en": "When will it be back in stock?",
+    "ko": "언제 재입고되나요?",
+    "ex_en": "I really want this one — when will it be back in stock?",
+    "ex_ko": "이게 정말 갖고 싶은데 언제 재입고되나요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E561",
+    "en": "Could you ring me up?",
+    "ko": "계산 좀 해 주시겠어요?",
+    "ex_en": "That's everything — could you ring me up?",
+    "ex_ko": "이게 다예요. 계산 좀 해 주시겠어요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E562",
+    "en": "Do you accept mobile payment?",
+    "ko": "모바일 결제 되나요?",
+    "ex_en": "I left my wallet at home — do you accept mobile payment?",
+    "ex_ko": "지갑을 집에 두고 왔는데 모바일 결제 되나요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E563",
+    "en": "The refund hasn't come through yet.",
+    "ko": "환불이 아직 안 들어왔어요.",
+    "ex_en": "It's been ten days and the refund hasn't come through yet.",
+    "ex_ko": "열흘 됐는데 환불이 아직 안 들어왔어요.",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E564",
+    "en": "Could I check in early?",
+    "ko": "일찍 체크인할 수 있을까요?",
+    "ex_en": "My flight lands at nine — could I check in early?",
+    "ex_ko": "비행기가 아홉 시에 도착하는데 일찍 체크인할 수 있을까요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E565",
+    "en": "Is there a shuttle to the airport?",
+    "ko": "공항 셔틀 있나요?",
+    "ex_en": "Is there a shuttle to the airport, and what time does it leave?",
+    "ex_ko": "공항 셔틀 있나요? 몇 시에 출발하죠?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E566",
+    "en": "Could I get a room on a higher floor?",
+    "ko": "높은 층 방으로 받을 수 있을까요?",
+    "ex_en": "It's noisy down here — could I get a room on a higher floor?",
+    "ex_ko": "아래층이 시끄러워서요. 높은 층 방으로 받을 수 있을까요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E567",
+    "en": "The room hasn't been cleaned.",
+    "ko": "방 청소가 안 돼 있어요.",
+    "ex_en": "I just got back and the room hasn't been cleaned.",
+    "ex_ko": "막 돌아왔는데 방 청소가 안 돼 있어요.",
+    "topic": "호텔"
+  },
+  {
+    "id": "E568",
+    "en": "Could you call me a taxi?",
+    "ko": "택시 좀 불러 주시겠어요?",
+    "ex_en": "I'm heading out — could you call me a taxi?",
+    "ex_ko": "나가려고요. 택시 좀 불러 주시겠어요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E569",
+    "en": "What's the Wi-Fi password?",
+    "ko": "와이파이 비밀번호가 뭐예요?",
+    "ex_en": "I can see the network — what's the Wi-Fi password?",
+    "ex_ko": "네트워크는 보이는데 와이파이 비밀번호가 뭐예요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E570",
+    "en": "Is there a gym in the hotel?",
+    "ko": "호텔에 헬스장 있나요?",
+    "ex_en": "Is there a gym in the hotel, and what are the hours?",
+    "ex_ko": "호텔에 헬스장 있나요? 운영 시간은요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E571",
+    "en": "Could I have a wake-up call at six?",
+    "ko": "여섯 시에 모닝콜 부탁드려요.",
+    "ex_en": "Could I have a wake-up call at six tomorrow morning?",
+    "ex_ko": "내일 아침 여섯 시에 모닝콜 부탁드려요.",
+    "topic": "호텔"
+  },
+  {
+    "id": "E572",
+    "en": "The key card isn't working.",
+    "ko": "카드키가 안 돼요.",
+    "ex_en": "I tried both doors — the key card isn't working.",
+    "ex_ko": "양쪽 문 다 해 봤는데 카드키가 안 돼요.",
+    "topic": "호텔"
+  },
+  {
+    "id": "E573",
+    "en": "Is there a safe in the room?",
+    "ko": "객실에 금고 있나요?",
+    "ex_en": "I have my passport with me — is there a safe in the room?",
+    "ex_ko": "여권을 갖고 있어서요. 객실에 금고 있나요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E574",
+    "en": "Could I switch rooms?",
+    "ko": "방을 바꿀 수 있을까요?",
+    "ex_en": "There's a smell in here — could I switch rooms?",
+    "ex_ko": "냄새가 나는데 방을 바꿀 수 있을까요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E575",
+    "en": "What time does breakfast start?",
+    "ko": "조식이 몇 시부터예요?",
+    "ex_en": "I have an early meeting — what time does breakfast start?",
+    "ex_ko": "아침 일찍 회의가 있어서요. 조식이 몇 시부터예요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E576",
+    "en": "Could you recommend something nearby?",
+    "ko": "근처에 추천해 주실 만한 곳 있나요?",
+    "ex_en": "We'd like dinner close by — could you recommend something nearby?",
+    "ex_ko": "가까운 데서 저녁 먹으려는데 추천해 주실 만한 곳 있나요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E577",
+    "en": "Is there room service?",
+    "ko": "룸서비스 되나요?",
+    "ex_en": "It's late — is there room service at this hour?",
+    "ex_ko": "늦었는데 이 시간에 룸서비스 되나요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E578",
+    "en": "Could I get a quieter room?",
+    "ko": "좀 더 조용한 방으로 될까요?",
+    "ex_en": "The elevator is right outside — could I get a quieter room?",
+    "ex_ko": "바로 앞이 엘리베이터라서요. 좀 더 조용한 방으로 될까요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E579",
+    "en": "Do you have a laundry service?",
+    "ko": "세탁 서비스 있나요?",
+    "ex_en": "I'm here for a week — do you have a laundry service?",
+    "ex_ko": "일주일 머무는데 세탁 서비스 있나요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E580",
+    "en": "Could you charge it to my room?",
+    "ko": "객실로 달아 주시겠어요?",
+    "ex_en": "I don't have my wallet — could you charge it to my room?",
+    "ex_ko": "지갑이 없어서요. 객실로 달아 주시겠어요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E581",
+    "en": "Is parking included?",
+    "ko": "주차 포함인가요?",
+    "ex_en": "I came by car — is parking included?",
+    "ex_ko": "차를 가져왔는데 주차 포함인가요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E582",
+    "en": "Could I have a non-smoking room?",
+    "ko": "금연 객실로 부탁드려요.",
+    "ex_en": "Could I have a non-smoking room if one is available?",
+    "ex_ko": "가능하면 금연 객실로 부탁드려요.",
+    "topic": "호텔"
+  },
+  {
+    "id": "E583",
+    "en": "The shower is only running cold.",
+    "ko": "샤워기에서 찬물만 나와요.",
+    "ex_en": "I waited five minutes and the shower is only running cold.",
+    "ex_ko": "오 분을 기다렸는데 샤워기에서 찬물만 나와요.",
+    "topic": "호텔"
+  },
+  {
+    "id": "E584",
+    "en": "Could you store my bag until evening?",
+    "ko": "저녁까지 가방 좀 보관해 주실 수 있어요?",
+    "ex_en": "My train is at eight — could you store my bag until evening?",
+    "ex_ko": "기차가 여덟 시라서요. 저녁까지 가방 좀 보관해 주실 수 있어요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E585",
+    "en": "I'd like to check out now.",
+    "ko": "지금 체크아웃할게요.",
+    "ex_en": "I'd like to check out now — here's the key.",
+    "ex_ko": "지금 체크아웃할게요. 여기 열쇠요.",
+    "topic": "호텔"
+  },
+  {
+    "id": "E586",
+    "en": "Could I see the bill?",
+    "ko": "청구서 좀 볼 수 있을까요?",
+    "ex_en": "Before I pay, could I see the bill?",
+    "ex_ko": "결제 전에 청구서 좀 볼 수 있을까요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E587",
+    "en": "There's a charge I didn't make.",
+    "ko": "제가 안 쓴 항목이 있어요.",
+    "ex_en": "On the minibar line, there's a charge I didn't make.",
+    "ex_ko": "미니바 항목에 제가 안 쓴 게 있어요.",
+    "topic": "호텔"
+  },
+  {
+    "id": "E588",
+    "en": "Do you have a map of the area?",
+    "ko": "이 동네 지도 있나요?",
+    "ex_en": "I'd rather not use my phone — do you have a map of the area?",
+    "ex_ko": "휴대폰을 안 쓰고 싶어서요. 이 동네 지도 있나요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E589",
+    "en": "Could I book another night?",
+    "ko": "하루 더 예약할 수 있을까요?",
+    "ex_en": "My plans changed — could I book another night?",
+    "ex_ko": "일정이 바뀌어서요. 하루 더 예약할 수 있을까요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E590",
+    "en": "Is the tap water drinkable?",
+    "ko": "수돗물 마셔도 되나요?",
+    "ex_en": "Just checking — is the tap water drinkable here?",
+    "ex_ko": "확인차 여쭤요. 여기 수돗물 마셔도 되나요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E591",
+    "en": "Could I get a receipt for my company?",
+    "ko": "회사 제출용 영수증 받을 수 있을까요?",
+    "ex_en": "It's a business trip — could I get a receipt for my company?",
+    "ex_ko": "출장이라서요. 회사 제출용 영수증 받을 수 있을까요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E592",
+    "en": "Is the pool open today?",
+    "ko": "오늘 수영장 여나요?",
+    "ex_en": "The kids are asking — is the pool open today?",
+    "ex_ko": "아이들이 물어봐서요. 오늘 수영장 여나요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E593",
+    "en": "Could you send someone up?",
+    "ko": "사람 좀 올려 보내 주시겠어요?",
+    "ex_en": "The lamp won't turn on — could you send someone up?",
+    "ex_ko": "조명이 안 켜져요. 사람 좀 올려 보내 주시겠어요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E594",
+    "en": "How far is it from the station?",
+    "ko": "역에서 얼마나 먼가요?",
+    "ex_en": "I'll be walking — how far is it from the station?",
+    "ex_ko": "걸어갈 건데 역에서 얼마나 먼가요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E595",
+    "en": "Could I have two more pillows?",
+    "ko": "베개 두 개만 더 주시겠어요?",
+    "ex_en": "Could I have two more pillows sent to room 512?",
+    "ex_ko": "512호로 베개 두 개만 더 보내 주시겠어요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E596",
+    "en": "Window or aisle?",
+    "ko": "창가로 하시겠어요, 통로로 하시겠어요?",
+    "ex_en": "I have both available — window or aisle?",
+    "ex_ko": "둘 다 있습니다. 창가로 하시겠어요, 통로로 하시겠어요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E597",
+    "en": "How many bags are you checking?",
+    "ko": "부치실 짐이 몇 개인가요?",
+    "ex_en": "Good morning — how many bags are you checking today?",
+    "ex_ko": "안녕하세요, 오늘 부치실 짐이 몇 개인가요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E598",
+    "en": "My bag is overweight.",
+    "ko": "제 가방이 무게를 초과했어요.",
+    "ex_en": "My bag is overweight — how much is the extra fee?",
+    "ex_ko": "제 가방이 무게를 초과했는데 추가 요금이 얼마인가요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E599",
+    "en": "Could I carry this on?",
+    "ko": "이건 기내로 갖고 탈 수 있나요?",
+    "ex_en": "It's fragile — could I carry this on?",
+    "ex_ko": "깨지기 쉬운 거라서요. 이건 기내로 갖고 탈 수 있나요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E600",
+    "en": "Which terminal is it?",
+    "ko": "몇 번 터미널인가요?",
+    "ex_en": "My connecting flight — which terminal is it?",
+    "ex_ko": "환승편이요, 몇 번 터미널인가요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E601",
+    "en": "When does boarding start?",
+    "ko": "탑승이 언제 시작되나요?",
+    "ex_en": "The screen hasn't updated — when does boarding start?",
+    "ex_ko": "화면이 안 바뀌었는데 탑승이 언제 시작되나요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E602",
+    "en": "I'd like to change my seat.",
+    "ko": "자리를 바꾸고 싶어요.",
+    "ex_en": "I'd like to change my seat if anything's open.",
+    "ex_ko": "빈자리가 있으면 자리를 바꾸고 싶어요.",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E603",
+    "en": "Where's the departure gate?",
+    "ko": "출발 게이트가 어디예요?",
+    "ex_en": "I'm running late — where's the departure gate?",
+    "ex_ko": "늦어서요. 출발 게이트가 어디예요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E604",
+    "en": "My flight was canceled.",
+    "ko": "제 항공편이 결항됐어요.",
+    "ex_en": "My flight was canceled — what are my options?",
+    "ex_ko": "제 항공편이 결항됐는데 어떤 방법이 있나요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E605",
+    "en": "Could I get on an earlier flight?",
+    "ko": "더 이른 편으로 바꿀 수 있을까요?",
+    "ex_en": "I finished early — could I get on an earlier flight?",
+    "ex_ko": "일이 일찍 끝나서요. 더 이른 편으로 바꿀 수 있을까요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E606",
+    "en": "Is the flight on time?",
+    "ko": "항공편이 정시인가요?",
+    "ex_en": "The weather looks bad — is the flight on time?",
+    "ex_ko": "날씨가 안 좋아 보이는데 항공편이 정시인가요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E607",
+    "en": "I need to go through security.",
+    "ko": "보안 검색을 통과해야 해요.",
+    "ex_en": "I need to go through security — which line is shorter?",
+    "ex_ko": "보안 검색을 통과해야 하는데 어느 줄이 더 짧아요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E608",
+    "en": "Do I need to take off my shoes?",
+    "ko": "신발을 벗어야 하나요?",
+    "ex_en": "At this checkpoint, do I need to take off my shoes?",
+    "ex_ko": "여기 검색대에서는 신발을 벗어야 하나요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E609",
+    "en": "It's just a laptop.",
+    "ko": "노트북일 뿐이에요.",
+    "ex_en": "Nothing else in the bag — it's just a laptop.",
+    "ex_ko": "가방에 다른 건 없어요. 노트북일 뿐이에요.",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E610",
+    "en": "Could you put this in the overhead bin?",
+    "ko": "이거 선반에 올려 주실 수 있어요?",
+    "ex_en": "I can't reach — could you put this in the overhead bin?",
+    "ex_ko": "손이 안 닿아서요. 이거 선반에 올려 주실 수 있어요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E611",
+    "en": "Could I have some water?",
+    "ko": "물 좀 주시겠어요?",
+    "ex_en": "Excuse me, could I have some water?",
+    "ex_ko": "실례합니다, 물 좀 주시겠어요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E612",
+    "en": "Could you recline your seat a bit less?",
+    "ko": "의자를 조금만 덜 젖혀 주실 수 있어요?",
+    "ex_en": "I can't open my tray — could you recline your seat a bit less?",
+    "ex_ko": "테이블을 못 펴서요. 의자를 조금만 덜 젖혀 주실 수 있어요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E613",
+    "en": "I get motion sickness.",
+    "ko": "저는 멀미를 해요.",
+    "ex_en": "I'd rather sit up front — I get motion sickness.",
+    "ex_ko": "앞쪽에 앉고 싶어요. 저는 멀미를 해요.",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E614",
+    "en": "What's the purpose of your visit?",
+    "ko": "방문 목적이 무엇인가요?",
+    "ex_en": "Passport, please — what's the purpose of your visit?",
+    "ex_ko": "여권 주세요. 방문 목적이 무엇인가요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E615",
+    "en": "I'm staying for two weeks.",
+    "ko": "이 주간 머물 예정이에요.",
+    "ex_en": "I'm staying for two weeks and then flying home.",
+    "ex_ko": "이 주간 머물다가 귀국할 예정이에요.",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E616",
+    "en": "I'm here on business.",
+    "ko": "출장 왔습니다.",
+    "ex_en": "I'm here on business for a conference.",
+    "ex_ko": "학회 참석차 출장 왔습니다.",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E617",
+    "en": "Where can I exchange money?",
+    "ko": "환전은 어디서 하나요?",
+    "ex_en": "Where can I exchange money before I leave the airport?",
+    "ex_ko": "공항을 나가기 전에 환전은 어디서 하나요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E618",
+    "en": "Is there a duty-free shop?",
+    "ko": "면세점 있나요?",
+    "ex_en": "I have an hour — is there a duty-free shop nearby?",
+    "ex_ko": "한 시간 있는데 근처에 면세점 있나요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E619",
+    "en": "Could I get a boarding pass printed?",
+    "ko": "탑승권 인쇄해 주실 수 있어요?",
+    "ex_en": "My phone died — could I get a boarding pass printed?",
+    "ex_ko": "휴대폰이 꺼져서요. 탑승권 인쇄해 주실 수 있어요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E620",
+    "en": "How much is the baggage fee?",
+    "ko": "수하물 요금이 얼마인가요?",
+    "ex_en": "For a second bag, how much is the baggage fee?",
+    "ex_ko": "두 번째 가방은 수하물 요금이 얼마인가요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E621",
+    "en": "I'm connecting to Tokyo.",
+    "ko": "도쿄로 환승합니다.",
+    "ex_en": "I'm connecting to Tokyo — do I need to collect my bag?",
+    "ex_ko": "도쿄로 환승하는데 짐을 찾아야 하나요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E622",
+    "en": "Will my bag be checked through?",
+    "ko": "제 짐이 최종 목적지까지 가나요?",
+    "ex_en": "Will my bag be checked through to the final destination?",
+    "ex_ko": "제 짐이 최종 목적지까지 그대로 가나요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E623",
+    "en": "Where's the nearest restroom?",
+    "ko": "가장 가까운 화장실이 어디예요?",
+    "ex_en": "Excuse me, where's the nearest restroom?",
+    "ex_ko": "실례합니다, 가장 가까운 화장실이 어디예요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E624",
+    "en": "Could I have a blanket?",
+    "ko": "담요 하나 주시겠어요?",
+    "ex_en": "It's a bit cold — could I have a blanket?",
+    "ex_ko": "좀 추워서요. 담요 하나 주시겠어요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E625",
+    "en": "What's the local time?",
+    "ko": "현지 시각이 몇 시예요?",
+    "ex_en": "My watch is still on Seoul time — what's the local time?",
+    "ex_ko": "시계가 아직 서울 시간이라서요. 현지 시각이 몇 시예요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E626",
+    "en": "Is there Wi-Fi on board?",
+    "ko": "기내에 와이파이 있나요?",
+    "ex_en": "It's a long flight — is there Wi-Fi on board?",
+    "ex_ko": "장거리라서요. 기내에 와이파이 있나요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E627",
+    "en": "Could you fill out this form?",
+    "ko": "이 양식을 작성해 주시겠어요?",
+    "ex_en": "Before landing, could you fill out this form?",
+    "ex_ko": "착륙 전에 이 양식을 작성해 주시겠어요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E628",
+    "en": "I have a tight connection.",
+    "ko": "환승 시간이 빠듯해요.",
+    "ex_en": "Could I deplane first? I have a tight connection.",
+    "ex_ko": "먼저 내려도 될까요? 환승 시간이 빠듯해서요.",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E629",
+    "en": "Where do I pick up my rental car?",
+    "ko": "렌터카는 어디서 받나요?",
+    "ex_en": "I booked online — where do I pick up my rental car?",
+    "ex_ko": "온라인으로 예약했는데 렌터카는 어디서 받나요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E630",
+    "en": "My suitcase is damaged.",
+    "ko": "제 여행 가방이 파손됐어요.",
+    "ex_en": "It came off the belt like this — my suitcase is damaged.",
+    "ex_ko": "이 상태로 나왔어요. 제 여행 가방이 파손됐어요.",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E631",
+    "en": "Could you page my travel companion?",
+    "ko": "일행 좀 호출해 주실 수 있어요?",
+    "ex_en": "We got separated — could you page my travel companion?",
+    "ex_ko": "서로 놓쳤어요. 일행 좀 호출해 주실 수 있어요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E632",
+    "en": "Is there a lounge I can use?",
+    "ko": "제가 이용할 수 있는 라운지가 있나요?",
+    "ex_en": "I have a four-hour wait — is there a lounge I can use?",
+    "ex_ko": "네 시간을 기다려야 해서요. 제가 이용할 수 있는 라운지가 있나요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E633",
+    "en": "Please fasten your seatbelt.",
+    "ko": "안전벨트를 매 주세요.",
+    "ex_en": "We're expecting turbulence — please fasten your seatbelt.",
+    "ex_ko": "난기류가 예상됩니다. 안전벨트를 매 주세요.",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E634",
+    "en": "Could I switch to a window seat?",
+    "ko": "창가 자리로 바꿀 수 있을까요?",
+    "ex_en": "If the flight isn't full, could I switch to a window seat?",
+    "ex_ko": "만석이 아니면 창가 자리로 바꿀 수 있을까요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E635",
+    "en": "How long is the flight?",
+    "ko": "비행 시간이 얼마나 되나요?",
+    "ex_en": "How long is the flight to Vancouver?",
+    "ex_ko": "밴쿠버까지 비행 시간이 얼마나 되나요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E636",
+    "en": "I booked it under my maiden name.",
+    "ko": "결혼 전 이름으로 예약했어요.",
+    "ex_en": "That's why it doesn't match — I booked it under my maiden name.",
+    "ex_ko": "그래서 안 맞는 거예요. 결혼 전 이름으로 예약했거든요.",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E637",
+    "en": "Could I get a vegetarian meal?",
+    "ko": "채식 기내식으로 받을 수 있을까요?",
+    "ex_en": "I requested it online — could I get a vegetarian meal?",
+    "ex_ko": "온라인으로 신청했는데 채식 기내식으로 받을 수 있을까요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E638",
+    "en": "They're calling my flight.",
+    "ko": "제 항공편 안내 방송이 나와요.",
+    "ex_en": "I have to run — they're calling my flight.",
+    "ex_ko": "가 봐야겠어요. 제 항공편 안내 방송이 나와요.",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E639",
+    "en": "Could you tell me where I am on the map?",
+    "ko": "지도에서 제 위치 좀 알려 주시겠어요?",
+    "ex_en": "I'm completely lost — could you tell me where I am on the map?",
+    "ex_ko": "완전히 길을 잃었어요. 지도에서 제 위치 좀 알려 주시겠어요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E640",
+    "en": "How long does it take on foot?",
+    "ko": "걸어서 얼마나 걸리나요?",
+    "ex_en": "I'd rather walk — how long does it take on foot?",
+    "ex_ko": "걷는 게 나을 것 같은데 걸어서 얼마나 걸리나요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E641",
+    "en": "Is there a direct train?",
+    "ko": "직통 열차가 있나요?",
+    "ex_en": "I don't want to transfer — is there a direct train?",
+    "ex_ko": "환승하기 싫은데 직통 열차가 있나요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E642",
+    "en": "Which exit should I take?",
+    "ko": "몇 번 출구로 나가야 하나요?",
+    "ex_en": "For the museum, which exit should I take?",
+    "ex_ko": "박물관 가려면 몇 번 출구로 나가야 하나요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E643",
+    "en": "Does this train stop there?",
+    "ko": "이 열차가 거기 서나요?",
+    "ex_en": "I'm going to Yongsan — does this train stop there?",
+    "ex_ko": "용산 가는데 이 열차가 거기 서나요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E644",
+    "en": "When's the last train?",
+    "ko": "막차가 몇 시예요?",
+    "ex_en": "I might stay out late — when's the last train?",
+    "ex_ko": "늦게까지 있을 것 같은데 막차가 몇 시예요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E645",
+    "en": "Could you let me know when we get there?",
+    "ko": "도착하면 알려 주시겠어요?",
+    "ex_en": "I don't know the area — could you let me know when we get there?",
+    "ex_ko": "이 동네를 몰라서요. 도착하면 알려 주시겠어요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E646",
+    "en": "Take a left at the next light.",
+    "ko": "다음 신호에서 좌회전하세요.",
+    "ex_en": "Take a left at the next light and it's on your right.",
+    "ex_ko": "다음 신호에서 좌회전하시면 오른편에 있어요.",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E647",
+    "en": "It's across the street.",
+    "ko": "길 건너편이에요.",
+    "ex_en": "You're almost there — it's across the street.",
+    "ex_ko": "거의 다 오셨어요. 길 건너편이에요.",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E648",
+    "en": "Go straight for two blocks.",
+    "ko": "두 블록 직진하세요.",
+    "ex_en": "Go straight for two blocks and you'll see it.",
+    "ex_ko": "두 블록 직진하시면 보일 거예요.",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E649",
+    "en": "Am I going the right way?",
+    "ko": "이 방향이 맞나요?",
+    "ex_en": "Excuse me, am I going the right way to the park?",
+    "ex_ko": "실례합니다, 공원 가는 길이 이 방향이 맞나요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E650",
+    "en": "Could you slow down a little?",
+    "ko": "조금만 천천히 가 주시겠어요?",
+    "ex_en": "I'm feeling carsick — could you slow down a little?",
+    "ex_ko": "멀미가 나서요. 조금만 천천히 가 주시겠어요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E651",
+    "en": "Please take me to this address.",
+    "ko": "이 주소로 가 주세요.",
+    "ex_en": "Please take me to this address — here it is on my phone.",
+    "ex_ko": "이 주소로 가 주세요. 여기 휴대폰에 있어요.",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E652",
+    "en": "How much will it cost roughly?",
+    "ko": "대략 얼마나 나올까요?",
+    "ex_en": "Before we go, how much will it cost roughly?",
+    "ex_ko": "출발하기 전에요, 대략 얼마나 나올까요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E653",
+    "en": "Could you pop the trunk?",
+    "ko": "트렁크 좀 열어 주시겠어요?",
+    "ex_en": "I have two suitcases — could you pop the trunk?",
+    "ex_ko": "가방이 두 개예요. 트렁크 좀 열어 주시겠어요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E654",
+    "en": "Is this the right platform?",
+    "ko": "여기가 맞는 승강장인가요?",
+    "ex_en": "For the express train, is this the right platform?",
+    "ex_ko": "급행 타려면 여기가 맞는 승강장인가요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E655",
+    "en": "The bus is running late.",
+    "ko": "버스가 늦어지고 있어요.",
+    "ex_en": "I'll be a few minutes — the bus is running late.",
+    "ex_ko": "몇 분 늦을 것 같아요. 버스가 늦어지고 있어요.",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E656",
+    "en": "Could I get a day pass?",
+    "ko": "일일 승차권 살 수 있을까요?",
+    "ex_en": "I'll be riding a lot today — could I get a day pass?",
+    "ex_ko": "오늘 많이 탈 것 같은데 일일 승차권 살 수 있을까요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E657",
+    "en": "Where do I tap my card?",
+    "ko": "카드를 어디에 찍나요?",
+    "ex_en": "It's my first time — where do I tap my card?",
+    "ex_ko": "처음이라서요. 카드를 어디에 찍나요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E658",
+    "en": "How many stops is it?",
+    "ko": "몇 정거장이에요?",
+    "ex_en": "From here to city hall, how many stops is it?",
+    "ex_ko": "여기서 시청까지 몇 정거장이에요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E659",
+    "en": "I'll walk from here.",
+    "ko": "여기서부터는 걸어갈게요.",
+    "ex_en": "Traffic is bad, so I'll walk from here.",
+    "ex_ko": "차가 막히니까 여기서부터는 걸어갈게요.",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E660",
+    "en": "Is there parking nearby?",
+    "ko": "근처에 주차장 있나요?",
+    "ex_en": "I'm driving in — is there parking nearby?",
+    "ex_ko": "차로 가는데 근처에 주차장 있나요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E661",
+    "en": "My car broke down.",
+    "ko": "차가 고장 났어요.",
+    "ex_en": "My car broke down on the highway — could you send a tow?",
+    "ex_ko": "고속도로에서 차가 고장 났어요. 견인차 좀 보내 주시겠어요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E662",
+    "en": "Could you turn on the meter?",
+    "ko": "미터기 좀 켜 주시겠어요?",
+    "ex_en": "Excuse me, could you turn on the meter?",
+    "ex_ko": "저기요, 미터기 좀 켜 주시겠어요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E663",
+    "en": "I'd like to get off at the next stop.",
+    "ko": "다음 정류장에서 내릴게요.",
+    "ex_en": "I'd like to get off at the next stop, please.",
+    "ex_ko": "다음 정류장에서 내릴게요.",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E664",
+    "en": "Does this go all the way to the airport?",
+    "ko": "이거 공항까지 가나요?",
+    "ex_en": "Does this go all the way to the airport, or do I switch?",
+    "ex_ko": "이거 공항까지 가나요, 아니면 갈아타야 하나요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E665",
+    "en": "I think I got on the wrong train.",
+    "ko": "열차를 잘못 탄 것 같아요.",
+    "ex_en": "These stop names look wrong — I think I got on the wrong train.",
+    "ex_ko": "역 이름이 이상해요. 열차를 잘못 탄 것 같아요.",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E666",
+    "en": "Could you write it down for me?",
+    "ko": "좀 적어 주시겠어요?",
+    "ex_en": "I won't remember — could you write it down for me?",
+    "ex_ko": "기억을 못 할 것 같아요. 좀 적어 주시겠어요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E667",
+    "en": "Is it faster by subway or bus?",
+    "ko": "지하철이 빨라요, 버스가 빨라요?",
+    "ex_en": "At this hour, is it faster by subway or bus?",
+    "ex_ko": "이 시간엔 지하철이 빨라요, 버스가 빨라요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E668",
+    "en": "The road is closed ahead.",
+    "ko": "앞쪽 도로가 통제됐어요.",
+    "ex_en": "We'll have to detour — the road is closed ahead.",
+    "ex_ko": "우회해야겠어요. 앞쪽 도로가 통제됐어요.",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E669",
+    "en": "Could you drop me at the corner?",
+    "ko": "모퉁이에 내려 주시겠어요?",
+    "ex_en": "No need to pull in — could you drop me at the corner?",
+    "ex_ko": "안 들어가셔도 돼요. 모퉁이에 내려 주시겠어요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E670",
+    "en": "How often does it come?",
+    "ko": "배차 간격이 어떻게 되나요?",
+    "ex_en": "There's no schedule posted — how often does it come?",
+    "ex_ko": "시간표가 안 붙어 있는데 배차 간격이 어떻게 되나요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E671",
+    "en": "I'm looking for the north entrance.",
+    "ko": "북쪽 입구를 찾고 있어요.",
+    "ex_en": "I'm looking for the north entrance — is it this way?",
+    "ex_ko": "북쪽 입구를 찾고 있는데 이쪽인가요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E672",
+    "en": "Can I walk there in ten minutes?",
+    "ko": "거기까지 십 분이면 걸어갈 수 있나요?",
+    "ex_en": "My meeting starts soon — can I walk there in ten minutes?",
+    "ex_ko": "회의가 곧 시작해서요. 거기까지 십 분이면 걸어갈 수 있나요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E673",
+    "en": "Could you point me in the right direction?",
+    "ko": "방향만이라도 알려 주시겠어요?",
+    "ex_en": "I don't need details — could you point me in the right direction?",
+    "ex_ko": "자세히는 아니어도 방향만이라도 알려 주시겠어요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E674",
+    "en": "There's a shortcut through the park.",
+    "ko": "공원을 가로지르면 지름길이에요.",
+    "ex_en": "There's a shortcut through the park if you're walking.",
+    "ex_ko": "걸어가신다면 공원을 가로지르면 지름길이에요.",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E675",
+    "en": "I'll take a taxi instead.",
+    "ko": "그냥 택시 탈게요.",
+    "ex_en": "The bus won't come for twenty minutes — I'll take a taxi instead.",
+    "ex_ko": "버스가 이십 분은 안 와요. 그냥 택시 탈게요.",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E676",
+    "en": "Is this street one way?",
+    "ko": "이 길이 일방통행인가요?",
+    "ex_en": "I don't want a ticket — is this street one way?",
+    "ex_ko": "딱지 떼기 싫어서요. 이 길이 일방통행인가요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E677",
+    "en": "We're almost there.",
+    "ko": "거의 다 왔어요.",
+    "ex_en": "Hang in there — we're almost there.",
+    "ex_ko": "조금만 참으세요. 거의 다 왔어요.",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E678",
+    "en": "I'm not feeling well.",
+    "ko": "몸이 좀 안 좋아요.",
+    "ex_en": "I might head home early — I'm not feeling well.",
+    "ex_ko": "일찍 들어갈까 봐요. 몸이 좀 안 좋아요.",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E679",
+    "en": "I have a splitting headache.",
+    "ko": "머리가 깨질 듯이 아파요.",
+    "ex_en": "Could I lie down? I have a splitting headache.",
+    "ex_ko": "좀 누워도 될까요? 머리가 깨질 듯이 아파요.",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E680",
+    "en": "My stomach has been upset all day.",
+    "ko": "하루 종일 속이 안 좋아요.",
+    "ex_en": "I skipped lunch — my stomach has been upset all day.",
+    "ex_ko": "점심을 걸렀어요. 하루 종일 속이 안 좋아요.",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E681",
+    "en": "I can't stop coughing.",
+    "ko": "기침이 멈추질 않아요.",
+    "ex_en": "I barely slept — I can't stop coughing.",
+    "ex_ko": "잠을 거의 못 잤어요. 기침이 멈추질 않아요.",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E682",
+    "en": "How long have you had this?",
+    "ko": "이 증상이 언제부터 있었나요?",
+    "ex_en": "I see — how long have you had this?",
+    "ex_ko": "그렇군요. 이 증상이 언제부터 있었나요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E683",
+    "en": "Could you roll up your sleeve?",
+    "ko": "소매 좀 걷어 주시겠어요?",
+    "ex_en": "I'll check your blood pressure — could you roll up your sleeve?",
+    "ex_ko": "혈압을 잴게요. 소매 좀 걷어 주시겠어요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E684",
+    "en": "Do you have any allergies?",
+    "ko": "알레르기가 있으신가요?",
+    "ex_en": "Before I prescribe this, do you have any allergies?",
+    "ex_ko": "처방하기 전에요, 알레르기가 있으신가요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E685",
+    "en": "Take this twice a day after meals.",
+    "ko": "하루 두 번 식후에 드세요.",
+    "ex_en": "Take this twice a day after meals for five days.",
+    "ex_ko": "닷새간 하루 두 번 식후에 드세요.",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E686",
+    "en": "Is it contagious?",
+    "ko": "전염되나요?",
+    "ex_en": "I have small kids at home — is it contagious?",
+    "ex_ko": "집에 어린아이가 있어서요. 전염되나요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E687",
+    "en": "Should I get an X-ray?",
+    "ko": "엑스레이를 찍어야 할까요?",
+    "ex_en": "It still hurts to walk — should I get an X-ray?",
+    "ex_ko": "아직 걸을 때 아파요. 엑스레이를 찍어야 할까요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E688",
+    "en": "I've been having trouble sleeping.",
+    "ko": "잠을 잘 못 자고 있어요.",
+    "ex_en": "For about a month I've been having trouble sleeping.",
+    "ex_ko": "한 달쯤 잠을 잘 못 자고 있어요.",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E689",
+    "en": "Is this covered by insurance?",
+    "ko": "이거 보험 적용되나요?",
+    "ex_en": "Before we schedule it, is this covered by insurance?",
+    "ex_ko": "예약 잡기 전에요, 이거 보험 적용되나요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E690",
+    "en": "Could I get a doctor's note?",
+    "ko": "진단서를 받을 수 있을까요?",
+    "ex_en": "My work requires one — could I get a doctor's note?",
+    "ex_ko": "회사에서 요구해서요. 진단서를 받을 수 있을까요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E691",
+    "en": "I ran out of my medication.",
+    "ko": "약이 다 떨어졌어요.",
+    "ex_en": "I ran out of my medication — could I get a refill?",
+    "ex_ko": "약이 다 떨어졌는데 재처방 받을 수 있을까요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E692",
+    "en": "Is there a generic version?",
+    "ko": "복제약이 있나요?",
+    "ex_en": "This is expensive — is there a generic version?",
+    "ex_ko": "이거 비싼데 복제약이 있나요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E693",
+    "en": "Can I take this with food?",
+    "ko": "음식이랑 같이 먹어도 되나요?",
+    "ex_en": "It upsets my stomach — can I take this with food?",
+    "ex_ko": "속이 쓰려서요. 음식이랑 같이 먹어도 되나요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E694",
+    "en": "I think I have food poisoning.",
+    "ko": "식중독인 것 같아요.",
+    "ex_en": "I ate out last night and I think I have food poisoning.",
+    "ex_ko": "어젯밤에 외식했는데 식중독인 것 같아요.",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E695",
+    "en": "My back has been acting up.",
+    "ko": "허리가 계속 말썽이에요.",
+    "ex_en": "Since I moved apartments, my back has been acting up.",
+    "ex_ko": "이사한 뒤로 허리가 계속 말썽이에요.",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E696",
+    "en": "Could you refer me to a specialist?",
+    "ko": "전문의를 소개해 주실 수 있나요?",
+    "ex_en": "If it's not improving, could you refer me to a specialist?",
+    "ex_ko": "나아지지 않으면 전문의를 소개해 주실 수 있나요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E697",
+    "en": "How soon will I feel better?",
+    "ko": "언제쯤 나아질까요?",
+    "ex_en": "I have a trip next week — how soon will I feel better?",
+    "ex_ko": "다음 주에 여행이 있어서요. 언제쯤 나아질까요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E698",
+    "en": "I'd like to reschedule my appointment.",
+    "ko": "예약을 변경하고 싶어요.",
+    "ex_en": "Something came up — I'd like to reschedule my appointment.",
+    "ex_ko": "일이 생겨서 예약을 변경하고 싶어요.",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E699",
+    "en": "Is the doctor running behind?",
+    "ko": "진료가 지연되고 있나요?",
+    "ex_en": "I've been waiting forty minutes — is the doctor running behind?",
+    "ex_ko": "사십 분 기다렸는데 진료가 지연되고 있나요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E700",
+    "en": "It's been getting worse.",
+    "ko": "점점 심해지고 있어요.",
+    "ex_en": "At first it was mild, but it's been getting worse.",
+    "ex_ko": "처음엔 가벼웠는데 점점 심해지고 있어요.",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E701",
+    "en": "Could you check my blood pressure?",
+    "ko": "혈압 좀 재 주시겠어요?",
+    "ex_en": "While I'm here, could you check my blood pressure?",
+    "ex_ko": "온 김에 혈압 좀 재 주시겠어요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E702",
+    "en": "I'm on medication for my thyroid.",
+    "ko": "갑상선 약을 복용 중이에요.",
+    "ex_en": "You should know I'm on medication for my thyroid.",
+    "ex_ko": "참고로 갑상선 약을 복용 중이에요.",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E703",
+    "en": "Do I need to fast beforehand?",
+    "ko": "사전에 금식해야 하나요?",
+    "ex_en": "For the blood test, do I need to fast beforehand?",
+    "ex_ko": "혈액 검사인데 사전에 금식해야 하나요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E704",
+    "en": "When will the results come in?",
+    "ko": "결과가 언제 나오나요?",
+    "ex_en": "When will the results come in, and will you call me?",
+    "ex_ko": "결과가 언제 나오나요? 전화 주시나요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E705",
+    "en": "It stings a little.",
+    "ko": "좀 따끔거려요.",
+    "ex_en": "Nothing serious, but it stings a little.",
+    "ex_ko": "심한 건 아닌데 좀 따끔거려요.",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E706",
+    "en": "Could I get something for the pain?",
+    "ko": "진통제 좀 받을 수 있을까요?",
+    "ex_en": "I can't sleep through it — could I get something for the pain?",
+    "ex_ko": "아파서 잠을 못 자요. 진통제 좀 받을 수 있을까요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E707",
+    "en": "Is there a pharmacy open now?",
+    "ko": "지금 문 연 약국이 있나요?",
+    "ex_en": "It's almost midnight — is there a pharmacy open now?",
+    "ex_ko": "거의 자정인데 지금 문 연 약국이 있나요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E708",
+    "en": "I need a Band-Aid.",
+    "ko": "반창고가 필요해요.",
+    "ex_en": "It's just a small cut — I need a Band-Aid.",
+    "ex_ko": "작게 베인 거예요. 반창고가 필요해요.",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E709",
+    "en": "I've been feeling run down.",
+    "ko": "계속 기운이 없어요.",
+    "ex_en": "Nothing specific hurts, but I've been feeling run down.",
+    "ex_ko": "딱히 아픈 데는 없는데 계속 기운이 없어요.",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E710",
+    "en": "Should I come back for a follow-up?",
+    "ko": "재진을 받으러 와야 하나요?",
+    "ex_en": "Once I finish the medication, should I come back for a follow-up?",
+    "ex_ko": "약을 다 먹으면 재진을 받으러 와야 하나요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E711",
+    "en": "The toilet won't flush.",
+    "ko": "변기 물이 안 내려가요.",
+    "ex_en": "I tried the handle twice — the toilet won't flush.",
+    "ex_ko": "손잡이를 두 번 눌렀는데 변기 물이 안 내려가요.",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E712",
+    "en": "There's no hot water.",
+    "ko": "온수가 안 나와요.",
+    "ex_en": "Since this morning there's no hot water.",
+    "ex_ko": "오늘 아침부터 온수가 안 나와요.",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E713",
+    "en": "The door won't lock.",
+    "ko": "문이 안 잠겨요.",
+    "ex_en": "I can't leave like this — the door won't lock.",
+    "ex_ko": "이대로는 못 나가요. 문이 안 잠겨요.",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E714",
+    "en": "Could you come by this afternoon?",
+    "ko": "오늘 오후에 와 주실 수 있나요?",
+    "ex_en": "I'll be home all day — could you come by this afternoon?",
+    "ex_ko": "하루 종일 집에 있어요. 오늘 오후에 와 주실 수 있나요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E715",
+    "en": "The neighbors are really loud.",
+    "ko": "이웃이 너무 시끄러워요.",
+    "ex_en": "It's past midnight and the neighbors are really loud.",
+    "ex_ko": "자정이 넘었는데 이웃이 너무 시끄러워요.",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E716",
+    "en": "When is the rent due?",
+    "ko": "월세가 언제까지예요?",
+    "ex_en": "I just moved in — when is the rent due?",
+    "ex_ko": "막 입주했는데 월세가 언제까지예요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E717",
+    "en": "Could I renew the lease?",
+    "ko": "계약을 연장할 수 있을까요?",
+    "ex_en": "I'd like to stay another year — could I renew the lease?",
+    "ex_ko": "일 년 더 살고 싶은데 계약을 연장할 수 있을까요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E718",
+    "en": "Are pets allowed?",
+    "ko": "반려동물 키워도 되나요?",
+    "ex_en": "I have a small dog — are pets allowed?",
+    "ex_ko": "작은 강아지가 있는데 반려동물 키워도 되나요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E719",
+    "en": "The paint is peeling.",
+    "ko": "페인트가 벗겨지고 있어요.",
+    "ex_en": "In the bathroom, the paint is peeling off the ceiling.",
+    "ex_ko": "화장실 천장에서 페인트가 벗겨지고 있어요.",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E720",
+    "en": "Could you fix it before I move in?",
+    "ko": "입주 전에 고쳐 주실 수 있나요?",
+    "ex_en": "It's a small thing — could you fix it before I move in?",
+    "ex_ko": "사소한 거예요. 입주 전에 고쳐 주실 수 있나요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E721",
+    "en": "The drain smells.",
+    "ko": "배수구에서 냄새가 나요.",
+    "ex_en": "Especially at night, the drain smells.",
+    "ex_ko": "특히 밤에 배수구에서 냄새가 나요.",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E722",
+    "en": "I'd like to give notice.",
+    "ko": "퇴거 통보를 하려고요.",
+    "ex_en": "I'm moving in two months — I'd like to give notice.",
+    "ex_ko": "두 달 뒤에 이사해서 퇴거 통보를 하려고요.",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E723",
+    "en": "How much is the maintenance fee?",
+    "ko": "관리비가 얼마인가요?",
+    "ex_en": "On top of rent, how much is the maintenance fee?",
+    "ex_ko": "월세 말고 관리비가 얼마인가요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E724",
+    "en": "There's mold in the corner.",
+    "ko": "구석에 곰팡이가 있어요.",
+    "ex_en": "Behind the wardrobe, there's mold in the corner.",
+    "ex_ko": "옷장 뒤 구석에 곰팡이가 있어요.",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E725",
+    "en": "Could you take a look at the boiler?",
+    "ko": "보일러 좀 봐 주시겠어요?",
+    "ex_en": "It's making a strange noise — could you take a look at the boiler?",
+    "ex_ko": "이상한 소리가 나요. 보일러 좀 봐 주시겠어요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E726",
+    "en": "When do they collect the trash?",
+    "ko": "쓰레기는 언제 수거하나요?",
+    "ex_en": "I don't want to miss it — when do they collect the trash?",
+    "ex_ko": "놓치기 싫어서요. 쓰레기는 언제 수거하나요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E727",
+    "en": "The window doesn't close properly.",
+    "ko": "창문이 제대로 안 닫혀요.",
+    "ex_en": "It gets cold at night — the window doesn't close properly.",
+    "ex_ko": "밤에 추워요. 창문이 제대로 안 닫혀요.",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E728",
+    "en": "Could I get a copy of the key?",
+    "ko": "열쇠를 하나 더 만들 수 있을까요?",
+    "ex_en": "My partner needs one — could I get a copy of the key?",
+    "ex_ko": "배우자도 필요해서요. 열쇠를 하나 더 만들 수 있을까요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E729",
+    "en": "The power keeps going out.",
+    "ko": "전기가 자꾸 나가요.",
+    "ex_en": "Three times this week, the power keeps going out.",
+    "ex_ko": "이번 주에만 세 번이에요. 전기가 자꾸 나가요.",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E730",
+    "en": "Is the furniture included?",
+    "ko": "가구가 포함인가요?",
+    "ex_en": "In the listing photo, is the furniture included?",
+    "ex_ko": "매물 사진에 있는 가구가 포함인가요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E731",
+    "en": "Could you send someone to look at it?",
+    "ko": "누구 보내서 봐 주실 수 있나요?",
+    "ex_en": "I can't fix it myself — could you send someone to look at it?",
+    "ex_ko": "제가 못 고쳐요. 누구 보내서 봐 주실 수 있나요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E732",
+    "en": "How much notice do I need to give?",
+    "ko": "몇 달 전에 통보해야 하나요?",
+    "ex_en": "If I want to leave, how much notice do I need to give?",
+    "ex_ko": "나가려면 몇 달 전에 통보해야 하나요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E733",
+    "en": "The floor creaks.",
+    "ko": "바닥에서 삐걱 소리가 나요.",
+    "ex_en": "Right by the door, the floor creaks.",
+    "ex_ko": "문 바로 앞 바닥에서 삐걱 소리가 나요.",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E734",
+    "en": "Could we split the repair cost?",
+    "ko": "수리비를 나눠서 낼 수 있을까요?",
+    "ex_en": "It's wear and tear — could we split the repair cost?",
+    "ex_ko": "자연 마모라서요. 수리비를 나눠서 낼 수 있을까요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E735",
+    "en": "Is there storage in the building?",
+    "ko": "건물에 창고가 있나요?",
+    "ex_en": "I have winter gear — is there storage in the building?",
+    "ex_ko": "겨울 용품이 있어서요. 건물에 창고가 있나요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E736",
+    "en": "The elevator is out of service.",
+    "ko": "엘리베이터가 고장이에요.",
+    "ex_en": "I had to take the stairs — the elevator is out of service.",
+    "ex_ko": "계단으로 올라왔어요. 엘리베이터가 고장이에요.",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E737",
+    "en": "Could you tighten this?",
+    "ko": "이거 좀 조여 주시겠어요?",
+    "ex_en": "The handle is loose — could you tighten this?",
+    "ex_ko": "손잡이가 헐거워요. 이거 좀 조여 주시겠어요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E738",
+    "en": "When was it last serviced?",
+    "ko": "마지막으로 점검한 게 언제예요?",
+    "ex_en": "About the air conditioner — when was it last serviced?",
+    "ex_ko": "에어컨 말인데요, 마지막으로 점검한 게 언제예요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E739",
+    "en": "I'll be home after seven.",
+    "ko": "일곱 시 이후에 집에 있어요.",
+    "ex_en": "Any time works, but I'll be home after seven.",
+    "ex_ko": "아무 때나 괜찮은데 일곱 시 이후에 집에 있어요.",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E740",
+    "en": "Could you give me an estimate first?",
+    "ko": "먼저 견적부터 주시겠어요?",
+    "ex_en": "Before you start, could you give me an estimate first?",
+    "ex_ko": "작업 시작 전에 먼저 견적부터 주시겠어요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E741",
+    "en": "My battery is at five percent.",
+    "ko": "배터리가 오 퍼센트예요.",
+    "ex_en": "I might cut out — my battery is at five percent.",
+    "ex_ko": "끊길 수도 있어요. 배터리가 오 퍼센트예요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E742",
+    "en": "The connection keeps timing out.",
+    "ko": "접속이 자꾸 끊겨요.",
+    "ex_en": "I can't submit the form — the connection keeps timing out.",
+    "ex_ko": "양식을 못 내겠어요. 접속이 자꾸 끊겨요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E743",
+    "en": "Could you share your screen?",
+    "ko": "화면 공유해 주시겠어요?",
+    "ex_en": "I'd rather see it — could you share your screen?",
+    "ex_ko": "직접 보는 게 낫겠어요. 화면 공유해 주시겠어요?",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E744",
+    "en": "You're on mute.",
+    "ko": "음소거되어 있어요.",
+    "ex_en": "We can't hear you — you're on mute.",
+    "ex_ko": "소리가 안 들려요. 음소거되어 있어요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E745",
+    "en": "Could you refresh the page?",
+    "ko": "페이지 새로고침해 보시겠어요?",
+    "ex_en": "It should be there now — could you refresh the page?",
+    "ex_ko": "이제 있을 거예요. 페이지 새로고침해 보시겠어요?",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E746",
+    "en": "I'm getting an error message.",
+    "ko": "오류 메시지가 떠요.",
+    "ex_en": "Every time I log in, I'm getting an error message.",
+    "ex_ko": "로그인할 때마다 오류 메시지가 떠요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E747",
+    "en": "Have you tried clearing the cache?",
+    "ko": "캐시 삭제는 해 보셨어요?",
+    "ex_en": "That usually helps — have you tried clearing the cache?",
+    "ex_ko": "보통 그걸로 해결돼요. 캐시 삭제는 해 보셨어요?",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E748",
+    "en": "My storage is full.",
+    "ko": "저장 공간이 꽉 찼어요.",
+    "ex_en": "I can't take photos — my storage is full.",
+    "ex_ko": "사진을 못 찍어요. 저장 공간이 꽉 찼어요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E749",
+    "en": "Could you send that as a PDF?",
+    "ko": "그거 PDF로 보내 주실 수 있어요?",
+    "ex_en": "It won't open on my phone — could you send that as a PDF?",
+    "ex_ko": "휴대폰에서 안 열려요. 그거 PDF로 보내 주실 수 있어요?",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E750",
+    "en": "The update is taking forever.",
+    "ko": "업데이트가 한없이 걸리네요.",
+    "ex_en": "I've been waiting an hour — the update is taking forever.",
+    "ex_ko": "한 시간째 기다려요. 업데이트가 한없이 걸리네요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E751",
+    "en": "I can't log in.",
+    "ko": "로그인이 안 돼요.",
+    "ex_en": "I reset it twice and I still can't log in.",
+    "ex_ko": "두 번이나 재설정했는데 아직도 로그인이 안 돼요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E752",
+    "en": "Is there a free trial?",
+    "ko": "무료 체험이 있나요?",
+    "ex_en": "Before I subscribe, is there a free trial?",
+    "ex_ko": "구독하기 전에요, 무료 체험이 있나요?",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E753",
+    "en": "Could you turn on your camera?",
+    "ko": "카메라 좀 켜 주시겠어요?",
+    "ex_en": "It's a small group — could you turn on your camera?",
+    "ex_ko": "소규모라서요. 카메라 좀 켜 주시겠어요?",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E754",
+    "en": "The sound is cutting out.",
+    "ko": "소리가 끊겨요.",
+    "ex_en": "Could you move closer to the router? The sound is cutting out.",
+    "ex_ko": "공유기 가까이 가 주실래요? 소리가 끊겨요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E755",
+    "en": "I'll drop the link in the chat.",
+    "ko": "채팅창에 링크 올릴게요.",
+    "ex_en": "No need to write it down — I'll drop the link in the chat.",
+    "ex_ko": "받아 적지 않으셔도 돼요. 채팅창에 링크 올릴게요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E756",
+    "en": "Could you restart the router?",
+    "ko": "공유기 좀 재부팅해 주시겠어요?",
+    "ex_en": "Nothing else worked — could you restart the router?",
+    "ex_ko": "다른 건 다 해 봤어요. 공유기 좀 재부팅해 주시겠어요?",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E757",
+    "en": "My phone won't charge.",
+    "ko": "휴대폰이 충전이 안 돼요.",
+    "ex_en": "I tried two cables and my phone won't charge.",
+    "ex_ko": "케이블 두 개를 써 봤는데 휴대폰이 충전이 안 돼요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E758",
+    "en": "Could you scan this and email it?",
+    "ko": "이거 스캔해서 메일로 보내 주실 수 있어요?",
+    "ex_en": "I need a digital copy — could you scan this and email it?",
+    "ex_ko": "전자 사본이 필요해서요. 이거 스캔해서 메일로 보내 주실 수 있어요?",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E759",
+    "en": "I'll share my location.",
+    "ko": "제 위치 공유할게요.",
+    "ex_en": "It's hard to explain — I'll share my location.",
+    "ex_ko": "설명하기 어려워요. 제 위치 공유할게요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E760",
+    "en": "The video keeps buffering.",
+    "ko": "영상이 자꾸 끊겨요.",
+    "ex_en": "I lowered the quality but the video keeps buffering.",
+    "ex_ko": "화질을 낮췄는데도 영상이 자꾸 끊겨요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E761",
+    "en": "Could you check your spam folder?",
+    "ko": "스팸함 좀 확인해 보시겠어요?",
+    "ex_en": "I definitely sent it — could you check your spam folder?",
+    "ex_ko": "분명히 보냈어요. 스팸함 좀 확인해 보시겠어요?",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E762",
+    "en": "I need to update my software.",
+    "ko": "소프트웨어를 업데이트해야 해요.",
+    "ex_en": "That's why it's not compatible — I need to update my software.",
+    "ex_ko": "그래서 호환이 안 되는 거예요. 소프트웨어를 업데이트해야 해요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E763",
+    "en": "Is there a data limit?",
+    "ko": "데이터 제한이 있나요?",
+    "ex_en": "On this plan, is there a data limit?",
+    "ex_ko": "이 요금제는 데이터 제한이 있나요?",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E764",
+    "en": "Could I connect to your hotspot?",
+    "ko": "핫스팟 좀 연결해도 될까요?",
+    "ex_en": "The café Wi-Fi is down — could I connect to your hotspot?",
+    "ex_ko": "카페 와이파이가 안 돼요. 핫스팟 좀 연결해도 될까요?",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E765",
+    "en": "It works on my end.",
+    "ko": "제 쪽에서는 잘 되는데요.",
+    "ex_en": "That's strange — it works on my end.",
+    "ex_ko": "이상하네요. 제 쪽에서는 잘 되는데요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E766",
+    "en": "Could you send a screenshot?",
+    "ko": "스크린샷 좀 보내 주시겠어요?",
+    "ex_en": "I can't picture it — could you send a screenshot?",
+    "ex_ko": "잘 그려지지 않아요. 스크린샷 좀 보내 주시겠어요?",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E767",
+    "en": "My laptop keeps overheating.",
+    "ko": "노트북이 자꾸 과열돼요.",
+    "ex_en": "The fan runs constantly — my laptop keeps overheating.",
+    "ex_ko": "팬이 계속 돌아요. 노트북이 자꾸 과열돼요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E768",
+    "en": "I accidentally deleted it.",
+    "ko": "실수로 지웠어요.",
+    "ex_en": "Is it recoverable? I accidentally deleted it.",
+    "ex_ko": "복구 가능한가요? 실수로 지웠어요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E769",
+    "en": "Could you add me to the group chat?",
+    "ko": "단톡방에 저 좀 초대해 주실래요?",
+    "ex_en": "I keep missing updates — could you add me to the group chat?",
+    "ex_ko": "소식을 자꾸 놓쳐요. 단톡방에 저 좀 초대해 주실래요?",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E770",
+    "en": "Let me check my calendar.",
+    "ko": "일정 좀 확인해 볼게요.",
+    "ex_en": "Thursday might work — let me check my calendar.",
+    "ex_ko": "목요일이 될 것 같은데 일정 좀 확인해 볼게요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E771",
+    "en": "The link is broken.",
+    "ko": "링크가 안 열려요.",
+    "ex_en": "I get a 404 — the link is broken.",
+    "ex_ko": "404가 떠요. 링크가 안 열려요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E772",
+    "en": "Could you enable notifications?",
+    "ko": "알림 좀 켜 주시겠어요?",
+    "ex_en": "You'll miss messages otherwise — could you enable notifications?",
+    "ex_ko": "안 그러면 메시지를 놓쳐요. 알림 좀 켜 주시겠어요?",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E773",
+    "en": "I have an exam next week.",
+    "ko": "다음 주에 시험이 있어요.",
+    "ex_en": "I can't go out — I have an exam next week.",
+    "ex_ko": "못 나가요. 다음 주에 시험이 있어요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E774",
+    "en": "Could you go over that one more time?",
+    "ko": "그거 한 번만 더 짚어 주시겠어요?",
+    "ex_en": "I didn't catch the last step — could you go over that one more time?",
+    "ex_ko": "마지막 단계를 놓쳤어요. 한 번만 더 짚어 주시겠어요?",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E775",
+    "en": "I've been cramming all night.",
+    "ko": "밤새 벼락치기했어요.",
+    "ex_en": "I look terrible because I've been cramming all night.",
+    "ex_ko": "몰골이 말이 아니죠. 밤새 벼락치기했어요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E776",
+    "en": "What's on the syllabus?",
+    "ko": "강의 계획서에 뭐가 있어요?",
+    "ex_en": "I haven't checked yet — what's on the syllabus?",
+    "ex_ko": "아직 안 봤어요. 강의 계획서에 뭐가 있어요?",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E777",
+    "en": "I'm taking five classes this semester.",
+    "ko": "이번 학기에 다섯 과목 들어요.",
+    "ex_en": "I'm exhausted — I'm taking five classes this semester.",
+    "ex_ko": "너무 지쳐요. 이번 학기에 다섯 과목 들어요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E778",
+    "en": "Could we study together?",
+    "ko": "같이 공부할까요?",
+    "ex_en": "The exam is brutal — could we study together?",
+    "ex_ko": "시험이 너무 어려워요. 같이 공부할까요?",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E779",
+    "en": "I need to hand it in by Friday.",
+    "ko": "금요일까지 제출해야 해요.",
+    "ex_en": "I can't put it off — I need to hand it in by Friday.",
+    "ex_ko": "미룰 수가 없어요. 금요일까지 제출해야 해요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E780",
+    "en": "The lecture went over my head.",
+    "ko": "강의를 하나도 못 알아들었어요.",
+    "ex_en": "I read the chapter twice, but the lecture went over my head.",
+    "ex_ko": "챕터를 두 번 읽었는데도 강의를 하나도 못 알아들었어요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E781",
+    "en": "Is attendance mandatory?",
+    "ko": "출석이 필수인가요?",
+    "ex_en": "I work part-time — is attendance mandatory?",
+    "ex_ko": "아르바이트를 해서요. 출석이 필수인가요?",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E782",
+    "en": "I'm majoring in economics.",
+    "ko": "저는 경제학을 전공해요.",
+    "ex_en": "I'm majoring in economics with a minor in statistics.",
+    "ex_ko": "경제학을 전공하고 통계학을 부전공해요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E783",
+    "en": "Could you proofread this for me?",
+    "ko": "이거 좀 봐 주실 수 있어요?",
+    "ex_en": "It's due tonight — could you proofread this for me?",
+    "ex_ko": "오늘 밤까지예요. 이거 좀 봐 주실 수 있어요?",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E784",
+    "en": "I got a scholarship.",
+    "ko": "장학금을 받았어요.",
+    "ex_en": "I got a scholarship, so tuition is covered.",
+    "ex_ko": "장학금을 받아서 등록금은 해결됐어요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E785",
+    "en": "I have a group project.",
+    "ko": "조별 과제가 있어요.",
+    "ex_en": "I have a group project and nobody is responding.",
+    "ex_ko": "조별 과제가 있는데 아무도 답이 없어요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E786",
+    "en": "How long should the essay be?",
+    "ko": "에세이 분량이 얼마나 돼야 하나요?",
+    "ex_en": "How long should the essay be, roughly?",
+    "ex_ko": "에세이 분량이 대략 얼마나 돼야 하나요?",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E787",
+    "en": "I'm auditing the class.",
+    "ko": "청강하고 있어요.",
+    "ex_en": "I'm not graded — I'm auditing the class.",
+    "ex_ko": "성적은 안 받아요. 청강하고 있어요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E788",
+    "en": "Could I get feedback on my draft?",
+    "ko": "초안에 피드백 주실 수 있나요?",
+    "ex_en": "Before I finalize it, could I get feedback on my draft?",
+    "ex_ko": "마무리하기 전에 초안에 피드백 주실 수 있나요?",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E789",
+    "en": "I studied abroad for a year.",
+    "ko": "일 년간 해외에서 공부했어요.",
+    "ex_en": "My English improved because I studied abroad for a year.",
+    "ex_ko": "일 년간 해외에서 공부해서 영어가 늘었어요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E790",
+    "en": "The class was canceled.",
+    "ko": "수업이 휴강됐어요.",
+    "ex_en": "Check your email — the class was canceled.",
+    "ex_ko": "메일 확인해 보세요. 수업이 휴강됐어요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E791",
+    "en": "I'm taking notes.",
+    "ko": "필기하고 있어요.",
+    "ex_en": "Go ahead, I'm taking notes.",
+    "ex_ko": "말씀하세요, 필기하고 있어요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E792",
+    "en": "Could you recommend a textbook?",
+    "ko": "교재 좀 추천해 주시겠어요?",
+    "ex_en": "I'm starting from zero — could you recommend a textbook?",
+    "ex_ko": "완전 초보예요. 교재 좀 추천해 주시겠어요?",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E793",
+    "en": "I signed up for a language exchange.",
+    "ko": "언어 교환에 신청했어요.",
+    "ex_en": "To practice speaking, I signed up for a language exchange.",
+    "ex_ko": "회화 연습하려고 언어 교환에 신청했어요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E794",
+    "en": "My grades went up this term.",
+    "ko": "이번 학기에 성적이 올랐어요.",
+    "ex_en": "The tutoring helped — my grades went up this term.",
+    "ex_ko": "과외가 도움이 됐어요. 이번 학기에 성적이 올랐어요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E795",
+    "en": "I'm behind on my reading.",
+    "ko": "읽어야 할 걸 못 따라가고 있어요.",
+    "ex_en": "Three chapters left — I'm behind on my reading.",
+    "ex_ko": "세 챕터 남았어요. 읽어야 할 걸 못 따라가고 있어요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E796",
+    "en": "Could I sit in on your class?",
+    "ko": "수업을 참관해도 될까요?",
+    "ex_en": "I'm considering the major — could I sit in on your class?",
+    "ex_ko": "전공을 고민 중이라서요. 수업을 참관해도 될까요?",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E797",
+    "en": "What's the passing grade?",
+    "ko": "몇 점부터 통과인가요?",
+    "ex_en": "I'm nervous — what's the passing grade?",
+    "ex_ko": "긴장돼요. 몇 점부터 통과인가요?",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E798",
+    "en": "I'm preparing for a job interview.",
+    "ko": "면접 준비 중이에요.",
+    "ex_en": "I'm preparing for a job interview next Monday.",
+    "ex_ko": "다음 주 월요일 면접 준비 중이에요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E799",
+    "en": "Practice makes perfect.",
+    "ko": "연습이 완벽을 만들어요.",
+    "ex_en": "Don't give up after one try — practice makes perfect.",
+    "ex_ko": "한 번 해 보고 포기하지 마세요. 연습이 완벽을 만들어요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E800",
+    "en": "I learn best by doing.",
+    "ko": "저는 직접 해 보면서 배우는 편이에요.",
+    "ex_en": "Lectures don't stick — I learn best by doing.",
+    "ex_ko": "강의는 잘 안 남아요. 저는 직접 해 보면서 배우는 편이에요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E801",
+    "en": "Could you say that in simpler words?",
+    "ko": "좀 더 쉬운 말로 해 주시겠어요?",
+    "ex_en": "I'm still learning — could you say that in simpler words?",
+    "ex_ko": "아직 배우는 중이에요. 좀 더 쉬운 말로 해 주시겠어요?",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E802",
+    "en": "I've hit a plateau.",
+    "ko": "실력이 정체됐어요.",
+    "ex_en": "I study every day but I've hit a plateau.",
+    "ex_ko": "매일 공부하는데 실력이 정체됐어요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E803",
+    "en": "Little by little, it adds up.",
+    "ko": "조금씩 하다 보면 쌓여요.",
+    "ex_en": "Ten minutes a day is fine — little by little, it adds up.",
+    "ex_ko": "하루 십 분이면 충분해요. 조금씩 하다 보면 쌓여요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E804",
+    "en": "That's rough.",
+    "ko": "많이 힘들겠다.",
+    "ex_en": "You lost the whole file? That's rough.",
+    "ex_ko": "파일을 통째로 날렸다고? 많이 힘들겠다.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E805",
+    "en": "I've been there.",
+    "ko": "저도 그런 적 있어요.",
+    "ex_en": "Don't be embarrassed — I've been there.",
+    "ex_ko": "부끄러워하지 마세요. 저도 그런 적 있어요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E806",
+    "en": "Take all the time you need.",
+    "ko": "천천히 하셔도 돼요.",
+    "ex_en": "There's no rush — take all the time you need.",
+    "ex_ko": "급할 것 없어요. 천천히 하셔도 돼요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E807",
+    "en": "You did everything you could.",
+    "ko": "할 수 있는 건 다 하셨어요.",
+    "ex_en": "Don't blame yourself — you did everything you could.",
+    "ex_ko": "자책하지 마세요. 할 수 있는 건 다 하셨어요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E808",
+    "en": "I'm here if you need to talk.",
+    "ko": "얘기하고 싶으면 언제든 말해요.",
+    "ex_en": "No pressure, but I'm here if you need to talk.",
+    "ex_ko": "부담 갖지 말고, 얘기하고 싶으면 언제든 말해요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E809",
+    "en": "That's completely understandable.",
+    "ko": "충분히 이해돼요.",
+    "ex_en": "You're upset, and that's completely understandable.",
+    "ex_ko": "속상하신 거 충분히 이해돼요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E810",
+    "en": "Congratulations, you earned it.",
+    "ko": "축하해요, 받을 만했어요.",
+    "ex_en": "Congratulations, you earned it — nobody worked harder.",
+    "ex_ko": "축하해요, 받을 만했어요. 누구보다 열심히 했잖아요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E811",
+    "en": "I'm relieved to hear that.",
+    "ko": "그 말 들으니 안심이 되네요.",
+    "ex_en": "So everyone's okay? I'm relieved to hear that.",
+    "ex_ko": "다들 괜찮다고요? 그 말 들으니 안심이 되네요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E812",
+    "en": "That's disappointing.",
+    "ko": "참 실망스럽네요.",
+    "ex_en": "After all that preparation, that's disappointing.",
+    "ex_ko": "그렇게 준비했는데 참 실망스럽네요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E813",
+    "en": "I can't imagine how you feel.",
+    "ko": "어떤 심정일지 짐작도 안 돼요.",
+    "ex_en": "I can't imagine how you feel right now.",
+    "ex_ko": "지금 어떤 심정일지 짐작도 안 돼요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E814",
+    "en": "You're not alone in this.",
+    "ko": "혼자가 아니에요.",
+    "ex_en": "Whatever happens, you're not alone in this.",
+    "ex_ko": "무슨 일이 있어도 혼자가 아니에요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E815",
+    "en": "That took real courage.",
+    "ko": "정말 용기 있는 일이었어요.",
+    "ex_en": "Speaking up like that took real courage.",
+    "ex_ko": "그렇게 말하는 건 정말 용기 있는 일이었어요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E816",
+    "en": "I'm a little nervous.",
+    "ko": "조금 긴장돼요.",
+    "ex_en": "It's my first presentation, so I'm a little nervous.",
+    "ex_ko": "첫 발표라서 조금 긴장돼요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E817",
+    "en": "I'm honestly touched.",
+    "ko": "정말 감동했어요.",
+    "ex_en": "You remembered my birthday — I'm honestly touched.",
+    "ex_ko": "제 생일을 기억해 주셨네요. 정말 감동했어요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E818",
+    "en": "Don't be so hard on yourself.",
+    "ko": "너무 자책하지 마세요.",
+    "ex_en": "It was one mistake — don't be so hard on yourself.",
+    "ex_ko": "실수 한 번이었어요. 너무 자책하지 마세요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E819",
+    "en": "I'm frustrated with myself.",
+    "ko": "제 자신에게 답답해요.",
+    "ex_en": "I keep making the same error — I'm frustrated with myself.",
+    "ex_ko": "같은 실수를 반복해요. 제 자신에게 답답해요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E820",
+    "en": "That means a lot to me.",
+    "ko": "저한테는 큰 의미예요.",
+    "ex_en": "You came all this way — that means a lot to me.",
+    "ex_ko": "여기까지 와 주셨네요. 저한테는 큰 의미예요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E821",
+    "en": "I'm at my wit's end.",
+    "ko": "어찌할 바를 모르겠어요.",
+    "ex_en": "I've tried everything — I'm at my wit's end.",
+    "ex_ko": "다 해 봤어요. 어찌할 바를 모르겠어요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E822",
+    "en": "Cheer up.",
+    "ko": "기운 내요.",
+    "ex_en": "Cheer up — there's always next time.",
+    "ex_ko": "기운 내요. 다음이 있잖아요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E823",
+    "en": "I really needed to hear that.",
+    "ko": "그 말이 정말 필요했어요.",
+    "ex_en": "Thank you — I really needed to hear that today.",
+    "ex_ko": "고마워요. 오늘 그 말이 정말 필요했어요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E824",
+    "en": "I'm on edge lately.",
+    "ko": "요즘 좀 예민해요.",
+    "ex_en": "Sorry if I snapped — I'm on edge lately.",
+    "ex_ko": "쏘아붙였다면 미안해요. 요즘 좀 예민해요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E825",
+    "en": "That's a weight off my shoulders.",
+    "ko": "어깨가 한결 가벼워졌어요.",
+    "ex_en": "The audit passed — that's a weight off my shoulders.",
+    "ex_ko": "감사를 통과했어요. 어깨가 한결 가벼워졌어요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E826",
+    "en": "I feel bad about it.",
+    "ko": "그것 때문에 마음이 안 좋아요.",
+    "ex_en": "I couldn't help her and I feel bad about it.",
+    "ex_ko": "그분을 못 도와드려서 마음이 안 좋아요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E827",
+    "en": "You're too kind.",
+    "ko": "너무 과찬이세요.",
+    "ex_en": "You're too kind — anyone would have done it.",
+    "ex_ko": "너무 과찬이세요. 누구라도 했을 거예요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E828",
+    "en": "I'm genuinely excited.",
+    "ko": "정말 설레요.",
+    "ex_en": "The trip is next week and I'm genuinely excited.",
+    "ex_ko": "다음 주가 여행이라 정말 설레요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E829",
+    "en": "That caught me by surprise.",
+    "ko": "그건 정말 뜻밖이었어요.",
+    "ex_en": "I had no idea — that caught me by surprise.",
+    "ex_ko": "전혀 몰랐어요. 그건 정말 뜻밖이었어요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E830",
+    "en": "I'm sorry for your loss.",
+    "ko": "삼가 조의를 표합니다.",
+    "ex_en": "I'm sorry for your loss — please take care of yourself.",
+    "ex_ko": "삼가 조의를 표합니다. 몸 잘 챙기세요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E831",
+    "en": "It'll get better.",
+    "ko": "나아질 거예요.",
+    "ex_en": "Give it some time — it'll get better.",
+    "ex_ko": "시간을 좀 주세요. 나아질 거예요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E832",
+    "en": "I owe you an apology.",
+    "ko": "사과드릴 게 있어요.",
+    "ex_en": "About yesterday — I owe you an apology.",
+    "ex_ko": "어제 일 말인데요, 사과드릴 게 있어요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E833",
+    "en": "I'm burned out.",
+    "ko": "완전히 지쳤어요.",
+    "ex_en": "I need a real break — I'm burned out.",
+    "ex_ko": "제대로 쉬어야겠어요. 완전히 지쳤어요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E834",
+    "en": "That put a smile on my face.",
+    "ko": "덕분에 웃었어요.",
+    "ex_en": "Your message put a smile on my face.",
+    "ex_ko": "보내 주신 메시지 덕분에 웃었어요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E835",
+    "en": "I'm second-guessing myself.",
+    "ko": "제 판단을 자꾸 의심하게 돼요.",
+    "ex_en": "Since the feedback, I'm second-guessing myself.",
+    "ex_ko": "피드백을 받고 나서 제 판단을 자꾸 의심하게 돼요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E836",
+    "en": "No need to apologize.",
+    "ko": "사과하지 않으셔도 돼요.",
+    "ex_en": "It happens to everyone — no need to apologize.",
+    "ex_ko": "누구나 그래요. 사과하지 않으셔도 돼요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E837",
+    "en": "I'm grateful for your help.",
+    "ko": "도와주셔서 정말 감사해요.",
+    "ex_en": "I couldn't have finished it alone — I'm grateful for your help.",
+    "ex_ko": "혼자서는 못 끝냈을 거예요. 도와주셔서 정말 감사해요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E838",
+    "en": "That's such a relief.",
+    "ko": "정말 다행이에요.",
+    "ex_en": "The test came back clear — that's such a relief.",
+    "ex_ko": "검사 결과가 깨끗하대요. 정말 다행이에요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E839",
+    "en": "I'm rooting for you.",
+    "ko": "응원할게요.",
+    "ex_en": "Whatever you decide, I'm rooting for you.",
+    "ex_ko": "어떤 결정을 하든 응원할게요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E840",
+    "en": "I didn't mean to upset you.",
+    "ko": "기분 상하게 할 뜻은 없었어요.",
+    "ex_en": "I didn't mean to upset you — I was being careless.",
+    "ex_ko": "기분 상하게 할 뜻은 없었어요. 제가 경솔했어요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E841",
+    "en": "I'm speechless.",
+    "ko": "말이 안 나와요.",
+    "ex_en": "You did all this for me? I'm speechless.",
+    "ex_ko": "이걸 다 저를 위해 하셨다고요? 말이 안 나와요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E842",
+    "en": "Let it out.",
+    "ko": "참지 말고 털어놔요.",
+    "ex_en": "You've been holding it in — let it out.",
+    "ex_ko": "계속 참고 있었잖아요. 참지 말고 털어놔요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E843",
+    "en": "I hope things settle down soon.",
+    "ko": "곧 상황이 좀 안정되면 좋겠어요.",
+    "ex_en": "You've had a hard month — I hope things settle down soon.",
+    "ex_ko": "힘든 한 달이었죠. 곧 상황이 좀 안정되면 좋겠어요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E844",
+    "en": "That's the sweetest thing.",
+    "ko": "정말 다정하시네요.",
+    "ex_en": "You saved me a slice? That's the sweetest thing.",
+    "ex_ko": "제 몫을 남겨 두셨다고요? 정말 다정하시네요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E845",
+    "en": "I'm proud of how you handled it.",
+    "ko": "그 상황을 대처한 게 참 자랑스러워요.",
+    "ex_en": "You stayed calm — I'm proud of how you handled it.",
+    "ex_ko": "침착했잖아요. 그 상황을 대처한 게 참 자랑스러워요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E846",
+    "en": "Let's grab coffee sometime.",
+    "ko": "언제 커피 한잔해요.",
+    "ex_en": "It's been too long — let's grab coffee sometime.",
+    "ex_ko": "너무 오랜만이에요. 언제 커피 한잔해요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E847",
+    "en": "Are you free on Thursday?",
+    "ko": "목요일에 시간 있어요?",
+    "ex_en": "Are you free on Thursday, or is the weekend better?",
+    "ex_ko": "목요일에 시간 있어요, 아니면 주말이 나아요?",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E848",
+    "en": "I'll be there around seven.",
+    "ko": "일곱 시쯤 갈게요.",
+    "ex_en": "Start without me — I'll be there around seven.",
+    "ex_ko": "먼저 시작하세요. 일곱 시쯤 갈게요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E849",
+    "en": "Count me in.",
+    "ko": "저도 갈게요.",
+    "ex_en": "A hike on Saturday? Count me in.",
+    "ex_ko": "토요일에 등산이요? 저도 갈게요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E850",
+    "en": "I'll have to pass this time.",
+    "ko": "이번엔 못 갈 것 같아요.",
+    "ex_en": "Sounds fun, but I'll have to pass this time.",
+    "ex_ko": "재미있겠지만 이번엔 못 갈 것 같아요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E851",
+    "en": "Where should we meet?",
+    "ko": "어디서 만날까요?",
+    "ex_en": "I'm coming by subway — where should we meet?",
+    "ex_ko": "지하철로 가는데 어디서 만날까요?",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E852",
+    "en": "I'm running about ten minutes late.",
+    "ko": "십 분 정도 늦을 것 같아요.",
+    "ex_en": "Traffic is bad — I'm running about ten minutes late.",
+    "ex_ko": "차가 막혀요. 십 분 정도 늦을 것 같아요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E853",
+    "en": "Let's make it a bit later.",
+    "ko": "조금 늦은 시간으로 하죠.",
+    "ex_en": "I finish work at six — let's make it a bit later.",
+    "ex_ko": "여섯 시에 퇴근해요. 조금 늦은 시간으로 하죠.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E854",
+    "en": "Bring a friend if you like.",
+    "ko": "친구 데려와도 좋아요.",
+    "ex_en": "There's plenty of room — bring a friend if you like.",
+    "ex_ko": "자리 넉넉해요. 친구 데려와도 좋아요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E855",
+    "en": "What are you up to this weekend?",
+    "ko": "이번 주말에 뭐 해요?",
+    "ex_en": "What are you up to this weekend? Anything fun?",
+    "ex_ko": "이번 주말에 뭐 해요? 재미있는 계획 있어요?",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E856",
+    "en": "It's been ages.",
+    "ko": "진짜 오랜만이에요.",
+    "ex_en": "It's been ages — how have you been?",
+    "ex_ko": "진짜 오랜만이에요. 어떻게 지냈어요?",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E857",
+    "en": "Let's do this again soon.",
+    "ko": "조만간 또 만나요.",
+    "ex_en": "That was fun — let's do this again soon.",
+    "ex_ko": "재밌었어요. 조만간 또 만나요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E858",
+    "en": "I'll let you know by tomorrow.",
+    "ko": "내일까지 알려 드릴게요.",
+    "ex_en": "I need to check with my family — I'll let you know by tomorrow.",
+    "ex_ko": "가족과 상의해야 해서요. 내일까지 알려 드릴게요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E859",
+    "en": "Should I bring anything?",
+    "ko": "뭐 좀 가져갈까요?",
+    "ex_en": "Should I bring anything, or is it all covered?",
+    "ex_ko": "뭐 좀 가져갈까요, 아니면 다 준비되어 있어요?",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E860",
+    "en": "Sorry, I have a prior engagement.",
+    "ko": "죄송해요, 선약이 있어요.",
+    "ex_en": "Sorry, I have a prior engagement that evening.",
+    "ex_ko": "죄송해요, 그날 저녁엔 선약이 있어요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E861",
+    "en": "Let's split up and meet back here.",
+    "ko": "흩어졌다가 여기서 다시 만나요.",
+    "ex_en": "We'll cover more ground — let's split up and meet back here at four.",
+    "ex_ko": "더 많이 둘러볼 수 있어요. 흩어졌다가 네 시에 여기서 다시 만나요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E862",
+    "en": "I'm on my way.",
+    "ko": "가는 중이에요.",
+    "ex_en": "I just left the house — I'm on my way.",
+    "ex_ko": "방금 집에서 나왔어요. 가는 중이에요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E863",
+    "en": "Save me a seat.",
+    "ko": "자리 좀 맡아 줘요.",
+    "ex_en": "I'll be five minutes — save me a seat.",
+    "ex_ko": "오 분이면 도착해요. 자리 좀 맡아 줘요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E864",
+    "en": "Let's catch up properly sometime.",
+    "ko": "언제 제대로 얘기 나눠요.",
+    "ex_en": "We only got five minutes — let's catch up properly sometime.",
+    "ex_ko": "오 분밖에 못 봤네요. 언제 제대로 얘기 나눠요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E865",
+    "en": "I'd love to, but I'm booked.",
+    "ko": "가고 싶은데 일정이 꽉 찼어요.",
+    "ex_en": "I'd love to, but I'm booked all next week.",
+    "ex_ko": "가고 싶은데 다음 주는 일정이 꽉 찼어요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E866",
+    "en": "Is it a formal event?",
+    "ko": "격식 차리는 자리인가요?",
+    "ex_en": "I need to know what to wear — is it a formal event?",
+    "ex_ko": "뭘 입을지 정해야 해서요. 격식 차리는 자리인가요?",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E867",
+    "en": "Let's meet at the entrance.",
+    "ko": "입구에서 만나요.",
+    "ex_en": "It's easy to get lost inside — let's meet at the entrance.",
+    "ex_ko": "안에서는 길 잃기 쉬워요. 입구에서 만나요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E868",
+    "en": "I have to head out.",
+    "ko": "이만 가 봐야겠어요.",
+    "ex_en": "It's getting late — I have to head out.",
+    "ex_ko": "늦었네요. 이만 가 봐야겠어요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E869",
+    "en": "Thanks for the invite.",
+    "ko": "초대해 주셔서 감사해요.",
+    "ex_en": "Thanks for the invite — I had a really good time.",
+    "ex_ko": "초대해 주셔서 감사해요. 정말 즐거웠어요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E870",
+    "en": "Let's keep it casual.",
+    "ko": "편하게 하죠.",
+    "ex_en": "No need to dress up — let's keep it casual.",
+    "ex_ko": "차려입을 필요 없어요. 편하게 하죠.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E871",
+    "en": "Can I bring my kids?",
+    "ko": "아이들 데려가도 되나요?",
+    "ex_en": "I don't have a sitter — can I bring my kids?",
+    "ex_ko": "봐 줄 사람이 없어서요. 아이들 데려가도 되나요?",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E872",
+    "en": "Rain check?",
+    "ko": "다음으로 미뤄도 될까요?",
+    "ex_en": "I'm swamped tonight — rain check?",
+    "ex_ko": "오늘 밤은 일이 많아요. 다음으로 미뤄도 될까요?",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E873",
+    "en": "I'll text you the details.",
+    "ko": "자세한 건 문자로 보낼게요.",
+    "ex_en": "I'll text you the details once it's confirmed.",
+    "ex_ko": "확정되면 자세한 건 문자로 보낼게요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E874",
+    "en": "Who else is coming?",
+    "ko": "또 누가 와요?",
+    "ex_en": "Just curious — who else is coming?",
+    "ex_ko": "그냥 궁금해서요. 또 누가 와요?",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E875",
+    "en": "Let's not stay out too late.",
+    "ko": "너무 늦게까지 있지는 말아요.",
+    "ex_en": "I work early tomorrow — let's not stay out too late.",
+    "ex_ko": "내일 아침 일찍 일해요. 너무 늦게까지 있지는 말아요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E876",
+    "en": "It's on me tonight.",
+    "ko": "오늘은 제가 살게요.",
+    "ex_en": "You got it last time — it's on me tonight.",
+    "ex_ko": "지난번엔 사 주셨잖아요. 오늘은 제가 살게요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E877",
+    "en": "Could we push it back an hour?",
+    "ko": "한 시간만 미룰 수 있을까요?",
+    "ex_en": "My meeting ran long — could we push it back an hour?",
+    "ex_ko": "회의가 길어졌어요. 한 시간만 미룰 수 있을까요?",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E878",
+    "en": "I'll walk you out.",
+    "ko": "배웅해 드릴게요.",
+    "ex_en": "It's dark outside — I'll walk you out.",
+    "ex_ko": "밖이 어두워요. 배웅해 드릴게요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E879",
+    "en": "Let me know when you get home.",
+    "ko": "집에 도착하면 연락 줘요.",
+    "ex_en": "Text me — let me know when you get home.",
+    "ex_ko": "문자 줘요. 집에 도착하면 연락 줘요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E880",
+    "en": "We should plan something.",
+    "ko": "뭔가 계획을 잡아 봐요.",
+    "ex_en": "Summer's almost over — we should plan something.",
+    "ex_ko": "여름이 다 가요. 뭔가 계획을 잡아 봐요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E881",
+    "en": "I'm glad you could make it.",
+    "ko": "와 주셔서 기뻐요.",
+    "ex_en": "I know you're busy — I'm glad you could make it.",
+    "ex_ko": "바쁘신 거 아는데 와 주셔서 기뻐요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E882",
+    "en": "Let's take a photo together.",
+    "ko": "같이 사진 찍어요.",
+    "ex_en": "Before everyone leaves, let's take a photo together.",
+    "ex_ko": "다들 가기 전에 같이 사진 찍어요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E883",
+    "en": "Feel free to drop by.",
+    "ko": "편하게 들르세요.",
+    "ex_en": "I'm home all Sunday — feel free to drop by.",
+    "ex_ko": "일요일 내내 집에 있어요. 편하게 들르세요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E884",
+    "en": "It was nice meeting you.",
+    "ko": "만나서 반가웠어요.",
+    "ex_en": "It was nice meeting you — let's stay in touch.",
+    "ex_ko": "만나서 반가웠어요. 연락하고 지내요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E885",
+    "en": "It's muggy out there.",
+    "ko": "밖이 후텁지근해요.",
+    "ex_en": "It's muggy out there, so wear something light.",
+    "ex_ko": "밖이 후텁지근하니까 가볍게 입어요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E886",
+    "en": "The humidity is killing me.",
+    "ko": "습도 때문에 죽겠어요.",
+    "ex_en": "I don't mind the heat, but the humidity is killing me.",
+    "ex_ko": "더위는 괜찮은데 습도 때문에 죽겠어요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E887",
+    "en": "There's a nice breeze today.",
+    "ko": "오늘 바람이 선선하네요.",
+    "ex_en": "There's a nice breeze today, perfect for the terrace.",
+    "ex_ko": "오늘 바람이 선선해서 테라스에 딱이에요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E888",
+    "en": "It looks like it's going to rain.",
+    "ko": "비가 올 것 같아요.",
+    "ex_en": "It looks like it's going to rain, so let's head back early.",
+    "ex_ko": "비가 올 것 같으니 일찍 돌아가요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E889",
+    "en": "The forecast says it'll snow tonight.",
+    "ko": "예보에 오늘 밤 눈이 온대요.",
+    "ex_en": "The forecast says it'll snow tonight, so drive carefully.",
+    "ex_ko": "예보에 오늘 밤 눈이 온다니 운전 조심하세요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E890",
+    "en": "It's finally cooling down.",
+    "ko": "드디어 선선해지네요.",
+    "ex_en": "It's finally cooling down after that long summer.",
+    "ex_ko": "긴 여름이 지나고 드디어 선선해지네요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E891",
+    "en": "We're in for a heat wave.",
+    "ko": "폭염이 올 예정이에요.",
+    "ex_en": "We're in for a heat wave this weekend, so stay hydrated.",
+    "ex_ko": "이번 주말에 폭염이 온다니 물 많이 드세요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E892",
+    "en": "The roads are icy.",
+    "ko": "길이 얼었어요.",
+    "ex_en": "The roads are icy this morning, so take the subway.",
+    "ex_ko": "오늘 아침 길이 얼었으니 지하철 타세요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E893",
+    "en": "Bundle up, it's cold out.",
+    "ko": "따뜻하게 입어요, 밖이 추워요.",
+    "ex_en": "Bundle up, it's cold out and the wind is strong.",
+    "ex_ko": "따뜻하게 입어요, 밖이 춥고 바람도 세요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E894",
+    "en": "I got caught in the rain.",
+    "ko": "비를 쫄딱 맞았어요.",
+    "ex_en": "I got caught in the rain on the way home.",
+    "ex_ko": "집에 오는 길에 비를 쫄딱 맞았어요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E895",
+    "en": "The sun is blazing today.",
+    "ko": "오늘 햇볕이 쨍쨍해요.",
+    "ex_en": "The sun is blazing today, don't forget sunscreen.",
+    "ex_ko": "오늘 햇볕이 쨍쨍하니 선크림 잊지 마세요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E896",
+    "en": "It's been gloomy all week.",
+    "ko": "일주일 내내 흐렸어요.",
+    "ex_en": "It's been gloomy all week and I miss the sunshine.",
+    "ex_ko": "일주일 내내 흐려서 햇빛이 그리워요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E897",
+    "en": "Typhoon season is coming.",
+    "ko": "태풍철이 다가와요.",
+    "ex_en": "Typhoon season is coming, so check the forecast daily.",
+    "ex_ko": "태풍철이 다가오니 매일 예보를 확인하세요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E898",
+    "en": "The cherry blossoms are in full bloom.",
+    "ko": "벚꽃이 활짝 폈어요.",
+    "ex_en": "The cherry blossoms are in full bloom by the river.",
+    "ex_ko": "강가에 벚꽃이 활짝 폈어요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E899",
+    "en": "The leaves are starting to turn.",
+    "ko": "단풍이 들기 시작했어요.",
+    "ex_en": "The leaves are starting to turn up in the mountains.",
+    "ex_ko": "산에는 단풍이 들기 시작했어요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E900",
+    "en": "I can't stand this heat.",
+    "ko": "이 더위 못 참겠어요.",
+    "ex_en": "I can't stand this heat without air conditioning.",
+    "ex_ko": "에어컨 없이는 이 더위 못 참겠어요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E901",
+    "en": "What's the weather like there?",
+    "ko": "거기 날씨는 어때요?",
+    "ex_en": "What's the weather like there? Should I pack a coat?",
+    "ex_ko": "거기 날씨는 어때요? 코트를 챙길까요?",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E902",
+    "en": "It's perfect weather for a picnic.",
+    "ko": "소풍 가기 딱 좋은 날씨예요.",
+    "ex_en": "It's perfect weather for a picnic, let's go to the park.",
+    "ex_ko": "소풍 가기 딱 좋은 날씨니 공원에 가요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E903",
+    "en": "I picked up a new hobby.",
+    "ko": "새 취미를 시작했어요.",
+    "ex_en": "I picked up a new hobby to unwind after work.",
+    "ex_ko": "퇴근 후에 쉬려고 새 취미를 시작했어요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E904",
+    "en": "I'm learning to play the piano.",
+    "ko": "피아노를 배우고 있어요.",
+    "ex_en": "I'm learning to play the piano on weekends.",
+    "ex_ko": "주말마다 피아노를 배우고 있어요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E905",
+    "en": "I collect vinyl records.",
+    "ko": "저는 LP를 모아요.",
+    "ex_en": "I collect vinyl records from the seventies.",
+    "ex_ko": "저는 70년대 LP를 모아요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E906",
+    "en": "I go hiking on weekends.",
+    "ko": "주말에 등산해요.",
+    "ex_en": "I go hiking on weekends to clear my head.",
+    "ex_ko": "머리를 식히려고 주말에 등산해요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E907",
+    "en": "What do you do for fun?",
+    "ko": "취미가 뭐예요?",
+    "ex_en": "What do you do for fun when you're off work?",
+    "ex_ko": "쉬는 날에는 뭐 하며 노세요?",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E908",
+    "en": "I'm hooked on this game.",
+    "ko": "이 게임에 푹 빠졌어요.",
+    "ex_en": "I'm hooked on this game and lost track of time.",
+    "ex_ko": "이 게임에 푹 빠져서 시간 가는 줄 몰랐어요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E909",
+    "en": "I've been getting into baking.",
+    "ko": "요즘 베이킹에 재미 붙였어요.",
+    "ex_en": "I've been getting into baking since the winter.",
+    "ex_ko": "겨울부터 베이킹에 재미 붙였어요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E910",
+    "en": "I signed up for a yoga class.",
+    "ko": "요가 수업을 등록했어요.",
+    "ex_en": "I signed up for a yoga class twice a week.",
+    "ex_ko": "주 2회 요가 수업을 등록했어요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E911",
+    "en": "I read before bed every night.",
+    "ko": "매일 밤 자기 전에 책을 읽어요.",
+    "ex_en": "I read before bed every night to fall asleep faster.",
+    "ex_ko": "더 빨리 잠들려고 매일 밤 자기 전에 책을 읽어요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E912",
+    "en": "I'm training for a marathon.",
+    "ko": "마라톤 준비 중이에요.",
+    "ex_en": "I'm training for a marathon in the spring.",
+    "ex_ko": "봄 마라톤을 준비하고 있어요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E913",
+    "en": "Do you want to join my book club?",
+    "ko": "제 독서 모임에 오실래요?",
+    "ex_en": "Do you want to join my book club? We meet monthly.",
+    "ex_ko": "제 독서 모임에 오실래요? 한 달에 한 번 모여요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E914",
+    "en": "I haven't touched my camera in months.",
+    "ko": "몇 달째 카메라를 안 잡았어요.",
+    "ex_en": "I haven't touched my camera in months because of work.",
+    "ex_ko": "일 때문에 몇 달째 카메라를 안 잡았어요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E915",
+    "en": "I'd like to dispute this transaction.",
+    "ko": "이 거래에 이의를 제기하고 싶어요.",
+    "ex_en": "I'd like to dispute this transaction; I never made it.",
+    "ex_ko": "이 거래에 이의를 제기하고 싶어요. 제가 한 게 아니에요.",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E916",
+    "en": "Suit yourself.",
+    "ko": "마음대로 하세요.",
+    "ex_en": "If you'd rather walk, suit yourself.",
+    "ex_ko": "걸어가고 싶으면 마음대로 하세요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E917",
+    "en": "Fair enough.",
+    "ko": "그 말도 일리 있네요.",
+    "ex_en": "Fair enough, I hadn't thought of it that way.",
+    "ex_ko": "그 말도 일리 있네요, 그렇게는 생각 못 했어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E918",
+    "en": "You have a point.",
+    "ko": "당신 말에 일리가 있어요.",
+    "ex_en": "You have a point, but the timing still worries me.",
+    "ex_ko": "당신 말에 일리가 있는데 시기가 좀 걱정돼요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E919",
+    "en": "Don't mention it.",
+    "ko": "별말씀을요.",
+    "ex_en": "Don't mention it, I was happy to help.",
+    "ex_ko": "별말씀을요, 돕게 되어 기뻤어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E920",
+    "en": "My bad.",
+    "ko": "제 잘못이에요.",
+    "ex_en": "My bad, I sent the file to the wrong person.",
+    "ex_ko": "제 잘못이에요, 파일을 엉뚱한 사람에게 보냈어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E921",
+    "en": "Same here.",
+    "ko": "저도 그래요.",
+    "ex_en": "Same here, I've been exhausted all week.",
+    "ex_ko": "저도 그래요, 일주일 내내 지쳤어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E922",
+    "en": "Look who's talking.",
+    "ko": "사돈 남 말 하시네요.",
+    "ex_en": "You're calling me late? Look who's talking.",
+    "ex_ko": "저더러 늦었다고요? 사돈 남 말 하시네요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E923",
+    "en": "Tell me about it.",
+    "ko": "내 말이 그 말이에요.",
+    "ex_en": "Traffic was awful? Tell me about it.",
+    "ex_ko": "길이 막혔다고요? 내 말이 그 말이에요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E924",
+    "en": "You can say that again.",
+    "ko": "두말하면 잔소리죠.",
+    "ex_en": "That meeting was too long? You can say that again.",
+    "ex_ko": "회의가 너무 길었다고요? 두말하면 잔소리죠.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E925",
+    "en": "Beats me.",
+    "ko": "저도 모르겠어요.",
+    "ex_en": "Why the printer stopped? Beats me.",
+    "ex_ko": "프린터가 왜 멈췄냐고요? 저도 모르겠어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E926",
+    "en": "Better late than never.",
+    "ko": "늦더라도 안 하는 것보단 낫죠.",
+    "ex_en": "He apologized a year later, but better late than never.",
+    "ex_ko": "1년 뒤에 사과했지만 늦더라도 안 하는 것보단 낫죠.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E927",
+    "en": "Better safe than sorry.",
+    "ko": "조심해서 나쁠 것 없어요.",
+    "ex_en": "Bring an extra battery; better safe than sorry.",
+    "ex_ko": "보조 배터리 챙기세요. 조심해서 나쁠 것 없어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E928",
+    "en": "Easy does it.",
+    "ko": "살살 하세요.",
+    "ex_en": "Easy does it, that box is heavier than it looks.",
+    "ex_ko": "살살 하세요, 그 상자 보기보다 무거워요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E929",
+    "en": "First things first.",
+    "ko": "중요한 것부터 하죠.",
+    "ex_en": "First things first, let's fix the login bug.",
+    "ex_ko": "중요한 것부터 하죠, 로그인 오류부터 고칩시다.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E930",
+    "en": "So far so good.",
+    "ko": "지금까지는 괜찮아요.",
+    "ex_en": "We're halfway through and so far so good.",
+    "ex_ko": "절반쯤 왔는데 지금까지는 괜찮아요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E931",
+    "en": "Give it a rest.",
+    "ko": "그만 좀 하세요.",
+    "ex_en": "Give it a rest, we've argued about this all day.",
+    "ex_ko": "그만 좀 하세요, 하루 종일 그 얘기로 다퉜잖아요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E932",
+    "en": "Knock it off.",
+    "ko": "그만둬요.",
+    "ex_en": "Knock it off, people are trying to work.",
+    "ex_ko": "그만둬요, 다들 일하려고 하잖아요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E933",
+    "en": "Keep it down.",
+    "ko": "좀 조용히 해 주세요.",
+    "ex_en": "Could you keep it down? The baby just fell asleep.",
+    "ex_ko": "좀 조용히 해 주실래요? 아기가 방금 잠들었어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E934",
+    "en": "Hear me out.",
+    "ko": "끝까지 들어 보세요.",
+    "ex_en": "Hear me out before you say no.",
+    "ex_ko": "거절하기 전에 끝까지 들어 보세요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E935",
+    "en": "Bear with me.",
+    "ko": "조금만 기다려 주세요.",
+    "ex_en": "Bear with me while I pull up the file.",
+    "ex_ko": "파일 여는 동안 조금만 기다려 주세요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E936",
+    "en": "I take that back.",
+    "ko": "방금 한 말 취소할게요.",
+    "ex_en": "I take that back — the new version is actually faster.",
+    "ex_ko": "방금 한 말 취소할게요. 새 버전이 오히려 더 빨라요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E937",
+    "en": "Count me out.",
+    "ko": "저는 빠질게요.",
+    "ex_en": "If it's another late night, count me out.",
+    "ex_ko": "또 밤샘이면 저는 빠질게요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E938",
+    "en": "Hang on a second.",
+    "ko": "잠깐만요.",
+    "ex_en": "Hang on a second, I think I left my keys inside.",
+    "ex_ko": "잠깐만요, 열쇠를 안에 두고 온 것 같아요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E939",
+    "en": "Speak of the devil.",
+    "ko": "호랑이도 제 말 하면 온다더니.",
+    "ex_en": "Speak of the devil, here she comes now.",
+    "ex_ko": "호랑이도 제 말 하면 온다더니, 저기 오네요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E940",
+    "en": "That figures.",
+    "ko": "그럴 줄 알았어요.",
+    "ex_en": "The store is closed today? That figures.",
+    "ex_ko": "가게가 오늘 문을 닫았다고요? 그럴 줄 알았어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E941",
+    "en": "Don't quote me on this.",
+    "ko": "제 말이라고 하진 마세요.",
+    "ex_en": "Don't quote me on this, but the launch may slip a week.",
+    "ex_ko": "제 말이라고 하진 마세요, 출시가 일주일 밀릴 수도 있어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E942",
+    "en": "Let bygones be bygones.",
+    "ko": "지난 일은 잊어버려요.",
+    "ex_en": "It was years ago; let bygones be bygones.",
+    "ex_ko": "몇 년 전 일이에요. 지난 일은 잊어버려요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E943",
+    "en": "You read my mind.",
+    "ko": "제 마음을 읽으셨네요.",
+    "ex_en": "Coffee? You read my mind.",
+    "ex_ko": "커피요? 제 마음을 읽으셨네요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E944",
+    "en": "Go easy on yourself.",
+    "ko": "자신을 너무 몰아붙이지 마세요.",
+    "ex_en": "It was your first try, so go easy on yourself.",
+    "ex_ko": "첫 시도였잖아요, 자신을 너무 몰아붙이지 마세요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E945",
+    "en": "Don't get me started.",
+    "ko": "그 얘기 꺼내지도 마세요.",
+    "ex_en": "The new policy? Don't get me started.",
+    "ex_ko": "새 정책이요? 그 얘기 꺼내지도 마세요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E946",
+    "en": "Don't push it.",
+    "ko": "너무 나가지 마세요.",
+    "ex_en": "I said maybe, so don't push it.",
+    "ex_ko": "아마도라고 했잖아요, 너무 나가지 마세요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E947",
+    "en": "Don't sweat it.",
+    "ko": "신경 쓰지 마세요.",
+    "ex_en": "You spilled a little coffee? Don't sweat it.",
+    "ex_ko": "커피 좀 쏟았다고요? 신경 쓰지 마세요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E948",
+    "en": "Don't get your hopes up.",
+    "ko": "너무 기대하지는 마세요.",
+    "ex_en": "They might call back, but don't get your hopes up.",
+    "ex_ko": "연락이 올 수도 있지만 너무 기대하지는 마세요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E949",
+    "en": "Don't blow it out of proportion.",
+    "ko": "일을 크게 만들지 마세요.",
+    "ex_en": "It was one typo; don't blow it out of proportion.",
+    "ex_ko": "오타 하나였어요, 일을 크게 만들지 마세요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E950",
+    "en": "You're overthinking it.",
+    "ko": "너무 깊게 생각하고 있어요.",
+    "ex_en": "You're overthinking it; just send the message.",
+    "ex_ko": "너무 깊게 생각하고 있어요, 그냥 메시지 보내세요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E951",
+    "en": "You're reading too much into it.",
+    "ko": "너무 확대 해석하고 있어요.",
+    "ex_en": "It was a short reply; you're reading too much into it.",
+    "ex_ko": "짧게 답한 것뿐인데 너무 확대 해석하고 있어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E952",
+    "en": "You'll get used to it.",
+    "ko": "곧 익숙해질 거예요.",
+    "ex_en": "The commute is long, but you'll get used to it.",
+    "ex_ko": "출퇴근이 길지만 곧 익숙해질 거예요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E953",
+    "en": "You'll thank me later.",
+    "ko": "나중에 고마워할 거예요.",
+    "ex_en": "Back it up now; you'll thank me later.",
+    "ex_ko": "지금 백업해 두세요, 나중에 고마워할 거예요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E954",
+    "en": "It's a long shot.",
+    "ko": "가능성은 낮은 시도예요.",
+    "ex_en": "It's a long shot, but let's ask them anyway.",
+    "ex_ko": "가능성은 낮지만 그래도 물어봅시다.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E955",
+    "en": "That's on me.",
+    "ko": "그건 제 책임이에요.",
+    "ex_en": "The deadline slipped and that's on me.",
+    "ex_ko": "마감을 놓친 건 제 책임이에요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E956",
+    "en": "That's on you.",
+    "ko": "그건 당신 책임이에요.",
+    "ex_en": "You skipped the review, so that's on you.",
+    "ex_ko": "검토를 건너뛰었으니 그건 당신 책임이에요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E957",
+    "en": "Your call.",
+    "ko": "당신이 결정하세요.",
+    "ex_en": "We can go now or later — your call.",
+    "ex_ko": "지금 가도 되고 나중에 가도 돼요. 당신이 결정하세요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E958",
+    "en": "Whatever works for you.",
+    "ko": "편하신 대로 하세요.",
+    "ex_en": "Friday or Monday, whatever works for you.",
+    "ex_ko": "금요일이든 월요일이든 편하신 대로 하세요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E959",
+    "en": "Any time now.",
+    "ko": "곧 올 거예요.",
+    "ex_en": "The delivery should arrive any time now.",
+    "ex_ko": "택배가 곧 올 거예요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E960",
+    "en": "Sooner or later.",
+    "ko": "조만간에는요.",
+    "ex_en": "Sooner or later we'll have to replace this laptop.",
+    "ex_ko": "조만간 이 노트북을 바꿔야 할 거예요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E961",
+    "en": "Once in a blue moon.",
+    "ko": "아주 가끔요.",
+    "ex_en": "We meet once in a blue moon these days.",
+    "ex_ko": "요즘은 아주 가끔 만나요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E962",
+    "en": "Out of the blue.",
+    "ko": "난데없이요.",
+    "ex_en": "He called me out of the blue after ten years.",
+    "ex_ko": "10년 만에 난데없이 전화가 왔어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E963",
+    "en": "In the long run.",
+    "ko": "길게 보면요.",
+    "ex_en": "In the long run, this will save us money.",
+    "ex_ko": "길게 보면 이게 돈을 아껴 줄 거예요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E964",
+    "en": "For the time being.",
+    "ko": "당분간은요.",
+    "ex_en": "For the time being, let's keep the old system.",
+    "ex_ko": "당분간은 기존 시스템을 쓰죠.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E965",
+    "en": "All things considered.",
+    "ko": "모든 걸 감안하면요.",
+    "ex_en": "All things considered, the trip went well.",
+    "ex_ko": "모든 걸 감안하면 여행은 잘 다녀왔어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E966",
+    "en": "On second thought.",
+    "ko": "다시 생각해 보니.",
+    "ex_en": "On second thought, let's take the earlier train.",
+    "ex_ko": "다시 생각해 보니 이른 기차를 타죠.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E967",
+    "en": "To be honest with you.",
+    "ko": "솔직히 말씀드리면.",
+    "ex_en": "To be honest with you, I'd rather stay home.",
+    "ex_ko": "솔직히 말씀드리면 집에 있고 싶어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E968",
+    "en": "If it's not too much trouble.",
+    "ko": "많이 번거롭지 않으시다면.",
+    "ex_en": "Could you check this, if it's not too much trouble?",
+    "ex_ko": "많이 번거롭지 않으시면 이것 좀 봐 주실래요?",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E969",
+    "en": "If all else fails.",
+    "ko": "다른 방법이 다 안 되면.",
+    "ex_en": "If all else fails, we'll rebook for next week.",
+    "ex_ko": "다른 방법이 다 안 되면 다음 주로 다시 예약하죠.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E970",
+    "en": "As far as I know.",
+    "ko": "제가 아는 한은요.",
+    "ex_en": "As far as I know, the office is closed tomorrow.",
+    "ex_ko": "제가 아는 한 내일은 사무실이 쉬어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E971",
+    "en": "As luck would have it.",
+    "ko": "운 좋게도.",
+    "ex_en": "As luck would have it, there was one seat left.",
+    "ex_ko": "운 좋게도 자리가 하나 남아 있었어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E972",
+    "en": "Come to think of it.",
+    "ko": "생각해 보니까.",
+    "ex_en": "Come to think of it, I've met him before.",
+    "ex_ko": "생각해 보니까 그분을 전에 만난 적이 있어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E973",
+    "en": "Now that you mention it.",
+    "ko": "말씀하시니 생각나는데.",
+    "ex_en": "Now that you mention it, the noise did stop.",
+    "ex_ko": "말씀하시니 생각나는데 소음이 멈추긴 했어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E974",
+    "en": "Not that I know of.",
+    "ko": "제가 알기로는 아니에요.",
+    "ex_en": "Has the schedule changed? Not that I know of.",
+    "ex_ko": "일정이 바뀌었나요? 제가 알기로는 아니에요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E975",
+    "en": "Not by a long shot.",
+    "ko": "어림도 없어요.",
+    "ex_en": "Are we done? Not by a long shot.",
+    "ex_ko": "다 끝났냐고요? 어림도 없어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E976",
+    "en": "Not in a million years.",
+    "ko": "절대로 안 돼요.",
+    "ex_en": "Would I go back there? Not in a million years.",
+    "ex_ko": "거기 다시 가겠냐고요? 절대로 안 가요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E977",
+    "en": "Chances are slim.",
+    "ko": "가능성이 희박해요.",
+    "ex_en": "Chances are slim, but it's worth applying.",
+    "ex_ko": "가능성은 희박하지만 지원해 볼 만해요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E978",
+    "en": "It's touch and go.",
+    "ko": "아슬아슬해요.",
+    "ex_en": "The launch date is touch and go right now.",
+    "ex_ko": "출시 날짜가 지금은 아슬아슬해요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E979",
+    "en": "It's up in the air.",
+    "ko": "아직 정해지지 않았어요.",
+    "ex_en": "The venue is still up in the air.",
+    "ex_ko": "장소는 아직 정해지지 않았어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E980",
+    "en": "It's neither here nor there.",
+    "ko": "그건 중요한 게 아니에요.",
+    "ex_en": "Who suggested it is neither here nor there.",
+    "ex_ko": "누가 제안했는지는 중요한 게 아니에요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E981",
+    "en": "It's the thought that counts.",
+    "ko": "마음이 중요한 거죠.",
+    "ex_en": "The gift was tiny, but it's the thought that counts.",
+    "ex_ko": "선물은 작았지만 마음이 중요한 거죠.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E982",
+    "en": "It's better than nothing.",
+    "ko": "없는 것보다는 나아요.",
+    "ex_en": "A partial refund is better than nothing.",
+    "ex_ko": "일부 환불이라도 없는 것보다는 나아요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E983",
+    "en": "It's not rocket science.",
+    "ko": "그렇게 어려운 일 아니에요.",
+    "ex_en": "Just follow the steps; it's not rocket science.",
+    "ex_ko": "순서대로만 하세요. 그렇게 어려운 일 아니에요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E984",
+    "en": "It's a no-brainer.",
+    "ko": "고민할 필요도 없어요.",
+    "ex_en": "Half the price for the same thing? It's a no-brainer.",
+    "ex_ko": "같은 걸 반값에요? 고민할 필요도 없죠.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E985",
+    "en": "It happens to the best of us.",
+    "ko": "누구나 그럴 수 있어요.",
+    "ex_en": "You forgot the password? It happens to the best of us.",
+    "ex_ko": "비밀번호를 잊으셨다고요? 누구나 그럴 수 있어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E986",
+    "en": "Time flies.",
+    "ko": "시간 참 빠르네요.",
+    "ex_en": "Time flies — it's already December.",
+    "ex_ko": "시간 참 빠르네요, 벌써 12월이에요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E987",
+    "en": "Time will tell.",
+    "ko": "시간이 말해 주겠죠.",
+    "ex_en": "Whether it works, time will tell.",
+    "ex_ko": "잘될지는 시간이 말해 주겠죠.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E988",
+    "en": "Old habits die hard.",
+    "ko": "오랜 습관은 잘 안 고쳐져요.",
+    "ex_en": "I still write it by hand; old habits die hard.",
+    "ex_ko": "아직도 손으로 적어요. 오랜 습관은 잘 안 고쳐지네요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E989",
+    "en": "Let's leave it at that.",
+    "ko": "이쯤에서 마무리하죠.",
+    "ex_en": "We've covered enough for today, so let's leave it at that.",
+    "ex_ko": "오늘은 충분히 다뤘으니 이쯤에서 마무리하죠.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E990",
+    "en": "Actions speak louder than words.",
+    "ko": "말보다 행동이죠.",
+    "ex_en": "He promised a lot, but actions speak louder than words.",
+    "ex_ko": "약속은 많이 했지만 말보다 행동이죠.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E991",
+    "en": "Two heads are better than one.",
+    "ko": "백지장도 맞들면 낫죠.",
+    "ex_en": "Let's solve it together; two heads are better than one.",
+    "ex_ko": "같이 풀어 봐요. 백지장도 맞들면 낫잖아요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E992",
+    "en": "There's no place like home.",
+    "ko": "집만 한 곳이 없어요.",
+    "ex_en": "After two weeks away, there's no place like home.",
+    "ex_ko": "2주 만에 돌아오니 집만 한 곳이 없네요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E993",
+    "en": "There's always next time.",
+    "ko": "다음 기회가 있잖아요.",
+    "ex_en": "We missed it today, but there's always next time.",
+    "ex_ko": "오늘은 놓쳤지만 다음 기회가 있잖아요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E994",
+    "en": "Rome wasn't built in a day.",
+    "ko": "로마는 하루아침에 이뤄지지 않았어요.",
+    "ex_en": "Give it time — Rome wasn't built in a day.",
+    "ex_ko": "시간을 주세요. 로마는 하루아침에 이뤄지지 않았어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E995",
+    "en": "You win some, you lose some.",
+    "ko": "이길 때도 있고 질 때도 있죠.",
+    "ex_en": "We lost that client, but you win some, you lose some.",
+    "ex_ko": "그 고객은 놓쳤지만 이길 때도 있고 질 때도 있죠.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E996",
+    "en": "It could be worse.",
+    "ko": "이만하길 다행이에요.",
+    "ex_en": "The car is scratched, but it could be worse.",
+    "ex_ko": "차가 긁혔지만 이만하길 다행이에요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E997",
+    "en": "So be it.",
+    "ko": "그럼 그렇게 하죠.",
+    "ex_en": "If they won't budge, so be it.",
+    "ex_ko": "저쪽이 물러서지 않으면 그럼 그렇게 하죠.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E998",
+    "en": "Here goes nothing.",
+    "ko": "에라 모르겠다, 해 보죠.",
+    "ex_en": "I've never done this before — here goes nothing.",
+    "ex_ko": "처음 해 보는 건데, 에라 모르겠다 해 보죠.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E999",
+    "en": "Wish me luck.",
+    "ko": "행운을 빌어 주세요.",
+    "ex_en": "My interview is at three, so wish me luck.",
+    "ex_ko": "3시에 면접이에요, 행운을 빌어 주세요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E1000",
+    "en": "I'll leave it up to you.",
+    "ko": "당신에게 맡길게요.",
+    "ex_en": "You know the team best, so I'll leave it up to you.",
+    "ex_ko": "팀을 제일 잘 아시니 당신에게 맡길게요.",
+    "topic": "일상 표현"
   }
 ]

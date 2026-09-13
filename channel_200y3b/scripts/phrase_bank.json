@@ -2910,5 +2910,5093 @@
     "example_en": "I binge-watched the whole series in one weekend.",
     "example_ko": "주말 동안 그 시리즈를 정주행했어요.",
     "topic": "날씨·취미"
+  },
+  {
+    "id": "E365",
+    "phrase_en": "Let's circle back on this.",
+    "meaning_ko": "이 건은 나중에 다시 얘기하죠.",
+    "example_en": "We're short on time, so let's circle back on this tomorrow.",
+    "example_ko": "시간이 부족하니 이 건은 내일 다시 얘기하죠.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E366",
+    "phrase_en": "I'll take the minutes.",
+    "meaning_ko": "제가 회의록 쓸게요.",
+    "example_en": "You lead the discussion and I'll take the minutes.",
+    "example_ko": "진행은 맡아 주시면 제가 회의록 쓸게요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E367",
+    "phrase_en": "Can we table that for now?",
+    "meaning_ko": "그건 일단 보류할까요?",
+    "example_en": "It's a good point, but can we table that for now?",
+    "example_ko": "좋은 지적이지만 일단 보류할까요?",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E368",
+    "phrase_en": "I'm swamped this week.",
+    "meaning_ko": "이번 주는 일이 너무 많아요.",
+    "example_en": "I'd love to help, but I'm swamped this week.",
+    "example_ko": "돕고 싶은데 이번 주는 일이 너무 많아요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E369",
+    "phrase_en": "Let's sync up on Monday.",
+    "meaning_ko": "월요일에 한번 맞춰 봐요.",
+    "example_en": "Nothing urgent — let's sync up on Monday.",
+    "example_ko": "급한 건 아니니 월요일에 한번 맞춰 봐요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E370",
+    "phrase_en": "Who's the point of contact?",
+    "meaning_ko": "담당자가 누구예요?",
+    "example_en": "If something breaks, who's the point of contact?",
+    "example_ko": "문제가 생기면 담당자가 누구예요?",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E371",
+    "phrase_en": "I'll draft something up.",
+    "meaning_ko": "제가 초안 하나 잡아 볼게요.",
+    "example_en": "Give me until Thursday and I'll draft something up.",
+    "example_ko": "목요일까지만 주시면 제가 초안 하나 잡아 볼게요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E372",
+    "phrase_en": "That's not my call.",
+    "meaning_ko": "그건 제가 결정할 일이 아니에요.",
+    "example_en": "I'd approve it myself, but that's not my call.",
+    "example_ko": "저라면 승인하겠지만 제가 결정할 일이 아니에요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E373",
+    "phrase_en": "Let's get everyone on the same page.",
+    "meaning_ko": "다들 인식을 좀 맞추죠.",
+    "example_en": "Before we start building, let's get everyone on the same page.",
+    "example_ko": "만들기 시작하기 전에 다들 인식을 좀 맞추죠.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E374",
+    "phrase_en": "I'll circulate the deck.",
+    "meaning_ko": "자료는 제가 돌릴게요.",
+    "example_en": "I'll circulate the deck before the meeting.",
+    "example_ko": "회의 전에 자료는 제가 돌릴게요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E375",
+    "phrase_en": "Can you cover for me?",
+    "meaning_ko": "제 일 좀 대신 봐 주실 수 있어요?",
+    "example_en": "I'm out Friday — can you cover for me?",
+    "example_ko": "금요일에 자리를 비우는데 제 일 좀 대신 봐 주실 수 있어요?",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E376",
+    "phrase_en": "Let's park that idea.",
+    "meaning_ko": "그 아이디어는 잠시 접어 두죠.",
+    "example_en": "Let's park that idea until we have the budget.",
+    "example_ko": "예산이 잡힐 때까지 그 아이디어는 잠시 접어 두죠.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E377",
+    "phrase_en": "I'm on a call right now.",
+    "meaning_ko": "지금 통화 중이에요.",
+    "example_en": "Sorry, I'm on a call right now — give me ten minutes.",
+    "example_ko": "죄송해요, 지금 통화 중이라 십 분만요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E378",
+    "phrase_en": "Could you sign off on this?",
+    "meaning_ko": "이거 최종 승인해 주실 수 있어요?",
+    "example_en": "The numbers are final — could you sign off on this?",
+    "example_ko": "숫자는 확정됐어요. 최종 승인해 주실 수 있어요?",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E379",
+    "phrase_en": "Let's keep it brief.",
+    "meaning_ko": "짧게 갑시다.",
+    "example_en": "We only have fifteen minutes, so let's keep it brief.",
+    "example_ko": "십오 분밖에 없으니 짧게 갑시다.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E380",
+    "phrase_en": "I'll handle the rest.",
+    "meaning_ko": "나머지는 제가 처리할게요.",
+    "example_en": "Just send me the file and I'll handle the rest.",
+    "example_ko": "파일만 보내 주시면 나머지는 제가 처리할게요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E381",
+    "phrase_en": "We're behind on this one.",
+    "meaning_ko": "이 건은 일정이 밀렸어요.",
+    "example_en": "I won't sugarcoat it — we're behind on this one.",
+    "example_ko": "돌려 말하지 않을게요. 이 건은 일정이 밀렸어요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E382",
+    "phrase_en": "Let's set some ground rules.",
+    "meaning_ko": "기본 규칙부터 정하죠.",
+    "example_en": "Before the workshop starts, let's set some ground rules.",
+    "example_ko": "워크숍 시작 전에 기본 규칙부터 정하죠.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E383",
+    "phrase_en": "I'll ping you later.",
+    "meaning_ko": "이따 메시지 드릴게요.",
+    "example_en": "I'm heading into a meeting — I'll ping you later.",
+    "example_ko": "회의 들어가는 중이라 이따 메시지 드릴게요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E384",
+    "phrase_en": "That's above my pay grade.",
+    "meaning_ko": "그건 제 선에서 답할 수 없어요.",
+    "example_en": "Honestly, that's above my pay grade.",
+    "example_ko": "솔직히 그건 제 선에서 답할 수 없어요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E385",
+    "phrase_en": "Let's divide and conquer.",
+    "meaning_ko": "나눠서 처리하죠.",
+    "example_en": "There's too much for one person — let's divide and conquer.",
+    "example_ko": "혼자 하기엔 너무 많으니 나눠서 처리하죠.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E386",
+    "phrase_en": "I'll block off some time.",
+    "meaning_ko": "시간을 좀 비워 둘게요.",
+    "example_en": "I'll block off some time Thursday afternoon.",
+    "example_ko": "목요일 오후에 시간을 좀 비워 둘게요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E387",
+    "phrase_en": "Are we all set?",
+    "meaning_ko": "다 준비됐나요?",
+    "example_en": "The client joins in five minutes — are we all set?",
+    "example_ko": "오 분 뒤에 고객사가 들어와요. 다 준비됐나요?",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E388",
+    "phrase_en": "Let's not reinvent the wheel.",
+    "meaning_ko": "있는 걸 두고 처음부터 만들진 맙시다.",
+    "example_en": "There's a template already — let's not reinvent the wheel.",
+    "example_ko": "템플릿이 이미 있어요. 있는 걸 두고 처음부터 만들진 맙시다.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E389",
+    "phrase_en": "I'd like to weigh in on that.",
+    "meaning_ko": "그 부분에 의견을 좀 보태고 싶어요.",
+    "example_en": "Before we vote, I'd like to weigh in on that.",
+    "example_ko": "표결하기 전에 그 부분에 의견을 좀 보태고 싶어요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E390",
+    "phrase_en": "Let's take a five-minute break.",
+    "meaning_ko": "오 분만 쉬었다 하죠.",
+    "example_en": "We've been at this for two hours — let's take a five-minute break.",
+    "example_ko": "두 시간째예요. 오 분만 쉬었다 하죠.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E391",
+    "phrase_en": "I'll own that action item.",
+    "meaning_ko": "그 할 일은 제가 맡을게요.",
+    "example_en": "Put my name down — I'll own that action item.",
+    "example_ko": "제 이름으로 적어 주세요. 그 할 일은 제가 맡을게요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E392",
+    "phrase_en": "Can we get a headcount?",
+    "meaning_ko": "인원 파악 좀 할까요?",
+    "example_en": "Before I book the room, can we get a headcount?",
+    "example_ko": "회의실 잡기 전에 인원 파악 좀 할까요?",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E393",
+    "phrase_en": "That slipped through the cracks.",
+    "meaning_ko": "그건 관리에서 빠졌네요.",
+    "example_en": "You're right, that slipped through the cracks — I'll fix it today.",
+    "example_ko": "맞아요, 그건 관리에서 빠졌네요. 오늘 처리할게요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E394",
+    "phrase_en": "Let's raise the bar.",
+    "meaning_ko": "기준을 좀 더 높여 봅시다.",
+    "example_en": "The last release was fine, but let's raise the bar.",
+    "example_ko": "지난 릴리스도 괜찮았지만 기준을 좀 더 높여 봅시다.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E395",
+    "phrase_en": "I'm playing catch-up.",
+    "meaning_ko": "밀린 걸 따라잡는 중이에요.",
+    "example_en": "I was out sick, so I'm playing catch-up.",
+    "example_ko": "병가를 써서 밀린 걸 따라잡는 중이에요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E396",
+    "phrase_en": "Could you take this offline with him?",
+    "meaning_ko": "그건 그분과 따로 얘기해 주실래요?",
+    "example_en": "It's a detail — could you take this offline with him?",
+    "example_ko": "세부 사항이니 그건 그분과 따로 얘기해 주실래요?",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E397",
+    "phrase_en": "Let's move the needle on this.",
+    "meaning_ko": "이 건에서 실질적인 진전을 냅시다.",
+    "example_en": "We've talked enough — let's move the needle on this.",
+    "example_ko": "얘기는 충분히 했어요. 실질적인 진전을 냅시다.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E398",
+    "phrase_en": "I'll run it by my manager.",
+    "meaning_ko": "팀장님께 한번 여쭤 볼게요.",
+    "example_en": "It sounds reasonable — I'll run it by my manager.",
+    "example_ko": "합리적으로 들리네요. 팀장님께 한번 여쭤 볼게요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E399",
+    "phrase_en": "We're stretched thin.",
+    "meaning_ko": "인력이 너무 부족해요.",
+    "example_en": "We can't take on another project — we're stretched thin.",
+    "example_ko": "프로젝트를 더 받을 수 없어요. 인력이 너무 부족해요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E400",
+    "phrase_en": "Let's put a pin in it.",
+    "meaning_ko": "그건 표시해 두고 넘어가죠.",
+    "example_en": "Interesting, but let's put a pin in it for now.",
+    "example_ko": "흥미롭지만 일단 표시해 두고 넘어가죠.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E401",
+    "phrase_en": "I'll be out of office next week.",
+    "meaning_ko": "다음 주에 자리를 비웁니다.",
+    "example_en": "Just so you know, I'll be out of office next week.",
+    "example_ko": "참고로 다음 주에 자리를 비웁니다.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E402",
+    "phrase_en": "Could you double-check the numbers?",
+    "meaning_ko": "숫자 좀 다시 확인해 주실래요?",
+    "example_en": "Before this goes out, could you double-check the numbers?",
+    "example_ko": "발송 전에 숫자 좀 다시 확인해 주실래요?",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E403",
+    "phrase_en": "Let's keep the scope tight.",
+    "meaning_ko": "범위를 좁게 잡읍시다.",
+    "example_en": "We only have a month, so let's keep the scope tight.",
+    "example_ko": "한 달밖에 없으니 범위를 좁게 잡읍시다.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E404",
+    "phrase_en": "I'm not following.",
+    "meaning_ko": "이해가 잘 안 돼요.",
+    "example_en": "Sorry, I'm not following — could you back up a step?",
+    "example_ko": "죄송해요, 이해가 잘 안 돼요. 한 단계 앞으로 돌아가 주실래요?",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E405",
+    "phrase_en": "Let's revisit this next quarter.",
+    "meaning_ko": "다음 분기에 다시 보죠.",
+    "example_en": "The timing isn't right — let's revisit this next quarter.",
+    "example_ko": "시기가 안 맞네요. 다음 분기에 다시 보죠.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E406",
+    "phrase_en": "I'll escalate it.",
+    "meaning_ko": "윗선에 보고할게요.",
+    "example_en": "If they don't respond by Friday, I'll escalate it.",
+    "example_ko": "금요일까지 답이 없으면 윗선에 보고할게요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E407",
+    "phrase_en": "Can we timebox this?",
+    "meaning_ko": "이건 시간을 정해 놓고 할까요?",
+    "example_en": "This could go on forever — can we timebox this to ten minutes?",
+    "example_ko": "끝없이 갈 수 있으니 십 분으로 정해 놓고 할까요?",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E408",
+    "phrase_en": "Let's align on the goal first.",
+    "meaning_ko": "목표부터 맞추죠.",
+    "example_en": "Before we argue about the method, let's align on the goal first.",
+    "example_ko": "방법을 두고 다투기 전에 목표부터 맞추죠.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E409",
+    "phrase_en": "I'll take that as a yes.",
+    "meaning_ko": "동의하신 걸로 알겠습니다.",
+    "example_en": "No objections? I'll take that as a yes.",
+    "example_ko": "반대 없으시죠? 동의하신 걸로 알겠습니다.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E410",
+    "phrase_en": "We need to prioritize.",
+    "meaning_ko": "우선순위를 정해야 해요.",
+    "example_en": "We can't do all five — we need to prioritize.",
+    "example_ko": "다섯 개를 다 할 순 없어요. 우선순위를 정해야 해요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E411",
+    "phrase_en": "Let's do a quick round table.",
+    "meaning_ko": "돌아가면서 짧게 얘기해 보죠.",
+    "example_en": "Before we close, let's do a quick round table.",
+    "example_ko": "마치기 전에 돌아가면서 짧게 얘기해 보죠.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E412",
+    "phrase_en": "That's a hard deadline.",
+    "meaning_ko": "그건 조정 불가능한 마감이에요.",
+    "example_en": "The launch is the fifteenth and that's a hard deadline.",
+    "example_ko": "출시는 십오 일이고 조정 불가능한 마감이에요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E413",
+    "phrase_en": "I'll loop in the design team.",
+    "meaning_ko": "디자인팀도 참여시킬게요.",
+    "example_en": "This affects the UI, so I'll loop in the design team.",
+    "example_ko": "화면에 영향을 주니 디자인팀도 참여시킬게요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E414",
+    "phrase_en": "Let's not overengineer it.",
+    "meaning_ko": "너무 복잡하게 만들지 맙시다.",
+    "example_en": "It's a one-off script — let's not overengineer it.",
+    "example_ko": "한 번 쓰고 말 스크립트예요. 너무 복잡하게 만들지 맙시다.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E415",
+    "phrase_en": "Could you give me a ballpark?",
+    "meaning_ko": "대략적인 수치라도 알려 주실래요?",
+    "example_en": "I don't need it exact — could you give me a ballpark?",
+    "example_ko": "정확하지 않아도 돼요. 대략적인 수치라도 알려 주실래요?",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E416",
+    "phrase_en": "I'm heads-down on this.",
+    "meaning_ko": "이거에 집중하고 있어요.",
+    "example_en": "I'm heads-down on this until lunch.",
+    "example_ko": "점심때까지는 이거에 집중하고 있어요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E417",
+    "phrase_en": "Let's document that decision.",
+    "meaning_ko": "그 결정은 기록해 둡시다.",
+    "example_en": "We'll forget the reasoning — let's document that decision.",
+    "example_ko": "이유를 잊어버릴 거예요. 그 결정은 기록해 둡시다.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E418",
+    "phrase_en": "Thanks for flagging that.",
+    "meaning_ko": "짚어 주셔서 고마워요.",
+    "example_en": "Thanks for flagging that — I hadn't noticed.",
+    "example_ko": "짚어 주셔서 고마워요. 미처 못 봤어요.",
+    "topic": "직장·회의"
+  },
+  {
+    "id": "E419",
+    "phrase_en": "May I ask who's calling?",
+    "meaning_ko": "실례지만 누구시죠?",
+    "example_en": "Good morning — may I ask who's calling?",
+    "example_ko": "안녕하세요, 실례지만 누구시죠?",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E420",
+    "phrase_en": "I'll transfer you now.",
+    "meaning_ko": "바로 연결해 드릴게요.",
+    "example_en": "That's the billing team — I'll transfer you now.",
+    "example_ko": "청구 담당 부서네요. 바로 연결해 드릴게요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E421",
+    "phrase_en": "The line is busy.",
+    "meaning_ko": "통화 중이네요.",
+    "example_en": "I tried twice, but the line is busy.",
+    "example_ko": "두 번 걸었는데 통화 중이네요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E422",
+    "phrase_en": "Could I call you back in ten minutes?",
+    "meaning_ko": "십 분 뒤에 다시 걸어도 될까요?",
+    "example_en": "I'm driving — could I call you back in ten minutes?",
+    "example_ko": "운전 중이라서요. 십 분 뒤에 다시 걸어도 될까요?",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E423",
+    "phrase_en": "You have the wrong number.",
+    "meaning_ko": "전화 잘못 거셨어요.",
+    "example_en": "There's no one here by that name — you have the wrong number.",
+    "example_ko": "그런 분 안 계세요. 전화 잘못 거셨어요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E424",
+    "phrase_en": "I'm just calling to confirm.",
+    "meaning_ko": "확인차 전화드렸어요.",
+    "example_en": "I'm just calling to confirm our appointment tomorrow.",
+    "example_ko": "내일 예약 확인차 전화드렸어요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E425",
+    "phrase_en": "Let me check and get back to you.",
+    "meaning_ko": "확인해 보고 다시 연락드릴게요.",
+    "example_en": "I don't have that in front of me — let me check and get back to you.",
+    "example_ko": "지금 자료가 없어서요. 확인해 보고 다시 연락드릴게요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E426",
+    "phrase_en": "Sorry, we got disconnected.",
+    "meaning_ko": "죄송해요, 전화가 끊겼네요.",
+    "example_en": "Sorry, we got disconnected — where were we?",
+    "example_ko": "죄송해요, 전화가 끊겼네요. 어디까지 얘기했죠?",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E427",
+    "phrase_en": "Could you spell that for me?",
+    "meaning_ko": "철자 좀 불러 주시겠어요?",
+    "example_en": "I want to get the name right — could you spell that for me?",
+    "example_ko": "이름을 정확히 적고 싶어서요. 철자 좀 불러 주시겠어요?",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E428",
+    "phrase_en": "I'll keep this short.",
+    "meaning_ko": "짧게 말씀드릴게요.",
+    "example_en": "I know you're busy, so I'll keep this short.",
+    "example_ko": "바쁘신 거 아니까 짧게 말씀드릴게요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E429",
+    "phrase_en": "Please disregard my last email.",
+    "meaning_ko": "이전 메일은 무시해 주세요.",
+    "example_en": "Please disregard my last email — I sent the wrong version.",
+    "example_ko": "이전 메일은 무시해 주세요. 잘못된 버전을 보냈어요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E430",
+    "phrase_en": "I'm following up on my previous message.",
+    "meaning_ko": "지난 메일 관련해 다시 연락드립니다.",
+    "example_en": "I'm following up on my previous message from last Tuesday.",
+    "example_ko": "지난 화요일 메일 관련해 다시 연락드립니다.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E431",
+    "phrase_en": "Let me know a time that works.",
+    "meaning_ko": "편한 시간 알려 주세요.",
+    "example_en": "I'm flexible this week — let me know a time that works.",
+    "example_ko": "이번 주는 일정이 여유로워요. 편한 시간 알려 주세요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E432",
+    "phrase_en": "I've copied my colleague on this.",
+    "meaning_ko": "동료를 참조에 넣었습니다.",
+    "example_en": "I've copied my colleague on this since she handles refunds.",
+    "example_ko": "환불 담당이라 동료를 참조에 넣었습니다.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E433",
+    "phrase_en": "Apologies for the confusion.",
+    "meaning_ko": "혼선을 드려 죄송합니다.",
+    "example_en": "Apologies for the confusion — here is the correct schedule.",
+    "example_ko": "혼선을 드려 죄송합니다. 올바른 일정 보내 드립니다.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E434",
+    "phrase_en": "Could you confirm receipt?",
+    "meaning_ko": "수신 확인 부탁드려요.",
+    "example_en": "The contract is attached — could you confirm receipt?",
+    "example_ko": "계약서 첨부했습니다. 수신 확인 부탁드려요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E435",
+    "phrase_en": "I'm reaching out because of the delay.",
+    "meaning_ko": "지연 건으로 연락드립니다.",
+    "example_en": "I'm reaching out because of the delay on order 3021.",
+    "example_ko": "3021번 주문 지연 건으로 연락드립니다.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E436",
+    "phrase_en": "Feel free to reach out anytime.",
+    "meaning_ko": "언제든 편하게 연락 주세요.",
+    "example_en": "That's all from me — feel free to reach out anytime.",
+    "example_ko": "제 얘기는 여기까지예요. 언제든 편하게 연락 주세요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E437",
+    "phrase_en": "The file was too large to attach.",
+    "meaning_ko": "파일이 너무 커서 첨부가 안 됐어요.",
+    "example_en": "The file was too large to attach, so here's a link instead.",
+    "example_ko": "파일이 너무 커서 첨부가 안 돼서 링크로 보내요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E438",
+    "phrase_en": "Could we move this to a call?",
+    "meaning_ko": "통화로 얘기할까요?",
+    "example_en": "This is getting complicated — could we move this to a call?",
+    "example_ko": "내용이 복잡해지는데 통화로 얘기할까요?",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E439",
+    "phrase_en": "I'll cc you going forward.",
+    "meaning_ko": "앞으로는 참조에 넣어 드릴게요.",
+    "example_en": "Sorry you missed that — I'll cc you going forward.",
+    "example_ko": "놓치셨군요. 앞으로는 참조에 넣어 드릴게요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E440",
+    "phrase_en": "Your call is important to us.",
+    "meaning_ko": "고객님의 전화는 소중합니다.",
+    "example_en": "Your call is important to us — please stay on the line.",
+    "example_ko": "고객님의 전화는 소중합니다. 잠시만 기다려 주세요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E441",
+    "phrase_en": "I'd rather put that in writing.",
+    "meaning_ko": "그건 문서로 남기고 싶어요.",
+    "example_en": "It's a big commitment — I'd rather put that in writing.",
+    "example_ko": "중요한 약속이라 문서로 남기고 싶어요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E442",
+    "phrase_en": "Sorry, could you repeat the last part?",
+    "meaning_ko": "죄송한데 마지막 부분만 다시 말씀해 주실래요?",
+    "example_en": "A truck went by — sorry, could you repeat the last part?",
+    "example_ko": "트럭이 지나가서요. 죄송한데 마지막 부분만 다시 말씀해 주실래요?",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E443",
+    "phrase_en": "I'll send a calendar invite.",
+    "meaning_ko": "일정 초대 보내 드릴게요.",
+    "example_en": "Thursday at three works — I'll send a calendar invite.",
+    "example_ko": "목요일 세 시 좋아요. 일정 초대 보내 드릴게요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E444",
+    "phrase_en": "My inbox is a mess right now.",
+    "meaning_ko": "지금 메일함이 엉망이에요.",
+    "example_en": "If I miss it, please nudge me — my inbox is a mess right now.",
+    "example_ko": "놓치면 한 번 더 알려 주세요. 지금 메일함이 엉망이에요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E445",
+    "phrase_en": "Thanks for your patience.",
+    "meaning_ko": "기다려 주셔서 감사합니다.",
+    "example_en": "Thanks for your patience — the issue is now resolved.",
+    "example_ko": "기다려 주셔서 감사합니다. 문제는 해결됐습니다.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E446",
+    "phrase_en": "Could you put that in an email?",
+    "meaning_ko": "그거 메일로 보내 주실 수 있어요?",
+    "example_en": "I want to make sure I get it right — could you put that in an email?",
+    "example_ko": "정확히 하고 싶어서요. 그거 메일로 보내 주실 수 있어요?",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E447",
+    "phrase_en": "I'm out of the office until Monday.",
+    "meaning_ko": "월요일까지 부재중입니다.",
+    "example_en": "I'm out of the office until Monday with limited access to email.",
+    "example_ko": "월요일까지 부재중이라 메일 확인이 어렵습니다.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E448",
+    "phrase_en": "Just a quick question for you.",
+    "meaning_ko": "간단한 질문 하나만요.",
+    "example_en": "Just a quick question for you before I submit this.",
+    "example_ko": "제출하기 전에 간단한 질문 하나만요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E449",
+    "phrase_en": "I never received it.",
+    "meaning_ko": "저는 못 받았어요.",
+    "example_en": "Could you resend? I never received it.",
+    "example_ko": "다시 보내 주실래요? 저는 못 받았어요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E450",
+    "phrase_en": "Let's keep this thread going.",
+    "meaning_ko": "이 메일 흐름으로 계속 주고받죠.",
+    "example_en": "Let's keep this thread going so nothing gets lost.",
+    "example_ko": "놓치는 게 없게 이 메일 흐름으로 계속 주고받죠.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E451",
+    "phrase_en": "I'll answer point by point.",
+    "meaning_ko": "항목별로 답변드릴게요.",
+    "example_en": "You asked four things — I'll answer point by point.",
+    "example_ko": "네 가지를 물으셨네요. 항목별로 답변드릴게요.",
+    "topic": "전화·이메일"
+  },
+  {
+    "id": "E452",
+    "phrase_en": "I'd like to close my account.",
+    "meaning_ko": "계좌를 해지하고 싶어요.",
+    "example_en": "I'm moving abroad, so I'd like to close my account.",
+    "example_ko": "해외로 이주해서 계좌를 해지하고 싶어요.",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E453",
+    "phrase_en": "Could I withdraw this in cash?",
+    "meaning_ko": "이거 현금으로 출금할 수 있을까요?",
+    "example_en": "Could I withdraw this in cash, or do I need an appointment?",
+    "example_ko": "현금으로 출금할 수 있을까요, 아니면 예약이 필요한가요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E454",
+    "phrase_en": "What documents do I need?",
+    "meaning_ko": "어떤 서류가 필요한가요?",
+    "example_en": "To register the address, what documents do I need?",
+    "example_ko": "주소 등록하려면 어떤 서류가 필요한가요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E455",
+    "phrase_en": "Is there an ATM nearby?",
+    "meaning_ko": "근처에 ATM 있나요?",
+    "example_en": "Excuse me, is there an ATM nearby?",
+    "example_ko": "실례합니다, 근처에 ATM 있나요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E456",
+    "phrase_en": "I'd like to transfer some money.",
+    "meaning_ko": "송금하고 싶어요.",
+    "example_en": "I'd like to transfer some money to an overseas account.",
+    "example_ko": "해외 계좌로 송금하고 싶어요.",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E457",
+    "phrase_en": "Could you check my balance?",
+    "meaning_ko": "잔액 좀 확인해 주실래요?",
+    "example_en": "Before I pay, could you check my balance?",
+    "example_ko": "결제하기 전에 잔액 좀 확인해 주실래요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E458",
+    "phrase_en": "I lost my card.",
+    "meaning_ko": "카드를 분실했어요.",
+    "example_en": "I lost my card — could you cancel it right away?",
+    "example_ko": "카드를 분실했어요. 바로 정지해 주실 수 있나요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E459",
+    "phrase_en": "Do I need to make an appointment?",
+    "meaning_ko": "예약이 필요한가요?",
+    "example_en": "For a new passport, do I need to make an appointment?",
+    "example_ko": "여권 신규 발급은 예약이 필요한가요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E460",
+    "phrase_en": "Where do I sign?",
+    "meaning_ko": "어디에 서명하면 되나요?",
+    "example_en": "I've filled everything in — where do I sign?",
+    "example_ko": "다 작성했어요. 어디에 서명하면 되나요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E461",
+    "phrase_en": "Could I get a receipt?",
+    "meaning_ko": "영수증 받을 수 있을까요?",
+    "example_en": "Could I get a receipt for my records?",
+    "example_ko": "기록용으로 영수증 받을 수 있을까요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E462",
+    "phrase_en": "Is this form up to date?",
+    "meaning_ko": "이 양식이 최신인가요?",
+    "example_en": "I downloaded it last year — is this form up to date?",
+    "example_ko": "작년에 받은 건데 이 양식이 최신인가요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E463",
+    "phrase_en": "I'm here to pick up a document.",
+    "meaning_ko": "서류 찾으러 왔어요.",
+    "example_en": "I'm here to pick up a document I applied for last week.",
+    "example_ko": "지난주에 신청한 서류 찾으러 왔어요.",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E464",
+    "phrase_en": "Take a number and wait.",
+    "meaning_ko": "번호표 뽑고 기다리세요.",
+    "example_en": "Just take a number and wait — it shouldn't be long.",
+    "example_ko": "번호표 뽑고 기다리세요. 오래 걸리진 않을 거예요.",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E465",
+    "phrase_en": "Could you notarize this?",
+    "meaning_ko": "이거 공증받을 수 있을까요?",
+    "example_en": "Could you notarize this, or do I need to go elsewhere?",
+    "example_ko": "이거 공증받을 수 있을까요, 아니면 다른 곳으로 가야 하나요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E466",
+    "phrase_en": "What's the interest rate?",
+    "meaning_ko": "금리가 어떻게 되나요?",
+    "example_en": "For a two-year deposit, what's the interest rate?",
+    "example_ko": "이 년 예금이면 금리가 어떻게 되나요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E467",
+    "phrase_en": "I'd like to set up automatic payments.",
+    "meaning_ko": "자동이체를 신청하고 싶어요.",
+    "example_en": "I keep forgetting the due date, so I'd like to set up automatic payments.",
+    "example_ko": "납부일을 자꾸 잊어서 자동이체를 신청하고 싶어요.",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E468",
+    "phrase_en": "There's a charge I don't recognize.",
+    "meaning_ko": "모르는 결제 내역이 있어요.",
+    "example_en": "There's a charge I don't recognize from last Thursday.",
+    "example_ko": "지난 목요일에 모르는 결제 내역이 있어요.",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E469",
+    "phrase_en": "Could you waive the fee?",
+    "meaning_ko": "수수료를 면제해 주실 수 있나요?",
+    "example_en": "It was the bank's error — could you waive the fee?",
+    "example_ko": "은행 착오였는데 수수료를 면제해 주실 수 있나요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E470",
+    "phrase_en": "Is the office open on Saturdays?",
+    "meaning_ko": "토요일에도 문 여나요?",
+    "example_en": "I work weekdays — is the office open on Saturdays?",
+    "example_ko": "평일에 일해서요. 토요일에도 문 여나요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E471",
+    "phrase_en": "I need to renew my visa.",
+    "meaning_ko": "비자를 연장해야 해요.",
+    "example_en": "It expires next month, so I need to renew my visa.",
+    "example_ko": "다음 달에 만료돼서 비자를 연장해야 해요.",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E472",
+    "phrase_en": "Can I do this online instead?",
+    "meaning_ko": "이거 온라인으로도 되나요?",
+    "example_en": "The line is long — can I do this online instead?",
+    "example_ko": "줄이 기네요. 이거 온라인으로도 되나요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E473",
+    "phrase_en": "Could you stamp this for me?",
+    "meaning_ko": "여기 도장 좀 찍어 주시겠어요?",
+    "example_en": "The school needs proof — could you stamp this for me?",
+    "example_ko": "학교에 증빙이 필요해서요. 여기 도장 좀 찍어 주시겠어요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E474",
+    "phrase_en": "My application was rejected.",
+    "meaning_ko": "신청이 반려됐어요.",
+    "example_en": "My application was rejected — could you tell me why?",
+    "example_ko": "신청이 반려됐는데 이유를 알 수 있을까요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E475",
+    "phrase_en": "How much can I withdraw per day?",
+    "meaning_ko": "하루 출금 한도가 얼마인가요?",
+    "example_en": "How much can I withdraw per day from this account?",
+    "example_ko": "이 계좌는 하루 출금 한도가 얼마인가요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E476",
+    "phrase_en": "I'd like to report a lost item.",
+    "meaning_ko": "분실물 신고를 하려고요.",
+    "example_en": "I left a bag on the train — I'd like to report a lost item.",
+    "example_ko": "기차에 가방을 두고 내려서 분실물 신고를 하려고요.",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E477",
+    "phrase_en": "Could you explain this charge?",
+    "meaning_ko": "이 항목이 뭔지 설명해 주시겠어요?",
+    "example_en": "Could you explain this charge on the statement?",
+    "example_ko": "명세서에 있는 이 항목이 뭔지 설명해 주시겠어요?",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E478",
+    "phrase_en": "Could we sit by the window?",
+    "meaning_ko": "창가 자리로 앉을 수 있을까요?",
+    "example_en": "If anything's open, could we sit by the window?",
+    "example_ko": "자리가 있으면 창가 자리로 앉을 수 있을까요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E479",
+    "phrase_en": "Do you have a menu in English?",
+    "meaning_ko": "영어 메뉴판 있나요?",
+    "example_en": "Excuse me, do you have a menu in English?",
+    "example_ko": "실례합니다, 영어 메뉴판 있나요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E480",
+    "phrase_en": "I'll start with a coffee.",
+    "meaning_ko": "우선 커피부터 주세요.",
+    "example_en": "I'll start with a coffee while I look at the menu.",
+    "example_ko": "메뉴 보는 동안 우선 커피부터 주세요.",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E481",
+    "phrase_en": "Could I see the dessert menu?",
+    "meaning_ko": "디저트 메뉴 볼 수 있을까요?",
+    "example_en": "That was delicious — could I see the dessert menu?",
+    "example_ko": "맛있었어요. 디저트 메뉴 볼 수 있을까요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E482",
+    "phrase_en": "Is service charge included?",
+    "meaning_ko": "봉사료가 포함인가요?",
+    "example_en": "Before I tip, is service charge included?",
+    "example_ko": "팁 드리기 전에요, 봉사료가 포함인가요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E483",
+    "phrase_en": "Could you make it less salty?",
+    "meaning_ko": "덜 짜게 해 주실 수 있어요?",
+    "example_en": "Could you make it less salty? I'm watching my sodium.",
+    "example_ko": "덜 짜게 해 주실 수 있어요? 나트륨을 줄이는 중이라서요.",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E484",
+    "phrase_en": "We're in a bit of a hurry.",
+    "meaning_ko": "저희가 좀 급해요.",
+    "example_en": "We're in a bit of a hurry — what comes out fastest?",
+    "example_ko": "저희가 좀 급한데 뭐가 제일 빨리 나오나요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E485",
+    "phrase_en": "Could I get a refill?",
+    "meaning_ko": "리필 되나요?",
+    "example_en": "Could I get a refill on the water, please?",
+    "example_ko": "물 좀 리필해 주실래요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E486",
+    "phrase_en": "What's in this dish?",
+    "meaning_ko": "이 요리에 뭐가 들어가나요?",
+    "example_en": "What's in this dish? I'd like to avoid dairy.",
+    "example_ko": "이 요리에 뭐가 들어가나요? 유제품을 피하고 싶어서요.",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E487",
+    "phrase_en": "I'd like it medium rare.",
+    "meaning_ko": "미디엄 레어로 해 주세요.",
+    "example_en": "The steak, please — I'd like it medium rare.",
+    "example_ko": "스테이크로 주세요. 미디엄 레어로 해 주세요.",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E488",
+    "phrase_en": "Could we get some napkins?",
+    "meaning_ko": "냅킨 좀 주시겠어요?",
+    "example_en": "Excuse me, could we get some napkins?",
+    "example_ko": "저기요, 냅킨 좀 주시겠어요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E489",
+    "phrase_en": "That's plenty, thank you.",
+    "meaning_ko": "그만하면 충분해요, 감사합니다.",
+    "example_en": "That's plenty, thank you — I can't eat any more.",
+    "example_ko": "그만하면 충분해요, 감사합니다. 더는 못 먹겠어요.",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E490",
+    "phrase_en": "Could I get the check, please?",
+    "meaning_ko": "계산서 좀 주시겠어요?",
+    "example_en": "We're all done — could I get the check, please?",
+    "example_ko": "다 먹었어요. 계산서 좀 주시겠어요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E491",
+    "phrase_en": "Do you have any tables outside?",
+    "meaning_ko": "야외 자리 있나요?",
+    "example_en": "The weather's nice — do you have any tables outside?",
+    "example_ko": "날씨가 좋네요. 야외 자리 있나요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E492",
+    "phrase_en": "I'd like to make a reservation for four.",
+    "meaning_ko": "네 명 예약하고 싶어요.",
+    "example_en": "I'd like to make a reservation for four on Saturday.",
+    "example_ko": "토요일에 네 명 예약하고 싶어요.",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E493",
+    "phrase_en": "Could you box up the leftovers?",
+    "meaning_ko": "남은 거 포장해 주시겠어요?",
+    "example_en": "It was too much — could you box up the leftovers?",
+    "example_ko": "양이 많았어요. 남은 거 포장해 주시겠어요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E494",
+    "phrase_en": "Is there a minimum order?",
+    "meaning_ko": "최소 주문 금액이 있나요?",
+    "example_en": "For delivery, is there a minimum order?",
+    "example_ko": "배달은 최소 주문 금액이 있나요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E495",
+    "phrase_en": "Could I switch the side dish?",
+    "meaning_ko": "사이드 메뉴를 바꿔도 될까요?",
+    "example_en": "Could I switch the side dish to salad?",
+    "example_ko": "사이드 메뉴를 샐러드로 바꿔도 될까요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E496",
+    "phrase_en": "This is cold.",
+    "meaning_ko": "이게 식었어요.",
+    "example_en": "Sorry to bother you, but this is cold.",
+    "example_ko": "번거롭게 해서 죄송한데 이게 식었어요.",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E497",
+    "phrase_en": "We'd like to split it three ways.",
+    "meaning_ko": "셋이서 나눠 낼게요.",
+    "example_en": "We'd like to split it three ways, if that's okay.",
+    "example_ko": "괜찮으시면 셋이서 나눠 낼게요.",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E498",
+    "phrase_en": "What's your most popular item?",
+    "meaning_ko": "제일 잘 나가는 메뉴가 뭐예요?",
+    "example_en": "It's my first time here — what's your most popular item?",
+    "example_ko": "처음 왔는데 제일 잘 나가는 메뉴가 뭐예요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E499",
+    "phrase_en": "Could I get that iced?",
+    "meaning_ko": "그거 아이스로 해 주실래요?",
+    "example_en": "An americano, please — could I get that iced?",
+    "example_ko": "아메리카노 하나요. 아이스로 해 주실래요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E500",
+    "phrase_en": "Is there a seat available?",
+    "meaning_ko": "자리 있나요?",
+    "example_en": "It looks packed — is there a seat available?",
+    "example_ko": "만석 같은데 자리 있나요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E501",
+    "phrase_en": "Do you have Wi-Fi here?",
+    "meaning_ko": "여기 와이파이 있나요?",
+    "example_en": "Do you have Wi-Fi here, and what's the password?",
+    "example_ko": "여기 와이파이 있나요? 비밀번호가 뭐예요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E502",
+    "phrase_en": "Could you hold the onions?",
+    "meaning_ko": "양파는 빼 주실 수 있어요?",
+    "example_en": "Could you hold the onions on that burger?",
+    "example_ko": "그 버거에 양파는 빼 주실 수 있어요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E503",
+    "phrase_en": "We didn't order this.",
+    "meaning_ko": "이건 저희가 주문한 게 아니에요.",
+    "example_en": "Excuse me, we didn't order this.",
+    "example_ko": "저기요, 이건 저희가 주문한 게 아니에요.",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E504",
+    "phrase_en": "How big is the portion?",
+    "meaning_ko": "양이 어느 정도예요?",
+    "example_en": "How big is the portion? We might share.",
+    "example_ko": "양이 어느 정도예요? 나눠 먹을까 해서요.",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E505",
+    "phrase_en": "Could we move to a bigger table?",
+    "meaning_ko": "더 큰 테이블로 옮겨도 될까요?",
+    "example_en": "Two more people are coming — could we move to a bigger table?",
+    "example_ko": "두 명 더 오는데 더 큰 테이블로 옮겨도 될까요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E506",
+    "phrase_en": "I'll have what she's having.",
+    "meaning_ko": "저분이랑 같은 걸로 주세요.",
+    "example_en": "That looks great — I'll have what she's having.",
+    "example_ko": "맛있어 보이네요. 저분이랑 같은 걸로 주세요.",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E507",
+    "phrase_en": "Do you serve breakfast all day?",
+    "meaning_ko": "아침 메뉴 종일 되나요?",
+    "example_en": "It's past noon — do you serve breakfast all day?",
+    "example_ko": "정오가 지났는데 아침 메뉴 종일 되나요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E508",
+    "phrase_en": "Could I get extra sauce on the side?",
+    "meaning_ko": "소스 따로 좀 더 주실 수 있어요?",
+    "example_en": "Could I get extra sauce on the side, please?",
+    "example_ko": "소스 따로 좀 더 주실 수 있어요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E509",
+    "phrase_en": "Is tap water okay?",
+    "meaning_ko": "수돗물이어도 괜찮으세요?",
+    "example_en": "We only have tap water — is tap water okay?",
+    "example_ko": "저희는 수돗물만 있는데 괜찮으세요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E510",
+    "phrase_en": "I'm allergic to shellfish.",
+    "meaning_ko": "저는 갑각류 알레르기가 있어요.",
+    "example_en": "Please let the kitchen know — I'm allergic to shellfish.",
+    "example_ko": "주방에 전해 주세요. 저는 갑각류 알레르기가 있어요.",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E511",
+    "phrase_en": "Could you bring it out together?",
+    "meaning_ko": "음식 다 같이 내주실 수 있어요?",
+    "example_en": "We'd rather eat at the same time — could you bring it out together?",
+    "example_ko": "같이 먹고 싶어서요. 음식 다 같이 내주실 수 있어요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E512",
+    "phrase_en": "How spicy is it on a scale of one to ten?",
+    "meaning_ko": "매운 정도가 십 점 만점에 몇 점이에요?",
+    "example_en": "I can't handle much heat — how spicy is it on a scale of one to ten?",
+    "example_ko": "매운 걸 잘 못 먹어요. 매운 정도가 십 점 만점에 몇 점이에요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E513",
+    "phrase_en": "Could I pay by card?",
+    "meaning_ko": "카드로 결제해도 될까요?",
+    "example_en": "I don't have cash — could I pay by card?",
+    "example_ko": "현금이 없는데 카드로 결제해도 될까요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E514",
+    "phrase_en": "Is there a dress code?",
+    "meaning_ko": "복장 규정이 있나요?",
+    "example_en": "Before I book, is there a dress code?",
+    "example_ko": "예약하기 전에요, 복장 규정이 있나요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E515",
+    "phrase_en": "Could we get one more chair?",
+    "meaning_ko": "의자 하나만 더 주시겠어요?",
+    "example_en": "Could we get one more chair for the table?",
+    "example_ko": "테이블에 의자 하나만 더 주시겠어요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E516",
+    "phrase_en": "Everything was great, thank you.",
+    "meaning_ko": "다 맛있었어요, 감사합니다.",
+    "example_en": "Everything was great, thank you — we'll be back.",
+    "example_ko": "다 맛있었어요, 감사합니다. 또 올게요.",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E517",
+    "phrase_en": "Do you have any specials today?",
+    "meaning_ko": "오늘의 특선 메뉴 있나요?",
+    "example_en": "Do you have any specials today, or just the regular menu?",
+    "example_ko": "오늘의 특선 메뉴 있나요, 아니면 일반 메뉴만 있나요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E518",
+    "phrase_en": "Could I get a straw?",
+    "meaning_ko": "빨대 하나 주시겠어요?",
+    "example_en": "Could I get a straw with that, please?",
+    "example_ko": "그거랑 빨대 하나 주시겠어요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E519",
+    "phrase_en": "I'd like to cancel my reservation.",
+    "meaning_ko": "예약을 취소하고 싶어요.",
+    "example_en": "Something came up — I'd like to cancel my reservation.",
+    "example_ko": "일이 생겨서 예약을 취소하고 싶어요.",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E520",
+    "phrase_en": "Is it made fresh?",
+    "meaning_ko": "바로 만드는 건가요?",
+    "example_en": "Is it made fresh, or is it prepared in advance?",
+    "example_ko": "바로 만드는 건가요, 아니면 미리 만들어 두나요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E521",
+    "phrase_en": "Could you turn down the music a little?",
+    "meaning_ko": "음악 소리 좀 줄여 주실 수 있어요?",
+    "example_en": "We can't hear each other — could you turn down the music a little?",
+    "example_ko": "대화가 안 들려서요. 음악 소리 좀 줄여 주실 수 있어요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E522",
+    "phrase_en": "Keep the change.",
+    "meaning_ko": "잔돈은 됐어요.",
+    "example_en": "Here you go — keep the change.",
+    "example_ko": "여기요. 잔돈은 됐어요.",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E523",
+    "phrase_en": "Are you still serving food?",
+    "meaning_ko": "아직 식사 주문 되나요?",
+    "example_en": "It's almost closing — are you still serving food?",
+    "example_ko": "마감 시간이 다 됐는데 아직 식사 주문 되나요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E524",
+    "phrase_en": "Could I have a to-go cup?",
+    "meaning_ko": "테이크아웃 컵에 담아 주실래요?",
+    "example_en": "I have to run — could I have a to-go cup?",
+    "example_ko": "가 봐야 해서요. 테이크아웃 컵에 담아 주실래요?",
+    "topic": "식당·카페"
+  },
+  {
+    "id": "E525",
+    "phrase_en": "How much is this?",
+    "meaning_ko": "이거 얼마예요?",
+    "example_en": "Excuse me, how much is this one?",
+    "example_ko": "실례합니다, 이거 얼마예요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E526",
+    "phrase_en": "Is this on sale?",
+    "meaning_ko": "이거 세일 중인가요?",
+    "example_en": "The sign says fifty percent — is this on sale?",
+    "example_ko": "오십 퍼센트라고 붙어 있는데 이거 세일 중인가요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E527",
+    "phrase_en": "Do you have this in another color?",
+    "meaning_ko": "이거 다른 색상 있나요?",
+    "example_en": "I like the style — do you have this in another color?",
+    "example_ko": "디자인이 마음에 드는데 다른 색상 있나요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E528",
+    "phrase_en": "Could you check the back?",
+    "meaning_ko": "창고에 있는지 확인해 주실래요?",
+    "example_en": "The shelf is empty — could you check the back?",
+    "example_ko": "진열대가 비었는데 창고에 있는지 확인해 주실래요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E529",
+    "phrase_en": "I'll take it.",
+    "meaning_ko": "이걸로 할게요.",
+    "example_en": "It fits perfectly — I'll take it.",
+    "example_ko": "딱 맞네요. 이걸로 할게요.",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E530",
+    "phrase_en": "I'll think about it.",
+    "meaning_ko": "좀 더 생각해 볼게요.",
+    "example_en": "Thanks for your help — I'll think about it.",
+    "example_ko": "도와주셔서 감사해요. 좀 더 생각해 볼게요.",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E531",
+    "phrase_en": "Could I get a discount?",
+    "meaning_ko": "할인 좀 받을 수 있을까요?",
+    "example_en": "I'm buying three — could I get a discount?",
+    "example_ko": "세 개 사는데 할인 좀 받을 수 있을까요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E532",
+    "phrase_en": "Does it come with a warranty?",
+    "meaning_ko": "보증이 되나요?",
+    "example_en": "Does it come with a warranty, and for how long?",
+    "example_ko": "보증이 되나요? 기간은 얼마나 되죠?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E533",
+    "phrase_en": "What's your return policy?",
+    "meaning_ko": "반품 규정이 어떻게 되나요?",
+    "example_en": "It's a gift, so what's your return policy?",
+    "example_ko": "선물용이라서요, 반품 규정이 어떻게 되나요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E534",
+    "phrase_en": "I have the receipt.",
+    "meaning_ko": "영수증 있어요.",
+    "example_en": "I bought it on Monday and I have the receipt.",
+    "example_ko": "월요일에 샀고 영수증 있어요.",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E535",
+    "phrase_en": "It arrived damaged.",
+    "meaning_ko": "파손된 채로 왔어요.",
+    "example_en": "I opened the box and it arrived damaged.",
+    "example_ko": "상자를 열어 보니 파손된 채로 왔어요.",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E536",
+    "phrase_en": "This is the wrong item.",
+    "meaning_ko": "주문한 물건이 아니에요.",
+    "example_en": "I ordered the blue one — this is the wrong item.",
+    "example_ko": "파란색을 주문했는데 주문한 물건이 아니에요.",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E537",
+    "phrase_en": "Could I get store credit instead?",
+    "meaning_ko": "대신 적립금으로 받을 수 있을까요?",
+    "example_en": "If a refund isn't possible, could I get store credit instead?",
+    "example_ko": "환불이 안 되면 대신 적립금으로 받을 수 있을까요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E538",
+    "phrase_en": "How long does shipping take?",
+    "meaning_ko": "배송이 얼마나 걸리나요?",
+    "example_en": "If I order today, how long does shipping take?",
+    "example_ko": "오늘 주문하면 배송이 얼마나 걸리나요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E539",
+    "phrase_en": "Is shipping free?",
+    "meaning_ko": "배송비 무료인가요?",
+    "example_en": "Over fifty dollars, is shipping free?",
+    "example_ko": "오십 달러 넘으면 배송비 무료인가요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E540",
+    "phrase_en": "Could you order it for me?",
+    "meaning_ko": "주문해 주실 수 있나요?",
+    "example_en": "If it's out of stock, could you order it for me?",
+    "example_ko": "품절이면 주문해 주실 수 있나요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E541",
+    "phrase_en": "I'm looking for something under fifty.",
+    "meaning_ko": "오십 이하로 찾고 있어요.",
+    "example_en": "I'm looking for something under fifty — any suggestions?",
+    "example_ko": "오십 이하로 찾고 있는데 추천해 주실 만한 게 있나요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E542",
+    "phrase_en": "Does this run small?",
+    "meaning_ko": "이거 작게 나오나요?",
+    "example_en": "I usually wear a medium — does this run small?",
+    "example_ko": "보통 미디엄을 입는데 이거 작게 나오나요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E543",
+    "phrase_en": "Could I return it without the box?",
+    "meaning_ko": "상자 없이도 반품되나요?",
+    "example_en": "I threw the packaging away — could I return it without the box?",
+    "example_ko": "포장을 버렸는데 상자 없이도 반품되나요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E544",
+    "phrase_en": "The zipper is broken.",
+    "meaning_ko": "지퍼가 고장 났어요.",
+    "example_en": "I only wore it once and the zipper is broken.",
+    "example_ko": "한 번 입었는데 지퍼가 고장 났어요.",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E545",
+    "phrase_en": "When does the sale end?",
+    "meaning_ko": "세일이 언제까지예요?",
+    "example_en": "I might come back — when does the sale end?",
+    "example_ko": "다시 올지도 몰라서요. 세일이 언제까지예요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E546",
+    "phrase_en": "Do you price match?",
+    "meaning_ko": "최저가 보상해 주나요?",
+    "example_en": "It's cheaper online — do you price match?",
+    "example_ko": "온라인이 더 싼데 최저가 보상해 주나요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E547",
+    "phrase_en": "Could I use this coupon?",
+    "meaning_ko": "이 쿠폰 쓸 수 있나요?",
+    "example_en": "It expires tomorrow — could I use this coupon?",
+    "example_ko": "내일 만료인데 이 쿠폰 쓸 수 있나요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E548",
+    "phrase_en": "I'd like to cancel my order.",
+    "meaning_ko": "주문을 취소하고 싶어요.",
+    "example_en": "It hasn't shipped yet — I'd like to cancel my order.",
+    "example_ko": "아직 발송 전이던데 주문을 취소하고 싶어요.",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E549",
+    "phrase_en": "Could you track my package?",
+    "meaning_ko": "배송 조회 좀 해 주실래요?",
+    "example_en": "It's been a week — could you track my package?",
+    "example_ko": "일주일 됐어요. 배송 조회 좀 해 주실래요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E550",
+    "phrase_en": "Is there a restocking fee?",
+    "meaning_ko": "반품 수수료가 있나요?",
+    "example_en": "Before I send it back, is there a restocking fee?",
+    "example_ko": "돌려보내기 전에요, 반품 수수료가 있나요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E551",
+    "phrase_en": "Could you take the tag off?",
+    "meaning_ko": "택 좀 떼 주시겠어요?",
+    "example_en": "I'll wear it out — could you take the tag off?",
+    "example_ko": "입고 나갈 거예요. 택 좀 떼 주시겠어요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E552",
+    "phrase_en": "Do you deliver?",
+    "meaning_ko": "배달해 주시나요?",
+    "example_en": "It's too heavy to carry — do you deliver?",
+    "example_ko": "들고 가기엔 너무 무거운데 배달해 주시나요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E553",
+    "phrase_en": "I bought it here last week.",
+    "meaning_ko": "지난주에 여기서 샀어요.",
+    "example_en": "I bought it here last week and it already stopped working.",
+    "example_ko": "지난주에 여기서 샀는데 벌써 작동이 안 돼요.",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E554",
+    "phrase_en": "Could I speak to the manager?",
+    "meaning_ko": "매니저와 얘기할 수 있을까요?",
+    "example_en": "I'd like to sort this out — could I speak to the manager?",
+    "example_ko": "해결하고 싶어서요. 매니저와 얘기할 수 있을까요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E555",
+    "phrase_en": "Is this the final price?",
+    "meaning_ko": "이게 최종 가격인가요?",
+    "example_en": "With tax included, is this the final price?",
+    "example_ko": "세금 포함해서 이게 최종 가격인가요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E556",
+    "phrase_en": "Could I get a bag?",
+    "meaning_ko": "봉투 하나 주실 수 있어요?",
+    "example_en": "Could I get a bag, even if there's a charge?",
+    "example_ko": "유료여도 괜찮으니 봉투 하나 주실 수 있어요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E557",
+    "phrase_en": "It's still under warranty.",
+    "meaning_ko": "아직 보증 기간이에요.",
+    "example_en": "I bought it in March, so it's still under warranty.",
+    "example_ko": "삼월에 샀으니 아직 보증 기간이에요.",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E558",
+    "phrase_en": "Could you show me how it works?",
+    "meaning_ko": "사용법 좀 보여 주실래요?",
+    "example_en": "Before I buy it, could you show me how it works?",
+    "example_ko": "사기 전에 사용법 좀 보여 주실래요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E559",
+    "phrase_en": "I changed my mind.",
+    "meaning_ko": "마음이 바뀌었어요.",
+    "example_en": "I changed my mind — could I return this?",
+    "example_ko": "마음이 바뀌었는데 반품할 수 있을까요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E560",
+    "phrase_en": "When will it be back in stock?",
+    "meaning_ko": "언제 재입고되나요?",
+    "example_en": "I really want this one — when will it be back in stock?",
+    "example_ko": "이게 정말 갖고 싶은데 언제 재입고되나요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E561",
+    "phrase_en": "Could you ring me up?",
+    "meaning_ko": "계산 좀 해 주시겠어요?",
+    "example_en": "That's everything — could you ring me up?",
+    "example_ko": "이게 다예요. 계산 좀 해 주시겠어요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E562",
+    "phrase_en": "Do you accept mobile payment?",
+    "meaning_ko": "모바일 결제 되나요?",
+    "example_en": "I left my wallet at home — do you accept mobile payment?",
+    "example_ko": "지갑을 집에 두고 왔는데 모바일 결제 되나요?",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E563",
+    "phrase_en": "The refund hasn't come through yet.",
+    "meaning_ko": "환불이 아직 안 들어왔어요.",
+    "example_en": "It's been ten days and the refund hasn't come through yet.",
+    "example_ko": "열흘 됐는데 환불이 아직 안 들어왔어요.",
+    "topic": "쇼핑·환불"
+  },
+  {
+    "id": "E564",
+    "phrase_en": "Could I check in early?",
+    "meaning_ko": "일찍 체크인할 수 있을까요?",
+    "example_en": "My flight lands at nine — could I check in early?",
+    "example_ko": "비행기가 아홉 시에 도착하는데 일찍 체크인할 수 있을까요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E565",
+    "phrase_en": "Is there a shuttle to the airport?",
+    "meaning_ko": "공항 셔틀 있나요?",
+    "example_en": "Is there a shuttle to the airport, and what time does it leave?",
+    "example_ko": "공항 셔틀 있나요? 몇 시에 출발하죠?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E566",
+    "phrase_en": "Could I get a room on a higher floor?",
+    "meaning_ko": "높은 층 방으로 받을 수 있을까요?",
+    "example_en": "It's noisy down here — could I get a room on a higher floor?",
+    "example_ko": "아래층이 시끄러워서요. 높은 층 방으로 받을 수 있을까요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E567",
+    "phrase_en": "The room hasn't been cleaned.",
+    "meaning_ko": "방 청소가 안 돼 있어요.",
+    "example_en": "I just got back and the room hasn't been cleaned.",
+    "example_ko": "막 돌아왔는데 방 청소가 안 돼 있어요.",
+    "topic": "호텔"
+  },
+  {
+    "id": "E568",
+    "phrase_en": "Could you call me a taxi?",
+    "meaning_ko": "택시 좀 불러 주시겠어요?",
+    "example_en": "I'm heading out — could you call me a taxi?",
+    "example_ko": "나가려고요. 택시 좀 불러 주시겠어요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E569",
+    "phrase_en": "What's the Wi-Fi password?",
+    "meaning_ko": "와이파이 비밀번호가 뭐예요?",
+    "example_en": "I can see the network — what's the Wi-Fi password?",
+    "example_ko": "네트워크는 보이는데 와이파이 비밀번호가 뭐예요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E570",
+    "phrase_en": "Is there a gym in the hotel?",
+    "meaning_ko": "호텔에 헬스장 있나요?",
+    "example_en": "Is there a gym in the hotel, and what are the hours?",
+    "example_ko": "호텔에 헬스장 있나요? 운영 시간은요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E571",
+    "phrase_en": "Could I have a wake-up call at six?",
+    "meaning_ko": "여섯 시에 모닝콜 부탁드려요.",
+    "example_en": "Could I have a wake-up call at six tomorrow morning?",
+    "example_ko": "내일 아침 여섯 시에 모닝콜 부탁드려요.",
+    "topic": "호텔"
+  },
+  {
+    "id": "E572",
+    "phrase_en": "The key card isn't working.",
+    "meaning_ko": "카드키가 안 돼요.",
+    "example_en": "I tried both doors — the key card isn't working.",
+    "example_ko": "양쪽 문 다 해 봤는데 카드키가 안 돼요.",
+    "topic": "호텔"
+  },
+  {
+    "id": "E573",
+    "phrase_en": "Is there a safe in the room?",
+    "meaning_ko": "객실에 금고 있나요?",
+    "example_en": "I have my passport with me — is there a safe in the room?",
+    "example_ko": "여권을 갖고 있어서요. 객실에 금고 있나요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E574",
+    "phrase_en": "Could I switch rooms?",
+    "meaning_ko": "방을 바꿀 수 있을까요?",
+    "example_en": "There's a smell in here — could I switch rooms?",
+    "example_ko": "냄새가 나는데 방을 바꿀 수 있을까요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E575",
+    "phrase_en": "What time does breakfast start?",
+    "meaning_ko": "조식이 몇 시부터예요?",
+    "example_en": "I have an early meeting — what time does breakfast start?",
+    "example_ko": "아침 일찍 회의가 있어서요. 조식이 몇 시부터예요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E576",
+    "phrase_en": "Could you recommend something nearby?",
+    "meaning_ko": "근처에 추천해 주실 만한 곳 있나요?",
+    "example_en": "We'd like dinner close by — could you recommend something nearby?",
+    "example_ko": "가까운 데서 저녁 먹으려는데 추천해 주실 만한 곳 있나요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E577",
+    "phrase_en": "Is there room service?",
+    "meaning_ko": "룸서비스 되나요?",
+    "example_en": "It's late — is there room service at this hour?",
+    "example_ko": "늦었는데 이 시간에 룸서비스 되나요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E578",
+    "phrase_en": "Could I get a quieter room?",
+    "meaning_ko": "좀 더 조용한 방으로 될까요?",
+    "example_en": "The elevator is right outside — could I get a quieter room?",
+    "example_ko": "바로 앞이 엘리베이터라서요. 좀 더 조용한 방으로 될까요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E579",
+    "phrase_en": "Do you have a laundry service?",
+    "meaning_ko": "세탁 서비스 있나요?",
+    "example_en": "I'm here for a week — do you have a laundry service?",
+    "example_ko": "일주일 머무는데 세탁 서비스 있나요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E580",
+    "phrase_en": "Could you charge it to my room?",
+    "meaning_ko": "객실로 달아 주시겠어요?",
+    "example_en": "I don't have my wallet — could you charge it to my room?",
+    "example_ko": "지갑이 없어서요. 객실로 달아 주시겠어요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E581",
+    "phrase_en": "Is parking included?",
+    "meaning_ko": "주차 포함인가요?",
+    "example_en": "I came by car — is parking included?",
+    "example_ko": "차를 가져왔는데 주차 포함인가요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E582",
+    "phrase_en": "Could I have a non-smoking room?",
+    "meaning_ko": "금연 객실로 부탁드려요.",
+    "example_en": "Could I have a non-smoking room if one is available?",
+    "example_ko": "가능하면 금연 객실로 부탁드려요.",
+    "topic": "호텔"
+  },
+  {
+    "id": "E583",
+    "phrase_en": "The shower is only running cold.",
+    "meaning_ko": "샤워기에서 찬물만 나와요.",
+    "example_en": "I waited five minutes and the shower is only running cold.",
+    "example_ko": "오 분을 기다렸는데 샤워기에서 찬물만 나와요.",
+    "topic": "호텔"
+  },
+  {
+    "id": "E584",
+    "phrase_en": "Could you store my bag until evening?",
+    "meaning_ko": "저녁까지 가방 좀 보관해 주실 수 있어요?",
+    "example_en": "My train is at eight — could you store my bag until evening?",
+    "example_ko": "기차가 여덟 시라서요. 저녁까지 가방 좀 보관해 주실 수 있어요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E585",
+    "phrase_en": "I'd like to check out now.",
+    "meaning_ko": "지금 체크아웃할게요.",
+    "example_en": "I'd like to check out now — here's the key.",
+    "example_ko": "지금 체크아웃할게요. 여기 열쇠요.",
+    "topic": "호텔"
+  },
+  {
+    "id": "E586",
+    "phrase_en": "Could I see the bill?",
+    "meaning_ko": "청구서 좀 볼 수 있을까요?",
+    "example_en": "Before I pay, could I see the bill?",
+    "example_ko": "결제 전에 청구서 좀 볼 수 있을까요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E587",
+    "phrase_en": "There's a charge I didn't make.",
+    "meaning_ko": "제가 안 쓴 항목이 있어요.",
+    "example_en": "On the minibar line, there's a charge I didn't make.",
+    "example_ko": "미니바 항목에 제가 안 쓴 게 있어요.",
+    "topic": "호텔"
+  },
+  {
+    "id": "E588",
+    "phrase_en": "Do you have a map of the area?",
+    "meaning_ko": "이 동네 지도 있나요?",
+    "example_en": "I'd rather not use my phone — do you have a map of the area?",
+    "example_ko": "휴대폰을 안 쓰고 싶어서요. 이 동네 지도 있나요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E589",
+    "phrase_en": "Could I book another night?",
+    "meaning_ko": "하루 더 예약할 수 있을까요?",
+    "example_en": "My plans changed — could I book another night?",
+    "example_ko": "일정이 바뀌어서요. 하루 더 예약할 수 있을까요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E590",
+    "phrase_en": "Is the tap water drinkable?",
+    "meaning_ko": "수돗물 마셔도 되나요?",
+    "example_en": "Just checking — is the tap water drinkable here?",
+    "example_ko": "확인차 여쭤요. 여기 수돗물 마셔도 되나요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E591",
+    "phrase_en": "Could I get a receipt for my company?",
+    "meaning_ko": "회사 제출용 영수증 받을 수 있을까요?",
+    "example_en": "It's a business trip — could I get a receipt for my company?",
+    "example_ko": "출장이라서요. 회사 제출용 영수증 받을 수 있을까요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E592",
+    "phrase_en": "Is the pool open today?",
+    "meaning_ko": "오늘 수영장 여나요?",
+    "example_en": "The kids are asking — is the pool open today?",
+    "example_ko": "아이들이 물어봐서요. 오늘 수영장 여나요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E593",
+    "phrase_en": "Could you send someone up?",
+    "meaning_ko": "사람 좀 올려 보내 주시겠어요?",
+    "example_en": "The lamp won't turn on — could you send someone up?",
+    "example_ko": "조명이 안 켜져요. 사람 좀 올려 보내 주시겠어요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E594",
+    "phrase_en": "How far is it from the station?",
+    "meaning_ko": "역에서 얼마나 먼가요?",
+    "example_en": "I'll be walking — how far is it from the station?",
+    "example_ko": "걸어갈 건데 역에서 얼마나 먼가요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E595",
+    "phrase_en": "Could I have two more pillows?",
+    "meaning_ko": "베개 두 개만 더 주시겠어요?",
+    "example_en": "Could I have two more pillows sent to room 512?",
+    "example_ko": "512호로 베개 두 개만 더 보내 주시겠어요?",
+    "topic": "호텔"
+  },
+  {
+    "id": "E596",
+    "phrase_en": "Window or aisle?",
+    "meaning_ko": "창가로 하시겠어요, 통로로 하시겠어요?",
+    "example_en": "I have both available — window or aisle?",
+    "example_ko": "둘 다 있습니다. 창가로 하시겠어요, 통로로 하시겠어요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E597",
+    "phrase_en": "How many bags are you checking?",
+    "meaning_ko": "부치실 짐이 몇 개인가요?",
+    "example_en": "Good morning — how many bags are you checking today?",
+    "example_ko": "안녕하세요, 오늘 부치실 짐이 몇 개인가요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E598",
+    "phrase_en": "My bag is overweight.",
+    "meaning_ko": "제 가방이 무게를 초과했어요.",
+    "example_en": "My bag is overweight — how much is the extra fee?",
+    "example_ko": "제 가방이 무게를 초과했는데 추가 요금이 얼마인가요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E599",
+    "phrase_en": "Could I carry this on?",
+    "meaning_ko": "이건 기내로 갖고 탈 수 있나요?",
+    "example_en": "It's fragile — could I carry this on?",
+    "example_ko": "깨지기 쉬운 거라서요. 이건 기내로 갖고 탈 수 있나요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E600",
+    "phrase_en": "Which terminal is it?",
+    "meaning_ko": "몇 번 터미널인가요?",
+    "example_en": "My connecting flight — which terminal is it?",
+    "example_ko": "환승편이요, 몇 번 터미널인가요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E601",
+    "phrase_en": "When does boarding start?",
+    "meaning_ko": "탑승이 언제 시작되나요?",
+    "example_en": "The screen hasn't updated — when does boarding start?",
+    "example_ko": "화면이 안 바뀌었는데 탑승이 언제 시작되나요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E602",
+    "phrase_en": "I'd like to change my seat.",
+    "meaning_ko": "자리를 바꾸고 싶어요.",
+    "example_en": "I'd like to change my seat if anything's open.",
+    "example_ko": "빈자리가 있으면 자리를 바꾸고 싶어요.",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E603",
+    "phrase_en": "Where's the departure gate?",
+    "meaning_ko": "출발 게이트가 어디예요?",
+    "example_en": "I'm running late — where's the departure gate?",
+    "example_ko": "늦어서요. 출발 게이트가 어디예요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E604",
+    "phrase_en": "My flight was canceled.",
+    "meaning_ko": "제 항공편이 결항됐어요.",
+    "example_en": "My flight was canceled — what are my options?",
+    "example_ko": "제 항공편이 결항됐는데 어떤 방법이 있나요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E605",
+    "phrase_en": "Could I get on an earlier flight?",
+    "meaning_ko": "더 이른 편으로 바꿀 수 있을까요?",
+    "example_en": "I finished early — could I get on an earlier flight?",
+    "example_ko": "일이 일찍 끝나서요. 더 이른 편으로 바꿀 수 있을까요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E606",
+    "phrase_en": "Is the flight on time?",
+    "meaning_ko": "항공편이 정시인가요?",
+    "example_en": "The weather looks bad — is the flight on time?",
+    "example_ko": "날씨가 안 좋아 보이는데 항공편이 정시인가요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E607",
+    "phrase_en": "I need to go through security.",
+    "meaning_ko": "보안 검색을 통과해야 해요.",
+    "example_en": "I need to go through security — which line is shorter?",
+    "example_ko": "보안 검색을 통과해야 하는데 어느 줄이 더 짧아요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E608",
+    "phrase_en": "Do I need to take off my shoes?",
+    "meaning_ko": "신발을 벗어야 하나요?",
+    "example_en": "At this checkpoint, do I need to take off my shoes?",
+    "example_ko": "여기 검색대에서는 신발을 벗어야 하나요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E609",
+    "phrase_en": "It's just a laptop.",
+    "meaning_ko": "노트북일 뿐이에요.",
+    "example_en": "Nothing else in the bag — it's just a laptop.",
+    "example_ko": "가방에 다른 건 없어요. 노트북일 뿐이에요.",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E610",
+    "phrase_en": "Could you put this in the overhead bin?",
+    "meaning_ko": "이거 선반에 올려 주실 수 있어요?",
+    "example_en": "I can't reach — could you put this in the overhead bin?",
+    "example_ko": "손이 안 닿아서요. 이거 선반에 올려 주실 수 있어요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E611",
+    "phrase_en": "Could I have some water?",
+    "meaning_ko": "물 좀 주시겠어요?",
+    "example_en": "Excuse me, could I have some water?",
+    "example_ko": "실례합니다, 물 좀 주시겠어요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E612",
+    "phrase_en": "Could you recline your seat a bit less?",
+    "meaning_ko": "의자를 조금만 덜 젖혀 주실 수 있어요?",
+    "example_en": "I can't open my tray — could you recline your seat a bit less?",
+    "example_ko": "테이블을 못 펴서요. 의자를 조금만 덜 젖혀 주실 수 있어요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E613",
+    "phrase_en": "I get motion sickness.",
+    "meaning_ko": "저는 멀미를 해요.",
+    "example_en": "I'd rather sit up front — I get motion sickness.",
+    "example_ko": "앞쪽에 앉고 싶어요. 저는 멀미를 해요.",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E614",
+    "phrase_en": "What's the purpose of your visit?",
+    "meaning_ko": "방문 목적이 무엇인가요?",
+    "example_en": "Passport, please — what's the purpose of your visit?",
+    "example_ko": "여권 주세요. 방문 목적이 무엇인가요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E615",
+    "phrase_en": "I'm staying for two weeks.",
+    "meaning_ko": "이 주간 머물 예정이에요.",
+    "example_en": "I'm staying for two weeks and then flying home.",
+    "example_ko": "이 주간 머물다가 귀국할 예정이에요.",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E616",
+    "phrase_en": "I'm here on business.",
+    "meaning_ko": "출장 왔습니다.",
+    "example_en": "I'm here on business for a conference.",
+    "example_ko": "학회 참석차 출장 왔습니다.",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E617",
+    "phrase_en": "Where can I exchange money?",
+    "meaning_ko": "환전은 어디서 하나요?",
+    "example_en": "Where can I exchange money before I leave the airport?",
+    "example_ko": "공항을 나가기 전에 환전은 어디서 하나요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E618",
+    "phrase_en": "Is there a duty-free shop?",
+    "meaning_ko": "면세점 있나요?",
+    "example_en": "I have an hour — is there a duty-free shop nearby?",
+    "example_ko": "한 시간 있는데 근처에 면세점 있나요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E619",
+    "phrase_en": "Could I get a boarding pass printed?",
+    "meaning_ko": "탑승권 인쇄해 주실 수 있어요?",
+    "example_en": "My phone died — could I get a boarding pass printed?",
+    "example_ko": "휴대폰이 꺼져서요. 탑승권 인쇄해 주실 수 있어요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E620",
+    "phrase_en": "How much is the baggage fee?",
+    "meaning_ko": "수하물 요금이 얼마인가요?",
+    "example_en": "For a second bag, how much is the baggage fee?",
+    "example_ko": "두 번째 가방은 수하물 요금이 얼마인가요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E621",
+    "phrase_en": "I'm connecting to Tokyo.",
+    "meaning_ko": "도쿄로 환승합니다.",
+    "example_en": "I'm connecting to Tokyo — do I need to collect my bag?",
+    "example_ko": "도쿄로 환승하는데 짐을 찾아야 하나요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E622",
+    "phrase_en": "Will my bag be checked through?",
+    "meaning_ko": "제 짐이 최종 목적지까지 가나요?",
+    "example_en": "Will my bag be checked through to the final destination?",
+    "example_ko": "제 짐이 최종 목적지까지 그대로 가나요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E623",
+    "phrase_en": "Where's the nearest restroom?",
+    "meaning_ko": "가장 가까운 화장실이 어디예요?",
+    "example_en": "Excuse me, where's the nearest restroom?",
+    "example_ko": "실례합니다, 가장 가까운 화장실이 어디예요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E624",
+    "phrase_en": "Could I have a blanket?",
+    "meaning_ko": "담요 하나 주시겠어요?",
+    "example_en": "It's a bit cold — could I have a blanket?",
+    "example_ko": "좀 추워서요. 담요 하나 주시겠어요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E625",
+    "phrase_en": "What's the local time?",
+    "meaning_ko": "현지 시각이 몇 시예요?",
+    "example_en": "My watch is still on Seoul time — what's the local time?",
+    "example_ko": "시계가 아직 서울 시간이라서요. 현지 시각이 몇 시예요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E626",
+    "phrase_en": "Is there Wi-Fi on board?",
+    "meaning_ko": "기내에 와이파이 있나요?",
+    "example_en": "It's a long flight — is there Wi-Fi on board?",
+    "example_ko": "장거리라서요. 기내에 와이파이 있나요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E627",
+    "phrase_en": "Could you fill out this form?",
+    "meaning_ko": "이 양식을 작성해 주시겠어요?",
+    "example_en": "Before landing, could you fill out this form?",
+    "example_ko": "착륙 전에 이 양식을 작성해 주시겠어요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E628",
+    "phrase_en": "I have a tight connection.",
+    "meaning_ko": "환승 시간이 빠듯해요.",
+    "example_en": "Could I deplane first? I have a tight connection.",
+    "example_ko": "먼저 내려도 될까요? 환승 시간이 빠듯해서요.",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E629",
+    "phrase_en": "Where do I pick up my rental car?",
+    "meaning_ko": "렌터카는 어디서 받나요?",
+    "example_en": "I booked online — where do I pick up my rental car?",
+    "example_ko": "온라인으로 예약했는데 렌터카는 어디서 받나요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E630",
+    "phrase_en": "My suitcase is damaged.",
+    "meaning_ko": "제 여행 가방이 파손됐어요.",
+    "example_en": "It came off the belt like this — my suitcase is damaged.",
+    "example_ko": "이 상태로 나왔어요. 제 여행 가방이 파손됐어요.",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E631",
+    "phrase_en": "Could you page my travel companion?",
+    "meaning_ko": "일행 좀 호출해 주실 수 있어요?",
+    "example_en": "We got separated — could you page my travel companion?",
+    "example_ko": "서로 놓쳤어요. 일행 좀 호출해 주실 수 있어요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E632",
+    "phrase_en": "Is there a lounge I can use?",
+    "meaning_ko": "제가 이용할 수 있는 라운지가 있나요?",
+    "example_en": "I have a four-hour wait — is there a lounge I can use?",
+    "example_ko": "네 시간을 기다려야 해서요. 제가 이용할 수 있는 라운지가 있나요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E633",
+    "phrase_en": "Please fasten your seatbelt.",
+    "meaning_ko": "안전벨트를 매 주세요.",
+    "example_en": "We're expecting turbulence — please fasten your seatbelt.",
+    "example_ko": "난기류가 예상됩니다. 안전벨트를 매 주세요.",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E634",
+    "phrase_en": "Could I switch to a window seat?",
+    "meaning_ko": "창가 자리로 바꿀 수 있을까요?",
+    "example_en": "If the flight isn't full, could I switch to a window seat?",
+    "example_ko": "만석이 아니면 창가 자리로 바꿀 수 있을까요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E635",
+    "phrase_en": "How long is the flight?",
+    "meaning_ko": "비행 시간이 얼마나 되나요?",
+    "example_en": "How long is the flight to Vancouver?",
+    "example_ko": "밴쿠버까지 비행 시간이 얼마나 되나요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E636",
+    "phrase_en": "I booked it under my maiden name.",
+    "meaning_ko": "결혼 전 이름으로 예약했어요.",
+    "example_en": "That's why it doesn't match — I booked it under my maiden name.",
+    "example_ko": "그래서 안 맞는 거예요. 결혼 전 이름으로 예약했거든요.",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E637",
+    "phrase_en": "Could I get a vegetarian meal?",
+    "meaning_ko": "채식 기내식으로 받을 수 있을까요?",
+    "example_en": "I requested it online — could I get a vegetarian meal?",
+    "example_ko": "온라인으로 신청했는데 채식 기내식으로 받을 수 있을까요?",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E638",
+    "phrase_en": "They're calling my flight.",
+    "meaning_ko": "제 항공편 안내 방송이 나와요.",
+    "example_en": "I have to run — they're calling my flight.",
+    "example_ko": "가 봐야겠어요. 제 항공편 안내 방송이 나와요.",
+    "topic": "공항·비행"
+  },
+  {
+    "id": "E639",
+    "phrase_en": "Could you tell me where I am on the map?",
+    "meaning_ko": "지도에서 제 위치 좀 알려 주시겠어요?",
+    "example_en": "I'm completely lost — could you tell me where I am on the map?",
+    "example_ko": "완전히 길을 잃었어요. 지도에서 제 위치 좀 알려 주시겠어요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E640",
+    "phrase_en": "How long does it take on foot?",
+    "meaning_ko": "걸어서 얼마나 걸리나요?",
+    "example_en": "I'd rather walk — how long does it take on foot?",
+    "example_ko": "걷는 게 나을 것 같은데 걸어서 얼마나 걸리나요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E641",
+    "phrase_en": "Is there a direct train?",
+    "meaning_ko": "직통 열차가 있나요?",
+    "example_en": "I don't want to transfer — is there a direct train?",
+    "example_ko": "환승하기 싫은데 직통 열차가 있나요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E642",
+    "phrase_en": "Which exit should I take?",
+    "meaning_ko": "몇 번 출구로 나가야 하나요?",
+    "example_en": "For the museum, which exit should I take?",
+    "example_ko": "박물관 가려면 몇 번 출구로 나가야 하나요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E643",
+    "phrase_en": "Does this train stop there?",
+    "meaning_ko": "이 열차가 거기 서나요?",
+    "example_en": "I'm going to Yongsan — does this train stop there?",
+    "example_ko": "용산 가는데 이 열차가 거기 서나요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E644",
+    "phrase_en": "When's the last train?",
+    "meaning_ko": "막차가 몇 시예요?",
+    "example_en": "I might stay out late — when's the last train?",
+    "example_ko": "늦게까지 있을 것 같은데 막차가 몇 시예요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E645",
+    "phrase_en": "Could you let me know when we get there?",
+    "meaning_ko": "도착하면 알려 주시겠어요?",
+    "example_en": "I don't know the area — could you let me know when we get there?",
+    "example_ko": "이 동네를 몰라서요. 도착하면 알려 주시겠어요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E646",
+    "phrase_en": "Take a left at the next light.",
+    "meaning_ko": "다음 신호에서 좌회전하세요.",
+    "example_en": "Take a left at the next light and it's on your right.",
+    "example_ko": "다음 신호에서 좌회전하시면 오른편에 있어요.",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E647",
+    "phrase_en": "It's across the street.",
+    "meaning_ko": "길 건너편이에요.",
+    "example_en": "You're almost there — it's across the street.",
+    "example_ko": "거의 다 오셨어요. 길 건너편이에요.",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E648",
+    "phrase_en": "Go straight for two blocks.",
+    "meaning_ko": "두 블록 직진하세요.",
+    "example_en": "Go straight for two blocks and you'll see it.",
+    "example_ko": "두 블록 직진하시면 보일 거예요.",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E649",
+    "phrase_en": "Am I going the right way?",
+    "meaning_ko": "이 방향이 맞나요?",
+    "example_en": "Excuse me, am I going the right way to the park?",
+    "example_ko": "실례합니다, 공원 가는 길이 이 방향이 맞나요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E650",
+    "phrase_en": "Could you slow down a little?",
+    "meaning_ko": "조금만 천천히 가 주시겠어요?",
+    "example_en": "I'm feeling carsick — could you slow down a little?",
+    "example_ko": "멀미가 나서요. 조금만 천천히 가 주시겠어요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E651",
+    "phrase_en": "Please take me to this address.",
+    "meaning_ko": "이 주소로 가 주세요.",
+    "example_en": "Please take me to this address — here it is on my phone.",
+    "example_ko": "이 주소로 가 주세요. 여기 휴대폰에 있어요.",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E652",
+    "phrase_en": "How much will it cost roughly?",
+    "meaning_ko": "대략 얼마나 나올까요?",
+    "example_en": "Before we go, how much will it cost roughly?",
+    "example_ko": "출발하기 전에요, 대략 얼마나 나올까요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E653",
+    "phrase_en": "Could you pop the trunk?",
+    "meaning_ko": "트렁크 좀 열어 주시겠어요?",
+    "example_en": "I have two suitcases — could you pop the trunk?",
+    "example_ko": "가방이 두 개예요. 트렁크 좀 열어 주시겠어요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E654",
+    "phrase_en": "Is this the right platform?",
+    "meaning_ko": "여기가 맞는 승강장인가요?",
+    "example_en": "For the express train, is this the right platform?",
+    "example_ko": "급행 타려면 여기가 맞는 승강장인가요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E655",
+    "phrase_en": "The bus is running late.",
+    "meaning_ko": "버스가 늦어지고 있어요.",
+    "example_en": "I'll be a few minutes — the bus is running late.",
+    "example_ko": "몇 분 늦을 것 같아요. 버스가 늦어지고 있어요.",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E656",
+    "phrase_en": "Could I get a day pass?",
+    "meaning_ko": "일일 승차권 살 수 있을까요?",
+    "example_en": "I'll be riding a lot today — could I get a day pass?",
+    "example_ko": "오늘 많이 탈 것 같은데 일일 승차권 살 수 있을까요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E657",
+    "phrase_en": "Where do I tap my card?",
+    "meaning_ko": "카드를 어디에 찍나요?",
+    "example_en": "It's my first time — where do I tap my card?",
+    "example_ko": "처음이라서요. 카드를 어디에 찍나요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E658",
+    "phrase_en": "How many stops is it?",
+    "meaning_ko": "몇 정거장이에요?",
+    "example_en": "From here to city hall, how many stops is it?",
+    "example_ko": "여기서 시청까지 몇 정거장이에요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E659",
+    "phrase_en": "I'll walk from here.",
+    "meaning_ko": "여기서부터는 걸어갈게요.",
+    "example_en": "Traffic is bad, so I'll walk from here.",
+    "example_ko": "차가 막히니까 여기서부터는 걸어갈게요.",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E660",
+    "phrase_en": "Is there parking nearby?",
+    "meaning_ko": "근처에 주차장 있나요?",
+    "example_en": "I'm driving in — is there parking nearby?",
+    "example_ko": "차로 가는데 근처에 주차장 있나요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E661",
+    "phrase_en": "My car broke down.",
+    "meaning_ko": "차가 고장 났어요.",
+    "example_en": "My car broke down on the highway — could you send a tow?",
+    "example_ko": "고속도로에서 차가 고장 났어요. 견인차 좀 보내 주시겠어요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E662",
+    "phrase_en": "Could you turn on the meter?",
+    "meaning_ko": "미터기 좀 켜 주시겠어요?",
+    "example_en": "Excuse me, could you turn on the meter?",
+    "example_ko": "저기요, 미터기 좀 켜 주시겠어요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E663",
+    "phrase_en": "I'd like to get off at the next stop.",
+    "meaning_ko": "다음 정류장에서 내릴게요.",
+    "example_en": "I'd like to get off at the next stop, please.",
+    "example_ko": "다음 정류장에서 내릴게요.",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E664",
+    "phrase_en": "Does this go all the way to the airport?",
+    "meaning_ko": "이거 공항까지 가나요?",
+    "example_en": "Does this go all the way to the airport, or do I switch?",
+    "example_ko": "이거 공항까지 가나요, 아니면 갈아타야 하나요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E665",
+    "phrase_en": "I think I got on the wrong train.",
+    "meaning_ko": "열차를 잘못 탄 것 같아요.",
+    "example_en": "These stop names look wrong — I think I got on the wrong train.",
+    "example_ko": "역 이름이 이상해요. 열차를 잘못 탄 것 같아요.",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E666",
+    "phrase_en": "Could you write it down for me?",
+    "meaning_ko": "좀 적어 주시겠어요?",
+    "example_en": "I won't remember — could you write it down for me?",
+    "example_ko": "기억을 못 할 것 같아요. 좀 적어 주시겠어요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E667",
+    "phrase_en": "Is it faster by subway or bus?",
+    "meaning_ko": "지하철이 빨라요, 버스가 빨라요?",
+    "example_en": "At this hour, is it faster by subway or bus?",
+    "example_ko": "이 시간엔 지하철이 빨라요, 버스가 빨라요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E668",
+    "phrase_en": "The road is closed ahead.",
+    "meaning_ko": "앞쪽 도로가 통제됐어요.",
+    "example_en": "We'll have to detour — the road is closed ahead.",
+    "example_ko": "우회해야겠어요. 앞쪽 도로가 통제됐어요.",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E669",
+    "phrase_en": "Could you drop me at the corner?",
+    "meaning_ko": "모퉁이에 내려 주시겠어요?",
+    "example_en": "No need to pull in — could you drop me at the corner?",
+    "example_ko": "안 들어가셔도 돼요. 모퉁이에 내려 주시겠어요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E670",
+    "phrase_en": "How often does it come?",
+    "meaning_ko": "배차 간격이 어떻게 되나요?",
+    "example_en": "There's no schedule posted — how often does it come?",
+    "example_ko": "시간표가 안 붙어 있는데 배차 간격이 어떻게 되나요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E671",
+    "phrase_en": "I'm looking for the north entrance.",
+    "meaning_ko": "북쪽 입구를 찾고 있어요.",
+    "example_en": "I'm looking for the north entrance — is it this way?",
+    "example_ko": "북쪽 입구를 찾고 있는데 이쪽인가요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E672",
+    "phrase_en": "Can I walk there in ten minutes?",
+    "meaning_ko": "거기까지 십 분이면 걸어갈 수 있나요?",
+    "example_en": "My meeting starts soon — can I walk there in ten minutes?",
+    "example_ko": "회의가 곧 시작해서요. 거기까지 십 분이면 걸어갈 수 있나요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E673",
+    "phrase_en": "Could you point me in the right direction?",
+    "meaning_ko": "방향만이라도 알려 주시겠어요?",
+    "example_en": "I don't need details — could you point me in the right direction?",
+    "example_ko": "자세히는 아니어도 방향만이라도 알려 주시겠어요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E674",
+    "phrase_en": "There's a shortcut through the park.",
+    "meaning_ko": "공원을 가로지르면 지름길이에요.",
+    "example_en": "There's a shortcut through the park if you're walking.",
+    "example_ko": "걸어가신다면 공원을 가로지르면 지름길이에요.",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E675",
+    "phrase_en": "I'll take a taxi instead.",
+    "meaning_ko": "그냥 택시 탈게요.",
+    "example_en": "The bus won't come for twenty minutes — I'll take a taxi instead.",
+    "example_ko": "버스가 이십 분은 안 와요. 그냥 택시 탈게요.",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E676",
+    "phrase_en": "Is this street one way?",
+    "meaning_ko": "이 길이 일방통행인가요?",
+    "example_en": "I don't want a ticket — is this street one way?",
+    "example_ko": "딱지 떼기 싫어서요. 이 길이 일방통행인가요?",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E677",
+    "phrase_en": "We're almost there.",
+    "meaning_ko": "거의 다 왔어요.",
+    "example_en": "Hang in there — we're almost there.",
+    "example_ko": "조금만 참으세요. 거의 다 왔어요.",
+    "topic": "길찾기·교통"
+  },
+  {
+    "id": "E678",
+    "phrase_en": "I'm not feeling well.",
+    "meaning_ko": "몸이 좀 안 좋아요.",
+    "example_en": "I might head home early — I'm not feeling well.",
+    "example_ko": "일찍 들어갈까 봐요. 몸이 좀 안 좋아요.",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E679",
+    "phrase_en": "I have a splitting headache.",
+    "meaning_ko": "머리가 깨질 듯이 아파요.",
+    "example_en": "Could I lie down? I have a splitting headache.",
+    "example_ko": "좀 누워도 될까요? 머리가 깨질 듯이 아파요.",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E680",
+    "phrase_en": "My stomach has been upset all day.",
+    "meaning_ko": "하루 종일 속이 안 좋아요.",
+    "example_en": "I skipped lunch — my stomach has been upset all day.",
+    "example_ko": "점심을 걸렀어요. 하루 종일 속이 안 좋아요.",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E681",
+    "phrase_en": "I can't stop coughing.",
+    "meaning_ko": "기침이 멈추질 않아요.",
+    "example_en": "I barely slept — I can't stop coughing.",
+    "example_ko": "잠을 거의 못 잤어요. 기침이 멈추질 않아요.",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E682",
+    "phrase_en": "How long have you had this?",
+    "meaning_ko": "이 증상이 언제부터 있었나요?",
+    "example_en": "I see — how long have you had this?",
+    "example_ko": "그렇군요. 이 증상이 언제부터 있었나요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E683",
+    "phrase_en": "Could you roll up your sleeve?",
+    "meaning_ko": "소매 좀 걷어 주시겠어요?",
+    "example_en": "I'll check your blood pressure — could you roll up your sleeve?",
+    "example_ko": "혈압을 잴게요. 소매 좀 걷어 주시겠어요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E684",
+    "phrase_en": "Do you have any allergies?",
+    "meaning_ko": "알레르기가 있으신가요?",
+    "example_en": "Before I prescribe this, do you have any allergies?",
+    "example_ko": "처방하기 전에요, 알레르기가 있으신가요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E685",
+    "phrase_en": "Take this twice a day after meals.",
+    "meaning_ko": "하루 두 번 식후에 드세요.",
+    "example_en": "Take this twice a day after meals for five days.",
+    "example_ko": "닷새간 하루 두 번 식후에 드세요.",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E686",
+    "phrase_en": "Is it contagious?",
+    "meaning_ko": "전염되나요?",
+    "example_en": "I have small kids at home — is it contagious?",
+    "example_ko": "집에 어린아이가 있어서요. 전염되나요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E687",
+    "phrase_en": "Should I get an X-ray?",
+    "meaning_ko": "엑스레이를 찍어야 할까요?",
+    "example_en": "It still hurts to walk — should I get an X-ray?",
+    "example_ko": "아직 걸을 때 아파요. 엑스레이를 찍어야 할까요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E688",
+    "phrase_en": "I've been having trouble sleeping.",
+    "meaning_ko": "잠을 잘 못 자고 있어요.",
+    "example_en": "For about a month I've been having trouble sleeping.",
+    "example_ko": "한 달쯤 잠을 잘 못 자고 있어요.",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E689",
+    "phrase_en": "Is this covered by insurance?",
+    "meaning_ko": "이거 보험 적용되나요?",
+    "example_en": "Before we schedule it, is this covered by insurance?",
+    "example_ko": "예약 잡기 전에요, 이거 보험 적용되나요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E690",
+    "phrase_en": "Could I get a doctor's note?",
+    "meaning_ko": "진단서를 받을 수 있을까요?",
+    "example_en": "My work requires one — could I get a doctor's note?",
+    "example_ko": "회사에서 요구해서요. 진단서를 받을 수 있을까요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E691",
+    "phrase_en": "I ran out of my medication.",
+    "meaning_ko": "약이 다 떨어졌어요.",
+    "example_en": "I ran out of my medication — could I get a refill?",
+    "example_ko": "약이 다 떨어졌는데 재처방 받을 수 있을까요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E692",
+    "phrase_en": "Is there a generic version?",
+    "meaning_ko": "복제약이 있나요?",
+    "example_en": "This is expensive — is there a generic version?",
+    "example_ko": "이거 비싼데 복제약이 있나요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E693",
+    "phrase_en": "Can I take this with food?",
+    "meaning_ko": "음식이랑 같이 먹어도 되나요?",
+    "example_en": "It upsets my stomach — can I take this with food?",
+    "example_ko": "속이 쓰려서요. 음식이랑 같이 먹어도 되나요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E694",
+    "phrase_en": "I think I have food poisoning.",
+    "meaning_ko": "식중독인 것 같아요.",
+    "example_en": "I ate out last night and I think I have food poisoning.",
+    "example_ko": "어젯밤에 외식했는데 식중독인 것 같아요.",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E695",
+    "phrase_en": "My back has been acting up.",
+    "meaning_ko": "허리가 계속 말썽이에요.",
+    "example_en": "Since I moved apartments, my back has been acting up.",
+    "example_ko": "이사한 뒤로 허리가 계속 말썽이에요.",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E696",
+    "phrase_en": "Could you refer me to a specialist?",
+    "meaning_ko": "전문의를 소개해 주실 수 있나요?",
+    "example_en": "If it's not improving, could you refer me to a specialist?",
+    "example_ko": "나아지지 않으면 전문의를 소개해 주실 수 있나요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E697",
+    "phrase_en": "How soon will I feel better?",
+    "meaning_ko": "언제쯤 나아질까요?",
+    "example_en": "I have a trip next week — how soon will I feel better?",
+    "example_ko": "다음 주에 여행이 있어서요. 언제쯤 나아질까요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E698",
+    "phrase_en": "I'd like to reschedule my appointment.",
+    "meaning_ko": "예약을 변경하고 싶어요.",
+    "example_en": "Something came up — I'd like to reschedule my appointment.",
+    "example_ko": "일이 생겨서 예약을 변경하고 싶어요.",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E699",
+    "phrase_en": "Is the doctor running behind?",
+    "meaning_ko": "진료가 지연되고 있나요?",
+    "example_en": "I've been waiting forty minutes — is the doctor running behind?",
+    "example_ko": "사십 분 기다렸는데 진료가 지연되고 있나요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E700",
+    "phrase_en": "It's been getting worse.",
+    "meaning_ko": "점점 심해지고 있어요.",
+    "example_en": "At first it was mild, but it's been getting worse.",
+    "example_ko": "처음엔 가벼웠는데 점점 심해지고 있어요.",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E701",
+    "phrase_en": "Could you check my blood pressure?",
+    "meaning_ko": "혈압 좀 재 주시겠어요?",
+    "example_en": "While I'm here, could you check my blood pressure?",
+    "example_ko": "온 김에 혈압 좀 재 주시겠어요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E702",
+    "phrase_en": "I'm on medication for my thyroid.",
+    "meaning_ko": "갑상선 약을 복용 중이에요.",
+    "example_en": "You should know I'm on medication for my thyroid.",
+    "example_ko": "참고로 갑상선 약을 복용 중이에요.",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E703",
+    "phrase_en": "Do I need to fast beforehand?",
+    "meaning_ko": "사전에 금식해야 하나요?",
+    "example_en": "For the blood test, do I need to fast beforehand?",
+    "example_ko": "혈액 검사인데 사전에 금식해야 하나요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E704",
+    "phrase_en": "When will the results come in?",
+    "meaning_ko": "결과가 언제 나오나요?",
+    "example_en": "When will the results come in, and will you call me?",
+    "example_ko": "결과가 언제 나오나요? 전화 주시나요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E705",
+    "phrase_en": "It stings a little.",
+    "meaning_ko": "좀 따끔거려요.",
+    "example_en": "Nothing serious, but it stings a little.",
+    "example_ko": "심한 건 아닌데 좀 따끔거려요.",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E706",
+    "phrase_en": "Could I get something for the pain?",
+    "meaning_ko": "진통제 좀 받을 수 있을까요?",
+    "example_en": "I can't sleep through it — could I get something for the pain?",
+    "example_ko": "아파서 잠을 못 자요. 진통제 좀 받을 수 있을까요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E707",
+    "phrase_en": "Is there a pharmacy open now?",
+    "meaning_ko": "지금 문 연 약국이 있나요?",
+    "example_en": "It's almost midnight — is there a pharmacy open now?",
+    "example_ko": "거의 자정인데 지금 문 연 약국이 있나요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E708",
+    "phrase_en": "I need a Band-Aid.",
+    "meaning_ko": "반창고가 필요해요.",
+    "example_en": "It's just a small cut — I need a Band-Aid.",
+    "example_ko": "작게 베인 거예요. 반창고가 필요해요.",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E709",
+    "phrase_en": "I've been feeling run down.",
+    "meaning_ko": "계속 기운이 없어요.",
+    "example_en": "Nothing specific hurts, but I've been feeling run down.",
+    "example_ko": "딱히 아픈 데는 없는데 계속 기운이 없어요.",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E710",
+    "phrase_en": "Should I come back for a follow-up?",
+    "meaning_ko": "재진을 받으러 와야 하나요?",
+    "example_en": "Once I finish the medication, should I come back for a follow-up?",
+    "example_ko": "약을 다 먹으면 재진을 받으러 와야 하나요?",
+    "topic": "병원·약국"
+  },
+  {
+    "id": "E711",
+    "phrase_en": "The toilet won't flush.",
+    "meaning_ko": "변기 물이 안 내려가요.",
+    "example_en": "I tried the handle twice — the toilet won't flush.",
+    "example_ko": "손잡이를 두 번 눌렀는데 변기 물이 안 내려가요.",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E712",
+    "phrase_en": "There's no hot water.",
+    "meaning_ko": "온수가 안 나와요.",
+    "example_en": "Since this morning there's no hot water.",
+    "example_ko": "오늘 아침부터 온수가 안 나와요.",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E713",
+    "phrase_en": "The door won't lock.",
+    "meaning_ko": "문이 안 잠겨요.",
+    "example_en": "I can't leave like this — the door won't lock.",
+    "example_ko": "이대로는 못 나가요. 문이 안 잠겨요.",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E714",
+    "phrase_en": "Could you come by this afternoon?",
+    "meaning_ko": "오늘 오후에 와 주실 수 있나요?",
+    "example_en": "I'll be home all day — could you come by this afternoon?",
+    "example_ko": "하루 종일 집에 있어요. 오늘 오후에 와 주실 수 있나요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E715",
+    "phrase_en": "The neighbors are really loud.",
+    "meaning_ko": "이웃이 너무 시끄러워요.",
+    "example_en": "It's past midnight and the neighbors are really loud.",
+    "example_ko": "자정이 넘었는데 이웃이 너무 시끄러워요.",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E716",
+    "phrase_en": "When is the rent due?",
+    "meaning_ko": "월세가 언제까지예요?",
+    "example_en": "I just moved in — when is the rent due?",
+    "example_ko": "막 입주했는데 월세가 언제까지예요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E717",
+    "phrase_en": "Could I renew the lease?",
+    "meaning_ko": "계약을 연장할 수 있을까요?",
+    "example_en": "I'd like to stay another year — could I renew the lease?",
+    "example_ko": "일 년 더 살고 싶은데 계약을 연장할 수 있을까요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E718",
+    "phrase_en": "Are pets allowed?",
+    "meaning_ko": "반려동물 키워도 되나요?",
+    "example_en": "I have a small dog — are pets allowed?",
+    "example_ko": "작은 강아지가 있는데 반려동물 키워도 되나요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E719",
+    "phrase_en": "The paint is peeling.",
+    "meaning_ko": "페인트가 벗겨지고 있어요.",
+    "example_en": "In the bathroom, the paint is peeling off the ceiling.",
+    "example_ko": "화장실 천장에서 페인트가 벗겨지고 있어요.",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E720",
+    "phrase_en": "Could you fix it before I move in?",
+    "meaning_ko": "입주 전에 고쳐 주실 수 있나요?",
+    "example_en": "It's a small thing — could you fix it before I move in?",
+    "example_ko": "사소한 거예요. 입주 전에 고쳐 주실 수 있나요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E721",
+    "phrase_en": "The drain smells.",
+    "meaning_ko": "배수구에서 냄새가 나요.",
+    "example_en": "Especially at night, the drain smells.",
+    "example_ko": "특히 밤에 배수구에서 냄새가 나요.",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E722",
+    "phrase_en": "I'd like to give notice.",
+    "meaning_ko": "퇴거 통보를 하려고요.",
+    "example_en": "I'm moving in two months — I'd like to give notice.",
+    "example_ko": "두 달 뒤에 이사해서 퇴거 통보를 하려고요.",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E723",
+    "phrase_en": "How much is the maintenance fee?",
+    "meaning_ko": "관리비가 얼마인가요?",
+    "example_en": "On top of rent, how much is the maintenance fee?",
+    "example_ko": "월세 말고 관리비가 얼마인가요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E724",
+    "phrase_en": "There's mold in the corner.",
+    "meaning_ko": "구석에 곰팡이가 있어요.",
+    "example_en": "Behind the wardrobe, there's mold in the corner.",
+    "example_ko": "옷장 뒤 구석에 곰팡이가 있어요.",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E725",
+    "phrase_en": "Could you take a look at the boiler?",
+    "meaning_ko": "보일러 좀 봐 주시겠어요?",
+    "example_en": "It's making a strange noise — could you take a look at the boiler?",
+    "example_ko": "이상한 소리가 나요. 보일러 좀 봐 주시겠어요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E726",
+    "phrase_en": "When do they collect the trash?",
+    "meaning_ko": "쓰레기는 언제 수거하나요?",
+    "example_en": "I don't want to miss it — when do they collect the trash?",
+    "example_ko": "놓치기 싫어서요. 쓰레기는 언제 수거하나요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E727",
+    "phrase_en": "The window doesn't close properly.",
+    "meaning_ko": "창문이 제대로 안 닫혀요.",
+    "example_en": "It gets cold at night — the window doesn't close properly.",
+    "example_ko": "밤에 추워요. 창문이 제대로 안 닫혀요.",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E728",
+    "phrase_en": "Could I get a copy of the key?",
+    "meaning_ko": "열쇠를 하나 더 만들 수 있을까요?",
+    "example_en": "My partner needs one — could I get a copy of the key?",
+    "example_ko": "배우자도 필요해서요. 열쇠를 하나 더 만들 수 있을까요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E729",
+    "phrase_en": "The power keeps going out.",
+    "meaning_ko": "전기가 자꾸 나가요.",
+    "example_en": "Three times this week, the power keeps going out.",
+    "example_ko": "이번 주에만 세 번이에요. 전기가 자꾸 나가요.",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E730",
+    "phrase_en": "Is the furniture included?",
+    "meaning_ko": "가구가 포함인가요?",
+    "example_en": "In the listing photo, is the furniture included?",
+    "example_ko": "매물 사진에 있는 가구가 포함인가요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E731",
+    "phrase_en": "Could you send someone to look at it?",
+    "meaning_ko": "누구 보내서 봐 주실 수 있나요?",
+    "example_en": "I can't fix it myself — could you send someone to look at it?",
+    "example_ko": "제가 못 고쳐요. 누구 보내서 봐 주실 수 있나요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E732",
+    "phrase_en": "How much notice do I need to give?",
+    "meaning_ko": "몇 달 전에 통보해야 하나요?",
+    "example_en": "If I want to leave, how much notice do I need to give?",
+    "example_ko": "나가려면 몇 달 전에 통보해야 하나요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E733",
+    "phrase_en": "The floor creaks.",
+    "meaning_ko": "바닥에서 삐걱 소리가 나요.",
+    "example_en": "Right by the door, the floor creaks.",
+    "example_ko": "문 바로 앞 바닥에서 삐걱 소리가 나요.",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E734",
+    "phrase_en": "Could we split the repair cost?",
+    "meaning_ko": "수리비를 나눠서 낼 수 있을까요?",
+    "example_en": "It's wear and tear — could we split the repair cost?",
+    "example_ko": "자연 마모라서요. 수리비를 나눠서 낼 수 있을까요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E735",
+    "phrase_en": "Is there storage in the building?",
+    "meaning_ko": "건물에 창고가 있나요?",
+    "example_en": "I have winter gear — is there storage in the building?",
+    "example_ko": "겨울 용품이 있어서요. 건물에 창고가 있나요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E736",
+    "phrase_en": "The elevator is out of service.",
+    "meaning_ko": "엘리베이터가 고장이에요.",
+    "example_en": "I had to take the stairs — the elevator is out of service.",
+    "example_ko": "계단으로 올라왔어요. 엘리베이터가 고장이에요.",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E737",
+    "phrase_en": "Could you tighten this?",
+    "meaning_ko": "이거 좀 조여 주시겠어요?",
+    "example_en": "The handle is loose — could you tighten this?",
+    "example_ko": "손잡이가 헐거워요. 이거 좀 조여 주시겠어요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E738",
+    "phrase_en": "When was it last serviced?",
+    "meaning_ko": "마지막으로 점검한 게 언제예요?",
+    "example_en": "About the air conditioner — when was it last serviced?",
+    "example_ko": "에어컨 말인데요, 마지막으로 점검한 게 언제예요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E739",
+    "phrase_en": "I'll be home after seven.",
+    "meaning_ko": "일곱 시 이후에 집에 있어요.",
+    "example_en": "Any time works, but I'll be home after seven.",
+    "example_ko": "아무 때나 괜찮은데 일곱 시 이후에 집에 있어요.",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E740",
+    "phrase_en": "Could you give me an estimate first?",
+    "meaning_ko": "먼저 견적부터 주시겠어요?",
+    "example_en": "Before you start, could you give me an estimate first?",
+    "example_ko": "작업 시작 전에 먼저 견적부터 주시겠어요?",
+    "topic": "집·수리"
+  },
+  {
+    "id": "E741",
+    "phrase_en": "My battery is at five percent.",
+    "meaning_ko": "배터리가 오 퍼센트예요.",
+    "example_en": "I might cut out — my battery is at five percent.",
+    "example_ko": "끊길 수도 있어요. 배터리가 오 퍼센트예요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E742",
+    "phrase_en": "The connection keeps timing out.",
+    "meaning_ko": "접속이 자꾸 끊겨요.",
+    "example_en": "I can't submit the form — the connection keeps timing out.",
+    "example_ko": "양식을 못 내겠어요. 접속이 자꾸 끊겨요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E743",
+    "phrase_en": "Could you share your screen?",
+    "meaning_ko": "화면 공유해 주시겠어요?",
+    "example_en": "I'd rather see it — could you share your screen?",
+    "example_ko": "직접 보는 게 낫겠어요. 화면 공유해 주시겠어요?",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E744",
+    "phrase_en": "You're on mute.",
+    "meaning_ko": "음소거되어 있어요.",
+    "example_en": "We can't hear you — you're on mute.",
+    "example_ko": "소리가 안 들려요. 음소거되어 있어요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E745",
+    "phrase_en": "Could you refresh the page?",
+    "meaning_ko": "페이지 새로고침해 보시겠어요?",
+    "example_en": "It should be there now — could you refresh the page?",
+    "example_ko": "이제 있을 거예요. 페이지 새로고침해 보시겠어요?",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E746",
+    "phrase_en": "I'm getting an error message.",
+    "meaning_ko": "오류 메시지가 떠요.",
+    "example_en": "Every time I log in, I'm getting an error message.",
+    "example_ko": "로그인할 때마다 오류 메시지가 떠요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E747",
+    "phrase_en": "Have you tried clearing the cache?",
+    "meaning_ko": "캐시 삭제는 해 보셨어요?",
+    "example_en": "That usually helps — have you tried clearing the cache?",
+    "example_ko": "보통 그걸로 해결돼요. 캐시 삭제는 해 보셨어요?",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E748",
+    "phrase_en": "My storage is full.",
+    "meaning_ko": "저장 공간이 꽉 찼어요.",
+    "example_en": "I can't take photos — my storage is full.",
+    "example_ko": "사진을 못 찍어요. 저장 공간이 꽉 찼어요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E749",
+    "phrase_en": "Could you send that as a PDF?",
+    "meaning_ko": "그거 PDF로 보내 주실 수 있어요?",
+    "example_en": "It won't open on my phone — could you send that as a PDF?",
+    "example_ko": "휴대폰에서 안 열려요. 그거 PDF로 보내 주실 수 있어요?",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E750",
+    "phrase_en": "The update is taking forever.",
+    "meaning_ko": "업데이트가 한없이 걸리네요.",
+    "example_en": "I've been waiting an hour — the update is taking forever.",
+    "example_ko": "한 시간째 기다려요. 업데이트가 한없이 걸리네요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E751",
+    "phrase_en": "I can't log in.",
+    "meaning_ko": "로그인이 안 돼요.",
+    "example_en": "I reset it twice and I still can't log in.",
+    "example_ko": "두 번이나 재설정했는데 아직도 로그인이 안 돼요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E752",
+    "phrase_en": "Is there a free trial?",
+    "meaning_ko": "무료 체험이 있나요?",
+    "example_en": "Before I subscribe, is there a free trial?",
+    "example_ko": "구독하기 전에요, 무료 체험이 있나요?",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E753",
+    "phrase_en": "Could you turn on your camera?",
+    "meaning_ko": "카메라 좀 켜 주시겠어요?",
+    "example_en": "It's a small group — could you turn on your camera?",
+    "example_ko": "소규모라서요. 카메라 좀 켜 주시겠어요?",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E754",
+    "phrase_en": "The sound is cutting out.",
+    "meaning_ko": "소리가 끊겨요.",
+    "example_en": "Could you move closer to the router? The sound is cutting out.",
+    "example_ko": "공유기 가까이 가 주실래요? 소리가 끊겨요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E755",
+    "phrase_en": "I'll drop the link in the chat.",
+    "meaning_ko": "채팅창에 링크 올릴게요.",
+    "example_en": "No need to write it down — I'll drop the link in the chat.",
+    "example_ko": "받아 적지 않으셔도 돼요. 채팅창에 링크 올릴게요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E756",
+    "phrase_en": "Could you restart the router?",
+    "meaning_ko": "공유기 좀 재부팅해 주시겠어요?",
+    "example_en": "Nothing else worked — could you restart the router?",
+    "example_ko": "다른 건 다 해 봤어요. 공유기 좀 재부팅해 주시겠어요?",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E757",
+    "phrase_en": "My phone won't charge.",
+    "meaning_ko": "휴대폰이 충전이 안 돼요.",
+    "example_en": "I tried two cables and my phone won't charge.",
+    "example_ko": "케이블 두 개를 써 봤는데 휴대폰이 충전이 안 돼요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E758",
+    "phrase_en": "Could you scan this and email it?",
+    "meaning_ko": "이거 스캔해서 메일로 보내 주실 수 있어요?",
+    "example_en": "I need a digital copy — could you scan this and email it?",
+    "example_ko": "전자 사본이 필요해서요. 이거 스캔해서 메일로 보내 주실 수 있어요?",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E759",
+    "phrase_en": "I'll share my location.",
+    "meaning_ko": "제 위치 공유할게요.",
+    "example_en": "It's hard to explain — I'll share my location.",
+    "example_ko": "설명하기 어려워요. 제 위치 공유할게요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E760",
+    "phrase_en": "The video keeps buffering.",
+    "meaning_ko": "영상이 자꾸 끊겨요.",
+    "example_en": "I lowered the quality but the video keeps buffering.",
+    "example_ko": "화질을 낮췄는데도 영상이 자꾸 끊겨요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E761",
+    "phrase_en": "Could you check your spam folder?",
+    "meaning_ko": "스팸함 좀 확인해 보시겠어요?",
+    "example_en": "I definitely sent it — could you check your spam folder?",
+    "example_ko": "분명히 보냈어요. 스팸함 좀 확인해 보시겠어요?",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E762",
+    "phrase_en": "I need to update my software.",
+    "meaning_ko": "소프트웨어를 업데이트해야 해요.",
+    "example_en": "That's why it's not compatible — I need to update my software.",
+    "example_ko": "그래서 호환이 안 되는 거예요. 소프트웨어를 업데이트해야 해요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E763",
+    "phrase_en": "Is there a data limit?",
+    "meaning_ko": "데이터 제한이 있나요?",
+    "example_en": "On this plan, is there a data limit?",
+    "example_ko": "이 요금제는 데이터 제한이 있나요?",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E764",
+    "phrase_en": "Could I connect to your hotspot?",
+    "meaning_ko": "핫스팟 좀 연결해도 될까요?",
+    "example_en": "The café Wi-Fi is down — could I connect to your hotspot?",
+    "example_ko": "카페 와이파이가 안 돼요. 핫스팟 좀 연결해도 될까요?",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E765",
+    "phrase_en": "It works on my end.",
+    "meaning_ko": "제 쪽에서는 잘 되는데요.",
+    "example_en": "That's strange — it works on my end.",
+    "example_ko": "이상하네요. 제 쪽에서는 잘 되는데요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E766",
+    "phrase_en": "Could you send a screenshot?",
+    "meaning_ko": "스크린샷 좀 보내 주시겠어요?",
+    "example_en": "I can't picture it — could you send a screenshot?",
+    "example_ko": "잘 그려지지 않아요. 스크린샷 좀 보내 주시겠어요?",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E767",
+    "phrase_en": "My laptop keeps overheating.",
+    "meaning_ko": "노트북이 자꾸 과열돼요.",
+    "example_en": "The fan runs constantly — my laptop keeps overheating.",
+    "example_ko": "팬이 계속 돌아요. 노트북이 자꾸 과열돼요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E768",
+    "phrase_en": "I accidentally deleted it.",
+    "meaning_ko": "실수로 지웠어요.",
+    "example_en": "Is it recoverable? I accidentally deleted it.",
+    "example_ko": "복구 가능한가요? 실수로 지웠어요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E769",
+    "phrase_en": "Could you add me to the group chat?",
+    "meaning_ko": "단톡방에 저 좀 초대해 주실래요?",
+    "example_en": "I keep missing updates — could you add me to the group chat?",
+    "example_ko": "소식을 자꾸 놓쳐요. 단톡방에 저 좀 초대해 주실래요?",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E770",
+    "phrase_en": "Let me check my calendar.",
+    "meaning_ko": "일정 좀 확인해 볼게요.",
+    "example_en": "Thursday might work — let me check my calendar.",
+    "example_ko": "목요일이 될 것 같은데 일정 좀 확인해 볼게요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E771",
+    "phrase_en": "The link is broken.",
+    "meaning_ko": "링크가 안 열려요.",
+    "example_en": "I get a 404 — the link is broken.",
+    "example_ko": "404가 떠요. 링크가 안 열려요.",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E772",
+    "phrase_en": "Could you enable notifications?",
+    "meaning_ko": "알림 좀 켜 주시겠어요?",
+    "example_en": "You'll miss messages otherwise — could you enable notifications?",
+    "example_ko": "안 그러면 메시지를 놓쳐요. 알림 좀 켜 주시겠어요?",
+    "topic": "기기·인터넷"
+  },
+  {
+    "id": "E773",
+    "phrase_en": "I have an exam next week.",
+    "meaning_ko": "다음 주에 시험이 있어요.",
+    "example_en": "I can't go out — I have an exam next week.",
+    "example_ko": "못 나가요. 다음 주에 시험이 있어요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E774",
+    "phrase_en": "Could you go over that one more time?",
+    "meaning_ko": "그거 한 번만 더 짚어 주시겠어요?",
+    "example_en": "I didn't catch the last step — could you go over that one more time?",
+    "example_ko": "마지막 단계를 놓쳤어요. 한 번만 더 짚어 주시겠어요?",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E775",
+    "phrase_en": "I've been cramming all night.",
+    "meaning_ko": "밤새 벼락치기했어요.",
+    "example_en": "I look terrible because I've been cramming all night.",
+    "example_ko": "몰골이 말이 아니죠. 밤새 벼락치기했어요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E776",
+    "phrase_en": "What's on the syllabus?",
+    "meaning_ko": "강의 계획서에 뭐가 있어요?",
+    "example_en": "I haven't checked yet — what's on the syllabus?",
+    "example_ko": "아직 안 봤어요. 강의 계획서에 뭐가 있어요?",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E777",
+    "phrase_en": "I'm taking five classes this semester.",
+    "meaning_ko": "이번 학기에 다섯 과목 들어요.",
+    "example_en": "I'm exhausted — I'm taking five classes this semester.",
+    "example_ko": "너무 지쳐요. 이번 학기에 다섯 과목 들어요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E778",
+    "phrase_en": "Could we study together?",
+    "meaning_ko": "같이 공부할까요?",
+    "example_en": "The exam is brutal — could we study together?",
+    "example_ko": "시험이 너무 어려워요. 같이 공부할까요?",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E779",
+    "phrase_en": "I need to hand it in by Friday.",
+    "meaning_ko": "금요일까지 제출해야 해요.",
+    "example_en": "I can't put it off — I need to hand it in by Friday.",
+    "example_ko": "미룰 수가 없어요. 금요일까지 제출해야 해요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E780",
+    "phrase_en": "The lecture went over my head.",
+    "meaning_ko": "강의를 하나도 못 알아들었어요.",
+    "example_en": "I read the chapter twice, but the lecture went over my head.",
+    "example_ko": "챕터를 두 번 읽었는데도 강의를 하나도 못 알아들었어요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E781",
+    "phrase_en": "Is attendance mandatory?",
+    "meaning_ko": "출석이 필수인가요?",
+    "example_en": "I work part-time — is attendance mandatory?",
+    "example_ko": "아르바이트를 해서요. 출석이 필수인가요?",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E782",
+    "phrase_en": "I'm majoring in economics.",
+    "meaning_ko": "저는 경제학을 전공해요.",
+    "example_en": "I'm majoring in economics with a minor in statistics.",
+    "example_ko": "경제학을 전공하고 통계학을 부전공해요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E783",
+    "phrase_en": "Could you proofread this for me?",
+    "meaning_ko": "이거 좀 봐 주실 수 있어요?",
+    "example_en": "It's due tonight — could you proofread this for me?",
+    "example_ko": "오늘 밤까지예요. 이거 좀 봐 주실 수 있어요?",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E784",
+    "phrase_en": "I got a scholarship.",
+    "meaning_ko": "장학금을 받았어요.",
+    "example_en": "I got a scholarship, so tuition is covered.",
+    "example_ko": "장학금을 받아서 등록금은 해결됐어요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E785",
+    "phrase_en": "I have a group project.",
+    "meaning_ko": "조별 과제가 있어요.",
+    "example_en": "I have a group project and nobody is responding.",
+    "example_ko": "조별 과제가 있는데 아무도 답이 없어요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E786",
+    "phrase_en": "How long should the essay be?",
+    "meaning_ko": "에세이 분량이 얼마나 돼야 하나요?",
+    "example_en": "How long should the essay be, roughly?",
+    "example_ko": "에세이 분량이 대략 얼마나 돼야 하나요?",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E787",
+    "phrase_en": "I'm auditing the class.",
+    "meaning_ko": "청강하고 있어요.",
+    "example_en": "I'm not graded — I'm auditing the class.",
+    "example_ko": "성적은 안 받아요. 청강하고 있어요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E788",
+    "phrase_en": "Could I get feedback on my draft?",
+    "meaning_ko": "초안에 피드백 주실 수 있나요?",
+    "example_en": "Before I finalize it, could I get feedback on my draft?",
+    "example_ko": "마무리하기 전에 초안에 피드백 주실 수 있나요?",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E789",
+    "phrase_en": "I studied abroad for a year.",
+    "meaning_ko": "일 년간 해외에서 공부했어요.",
+    "example_en": "My English improved because I studied abroad for a year.",
+    "example_ko": "일 년간 해외에서 공부해서 영어가 늘었어요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E790",
+    "phrase_en": "The class was canceled.",
+    "meaning_ko": "수업이 휴강됐어요.",
+    "example_en": "Check your email — the class was canceled.",
+    "example_ko": "메일 확인해 보세요. 수업이 휴강됐어요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E791",
+    "phrase_en": "I'm taking notes.",
+    "meaning_ko": "필기하고 있어요.",
+    "example_en": "Go ahead, I'm taking notes.",
+    "example_ko": "말씀하세요, 필기하고 있어요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E792",
+    "phrase_en": "Could you recommend a textbook?",
+    "meaning_ko": "교재 좀 추천해 주시겠어요?",
+    "example_en": "I'm starting from zero — could you recommend a textbook?",
+    "example_ko": "완전 초보예요. 교재 좀 추천해 주시겠어요?",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E793",
+    "phrase_en": "I signed up for a language exchange.",
+    "meaning_ko": "언어 교환에 신청했어요.",
+    "example_en": "To practice speaking, I signed up for a language exchange.",
+    "example_ko": "회화 연습하려고 언어 교환에 신청했어요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E794",
+    "phrase_en": "My grades went up this term.",
+    "meaning_ko": "이번 학기에 성적이 올랐어요.",
+    "example_en": "The tutoring helped — my grades went up this term.",
+    "example_ko": "과외가 도움이 됐어요. 이번 학기에 성적이 올랐어요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E795",
+    "phrase_en": "I'm behind on my reading.",
+    "meaning_ko": "읽어야 할 걸 못 따라가고 있어요.",
+    "example_en": "Three chapters left — I'm behind on my reading.",
+    "example_ko": "세 챕터 남았어요. 읽어야 할 걸 못 따라가고 있어요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E796",
+    "phrase_en": "Could I sit in on your class?",
+    "meaning_ko": "수업을 참관해도 될까요?",
+    "example_en": "I'm considering the major — could I sit in on your class?",
+    "example_ko": "전공을 고민 중이라서요. 수업을 참관해도 될까요?",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E797",
+    "phrase_en": "What's the passing grade?",
+    "meaning_ko": "몇 점부터 통과인가요?",
+    "example_en": "I'm nervous — what's the passing grade?",
+    "example_ko": "긴장돼요. 몇 점부터 통과인가요?",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E798",
+    "phrase_en": "I'm preparing for a job interview.",
+    "meaning_ko": "면접 준비 중이에요.",
+    "example_en": "I'm preparing for a job interview next Monday.",
+    "example_ko": "다음 주 월요일 면접 준비 중이에요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E799",
+    "phrase_en": "Practice makes perfect.",
+    "meaning_ko": "연습이 완벽을 만들어요.",
+    "example_en": "Don't give up after one try — practice makes perfect.",
+    "example_ko": "한 번 해 보고 포기하지 마세요. 연습이 완벽을 만들어요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E800",
+    "phrase_en": "I learn best by doing.",
+    "meaning_ko": "저는 직접 해 보면서 배우는 편이에요.",
+    "example_en": "Lectures don't stick — I learn best by doing.",
+    "example_ko": "강의는 잘 안 남아요. 저는 직접 해 보면서 배우는 편이에요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E801",
+    "phrase_en": "Could you say that in simpler words?",
+    "meaning_ko": "좀 더 쉬운 말로 해 주시겠어요?",
+    "example_en": "I'm still learning — could you say that in simpler words?",
+    "example_ko": "아직 배우는 중이에요. 좀 더 쉬운 말로 해 주시겠어요?",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E802",
+    "phrase_en": "I've hit a plateau.",
+    "meaning_ko": "실력이 정체됐어요.",
+    "example_en": "I study every day but I've hit a plateau.",
+    "example_ko": "매일 공부하는데 실력이 정체됐어요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E803",
+    "phrase_en": "Little by little, it adds up.",
+    "meaning_ko": "조금씩 하다 보면 쌓여요.",
+    "example_en": "Ten minutes a day is fine — little by little, it adds up.",
+    "example_ko": "하루 십 분이면 충분해요. 조금씩 하다 보면 쌓여요.",
+    "topic": "학교·공부"
+  },
+  {
+    "id": "E804",
+    "phrase_en": "That's rough.",
+    "meaning_ko": "많이 힘들겠다.",
+    "example_en": "You lost the whole file? That's rough.",
+    "example_ko": "파일을 통째로 날렸다고? 많이 힘들겠다.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E805",
+    "phrase_en": "I've been there.",
+    "meaning_ko": "저도 그런 적 있어요.",
+    "example_en": "Don't be embarrassed — I've been there.",
+    "example_ko": "부끄러워하지 마세요. 저도 그런 적 있어요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E806",
+    "phrase_en": "Take all the time you need.",
+    "meaning_ko": "천천히 하셔도 돼요.",
+    "example_en": "There's no rush — take all the time you need.",
+    "example_ko": "급할 것 없어요. 천천히 하셔도 돼요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E807",
+    "phrase_en": "You did everything you could.",
+    "meaning_ko": "할 수 있는 건 다 하셨어요.",
+    "example_en": "Don't blame yourself — you did everything you could.",
+    "example_ko": "자책하지 마세요. 할 수 있는 건 다 하셨어요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E808",
+    "phrase_en": "I'm here if you need to talk.",
+    "meaning_ko": "얘기하고 싶으면 언제든 말해요.",
+    "example_en": "No pressure, but I'm here if you need to talk.",
+    "example_ko": "부담 갖지 말고, 얘기하고 싶으면 언제든 말해요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E809",
+    "phrase_en": "That's completely understandable.",
+    "meaning_ko": "충분히 이해돼요.",
+    "example_en": "You're upset, and that's completely understandable.",
+    "example_ko": "속상하신 거 충분히 이해돼요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E810",
+    "phrase_en": "Congratulations, you earned it.",
+    "meaning_ko": "축하해요, 받을 만했어요.",
+    "example_en": "Congratulations, you earned it — nobody worked harder.",
+    "example_ko": "축하해요, 받을 만했어요. 누구보다 열심히 했잖아요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E811",
+    "phrase_en": "I'm relieved to hear that.",
+    "meaning_ko": "그 말 들으니 안심이 되네요.",
+    "example_en": "So everyone's okay? I'm relieved to hear that.",
+    "example_ko": "다들 괜찮다고요? 그 말 들으니 안심이 되네요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E812",
+    "phrase_en": "That's disappointing.",
+    "meaning_ko": "참 실망스럽네요.",
+    "example_en": "After all that preparation, that's disappointing.",
+    "example_ko": "그렇게 준비했는데 참 실망스럽네요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E813",
+    "phrase_en": "I can't imagine how you feel.",
+    "meaning_ko": "어떤 심정일지 짐작도 안 돼요.",
+    "example_en": "I can't imagine how you feel right now.",
+    "example_ko": "지금 어떤 심정일지 짐작도 안 돼요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E814",
+    "phrase_en": "You're not alone in this.",
+    "meaning_ko": "혼자가 아니에요.",
+    "example_en": "Whatever happens, you're not alone in this.",
+    "example_ko": "무슨 일이 있어도 혼자가 아니에요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E815",
+    "phrase_en": "That took real courage.",
+    "meaning_ko": "정말 용기 있는 일이었어요.",
+    "example_en": "Speaking up like that took real courage.",
+    "example_ko": "그렇게 말하는 건 정말 용기 있는 일이었어요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E816",
+    "phrase_en": "I'm a little nervous.",
+    "meaning_ko": "조금 긴장돼요.",
+    "example_en": "It's my first presentation, so I'm a little nervous.",
+    "example_ko": "첫 발표라서 조금 긴장돼요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E817",
+    "phrase_en": "I'm honestly touched.",
+    "meaning_ko": "정말 감동했어요.",
+    "example_en": "You remembered my birthday — I'm honestly touched.",
+    "example_ko": "제 생일을 기억해 주셨네요. 정말 감동했어요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E818",
+    "phrase_en": "Don't be so hard on yourself.",
+    "meaning_ko": "너무 자책하지 마세요.",
+    "example_en": "It was one mistake — don't be so hard on yourself.",
+    "example_ko": "실수 한 번이었어요. 너무 자책하지 마세요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E819",
+    "phrase_en": "I'm frustrated with myself.",
+    "meaning_ko": "제 자신에게 답답해요.",
+    "example_en": "I keep making the same error — I'm frustrated with myself.",
+    "example_ko": "같은 실수를 반복해요. 제 자신에게 답답해요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E820",
+    "phrase_en": "That means a lot to me.",
+    "meaning_ko": "저한테는 큰 의미예요.",
+    "example_en": "You came all this way — that means a lot to me.",
+    "example_ko": "여기까지 와 주셨네요. 저한테는 큰 의미예요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E821",
+    "phrase_en": "I'm at my wit's end.",
+    "meaning_ko": "어찌할 바를 모르겠어요.",
+    "example_en": "I've tried everything — I'm at my wit's end.",
+    "example_ko": "다 해 봤어요. 어찌할 바를 모르겠어요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E822",
+    "phrase_en": "Cheer up.",
+    "meaning_ko": "기운 내요.",
+    "example_en": "Cheer up — there's always next time.",
+    "example_ko": "기운 내요. 다음이 있잖아요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E823",
+    "phrase_en": "I really needed to hear that.",
+    "meaning_ko": "그 말이 정말 필요했어요.",
+    "example_en": "Thank you — I really needed to hear that today.",
+    "example_ko": "고마워요. 오늘 그 말이 정말 필요했어요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E824",
+    "phrase_en": "I'm on edge lately.",
+    "meaning_ko": "요즘 좀 예민해요.",
+    "example_en": "Sorry if I snapped — I'm on edge lately.",
+    "example_ko": "쏘아붙였다면 미안해요. 요즘 좀 예민해요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E825",
+    "phrase_en": "That's a weight off my shoulders.",
+    "meaning_ko": "어깨가 한결 가벼워졌어요.",
+    "example_en": "The audit passed — that's a weight off my shoulders.",
+    "example_ko": "감사를 통과했어요. 어깨가 한결 가벼워졌어요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E826",
+    "phrase_en": "I feel bad about it.",
+    "meaning_ko": "그것 때문에 마음이 안 좋아요.",
+    "example_en": "I couldn't help her and I feel bad about it.",
+    "example_ko": "그분을 못 도와드려서 마음이 안 좋아요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E827",
+    "phrase_en": "You're too kind.",
+    "meaning_ko": "너무 과찬이세요.",
+    "example_en": "You're too kind — anyone would have done it.",
+    "example_ko": "너무 과찬이세요. 누구라도 했을 거예요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E828",
+    "phrase_en": "I'm genuinely excited.",
+    "meaning_ko": "정말 설레요.",
+    "example_en": "The trip is next week and I'm genuinely excited.",
+    "example_ko": "다음 주가 여행이라 정말 설레요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E829",
+    "phrase_en": "That caught me by surprise.",
+    "meaning_ko": "그건 정말 뜻밖이었어요.",
+    "example_en": "I had no idea — that caught me by surprise.",
+    "example_ko": "전혀 몰랐어요. 그건 정말 뜻밖이었어요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E830",
+    "phrase_en": "I'm sorry for your loss.",
+    "meaning_ko": "삼가 조의를 표합니다.",
+    "example_en": "I'm sorry for your loss — please take care of yourself.",
+    "example_ko": "삼가 조의를 표합니다. 몸 잘 챙기세요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E831",
+    "phrase_en": "It'll get better.",
+    "meaning_ko": "나아질 거예요.",
+    "example_en": "Give it some time — it'll get better.",
+    "example_ko": "시간을 좀 주세요. 나아질 거예요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E832",
+    "phrase_en": "I owe you an apology.",
+    "meaning_ko": "사과드릴 게 있어요.",
+    "example_en": "About yesterday — I owe you an apology.",
+    "example_ko": "어제 일 말인데요, 사과드릴 게 있어요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E833",
+    "phrase_en": "I'm burned out.",
+    "meaning_ko": "완전히 지쳤어요.",
+    "example_en": "I need a real break — I'm burned out.",
+    "example_ko": "제대로 쉬어야겠어요. 완전히 지쳤어요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E834",
+    "phrase_en": "That put a smile on my face.",
+    "meaning_ko": "덕분에 웃었어요.",
+    "example_en": "Your message put a smile on my face.",
+    "example_ko": "보내 주신 메시지 덕분에 웃었어요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E835",
+    "phrase_en": "I'm second-guessing myself.",
+    "meaning_ko": "제 판단을 자꾸 의심하게 돼요.",
+    "example_en": "Since the feedback, I'm second-guessing myself.",
+    "example_ko": "피드백을 받고 나서 제 판단을 자꾸 의심하게 돼요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E836",
+    "phrase_en": "No need to apologize.",
+    "meaning_ko": "사과하지 않으셔도 돼요.",
+    "example_en": "It happens to everyone — no need to apologize.",
+    "example_ko": "누구나 그래요. 사과하지 않으셔도 돼요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E837",
+    "phrase_en": "I'm grateful for your help.",
+    "meaning_ko": "도와주셔서 정말 감사해요.",
+    "example_en": "I couldn't have finished it alone — I'm grateful for your help.",
+    "example_ko": "혼자서는 못 끝냈을 거예요. 도와주셔서 정말 감사해요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E838",
+    "phrase_en": "That's such a relief.",
+    "meaning_ko": "정말 다행이에요.",
+    "example_en": "The test came back clear — that's such a relief.",
+    "example_ko": "검사 결과가 깨끗하대요. 정말 다행이에요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E839",
+    "phrase_en": "I'm rooting for you.",
+    "meaning_ko": "응원할게요.",
+    "example_en": "Whatever you decide, I'm rooting for you.",
+    "example_ko": "어떤 결정을 하든 응원할게요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E840",
+    "phrase_en": "I didn't mean to upset you.",
+    "meaning_ko": "기분 상하게 할 뜻은 없었어요.",
+    "example_en": "I didn't mean to upset you — I was being careless.",
+    "example_ko": "기분 상하게 할 뜻은 없었어요. 제가 경솔했어요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E841",
+    "phrase_en": "I'm speechless.",
+    "meaning_ko": "말이 안 나와요.",
+    "example_en": "You did all this for me? I'm speechless.",
+    "example_ko": "이걸 다 저를 위해 하셨다고요? 말이 안 나와요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E842",
+    "phrase_en": "Let it out.",
+    "meaning_ko": "참지 말고 털어놔요.",
+    "example_en": "You've been holding it in — let it out.",
+    "example_ko": "계속 참고 있었잖아요. 참지 말고 털어놔요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E843",
+    "phrase_en": "I hope things settle down soon.",
+    "meaning_ko": "곧 상황이 좀 안정되면 좋겠어요.",
+    "example_en": "You've had a hard month — I hope things settle down soon.",
+    "example_ko": "힘든 한 달이었죠. 곧 상황이 좀 안정되면 좋겠어요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E844",
+    "phrase_en": "That's the sweetest thing.",
+    "meaning_ko": "정말 다정하시네요.",
+    "example_en": "You saved me a slice? That's the sweetest thing.",
+    "example_ko": "제 몫을 남겨 두셨다고요? 정말 다정하시네요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E845",
+    "phrase_en": "I'm proud of how you handled it.",
+    "meaning_ko": "그 상황을 대처한 게 참 자랑스러워요.",
+    "example_en": "You stayed calm — I'm proud of how you handled it.",
+    "example_ko": "침착했잖아요. 그 상황을 대처한 게 참 자랑스러워요.",
+    "topic": "감정·공감"
+  },
+  {
+    "id": "E846",
+    "phrase_en": "Let's grab coffee sometime.",
+    "meaning_ko": "언제 커피 한잔해요.",
+    "example_en": "It's been too long — let's grab coffee sometime.",
+    "example_ko": "너무 오랜만이에요. 언제 커피 한잔해요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E847",
+    "phrase_en": "Are you free on Thursday?",
+    "meaning_ko": "목요일에 시간 있어요?",
+    "example_en": "Are you free on Thursday, or is the weekend better?",
+    "example_ko": "목요일에 시간 있어요, 아니면 주말이 나아요?",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E848",
+    "phrase_en": "I'll be there around seven.",
+    "meaning_ko": "일곱 시쯤 갈게요.",
+    "example_en": "Start without me — I'll be there around seven.",
+    "example_ko": "먼저 시작하세요. 일곱 시쯤 갈게요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E849",
+    "phrase_en": "Count me in.",
+    "meaning_ko": "저도 갈게요.",
+    "example_en": "A hike on Saturday? Count me in.",
+    "example_ko": "토요일에 등산이요? 저도 갈게요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E850",
+    "phrase_en": "I'll have to pass this time.",
+    "meaning_ko": "이번엔 못 갈 것 같아요.",
+    "example_en": "Sounds fun, but I'll have to pass this time.",
+    "example_ko": "재미있겠지만 이번엔 못 갈 것 같아요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E851",
+    "phrase_en": "Where should we meet?",
+    "meaning_ko": "어디서 만날까요?",
+    "example_en": "I'm coming by subway — where should we meet?",
+    "example_ko": "지하철로 가는데 어디서 만날까요?",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E852",
+    "phrase_en": "I'm running about ten minutes late.",
+    "meaning_ko": "십 분 정도 늦을 것 같아요.",
+    "example_en": "Traffic is bad — I'm running about ten minutes late.",
+    "example_ko": "차가 막혀요. 십 분 정도 늦을 것 같아요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E853",
+    "phrase_en": "Let's make it a bit later.",
+    "meaning_ko": "조금 늦은 시간으로 하죠.",
+    "example_en": "I finish work at six — let's make it a bit later.",
+    "example_ko": "여섯 시에 퇴근해요. 조금 늦은 시간으로 하죠.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E854",
+    "phrase_en": "Bring a friend if you like.",
+    "meaning_ko": "친구 데려와도 좋아요.",
+    "example_en": "There's plenty of room — bring a friend if you like.",
+    "example_ko": "자리 넉넉해요. 친구 데려와도 좋아요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E855",
+    "phrase_en": "What are you up to this weekend?",
+    "meaning_ko": "이번 주말에 뭐 해요?",
+    "example_en": "What are you up to this weekend? Anything fun?",
+    "example_ko": "이번 주말에 뭐 해요? 재미있는 계획 있어요?",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E856",
+    "phrase_en": "It's been ages.",
+    "meaning_ko": "진짜 오랜만이에요.",
+    "example_en": "It's been ages — how have you been?",
+    "example_ko": "진짜 오랜만이에요. 어떻게 지냈어요?",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E857",
+    "phrase_en": "Let's do this again soon.",
+    "meaning_ko": "조만간 또 만나요.",
+    "example_en": "That was fun — let's do this again soon.",
+    "example_ko": "재밌었어요. 조만간 또 만나요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E858",
+    "phrase_en": "I'll let you know by tomorrow.",
+    "meaning_ko": "내일까지 알려 드릴게요.",
+    "example_en": "I need to check with my family — I'll let you know by tomorrow.",
+    "example_ko": "가족과 상의해야 해서요. 내일까지 알려 드릴게요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E859",
+    "phrase_en": "Should I bring anything?",
+    "meaning_ko": "뭐 좀 가져갈까요?",
+    "example_en": "Should I bring anything, or is it all covered?",
+    "example_ko": "뭐 좀 가져갈까요, 아니면 다 준비되어 있어요?",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E860",
+    "phrase_en": "Sorry, I have a prior engagement.",
+    "meaning_ko": "죄송해요, 선약이 있어요.",
+    "example_en": "Sorry, I have a prior engagement that evening.",
+    "example_ko": "죄송해요, 그날 저녁엔 선약이 있어요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E861",
+    "phrase_en": "Let's split up and meet back here.",
+    "meaning_ko": "흩어졌다가 여기서 다시 만나요.",
+    "example_en": "We'll cover more ground — let's split up and meet back here at four.",
+    "example_ko": "더 많이 둘러볼 수 있어요. 흩어졌다가 네 시에 여기서 다시 만나요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E862",
+    "phrase_en": "I'm on my way.",
+    "meaning_ko": "가는 중이에요.",
+    "example_en": "I just left the house — I'm on my way.",
+    "example_ko": "방금 집에서 나왔어요. 가는 중이에요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E863",
+    "phrase_en": "Save me a seat.",
+    "meaning_ko": "자리 좀 맡아 줘요.",
+    "example_en": "I'll be five minutes — save me a seat.",
+    "example_ko": "오 분이면 도착해요. 자리 좀 맡아 줘요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E864",
+    "phrase_en": "Let's catch up properly sometime.",
+    "meaning_ko": "언제 제대로 얘기 나눠요.",
+    "example_en": "We only got five minutes — let's catch up properly sometime.",
+    "example_ko": "오 분밖에 못 봤네요. 언제 제대로 얘기 나눠요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E865",
+    "phrase_en": "I'd love to, but I'm booked.",
+    "meaning_ko": "가고 싶은데 일정이 꽉 찼어요.",
+    "example_en": "I'd love to, but I'm booked all next week.",
+    "example_ko": "가고 싶은데 다음 주는 일정이 꽉 찼어요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E866",
+    "phrase_en": "Is it a formal event?",
+    "meaning_ko": "격식 차리는 자리인가요?",
+    "example_en": "I need to know what to wear — is it a formal event?",
+    "example_ko": "뭘 입을지 정해야 해서요. 격식 차리는 자리인가요?",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E867",
+    "phrase_en": "Let's meet at the entrance.",
+    "meaning_ko": "입구에서 만나요.",
+    "example_en": "It's easy to get lost inside — let's meet at the entrance.",
+    "example_ko": "안에서는 길 잃기 쉬워요. 입구에서 만나요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E868",
+    "phrase_en": "I have to head out.",
+    "meaning_ko": "이만 가 봐야겠어요.",
+    "example_en": "It's getting late — I have to head out.",
+    "example_ko": "늦었네요. 이만 가 봐야겠어요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E869",
+    "phrase_en": "Thanks for the invite.",
+    "meaning_ko": "초대해 주셔서 감사해요.",
+    "example_en": "Thanks for the invite — I had a really good time.",
+    "example_ko": "초대해 주셔서 감사해요. 정말 즐거웠어요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E870",
+    "phrase_en": "Let's keep it casual.",
+    "meaning_ko": "편하게 하죠.",
+    "example_en": "No need to dress up — let's keep it casual.",
+    "example_ko": "차려입을 필요 없어요. 편하게 하죠.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E871",
+    "phrase_en": "Can I bring my kids?",
+    "meaning_ko": "아이들 데려가도 되나요?",
+    "example_en": "I don't have a sitter — can I bring my kids?",
+    "example_ko": "봐 줄 사람이 없어서요. 아이들 데려가도 되나요?",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E872",
+    "phrase_en": "Rain check?",
+    "meaning_ko": "다음으로 미뤄도 될까요?",
+    "example_en": "I'm swamped tonight — rain check?",
+    "example_ko": "오늘 밤은 일이 많아요. 다음으로 미뤄도 될까요?",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E873",
+    "phrase_en": "I'll text you the details.",
+    "meaning_ko": "자세한 건 문자로 보낼게요.",
+    "example_en": "I'll text you the details once it's confirmed.",
+    "example_ko": "확정되면 자세한 건 문자로 보낼게요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E874",
+    "phrase_en": "Who else is coming?",
+    "meaning_ko": "또 누가 와요?",
+    "example_en": "Just curious — who else is coming?",
+    "example_ko": "그냥 궁금해서요. 또 누가 와요?",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E875",
+    "phrase_en": "Let's not stay out too late.",
+    "meaning_ko": "너무 늦게까지 있지는 말아요.",
+    "example_en": "I work early tomorrow — let's not stay out too late.",
+    "example_ko": "내일 아침 일찍 일해요. 너무 늦게까지 있지는 말아요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E876",
+    "phrase_en": "It's on me tonight.",
+    "meaning_ko": "오늘은 제가 살게요.",
+    "example_en": "You got it last time — it's on me tonight.",
+    "example_ko": "지난번엔 사 주셨잖아요. 오늘은 제가 살게요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E877",
+    "phrase_en": "Could we push it back an hour?",
+    "meaning_ko": "한 시간만 미룰 수 있을까요?",
+    "example_en": "My meeting ran long — could we push it back an hour?",
+    "example_ko": "회의가 길어졌어요. 한 시간만 미룰 수 있을까요?",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E878",
+    "phrase_en": "I'll walk you out.",
+    "meaning_ko": "배웅해 드릴게요.",
+    "example_en": "It's dark outside — I'll walk you out.",
+    "example_ko": "밖이 어두워요. 배웅해 드릴게요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E879",
+    "phrase_en": "Let me know when you get home.",
+    "meaning_ko": "집에 도착하면 연락 줘요.",
+    "example_en": "Text me — let me know when you get home.",
+    "example_ko": "문자 줘요. 집에 도착하면 연락 줘요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E880",
+    "phrase_en": "We should plan something.",
+    "meaning_ko": "뭔가 계획을 잡아 봐요.",
+    "example_en": "Summer's almost over — we should plan something.",
+    "example_ko": "여름이 다 가요. 뭔가 계획을 잡아 봐요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E881",
+    "phrase_en": "I'm glad you could make it.",
+    "meaning_ko": "와 주셔서 기뻐요.",
+    "example_en": "I know you're busy — I'm glad you could make it.",
+    "example_ko": "바쁘신 거 아는데 와 주셔서 기뻐요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E882",
+    "phrase_en": "Let's take a photo together.",
+    "meaning_ko": "같이 사진 찍어요.",
+    "example_en": "Before everyone leaves, let's take a photo together.",
+    "example_ko": "다들 가기 전에 같이 사진 찍어요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E883",
+    "phrase_en": "Feel free to drop by.",
+    "meaning_ko": "편하게 들르세요.",
+    "example_en": "I'm home all Sunday — feel free to drop by.",
+    "example_ko": "일요일 내내 집에 있어요. 편하게 들르세요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E884",
+    "phrase_en": "It was nice meeting you.",
+    "meaning_ko": "만나서 반가웠어요.",
+    "example_en": "It was nice meeting you — let's stay in touch.",
+    "example_ko": "만나서 반가웠어요. 연락하고 지내요.",
+    "topic": "약속·사교"
+  },
+  {
+    "id": "E885",
+    "phrase_en": "It's muggy out there.",
+    "meaning_ko": "밖이 후텁지근해요.",
+    "example_en": "It's muggy out there, so wear something light.",
+    "example_ko": "밖이 후텁지근하니까 가볍게 입어요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E886",
+    "phrase_en": "The humidity is killing me.",
+    "meaning_ko": "습도 때문에 죽겠어요.",
+    "example_en": "I don't mind the heat, but the humidity is killing me.",
+    "example_ko": "더위는 괜찮은데 습도 때문에 죽겠어요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E887",
+    "phrase_en": "There's a nice breeze today.",
+    "meaning_ko": "오늘 바람이 선선하네요.",
+    "example_en": "There's a nice breeze today, perfect for the terrace.",
+    "example_ko": "오늘 바람이 선선해서 테라스에 딱이에요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E888",
+    "phrase_en": "It looks like it's going to rain.",
+    "meaning_ko": "비가 올 것 같아요.",
+    "example_en": "It looks like it's going to rain, so let's head back early.",
+    "example_ko": "비가 올 것 같으니 일찍 돌아가요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E889",
+    "phrase_en": "The forecast says it'll snow tonight.",
+    "meaning_ko": "예보에 오늘 밤 눈이 온대요.",
+    "example_en": "The forecast says it'll snow tonight, so drive carefully.",
+    "example_ko": "예보에 오늘 밤 눈이 온다니 운전 조심하세요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E890",
+    "phrase_en": "It's finally cooling down.",
+    "meaning_ko": "드디어 선선해지네요.",
+    "example_en": "It's finally cooling down after that long summer.",
+    "example_ko": "긴 여름이 지나고 드디어 선선해지네요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E891",
+    "phrase_en": "We're in for a heat wave.",
+    "meaning_ko": "폭염이 올 예정이에요.",
+    "example_en": "We're in for a heat wave this weekend, so stay hydrated.",
+    "example_ko": "이번 주말에 폭염이 온다니 물 많이 드세요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E892",
+    "phrase_en": "The roads are icy.",
+    "meaning_ko": "길이 얼었어요.",
+    "example_en": "The roads are icy this morning, so take the subway.",
+    "example_ko": "오늘 아침 길이 얼었으니 지하철 타세요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E893",
+    "phrase_en": "Bundle up, it's cold out.",
+    "meaning_ko": "따뜻하게 입어요, 밖이 추워요.",
+    "example_en": "Bundle up, it's cold out and the wind is strong.",
+    "example_ko": "따뜻하게 입어요, 밖이 춥고 바람도 세요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E894",
+    "phrase_en": "I got caught in the rain.",
+    "meaning_ko": "비를 쫄딱 맞았어요.",
+    "example_en": "I got caught in the rain on the way home.",
+    "example_ko": "집에 오는 길에 비를 쫄딱 맞았어요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E895",
+    "phrase_en": "The sun is blazing today.",
+    "meaning_ko": "오늘 햇볕이 쨍쨍해요.",
+    "example_en": "The sun is blazing today, don't forget sunscreen.",
+    "example_ko": "오늘 햇볕이 쨍쨍하니 선크림 잊지 마세요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E896",
+    "phrase_en": "It's been gloomy all week.",
+    "meaning_ko": "일주일 내내 흐렸어요.",
+    "example_en": "It's been gloomy all week and I miss the sunshine.",
+    "example_ko": "일주일 내내 흐려서 햇빛이 그리워요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E897",
+    "phrase_en": "Typhoon season is coming.",
+    "meaning_ko": "태풍철이 다가와요.",
+    "example_en": "Typhoon season is coming, so check the forecast daily.",
+    "example_ko": "태풍철이 다가오니 매일 예보를 확인하세요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E898",
+    "phrase_en": "The cherry blossoms are in full bloom.",
+    "meaning_ko": "벚꽃이 활짝 폈어요.",
+    "example_en": "The cherry blossoms are in full bloom by the river.",
+    "example_ko": "강가에 벚꽃이 활짝 폈어요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E899",
+    "phrase_en": "The leaves are starting to turn.",
+    "meaning_ko": "단풍이 들기 시작했어요.",
+    "example_en": "The leaves are starting to turn up in the mountains.",
+    "example_ko": "산에는 단풍이 들기 시작했어요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E900",
+    "phrase_en": "I can't stand this heat.",
+    "meaning_ko": "이 더위 못 참겠어요.",
+    "example_en": "I can't stand this heat without air conditioning.",
+    "example_ko": "에어컨 없이는 이 더위 못 참겠어요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E901",
+    "phrase_en": "What's the weather like there?",
+    "meaning_ko": "거기 날씨는 어때요?",
+    "example_en": "What's the weather like there? Should I pack a coat?",
+    "example_ko": "거기 날씨는 어때요? 코트를 챙길까요?",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E902",
+    "phrase_en": "It's perfect weather for a picnic.",
+    "meaning_ko": "소풍 가기 딱 좋은 날씨예요.",
+    "example_en": "It's perfect weather for a picnic, let's go to the park.",
+    "example_ko": "소풍 가기 딱 좋은 날씨니 공원에 가요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E903",
+    "phrase_en": "I picked up a new hobby.",
+    "meaning_ko": "새 취미를 시작했어요.",
+    "example_en": "I picked up a new hobby to unwind after work.",
+    "example_ko": "퇴근 후에 쉬려고 새 취미를 시작했어요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E904",
+    "phrase_en": "I'm learning to play the piano.",
+    "meaning_ko": "피아노를 배우고 있어요.",
+    "example_en": "I'm learning to play the piano on weekends.",
+    "example_ko": "주말마다 피아노를 배우고 있어요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E905",
+    "phrase_en": "I collect vinyl records.",
+    "meaning_ko": "저는 LP를 모아요.",
+    "example_en": "I collect vinyl records from the seventies.",
+    "example_ko": "저는 70년대 LP를 모아요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E906",
+    "phrase_en": "I go hiking on weekends.",
+    "meaning_ko": "주말에 등산해요.",
+    "example_en": "I go hiking on weekends to clear my head.",
+    "example_ko": "머리를 식히려고 주말에 등산해요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E907",
+    "phrase_en": "What do you do for fun?",
+    "meaning_ko": "취미가 뭐예요?",
+    "example_en": "What do you do for fun when you're off work?",
+    "example_ko": "쉬는 날에는 뭐 하며 노세요?",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E908",
+    "phrase_en": "I'm hooked on this game.",
+    "meaning_ko": "이 게임에 푹 빠졌어요.",
+    "example_en": "I'm hooked on this game and lost track of time.",
+    "example_ko": "이 게임에 푹 빠져서 시간 가는 줄 몰랐어요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E909",
+    "phrase_en": "I've been getting into baking.",
+    "meaning_ko": "요즘 베이킹에 재미 붙였어요.",
+    "example_en": "I've been getting into baking since the winter.",
+    "example_ko": "겨울부터 베이킹에 재미 붙였어요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E910",
+    "phrase_en": "I signed up for a yoga class.",
+    "meaning_ko": "요가 수업을 등록했어요.",
+    "example_en": "I signed up for a yoga class twice a week.",
+    "example_ko": "주 2회 요가 수업을 등록했어요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E911",
+    "phrase_en": "I read before bed every night.",
+    "meaning_ko": "매일 밤 자기 전에 책을 읽어요.",
+    "example_en": "I read before bed every night to fall asleep faster.",
+    "example_ko": "더 빨리 잠들려고 매일 밤 자기 전에 책을 읽어요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E912",
+    "phrase_en": "I'm training for a marathon.",
+    "meaning_ko": "마라톤 준비 중이에요.",
+    "example_en": "I'm training for a marathon in the spring.",
+    "example_ko": "봄 마라톤을 준비하고 있어요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E913",
+    "phrase_en": "Do you want to join my book club?",
+    "meaning_ko": "제 독서 모임에 오실래요?",
+    "example_en": "Do you want to join my book club? We meet monthly.",
+    "example_ko": "제 독서 모임에 오실래요? 한 달에 한 번 모여요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E914",
+    "phrase_en": "I haven't touched my camera in months.",
+    "meaning_ko": "몇 달째 카메라를 안 잡았어요.",
+    "example_en": "I haven't touched my camera in months because of work.",
+    "example_ko": "일 때문에 몇 달째 카메라를 안 잡았어요.",
+    "topic": "날씨·취미"
+  },
+  {
+    "id": "E915",
+    "phrase_en": "I'd like to dispute this transaction.",
+    "meaning_ko": "이 거래에 이의를 제기하고 싶어요.",
+    "example_en": "I'd like to dispute this transaction; I never made it.",
+    "example_ko": "이 거래에 이의를 제기하고 싶어요. 제가 한 게 아니에요.",
+    "topic": "은행·관공서"
+  },
+  {
+    "id": "E916",
+    "phrase_en": "Suit yourself.",
+    "meaning_ko": "마음대로 하세요.",
+    "example_en": "If you'd rather walk, suit yourself.",
+    "example_ko": "걸어가고 싶으면 마음대로 하세요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E917",
+    "phrase_en": "Fair enough.",
+    "meaning_ko": "그 말도 일리 있네요.",
+    "example_en": "Fair enough, I hadn't thought of it that way.",
+    "example_ko": "그 말도 일리 있네요, 그렇게는 생각 못 했어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E918",
+    "phrase_en": "You have a point.",
+    "meaning_ko": "당신 말에 일리가 있어요.",
+    "example_en": "You have a point, but the timing still worries me.",
+    "example_ko": "당신 말에 일리가 있는데 시기가 좀 걱정돼요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E919",
+    "phrase_en": "Don't mention it.",
+    "meaning_ko": "별말씀을요.",
+    "example_en": "Don't mention it, I was happy to help.",
+    "example_ko": "별말씀을요, 돕게 되어 기뻤어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E920",
+    "phrase_en": "My bad.",
+    "meaning_ko": "제 잘못이에요.",
+    "example_en": "My bad, I sent the file to the wrong person.",
+    "example_ko": "제 잘못이에요, 파일을 엉뚱한 사람에게 보냈어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E921",
+    "phrase_en": "Same here.",
+    "meaning_ko": "저도 그래요.",
+    "example_en": "Same here, I've been exhausted all week.",
+    "example_ko": "저도 그래요, 일주일 내내 지쳤어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E922",
+    "phrase_en": "Look who's talking.",
+    "meaning_ko": "사돈 남 말 하시네요.",
+    "example_en": "You're calling me late? Look who's talking.",
+    "example_ko": "저더러 늦었다고요? 사돈 남 말 하시네요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E923",
+    "phrase_en": "Tell me about it.",
+    "meaning_ko": "내 말이 그 말이에요.",
+    "example_en": "Traffic was awful? Tell me about it.",
+    "example_ko": "길이 막혔다고요? 내 말이 그 말이에요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E924",
+    "phrase_en": "You can say that again.",
+    "meaning_ko": "두말하면 잔소리죠.",
+    "example_en": "That meeting was too long? You can say that again.",
+    "example_ko": "회의가 너무 길었다고요? 두말하면 잔소리죠.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E925",
+    "phrase_en": "Beats me.",
+    "meaning_ko": "저도 모르겠어요.",
+    "example_en": "Why the printer stopped? Beats me.",
+    "example_ko": "프린터가 왜 멈췄냐고요? 저도 모르겠어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E926",
+    "phrase_en": "Better late than never.",
+    "meaning_ko": "늦더라도 안 하는 것보단 낫죠.",
+    "example_en": "He apologized a year later, but better late than never.",
+    "example_ko": "1년 뒤에 사과했지만 늦더라도 안 하는 것보단 낫죠.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E927",
+    "phrase_en": "Better safe than sorry.",
+    "meaning_ko": "조심해서 나쁠 것 없어요.",
+    "example_en": "Bring an extra battery; better safe than sorry.",
+    "example_ko": "보조 배터리 챙기세요. 조심해서 나쁠 것 없어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E928",
+    "phrase_en": "Easy does it.",
+    "meaning_ko": "살살 하세요.",
+    "example_en": "Easy does it, that box is heavier than it looks.",
+    "example_ko": "살살 하세요, 그 상자 보기보다 무거워요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E929",
+    "phrase_en": "First things first.",
+    "meaning_ko": "중요한 것부터 하죠.",
+    "example_en": "First things first, let's fix the login bug.",
+    "example_ko": "중요한 것부터 하죠, 로그인 오류부터 고칩시다.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E930",
+    "phrase_en": "So far so good.",
+    "meaning_ko": "지금까지는 괜찮아요.",
+    "example_en": "We're halfway through and so far so good.",
+    "example_ko": "절반쯤 왔는데 지금까지는 괜찮아요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E931",
+    "phrase_en": "Give it a rest.",
+    "meaning_ko": "그만 좀 하세요.",
+    "example_en": "Give it a rest, we've argued about this all day.",
+    "example_ko": "그만 좀 하세요, 하루 종일 그 얘기로 다퉜잖아요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E932",
+    "phrase_en": "Knock it off.",
+    "meaning_ko": "그만둬요.",
+    "example_en": "Knock it off, people are trying to work.",
+    "example_ko": "그만둬요, 다들 일하려고 하잖아요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E933",
+    "phrase_en": "Keep it down.",
+    "meaning_ko": "좀 조용히 해 주세요.",
+    "example_en": "Could you keep it down? The baby just fell asleep.",
+    "example_ko": "좀 조용히 해 주실래요? 아기가 방금 잠들었어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E934",
+    "phrase_en": "Hear me out.",
+    "meaning_ko": "끝까지 들어 보세요.",
+    "example_en": "Hear me out before you say no.",
+    "example_ko": "거절하기 전에 끝까지 들어 보세요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E935",
+    "phrase_en": "Bear with me.",
+    "meaning_ko": "조금만 기다려 주세요.",
+    "example_en": "Bear with me while I pull up the file.",
+    "example_ko": "파일 여는 동안 조금만 기다려 주세요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E936",
+    "phrase_en": "I take that back.",
+    "meaning_ko": "방금 한 말 취소할게요.",
+    "example_en": "I take that back — the new version is actually faster.",
+    "example_ko": "방금 한 말 취소할게요. 새 버전이 오히려 더 빨라요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E937",
+    "phrase_en": "Count me out.",
+    "meaning_ko": "저는 빠질게요.",
+    "example_en": "If it's another late night, count me out.",
+    "example_ko": "또 밤샘이면 저는 빠질게요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E938",
+    "phrase_en": "Hang on a second.",
+    "meaning_ko": "잠깐만요.",
+    "example_en": "Hang on a second, I think I left my keys inside.",
+    "example_ko": "잠깐만요, 열쇠를 안에 두고 온 것 같아요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E939",
+    "phrase_en": "Speak of the devil.",
+    "meaning_ko": "호랑이도 제 말 하면 온다더니.",
+    "example_en": "Speak of the devil, here she comes now.",
+    "example_ko": "호랑이도 제 말 하면 온다더니, 저기 오네요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E940",
+    "phrase_en": "That figures.",
+    "meaning_ko": "그럴 줄 알았어요.",
+    "example_en": "The store is closed today? That figures.",
+    "example_ko": "가게가 오늘 문을 닫았다고요? 그럴 줄 알았어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E941",
+    "phrase_en": "Don't quote me on this.",
+    "meaning_ko": "제 말이라고 하진 마세요.",
+    "example_en": "Don't quote me on this, but the launch may slip a week.",
+    "example_ko": "제 말이라고 하진 마세요, 출시가 일주일 밀릴 수도 있어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E942",
+    "phrase_en": "Let bygones be bygones.",
+    "meaning_ko": "지난 일은 잊어버려요.",
+    "example_en": "It was years ago; let bygones be bygones.",
+    "example_ko": "몇 년 전 일이에요. 지난 일은 잊어버려요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E943",
+    "phrase_en": "You read my mind.",
+    "meaning_ko": "제 마음을 읽으셨네요.",
+    "example_en": "Coffee? You read my mind.",
+    "example_ko": "커피요? 제 마음을 읽으셨네요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E944",
+    "phrase_en": "Go easy on yourself.",
+    "meaning_ko": "자신을 너무 몰아붙이지 마세요.",
+    "example_en": "It was your first try, so go easy on yourself.",
+    "example_ko": "첫 시도였잖아요, 자신을 너무 몰아붙이지 마세요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E945",
+    "phrase_en": "Don't get me started.",
+    "meaning_ko": "그 얘기 꺼내지도 마세요.",
+    "example_en": "The new policy? Don't get me started.",
+    "example_ko": "새 정책이요? 그 얘기 꺼내지도 마세요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E946",
+    "phrase_en": "Don't push it.",
+    "meaning_ko": "너무 나가지 마세요.",
+    "example_en": "I said maybe, so don't push it.",
+    "example_ko": "아마도라고 했잖아요, 너무 나가지 마세요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E947",
+    "phrase_en": "Don't sweat it.",
+    "meaning_ko": "신경 쓰지 마세요.",
+    "example_en": "You spilled a little coffee? Don't sweat it.",
+    "example_ko": "커피 좀 쏟았다고요? 신경 쓰지 마세요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E948",
+    "phrase_en": "Don't get your hopes up.",
+    "meaning_ko": "너무 기대하지는 마세요.",
+    "example_en": "They might call back, but don't get your hopes up.",
+    "example_ko": "연락이 올 수도 있지만 너무 기대하지는 마세요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E949",
+    "phrase_en": "Don't blow it out of proportion.",
+    "meaning_ko": "일을 크게 만들지 마세요.",
+    "example_en": "It was one typo; don't blow it out of proportion.",
+    "example_ko": "오타 하나였어요, 일을 크게 만들지 마세요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E950",
+    "phrase_en": "You're overthinking it.",
+    "meaning_ko": "너무 깊게 생각하고 있어요.",
+    "example_en": "You're overthinking it; just send the message.",
+    "example_ko": "너무 깊게 생각하고 있어요, 그냥 메시지 보내세요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E951",
+    "phrase_en": "You're reading too much into it.",
+    "meaning_ko": "너무 확대 해석하고 있어요.",
+    "example_en": "It was a short reply; you're reading too much into it.",
+    "example_ko": "짧게 답한 것뿐인데 너무 확대 해석하고 있어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E952",
+    "phrase_en": "You'll get used to it.",
+    "meaning_ko": "곧 익숙해질 거예요.",
+    "example_en": "The commute is long, but you'll get used to it.",
+    "example_ko": "출퇴근이 길지만 곧 익숙해질 거예요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E953",
+    "phrase_en": "You'll thank me later.",
+    "meaning_ko": "나중에 고마워할 거예요.",
+    "example_en": "Back it up now; you'll thank me later.",
+    "example_ko": "지금 백업해 두세요, 나중에 고마워할 거예요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E954",
+    "phrase_en": "It's a long shot.",
+    "meaning_ko": "가능성은 낮은 시도예요.",
+    "example_en": "It's a long shot, but let's ask them anyway.",
+    "example_ko": "가능성은 낮지만 그래도 물어봅시다.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E955",
+    "phrase_en": "That's on me.",
+    "meaning_ko": "그건 제 책임이에요.",
+    "example_en": "The deadline slipped and that's on me.",
+    "example_ko": "마감을 놓친 건 제 책임이에요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E956",
+    "phrase_en": "That's on you.",
+    "meaning_ko": "그건 당신 책임이에요.",
+    "example_en": "You skipped the review, so that's on you.",
+    "example_ko": "검토를 건너뛰었으니 그건 당신 책임이에요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E957",
+    "phrase_en": "Your call.",
+    "meaning_ko": "당신이 결정하세요.",
+    "example_en": "We can go now or later — your call.",
+    "example_ko": "지금 가도 되고 나중에 가도 돼요. 당신이 결정하세요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E958",
+    "phrase_en": "Whatever works for you.",
+    "meaning_ko": "편하신 대로 하세요.",
+    "example_en": "Friday or Monday, whatever works for you.",
+    "example_ko": "금요일이든 월요일이든 편하신 대로 하세요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E959",
+    "phrase_en": "Any time now.",
+    "meaning_ko": "곧 올 거예요.",
+    "example_en": "The delivery should arrive any time now.",
+    "example_ko": "택배가 곧 올 거예요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E960",
+    "phrase_en": "Sooner or later.",
+    "meaning_ko": "조만간에는요.",
+    "example_en": "Sooner or later we'll have to replace this laptop.",
+    "example_ko": "조만간 이 노트북을 바꿔야 할 거예요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E961",
+    "phrase_en": "Once in a blue moon.",
+    "meaning_ko": "아주 가끔요.",
+    "example_en": "We meet once in a blue moon these days.",
+    "example_ko": "요즘은 아주 가끔 만나요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E962",
+    "phrase_en": "Out of the blue.",
+    "meaning_ko": "난데없이요.",
+    "example_en": "He called me out of the blue after ten years.",
+    "example_ko": "10년 만에 난데없이 전화가 왔어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E963",
+    "phrase_en": "In the long run.",
+    "meaning_ko": "길게 보면요.",
+    "example_en": "In the long run, this will save us money.",
+    "example_ko": "길게 보면 이게 돈을 아껴 줄 거예요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E964",
+    "phrase_en": "For the time being.",
+    "meaning_ko": "당분간은요.",
+    "example_en": "For the time being, let's keep the old system.",
+    "example_ko": "당분간은 기존 시스템을 쓰죠.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E965",
+    "phrase_en": "All things considered.",
+    "meaning_ko": "모든 걸 감안하면요.",
+    "example_en": "All things considered, the trip went well.",
+    "example_ko": "모든 걸 감안하면 여행은 잘 다녀왔어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E966",
+    "phrase_en": "On second thought.",
+    "meaning_ko": "다시 생각해 보니.",
+    "example_en": "On second thought, let's take the earlier train.",
+    "example_ko": "다시 생각해 보니 이른 기차를 타죠.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E967",
+    "phrase_en": "To be honest with you.",
+    "meaning_ko": "솔직히 말씀드리면.",
+    "example_en": "To be honest with you, I'd rather stay home.",
+    "example_ko": "솔직히 말씀드리면 집에 있고 싶어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E968",
+    "phrase_en": "If it's not too much trouble.",
+    "meaning_ko": "많이 번거롭지 않으시다면.",
+    "example_en": "Could you check this, if it's not too much trouble?",
+    "example_ko": "많이 번거롭지 않으시면 이것 좀 봐 주실래요?",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E969",
+    "phrase_en": "If all else fails.",
+    "meaning_ko": "다른 방법이 다 안 되면.",
+    "example_en": "If all else fails, we'll rebook for next week.",
+    "example_ko": "다른 방법이 다 안 되면 다음 주로 다시 예약하죠.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E970",
+    "phrase_en": "As far as I know.",
+    "meaning_ko": "제가 아는 한은요.",
+    "example_en": "As far as I know, the office is closed tomorrow.",
+    "example_ko": "제가 아는 한 내일은 사무실이 쉬어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E971",
+    "phrase_en": "As luck would have it.",
+    "meaning_ko": "운 좋게도.",
+    "example_en": "As luck would have it, there was one seat left.",
+    "example_ko": "운 좋게도 자리가 하나 남아 있었어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E972",
+    "phrase_en": "Come to think of it.",
+    "meaning_ko": "생각해 보니까.",
+    "example_en": "Come to think of it, I've met him before.",
+    "example_ko": "생각해 보니까 그분을 전에 만난 적이 있어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E973",
+    "phrase_en": "Now that you mention it.",
+    "meaning_ko": "말씀하시니 생각나는데.",
+    "example_en": "Now that you mention it, the noise did stop.",
+    "example_ko": "말씀하시니 생각나는데 소음이 멈추긴 했어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E974",
+    "phrase_en": "Not that I know of.",
+    "meaning_ko": "제가 알기로는 아니에요.",
+    "example_en": "Has the schedule changed? Not that I know of.",
+    "example_ko": "일정이 바뀌었나요? 제가 알기로는 아니에요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E975",
+    "phrase_en": "Not by a long shot.",
+    "meaning_ko": "어림도 없어요.",
+    "example_en": "Are we done? Not by a long shot.",
+    "example_ko": "다 끝났냐고요? 어림도 없어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E976",
+    "phrase_en": "Not in a million years.",
+    "meaning_ko": "절대로 안 돼요.",
+    "example_en": "Would I go back there? Not in a million years.",
+    "example_ko": "거기 다시 가겠냐고요? 절대로 안 가요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E977",
+    "phrase_en": "Chances are slim.",
+    "meaning_ko": "가능성이 희박해요.",
+    "example_en": "Chances are slim, but it's worth applying.",
+    "example_ko": "가능성은 희박하지만 지원해 볼 만해요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E978",
+    "phrase_en": "It's touch and go.",
+    "meaning_ko": "아슬아슬해요.",
+    "example_en": "The launch date is touch and go right now.",
+    "example_ko": "출시 날짜가 지금은 아슬아슬해요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E979",
+    "phrase_en": "It's up in the air.",
+    "meaning_ko": "아직 정해지지 않았어요.",
+    "example_en": "The venue is still up in the air.",
+    "example_ko": "장소는 아직 정해지지 않았어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E980",
+    "phrase_en": "It's neither here nor there.",
+    "meaning_ko": "그건 중요한 게 아니에요.",
+    "example_en": "Who suggested it is neither here nor there.",
+    "example_ko": "누가 제안했는지는 중요한 게 아니에요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E981",
+    "phrase_en": "It's the thought that counts.",
+    "meaning_ko": "마음이 중요한 거죠.",
+    "example_en": "The gift was tiny, but it's the thought that counts.",
+    "example_ko": "선물은 작았지만 마음이 중요한 거죠.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E982",
+    "phrase_en": "It's better than nothing.",
+    "meaning_ko": "없는 것보다는 나아요.",
+    "example_en": "A partial refund is better than nothing.",
+    "example_ko": "일부 환불이라도 없는 것보다는 나아요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E983",
+    "phrase_en": "It's not rocket science.",
+    "meaning_ko": "그렇게 어려운 일 아니에요.",
+    "example_en": "Just follow the steps; it's not rocket science.",
+    "example_ko": "순서대로만 하세요. 그렇게 어려운 일 아니에요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E984",
+    "phrase_en": "It's a no-brainer.",
+    "meaning_ko": "고민할 필요도 없어요.",
+    "example_en": "Half the price for the same thing? It's a no-brainer.",
+    "example_ko": "같은 걸 반값에요? 고민할 필요도 없죠.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E985",
+    "phrase_en": "It happens to the best of us.",
+    "meaning_ko": "누구나 그럴 수 있어요.",
+    "example_en": "You forgot the password? It happens to the best of us.",
+    "example_ko": "비밀번호를 잊으셨다고요? 누구나 그럴 수 있어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E986",
+    "phrase_en": "Time flies.",
+    "meaning_ko": "시간 참 빠르네요.",
+    "example_en": "Time flies — it's already December.",
+    "example_ko": "시간 참 빠르네요, 벌써 12월이에요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E987",
+    "phrase_en": "Time will tell.",
+    "meaning_ko": "시간이 말해 주겠죠.",
+    "example_en": "Whether it works, time will tell.",
+    "example_ko": "잘될지는 시간이 말해 주겠죠.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E988",
+    "phrase_en": "Old habits die hard.",
+    "meaning_ko": "오랜 습관은 잘 안 고쳐져요.",
+    "example_en": "I still write it by hand; old habits die hard.",
+    "example_ko": "아직도 손으로 적어요. 오랜 습관은 잘 안 고쳐지네요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E989",
+    "phrase_en": "Let's leave it at that.",
+    "meaning_ko": "이쯤에서 마무리하죠.",
+    "example_en": "We've covered enough for today, so let's leave it at that.",
+    "example_ko": "오늘은 충분히 다뤘으니 이쯤에서 마무리하죠.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E990",
+    "phrase_en": "Actions speak louder than words.",
+    "meaning_ko": "말보다 행동이죠.",
+    "example_en": "He promised a lot, but actions speak louder than words.",
+    "example_ko": "약속은 많이 했지만 말보다 행동이죠.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E991",
+    "phrase_en": "Two heads are better than one.",
+    "meaning_ko": "백지장도 맞들면 낫죠.",
+    "example_en": "Let's solve it together; two heads are better than one.",
+    "example_ko": "같이 풀어 봐요. 백지장도 맞들면 낫잖아요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E992",
+    "phrase_en": "There's no place like home.",
+    "meaning_ko": "집만 한 곳이 없어요.",
+    "example_en": "After two weeks away, there's no place like home.",
+    "example_ko": "2주 만에 돌아오니 집만 한 곳이 없네요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E993",
+    "phrase_en": "There's always next time.",
+    "meaning_ko": "다음 기회가 있잖아요.",
+    "example_en": "We missed it today, but there's always next time.",
+    "example_ko": "오늘은 놓쳤지만 다음 기회가 있잖아요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E994",
+    "phrase_en": "Rome wasn't built in a day.",
+    "meaning_ko": "로마는 하루아침에 이뤄지지 않았어요.",
+    "example_en": "Give it time — Rome wasn't built in a day.",
+    "example_ko": "시간을 주세요. 로마는 하루아침에 이뤄지지 않았어요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E995",
+    "phrase_en": "You win some, you lose some.",
+    "meaning_ko": "이길 때도 있고 질 때도 있죠.",
+    "example_en": "We lost that client, but you win some, you lose some.",
+    "example_ko": "그 고객은 놓쳤지만 이길 때도 있고 질 때도 있죠.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E996",
+    "phrase_en": "It could be worse.",
+    "meaning_ko": "이만하길 다행이에요.",
+    "example_en": "The car is scratched, but it could be worse.",
+    "example_ko": "차가 긁혔지만 이만하길 다행이에요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E997",
+    "phrase_en": "So be it.",
+    "meaning_ko": "그럼 그렇게 하죠.",
+    "example_en": "If they won't budge, so be it.",
+    "example_ko": "저쪽이 물러서지 않으면 그럼 그렇게 하죠.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E998",
+    "phrase_en": "Here goes nothing.",
+    "meaning_ko": "에라 모르겠다, 해 보죠.",
+    "example_en": "I've never done this before — here goes nothing.",
+    "example_ko": "처음 해 보는 건데, 에라 모르겠다 해 보죠.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E999",
+    "phrase_en": "Wish me luck.",
+    "meaning_ko": "행운을 빌어 주세요.",
+    "example_en": "My interview is at three, so wish me luck.",
+    "example_ko": "3시에 면접이에요, 행운을 빌어 주세요.",
+    "topic": "일상 표현"
+  },
+  {
+    "id": "E1000",
+    "phrase_en": "I'll leave it up to you.",
+    "meaning_ko": "당신에게 맡길게요.",
+    "example_en": "You know the team best, so I'll leave it up to you.",
+    "example_ko": "팀을 제일 잘 아시니 당신에게 맡길게요.",
+    "topic": "일상 표현"
   }
 ]
