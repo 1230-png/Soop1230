@@ -716,6 +716,116 @@ def cmd_comment(youtube, channel, args) -> int:
     return 0
 
 
+# 재생목록 설명은 검색에 걸리는 자리인데 전부 비어 있었다. 재생목록 자체가
+# 검색 결과에 노출되고, 한 번 들어오면 다음 편이 자동 재생되어 시청 시간이
+# 이어진다 — 낱개 영상보다 이쪽이 시청 시간에 유리하다.
+PLAYLIST_DESCRIPTIONS = {
+    "주간 복습 몰아듣기":
+        "이번 주에 다룬 영어 회화 표현을 한 편에 모아 듣습니다.\n"
+        "출퇴근길이나 집안일 할 때 틀어 두세요. 매주 일요일 업로드.",
+    "쉐도잉 트레이닝":
+        "영어 문장을 원어민 속도로 따라 말하는 쉐도잉 연습입니다.\n"
+        "문장 뒤 빈 구간에서 소리 내어 따라 하세요. 매주 월요일 업로드.",
+    "상황별 영어 표현":
+        "공항·호텔·식당·회의·병원처럼 상황별로 바로 쓰는 영어 회화 표현.\n"
+        "그 상황에서 생각 없이 나오도록 문장을 통째로 익히세요. 매주 수요일 업로드.",
+    "자면서 듣는 영어":
+        "잠들기 전에 틀어 두는 영어 듣기. 배경 음악도 갑자기 커지는 소리도 없습니다.\n"
+        "따라 말하지 않아도 됩니다. 매주 금요일 업로드.",
+    "월간 총정리":
+        "한 달치 영어 회화 표현을 한 편에 모은 총정리.\n"
+        "처음부터 끝까지 따라오시면 한 달 복습이 끝납니다. 매월 말 업로드.",
+    "매일 영어 한마디 · 쇼츠 모음":
+        "매일 세 번 올라오는 오늘의 영어 표현 한 개. 하루 1분.\n"
+        "몰아서 듣고 싶으면 롱폼 재생목록을 보세요.",
+    "매일 영어 한마디 · 주간 표현 모음":
+        "실생활 영어 회화 표현 모음집. 한 편에 30~35개씩 이어 듣습니다.",
+}
+
+
+def cmd_describe_playlists(youtube, channel, args) -> int:
+    """재생목록 설명을 채운다. 이미 설명이 있으면 건드리지 않는다."""
+    todo = []
+    for pl in all_playlists(youtube):
+        title = pl["snippet"]["title"]
+        want = PLAYLIST_DESCRIPTIONS.get(title)
+        if not want:
+            print(f"규칙 없음(그대로 둠): {title!r}")
+            continue
+        if pl["snippet"].get("description", "").strip():
+            print(f"이미 설명 있음(그대로 둠): {title!r}")
+            continue
+        todo.append((pl, title, want))
+
+    for _, title, _ in todo:
+        print(f"{'채운다' if args.apply else '채울 것'}: {title!r}")
+    if not todo:
+        print("\n채울 것이 없다.")
+        return 0
+    if not args.apply:
+        print(f"\n미리보기다. 실제로 채우려면 --apply ({len(todo)}개).")
+        return 0
+
+    for pl, title, want in todo:
+        # playlists.update 도 part 를 통째로 갈아 끼운다. title 은 필수이고,
+        # 빠뜨리면 제목이 지워진다.
+        youtube.playlists().update(
+            part="snippet",
+            body={"id": pl["id"],
+                  "snippet": {"title": title, "description": want}},
+        ).execute()
+        print(f"채웠다: {title!r}")
+    return 0
+
+
+def cmd_trailer(youtube, channel, args) -> int:
+    """비구독자에게 보이는 채널 트레일러를 롱폼으로 건다.
+
+    채널 페이지에 처음 온 사람에게 자동 재생되는 자리다. 여기에 쇼츠가
+    걸려 있으면 1분을 보고 끝나지만, 롱폼이면 시청 시간이 쌓인다 — 쇼츠
+    시청 시간은 파트너 프로그램의 유효 공개 시청 시간에 들어가지 않는다.
+    """
+    uploads = all_uploads(youtube, channel)
+    ids = [i["contentDetails"]["videoId"] for i in uploads]
+    details = video_details(youtube, ids)
+
+    candidates = []
+    for vid, item in details.items():
+        if item["status"].get("privacyStatus") != "public":
+            continue
+        secs = duration_seconds(item["contentDetails"].get("duration", ""))
+        if secs < 600:  # 10분 미만은 트레일러로 걸 만한 길이가 아니다
+            continue
+        candidates.append((item["snippet"]["publishedAt"], vid,
+                           secs, item["snippet"]["title"]))
+    if not candidates:
+        print("10분 넘는 공개 롱폼이 없다.", file=sys.stderr)
+        return 1
+
+    candidates.sort(reverse=True)  # 가장 최근 것
+    pub, vid, secs, title = candidates[0]
+
+    branding = youtube.channels().list(
+        part="brandingSettings", mine=True).execute()["items"][0]["brandingSettings"]
+    current = branding.get("channel", {}).get("unsubscribedTrailer", "")
+    if current == vid:
+        print(f"이미 걸려 있다: {vid}")
+        return 0
+
+    print(f"{'건다' if args.apply else '걸 것'}: {vid}  {secs // 60}분  {title}")
+    print(f"  지금: {current or '(없음)'}")
+    if not args.apply:
+        print("\n미리보기다. 실제로 걸려면 --apply.")
+        return 0
+
+    branding.setdefault("channel", {})["unsubscribedTrailer"] = vid
+    youtube.channels().update(
+        part="brandingSettings",
+        body={"id": CHANNEL_ID, "brandingSettings": branding}).execute()
+    print(f"걸었다: {vid}")
+    return 0
+
+
 def cmd_delete(youtube, channel, args) -> int:
     if args.confirm != args.video:
         print("--confirm 에 같은 영상 ID 를 한 번 더 적어야 지운다.", file=sys.stderr)
@@ -745,6 +855,12 @@ def main() -> int:
     p = sub.add_parser("backfill", help="재생목록 누락분을 제목 규칙대로 채운다")
     p.add_argument("--apply", action="store_true", help="실제로 넣는다")
 
+    p = sub.add_parser("describe-playlists", help="재생목록 설명을 채운다")
+    p.add_argument("--apply", action="store_true", help="실제로 채운다")
+
+    p = sub.add_parser("trailer", help="비구독자 트레일러를 롱폼으로 건다")
+    p.add_argument("--apply", action="store_true", help="실제로 건다")
+
     p = sub.add_parser("retitle", help="기존 롱폼 제목을 새 검색 서식으로")
     p.add_argument("--apply", action="store_true", help="실제로 바꾼다")
 
@@ -768,6 +884,8 @@ def main() -> int:
         "audit": cmd_audit,
         "playlist-add": cmd_playlist_add,
         "backfill": cmd_backfill,
+        "describe-playlists": cmd_describe_playlists,
+        "trailer": cmd_trailer,
         "retitle": cmd_retitle,
         "comment": cmd_comment,
         "dedupe": cmd_dedupe,

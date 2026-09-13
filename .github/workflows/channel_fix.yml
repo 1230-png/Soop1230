@@ -19,6 +19,10 @@ on:
           - playlist-add
           - backfill-preview
           - backfill-apply
+          - describe-playlists-preview
+          - describe-playlists-apply
+          - trailer-preview
+          - trailer-apply
           - retitle-preview
           - retitle-apply
           - comment-preview
@@ -83,6 +87,14 @@ jobs:
               python3 "$FIX" backfill ;;
             backfill-apply)
               python3 "$FIX" backfill --apply ;;
+            describe-playlists-preview)
+              python3 "$FIX" describe-playlists ;;
+            describe-playlists-apply)
+              python3 "$FIX" describe-playlists --apply ;;
+            trailer-preview)
+              python3 "$FIX" trailer ;;
+            trailer-apply)
+              python3 "$FIX" trailer --apply ;;
             retitle-preview)
               python3 "$FIX" retitle ;;
             retitle-apply)
