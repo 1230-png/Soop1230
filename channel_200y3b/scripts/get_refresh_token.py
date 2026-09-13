@@ -11,7 +11,10 @@ import argparse
 
 from google_auth_oauthlib.flow import InstalledAppFlow
 
-SCOPES = ["https://www.googleapis.com/auth/youtube"]
+# youtube 대신 force-ssl. 상위 집합이라 업로드·재생목록·썸네일이 그대로
+# 되면서 댓글(commentThreads)까지 열린다. youtube 만으로는 댓글이
+# 403 insufficientPermissions 로 막힌다.
+SCOPES = ["https://www.googleapis.com/auth/youtube.force-ssl"]
 
 
 def main():

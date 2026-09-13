@@ -23,7 +23,13 @@ from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 
 ROOT = Path(__file__).resolve().parent.parent
-SCOPES = ["https://www.googleapis.com/auth/youtube"]
+# 댓글 API(commentThreads)는 youtube 스코프로는 403 insufficientPermissions 를
+# 낸다. youtube.force-ssl 이 필요하고, 이쪽이 youtube 의 상위 집합이다.
+#
+# 기존 토큰이 youtube 만 가지고 있어도 새로고침은 그대로 된다 — google-auth 는
+# 요청 스코프가 부여 스코프보다 넓으면 경고만 남긴다. 그래서 업로드는 지금도
+# 돌고, 토큰을 다시 발급받는 순간 댓글이 따라서 켜진다.
+SCOPES = ["https://www.googleapis.com/auth/youtube.force-ssl"]
 ENV_FILE = ROOT / ".env.youtube"
 
 # Coupang Partners affiliate link — must be generated per-product at

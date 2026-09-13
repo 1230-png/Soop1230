@@ -36,7 +36,13 @@ from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-SCOPES = ["https://www.googleapis.com/auth/youtube"]
+# 댓글 API(commentThreads)는 youtube 스코프로는 403 insufficientPermissions 를
+# 낸다. youtube.force-ssl 이 필요하고, 이쪽이 youtube 의 상위 집합이다.
+#
+# 기존 토큰이 youtube 만 가지고 있어도 새로고침은 그대로 된다 — google-auth 는
+# 요청 스코프가 부여 스코프보다 넓으면 경고만 남긴다. 그래서 업로드는 지금도
+# 돌고, 토큰을 다시 발급받는 순간 댓글이 따라서 켜진다.
+SCOPES = ["https://www.googleapis.com/auth/youtube.force-ssl"]
 CHANNEL_ID = "UCeXsmdfyW4hoxgWV2K8EwFw"  # @200-y3b
 
 # 자동 업로드가 매번 지정하는 값. Studio 의 '업로드 기본 설정'은 수동
@@ -207,6 +213,23 @@ SHORTS_COMMENT = (
     "출퇴근길에 틀어 두기 좋게 만들었습니다."
 )
 
+
+SCOPE_HELP = """댓글 API 가 403 insufficientPermissions 를 냈다.
+
+commentThreads 는 youtube.force-ssl 스코프를 요구하는데 지금 refresh token 은
+youtube 만 가지고 있다. 코드는 이미 force-ssl 을 요청하도록 고쳐 뒀으므로,
+토큰만 다시 발급받아 GitHub Secret 을 갈아 끼우면 그 다음부터 댓글이 달린다.
+
+    cd channel_200y3b
+    python3 scripts/get_refresh_token.py \\
+        --client-id "<Y3B_CLIENT_ID>" --client-secret "<Y3B_CLIENT_SECRET>"
+
+브라우저에서 @200-y3b 를 관리하는 계정으로 로그인하고, 동의 화면에 '댓글'
+항목이 있는지 확인할 것. 출력된 refresh token 을 저장소 Settings → Secrets →
+Actions 의 Y3B_REFRESH_TOKEN 에 덮어쓴다.
+
+업로드·재생목록·썸네일은 기존 토큰으로도 그대로 돌아간다 — 막히는 것은
+댓글뿐이다."""
 
 def playlist_for(title: str) -> str:
     """이 제목이 들어가야 할 재생목록. 모르는 서식이면 빈 문자열."""
@@ -636,7 +659,13 @@ def cmd_comment(youtube, channel, args) -> int:
                 skipped.append((vid, "이미 댓글 있음"))
                 continue
         except HttpError as e:
-            skipped.append((vid, f"{e.resp.status} {error_reason(e)}"))
+            reason = error_reason(e)
+            if reason == "insufficientPermissions":
+                # 영상 하나의 문제가 아니라 토큰 전체의 문제다. 39편을 두들겨
+                # 봐야 같은 답만 39번 나온다.
+                print(SCOPE_HELP, file=sys.stderr)
+                return 1
+            skipped.append((vid, f"{e.resp.status} {reason}"))
             continue
         todo.append((vid, item["snippet"]["title"]))
 

@@ -148,6 +148,9 @@ python scripts/get_refresh_token.py --client-id "<클라이언트 ID>" --client-
 | `dedupe-preview` | 같은 표현이 두 번 올라간 것을 찾는다 |
 | `dedupe-private` | 중복분을 비공개로 돌린다 (되돌릴 수 있다) |
 | `dedupe-apply` | 중복분을 삭제한다 (되돌릴 수 없다) |
+| `retitle` | 옛 서식으로 올라간 롱폼 제목을 새 검색 서식으로 바꾼다 |
+| `comment` | 쇼츠에 롱폼 재생목록으로 가는 채널 댓글을 단다 |
+| `stats` | 수익 창출 자격까지 남은 거리 (읽기만) |
 
 상태를 바꾸는 것은 전부 미리보기가 먼저입니다. 중복은 되도록
 `dedupe-private` 로 처리하세요 — 공개 채널에서는 똑같이 사라지지만 조회수와
@@ -169,6 +172,17 @@ python scripts/get_refresh_token.py --client-id "<클라이언트 ID>" --client-
 표현을 더 넣을 때는 영어 원문이 겹치지 않는지 반드시 확인하세요. 겹치면
 같은 영상이 두 번 올라갑니다. 대소문자·구두점·아포스트로피를 지우고 비교해야
 `I'm` 과 `I am` 같은 차이에 속지 않습니다.
+
+**댓글에는 더 넓은 스코프가 필요합니다** — `commentThreads` API 는
+`youtube.force-ssl` 을 요구하고, `youtube` 만으로는
+`403 insufficientPermissions` 가 납니다. 코드는 force-ssl 을 요청하도록
+고쳐 뒀지만, **이미 발급받은 refresh token 은 스코프가 늘어나지 않습니다.**
+쇼츠 댓글을 쓰려면 `get_refresh_token.py` 를 다시 돌려 `Y3B_REFRESH_TOKEN` 을
+갈아 끼워야 합니다. 업로드·재생목록·썸네일은 기존 토큰으로도 그대로 돕니다.
+
+**댓글 고정은 자동화할 수 없습니다** — Data API 에 고정(pin) 엔드포인트가
+없습니다. 스크립트가 다는 것은 고정되지 않은 채널 댓글이고, 고정은
+스튜디오에서 직접 해야 합니다.
 
 **보안 비밀번호를 새로 발급했을 때** — 예전 것은 Google Cloud Console에서
 직접 지워야 합니다. OAuth 클라이언트의 보안 비밀번호를 지우는 API 는 없어서
