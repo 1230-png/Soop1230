@@ -16,6 +16,8 @@ on:
         options:
           - audit
           - playlist-add
+          - backfill-preview
+          - backfill-apply
           - dedupe-preview
           - dedupe-apply
           - delete
@@ -69,6 +71,10 @@ jobs:
               test -n "$VIDEO_ID" || { echo "video_id 가 필요하다"; exit 1; }
               test -n "$PLAYLIST" || { echo "playlist 가 필요하다"; exit 1; }
               python3 "$FIX" playlist-add --video "$VIDEO_ID" --playlist "$PLAYLIST" ;;
+            backfill-preview)
+              python3 "$FIX" backfill ;;
+            backfill-apply)
+              python3 "$FIX" backfill --apply ;;
             dedupe-preview)
               python3 "$FIX" dedupe ;;
             dedupe-apply)

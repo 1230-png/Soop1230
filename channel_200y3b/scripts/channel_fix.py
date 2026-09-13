@@ -126,8 +126,10 @@ def playlist_video_ids(youtube, playlist_id: str) -> set:
     return {i["contentDetails"]["videoId"] for i in items}
 
 
-# 쇼츠 제목은 '"표현" 무슨 뜻일까? | 매일 영어 한마디' 한 가지 꼴로만 나온다.
-SHORTS_TITLE = re.compile(r'^"(?P<phrase>.+?)"\s*무슨 뜻일까\?')
+# 쇼츠 제목은 '"표현" 무슨 뜻일까? | 매일 영어 한마디' 꼴이다. 초기에 올라간
+# 몇 편은 따옴표가 없어서, 따옴표를 선택으로 두지 않으면 그것들만 판정에서
+# 빠져 같은 표현이 두 번 올라간 것을 못 잡는다.
+SHORTS_TITLE = re.compile(r'^"?(?P<phrase>.+?)"?\s*무슨 뜻일까\?')
 
 
 def dupe_key(title: str) -> str:
@@ -141,6 +143,87 @@ def dupe_key(title: str) -> str:
     if not m:
         return ""
     return re.sub(r"[^a-z0-9]+", " ", m.group("phrase").lower()).strip()
+
+
+# 제목 → 재생목록. 각 생성기가 쓰는 제목 서식에서 그대로 따왔고, 위에서부터
+# 처음 맞는 것을 쓴다. '총정리'가 월간·상황별 양쪽에 들어가므로 좁은 쪽이 먼저다.
+PLAYLIST_RULES = [
+    (SHORTS_TITLE, "매일 영어 한마디 · 쇼츠 모음"),
+    (re.compile(r"^이번 주 영어 표현 \d+개 몰아듣기"), "주간 복습 몰아듣기"),
+    (re.compile(r"^영어 쉐도잉 훈련 \d+문장"), "쉐도잉 트레이닝"),
+    (re.compile(r"^자면서 듣는 영어 표현 \d+개"), "자면서 듣는 영어"),
+    (re.compile(r"^이번 달 영어 표현 \d+개 총정리"), "월간 총정리"),
+    (re.compile(r"^영어 표현 총정리 Vol\."), "매일 영어 한마디 · 주간 표현 모음"),
+    (re.compile(r"^실생활 영어 표현 \d+개 모음 Vol\."), "매일 영어 한마디 · 주간 표현 모음"),
+    (re.compile(r"^.+ 영어 표현 \d+개 총정리"), "상황별 영어 표현"),
+]
+
+
+def playlist_for(title: str) -> str:
+    """이 제목이 들어가야 할 재생목록. 모르는 서식이면 빈 문자열."""
+    title = title.strip()
+    for pattern, name in PLAYLIST_RULES:
+        if pattern.match(title):
+            return name
+    return ""
+
+
+def get_or_create_playlist(youtube, title: str, cache: dict) -> str:
+    if title in cache:
+        return cache[title]
+    resp = youtube.playlists().insert(
+        part="snippet,status",
+        body={"snippet": {"title": title},
+              "status": {"privacyStatus": "public"}},
+    ).execute()
+    cache[title] = resp["id"]
+    print(f"  재생목록을 새로 만들었다: {title!r} ({resp['id']})")
+    return resp["id"]
+
+
+def cmd_backfill(youtube, channel, args) -> int:
+    """재생목록에 못 들어간 영상을 제목 규칙대로 넣는다."""
+    uploads = all_uploads(youtube, channel)
+    ids = [i["contentDetails"]["videoId"] for i in uploads]
+    details = video_details(youtube, ids)
+
+    playlists = {p["snippet"]["title"]: p["id"] for p in all_playlists(youtube)}
+    members = {name: playlist_video_ids(youtube, pid)
+               for name, pid in playlists.items()}
+    in_any = set().union(*members.values()) if members else set()
+
+    todo, unknown = [], []
+    for vid in ids:
+        if vid in in_any:
+            continue
+        title = details[vid]["snippet"]["title"]
+        target = playlist_for(title)
+        (todo if target else unknown).append((vid, target, title))
+
+    for vid, target, title in todo:
+        print(f"{'넣는다' if args.apply else '넣을 것'}: {vid} → {target!r}  {title[:50]}")
+    for vid, _, title in unknown:
+        print(f"규칙 없음(그대로 둠): {vid}  {title[:50]}")
+
+    if not todo:
+        print("\n넣을 것이 없다.")
+        return 0
+    if not args.apply:
+        cost = len(todo) * 50
+        print(f"\n미리보기다. 실제로 넣으려면 --apply ({len(todo)}편, "
+              f"할당량 약 {cost}단위).")
+        return 0
+
+    for vid, target, _ in todo:
+        pid = get_or_create_playlist(youtube, target, playlists)
+        youtube.playlistItems().insert(
+            part="snippet",
+            body={"snippet": {"playlistId": pid,
+                              "resourceId": {"kind": "youtube#video",
+                                             "videoId": vid}}},
+        ).execute()
+        print(f"  넣었다: {vid} → {target!r}")
+    return 0
 
 
 def cmd_audit(youtube, channel, args) -> int:
@@ -198,10 +281,10 @@ def cmd_audit(youtube, channel, args) -> int:
         print(f"  {pl['snippet']['title']!r}: {len(members)}편  ({pl['id']})")
     orphans = [v for v in ids if v not in in_any]
     print(f"\n  어느 재생목록에도 없는 영상: {len(orphans)}편")
-    for vid in orphans[:30]:
-        print(f"    {vid}  {details[vid]['snippet']['title'][:60]}")
-    if len(orphans) > 30:
-        print(f"    … 외 {len(orphans) - 30}편")
+    for vid in orphans:
+        title = details[vid]["snippet"]["title"]
+        target = playlist_for(title) or "(규칙 없음 — 손대지 않는다)"
+        print(f"    {vid}  {target:22}  {title[:60]}")
     return 0
 
 
@@ -284,6 +367,9 @@ def main() -> int:
     p.add_argument("--video", required=True)
     p.add_argument("--playlist", required=True)
 
+    p = sub.add_parser("backfill", help="재생목록 누락분을 제목 규칙대로 채운다")
+    p.add_argument("--apply", action="store_true", help="실제로 넣는다")
+
     p = sub.add_parser("dedupe", help="같은 표현 중복분을 정리한다")
     p.add_argument("--apply", action="store_true", help="실제로 삭제")
 
@@ -296,6 +382,7 @@ def main() -> int:
     handler = {
         "audit": cmd_audit,
         "playlist-add": cmd_playlist_add,
+        "backfill": cmd_backfill,
         "dedupe": cmd_dedupe,
         "delete": cmd_delete,
     }[args.cmd]
