@@ -254,21 +254,38 @@ def encode(segments: list, out_dir: Path, work: Path, fps: int) -> Path:
     return out_path
 
 
-def build_description(pack: dict, chapters: list, count: int, topic: str) -> str:
-    head = f"{pack['name']} — 표현 {count}개"
-    if topic:
-        head += f" · {topic}"
-    lines = [head, "", "타임스탬프"]
+def build_description(pack: dict, chapters: list, count: int, topic: str,
+                      minutes: int) -> str:
+    """설명문.
+
+    검색 결과와 추천 카드에는 앞 두 줄만 보인다. 그 두 줄이 제목과 같은 말을
+    반복하면 낭비이므로, 무엇을 얻어 가는지와 어떻게 쓰는지를 먼저 적는다.
+    타임스탬프는 그 아래로 내린다 — 재생 화면에서만 쓰이지 검색에는 안 쓰인다.
+    """
+    subject = f"{topic} " if topic else ""
+    lines = [
+        pack.get("hook", "").format(count=count, minutes=minutes,
+                                    topic=topic).strip()
+        or f"{subject}영어 회화 표현 {count}개를 {minutes}분에 모아 들었습니다.",
+        "한 번에 다 외우지 않아도 됩니다. 반복해서 듣는 것이 가장 빠릅니다.",
+        "",
+        pack.get("howto", "").strip(),
+        "",
+        "타임스탬프",
+    ]
     lines += [f"{fmt_timestamp(t)} {label}" for t, label in chapters]
     lines += [
         "",
         "매일 영어 한마디 — 실생활에서 바로 쓰는 영어 표현을 매일 전해드립니다.",
+        "구독: https://www.youtube.com/@200-y3b?sub_confirmation=1",
+        "다른 몰아듣기 영상: https://www.youtube.com/@200-y3b/playlists",
         "",
         "[ 업로드 일정 ]",
         "매일 09시·15시·21시 — 오늘의 표현 한 개 (쇼츠)",
         "일요일 주간 복습 · 월요일 쉐도잉 · 수요일 상황별 · 금요일 수면 영어",
         "매월 말 — 한 달 총정리",
         "",
+        " ".join(f"#{t}" for t in pack.get("tags", [])[:5]),
         "#영어공부 #영어회화 #매일영어한마디 #영어듣기 #dailyenglish",
     ]
     return "\n".join(lines)
@@ -344,9 +361,12 @@ def main() -> int:
 
     metadata = {
         "title": title,
-        "description": build_description(pack, chapters, count, topic),
-        "tags": ["영어공부", "영어회화", "매일영어한마디", "영어듣기", "영어표현",
-                 "english listening", "learn english", "shadowing"],
+        "description": build_description(pack, chapters, count, topic, minutes),
+        # 팩별 태그를 앞에 둔다. 태그는 앞쪽에 가중치가 있고, 공통 태그만으로는
+        # 다섯 팩이 전부 같은 검색어를 두고 서로 경쟁한다.
+        "tags": pack.get("tags", []) + [
+            "영어공부", "영어회화", "매일영어한마디", "영어듣기", "영어표현",
+            "english listening", "learn english", "shadowing"],
         "categoryId": "27",
         "privacyStatus": "public",
         # Playlists chain one long-form into the next on autoplay, which is

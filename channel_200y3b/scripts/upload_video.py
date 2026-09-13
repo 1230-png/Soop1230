@@ -33,6 +33,40 @@ COUPANG_LINK = ""
 
 CHANNEL_ID = "UCeXsmdfyW4hoxgWV2K8EwFw"  # @200-y3b
 
+# 쇼츠 시청 시간은 파트너 프로그램의 유효 공개 시청 시간에 들어가지 않는다.
+# 그 숫자를 움직이는 것은 롱폼뿐이고, 쇼츠가 가진 것은 사람이다. 설명란은
+# 쇼츠에서 거의 펼쳐지지 않으므로 댓글로도 같은 길을 낸다.
+#
+# 고정(pin)은 Data API 에 없다 — 스튜디오에서만 된다. 여기서 다는 것은 고정
+# 안 된 채널 댓글이다.
+LONGFORM_COMMENT = (
+    "🎧 이 표현들 몰아듣기 — 롱폼 재생목록\n"
+    "https://www.youtube.com/@200-y3b/playlists\n"
+    "\n"
+    "일요일 주간 복습 · 월요일 쉐도잉 · 수요일 상황별 · 금요일 자면서 듣는 영어\n"
+    "출퇴근길에 틀어 두기 좋게 만들었습니다."
+)
+
+
+def _post_longform_comment(youtube, video_id: str) -> None:
+    """업로드 직후 롱폼으로 가는 채널 댓글을 단다.
+
+    실패해도 업로드는 이미 끝났다. 여기서 예외를 올리면 워크플로가 실패로
+    끝나고 used_log 가 기록되지 않아, 다음 실행이 같은 표현을 또 올린다.
+    """
+    try:
+        youtube.commentThreads().insert(
+            part="snippet",
+            body={"snippet": {
+                "videoId": video_id,
+                "topLevelComment": {
+                    "snippet": {"textOriginal": LONGFORM_COMMENT}},
+            }},
+        ).execute()
+        print(f"✅ Long-form comment posted on {video_id}")
+    except HttpError as e:
+        print(f"⚠️  Comment failed (ignored): {e}", file=sys.stderr)
+
 
 def _load_env_file():
     """Load YT_* values from .env.youtube (written by get_refresh_token.py)
@@ -244,6 +278,8 @@ def upload_video(
 
     if playlist_title:
         _add_to_playlist(youtube, video_id, playlist_title)
+
+    _post_longform_comment(youtube, video_id)
 
     return video_id
 

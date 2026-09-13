@@ -1,8 +1,11 @@
 """@200-y3b 채널 뒷정리 — 감사, 재생목록 보정, 중복 영상 정리.
 
     python3 channel_200y3b/scripts/channel_fix.py audit
+    python3 channel_200y3b/scripts/channel_fix.py stats
     python3 channel_200y3b/scripts/channel_fix.py backfill [--apply]
     python3 channel_200y3b/scripts/channel_fix.py playlist-add --video ID --playlist "제목"
+    python3 channel_200y3b/scripts/channel_fix.py retitle [--apply]
+    python3 channel_200y3b/scripts/channel_fix.py comment [--apply]
     python3 channel_200y3b/scripts/channel_fix.py dedupe [--apply] [--private]
     python3 channel_200y3b/scripts/channel_fix.py delete --video ID --confirm ID
 
@@ -153,6 +156,13 @@ def dupe_key(title: str) -> str:
 # 처음 맞는 것을 쓴다. '총정리'가 월간·상황별 양쪽에 들어가므로 좁은 쪽이 먼저다.
 PLAYLIST_RULES = [
     (SHORTS_TITLE, "매일 영어 한마디 · 쇼츠 모음"),
+    # 검색어를 앞세운 현재 서식.
+    (re.compile(r"^영어 회화 표현 \d+개 몰아듣기"), "주간 복습 몰아듣기"),
+    (re.compile(r"^영어 쉐도잉 연습 \d+문장"), "쉐도잉 트레이닝"),
+    (re.compile(r"^잠들기 전 영어 듣기"), "자면서 듣는 영어"),
+    (re.compile(r"^영어 회화 표현 \d+개 총정리"), "월간 총정리"),
+    (re.compile(r"^.+ 영어 회화 표현 \d+개 \| 상황별"), "상황별 영어 표현"),
+    # 검색어 개편 전 서식. 이미 올라간 영상이 남아 있는 한 지우면 안 된다.
     (re.compile(r"^이번 주 영어 표현 \d+개 몰아듣기"), "주간 복습 몰아듣기"),
     (re.compile(r"^영어 쉐도잉 훈련 \d+문장"), "쉐도잉 트레이닝"),
     (re.compile(r"^자면서 듣는 영어 표현 \d+개"), "자면서 듣는 영어"),
@@ -161,6 +171,40 @@ PLAYLIST_RULES = [
     (re.compile(r"^실생활 영어 표현 \d+개 모음 Vol\."), "매일 영어 한마디 · 주간 표현 모음"),
     (re.compile(r"^.+ 영어 표현 \d+개 총정리"), "상황별 영어 표현"),
 ]
+
+# 검색어 개편 전에 올라간 롱폼의 제목을 새 서식으로 바꾼다. 현재 제목으로
+# 찾으므로 한 번 바꾸고 나면 저절로 아무것도 하지 않는다.
+RETITLE = {
+    "실생활 영어 표현 30개 모음 Vol.1 | 매일 영어 한마디": (
+        "영어 회화 표현 30개 몰아듣기 | 생활 영어 흘려듣기 5분",
+        ["영어몰아듣기", "생활영어회화", "영어회화표현", "영어반복듣기", "영어복습"],
+    ),
+    "실생활 영어 표현 35개 모음 Vol.2 | 매일 영어 한마디": (
+        "영어 회화 표현 35개 몰아듣기 | 생활 영어 흘려듣기 8분",
+        ["영어몰아듣기", "생활영어회화", "영어회화표현", "영어반복듣기", "영어복습"],
+    ),
+    "여행·공항·호텔 영어 표현 30개 총정리 | 매일 영어 한마디": (
+        "여행·공항·호텔 영어 회화 표현 30개 | 상황별 영어 한마디 14분",
+        ["상황별영어", "여행영어", "공항영어", "호텔영어", "여행영어회화"],
+    ),
+    "이번 주 영어 표현 30개 몰아듣기 | 매일 영어 한마디": (
+        "영어 회화 표현 30개 몰아듣기 | 출퇴근 영어 흘려듣기 14분",
+        ["영어몰아듣기", "출퇴근영어", "영어회화표현", "영어반복듣기", "영어복습"],
+    ),
+}
+
+BASE_TAGS = ["영어공부", "영어회화", "매일영어한마디", "영어듣기", "영어표현",
+             "english listening", "learn english", "shadowing"]
+
+# 쇼츠 댓글로 붙이는 롱폼 안내. 설명란보다 눈에 띄고, 쇼츠 시청자를 시청
+# 시간이 실제로 쌓이는 롱폼으로 넘기는 것이 목적이다.
+SHORTS_COMMENT = (
+    "🎧 이 표현들 몰아듣기 — 롱폼 재생목록\n"
+    "https://www.youtube.com/@200-y3b/playlists\n"
+    "\n"
+    "일요일 주간 복습 · 월요일 쉐도잉 · 수요일 상황별 · 금요일 자면서 듣는 영어\n"
+    "출퇴근길에 틀어 두기 좋게 만들었습니다."
+)
 
 
 def playlist_for(title: str) -> str:
@@ -501,6 +545,125 @@ def cmd_stats(youtube, channel, args) -> int:
     return 0
 
 
+def cmd_retitle(youtube, channel, args) -> int:
+    """RETITLE 표대로 기존 롱폼 제목과 태그를 새 서식으로 바꾼다.
+
+    videos.update 는 지정한 part 를 통째로 갈아 끼우므로, 읽어 둔 snippet 에
+    덮어써서 보낸다. 설명은 건드리지 않는다 — 타임스탬프가 들어 있고 그건
+    다시 만들려면 영상을 다시 빌드해야 한다.
+    """
+    uploads = all_uploads(youtube, channel)
+    ids = [i["contentDetails"]["videoId"] for i in uploads]
+    details = video_details(youtube, ids)
+
+    todo = []
+    for vid, item in details.items():
+        entry = RETITLE.get(item["snippet"]["title"].strip())
+        if entry:
+            todo.append((vid, item, entry))
+
+    if not todo:
+        print("바꿀 제목 없음 (이미 새 서식이거나 해당 영상이 없다).")
+        return 0
+
+    for vid, item, (new_title, tags) in todo:
+        print(f"{'바꾼다' if args.apply else '바꿀 것'}: {vid}")
+        print(f"    이전: {item['snippet']['title']}")
+        print(f"    이후: {new_title}")
+    if not args.apply:
+        print(f"\n미리보기다. 실제로 바꾸려면 --apply ({len(todo)}편, "
+              f"할당량 약 {len(todo) * 50}단위).")
+        return 0
+
+    for vid, item, (new_title, tags) in todo:
+        snippet = dict(item["snippet"])
+        for key in ("thumbnails", "publishedAt", "channelId", "channelTitle",
+                    "liveBroadcastContent", "localized", "tagSuggestions"):
+            snippet.pop(key, None)
+        snippet["title"] = new_title
+        snippet["tags"] = tags + BASE_TAGS
+        youtube.videos().update(
+            part="snippet", body={"id": vid, "snippet": snippet}).execute()
+        print(f"바꿨다: {vid}  {new_title}")
+    return 0
+
+
+def my_comment_exists(youtube, video_id: str) -> bool:
+    """이 채널이 이미 이 영상에 댓글을 달았는지."""
+    try:
+        resp = youtube.commentThreads().list(
+            part="snippet", videoId=video_id, maxResults=100,
+            textFormat="plainText").execute()
+    except HttpError as e:
+        # 댓글이 꺼져 있거나(403) 삭제된 영상(404)이면 달 수도 없다.
+        raise
+    for thread in resp.get("items", []):
+        top = thread["snippet"]["topLevelComment"]["snippet"]
+        if top.get("authorChannelId", {}).get("value") == CHANNEL_ID:
+            return True
+    return False
+
+
+def cmd_comment(youtube, channel, args) -> int:
+    """쇼츠에 롱폼으로 가는 채널 댓글을 단다.
+
+    고정(pin)은 Data API 에 없다 — 스튜디오에서만 된다. 그래서 여기서 다는
+    댓글은 고정되지 않은 채널 댓글이다. 고정만큼은 아니어도 설명란보다는
+    눈에 띈다.
+    """
+    uploads = all_uploads(youtube, channel)
+    ids = [i["contentDetails"]["videoId"] for i in uploads]
+    details = video_details(youtube, ids)
+
+    todo, skipped = [], []
+    for vid, item in details.items():
+        if item["status"].get("privacyStatus") != "public":
+            continue
+        if not dupe_key(item["snippet"]["title"]):
+            continue  # 쇼츠만
+        try:
+            if my_comment_exists(youtube, vid):
+                skipped.append((vid, "이미 댓글 있음"))
+                continue
+        except HttpError as e:
+            skipped.append((vid, f"확인 실패({e.resp.status})"))
+            continue
+        todo.append((vid, item["snippet"]["title"]))
+
+    for vid, reason in skipped:
+        print(f"건너뜀: {vid}  {reason}")
+    for vid, title in todo:
+        print(f"{'단다' if args.apply else '달 것'}: {vid}  {title[:50]}")
+
+    if not todo:
+        print("\n달 곳이 없다.")
+        return 0
+    if not args.apply:
+        print(f"\n미리보기다. 실제로 달려면 --apply ({len(todo)}편, "
+              f"할당량 약 {len(todo) * 50}단위).")
+        print("\n달릴 내용:\n" + SHORTS_COMMENT)
+        return 0
+
+    done = 0
+    for vid, _ in todo:
+        try:
+            youtube.commentThreads().insert(
+                part="snippet",
+                body={"snippet": {
+                    "videoId": vid,
+                    "topLevelComment": {
+                        "snippet": {"textOriginal": SHORTS_COMMENT}},
+                }},
+            ).execute()
+            done += 1
+            print(f"달았다: {vid}")
+        except HttpError as e:
+            # 한 편이 막혀도 나머지는 계속 단다.
+            print(f"실패(무시): {vid} — {e.resp.status}", file=sys.stderr)
+    print(f"\n{done}/{len(todo)}편에 달았다. 고정은 스튜디오에서만 된다.")
+    return 0
+
+
 def cmd_delete(youtube, channel, args) -> int:
     if args.confirm != args.video:
         print("--confirm 에 같은 영상 ID 를 한 번 더 적어야 지운다.", file=sys.stderr)
@@ -530,6 +693,12 @@ def main() -> int:
     p = sub.add_parser("backfill", help="재생목록 누락분을 제목 규칙대로 채운다")
     p.add_argument("--apply", action="store_true", help="실제로 넣는다")
 
+    p = sub.add_parser("retitle", help="기존 롱폼 제목을 새 검색 서식으로")
+    p.add_argument("--apply", action="store_true", help="실제로 바꾼다")
+
+    p = sub.add_parser("comment", help="쇼츠에 롱폼 안내 댓글을 단다")
+    p.add_argument("--apply", action="store_true", help="실제로 단다")
+
     p = sub.add_parser("dedupe", help="같은 표현 중복분을 정리한다")
     p.add_argument("--apply", action="store_true", help="실제로 실행")
     p.add_argument("--private", action="store_true",
@@ -545,6 +714,8 @@ def main() -> int:
         "audit": cmd_audit,
         "playlist-add": cmd_playlist_add,
         "backfill": cmd_backfill,
+        "retitle": cmd_retitle,
+        "comment": cmd_comment,
         "dedupe": cmd_dedupe,
         "delete": cmd_delete,
         "stats": cmd_stats,

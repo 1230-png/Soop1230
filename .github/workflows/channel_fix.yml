@@ -19,6 +19,10 @@ on:
           - playlist-add
           - backfill-preview
           - backfill-apply
+          - retitle-preview
+          - retitle-apply
+          - comment-preview
+          - comment-apply
           - dedupe-preview
           - dedupe-private
           - dedupe-apply
@@ -79,6 +83,14 @@ jobs:
               python3 "$FIX" backfill ;;
             backfill-apply)
               python3 "$FIX" backfill --apply ;;
+            retitle-preview)
+              python3 "$FIX" retitle ;;
+            retitle-apply)
+              python3 "$FIX" retitle --apply ;;
+            comment-preview)
+              python3 "$FIX" comment ;;
+            comment-apply)
+              python3 "$FIX" comment --apply ;;
             dedupe-preview)
               python3 "$FIX" dedupe ;;
             dedupe-private)
