@@ -1,0 +1,81 @@
+name: Channel housekeeping (@200-y3b)
+
+# 무인 발행이라 사람이 Studio 를 보지 않는다. 업로드가 부분 실패해도 다음
+# 크론이 새 영상을 올려 버려서, 재생목록에 못 들어간 영상이나 같은 표현으로
+# 두 번 올라간 영상이 그대로 남는다. 손으로 돌리는 뒷정리 창구.
+#
+# 크론은 없다. 삭제가 섞여 있어 사람이 눌러야 도는 게 맞다.
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "무엇을 할지"
+        required: true
+        type: choice
+        default: audit
+        options:
+          - audit
+          - playlist-add
+          - dedupe-preview
+          - dedupe-apply
+          - delete
+      video_id:
+        description: "playlist-add / delete 에 쓸 영상 ID"
+        required: false
+        type: string
+      playlist:
+        description: "playlist-add 에 쓸 재생목록 제목"
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: 200y3b-channel-fix
+  cancel-in-progress: false
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python dependencies
+        run: pip install google-auth google-auth-oauthlib google-api-python-client
+
+      - name: Run
+        env:
+          Y3B_CLIENT_ID: ${{ secrets.Y3B_CLIENT_ID }}
+          Y3B_CLIENT_SECRET: ${{ secrets.Y3B_CLIENT_SECRET }}
+          Y3B_REFRESH_TOKEN: ${{ secrets.Y3B_REFRESH_TOKEN }}
+          ACTION: ${{ inputs.action }}
+          VIDEO_ID: ${{ inputs.video_id }}
+          PLAYLIST: ${{ inputs.playlist }}
+          PYTHONIOENCODING: utf-8
+        run: |
+          set -euo pipefail
+          FIX=channel_200y3b/scripts/channel_fix.py
+          case "$ACTION" in
+            audit)
+              python3 "$FIX" audit ;;
+            playlist-add)
+              test -n "$VIDEO_ID" || { echo "video_id 가 필요하다"; exit 1; }
+              test -n "$PLAYLIST" || { echo "playlist 가 필요하다"; exit 1; }
+              python3 "$FIX" playlist-add --video "$VIDEO_ID" --playlist "$PLAYLIST" ;;
+            dedupe-preview)
+              python3 "$FIX" dedupe ;;
+            dedupe-apply)
+              python3 "$FIX" dedupe --apply ;;
+            delete)
+              test -n "$VIDEO_ID" || { echo "video_id 가 필요하다"; exit 1; }
+              python3 "$FIX" delete --video "$VIDEO_ID" --confirm "$VIDEO_ID" ;;
+            *)
+              echo "모르는 action: $ACTION"; exit 1 ;;
+          esac
