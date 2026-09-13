@@ -193,40 +193,88 @@ API 가 없어서 자동화가 안 되는 작업입니다. 한 번만 하면 됩
 
 댓글 API(`commentThreads`)는 `youtube.force-ssl` 스코프를 요구하는데 지금
 토큰은 `youtube` 만 가지고 있습니다. **스코프는 코드가 아니라 토큰에 붙어
-있어서 코드로는 넓힐 수 없고, 브라우저 동의가 필요해 자동화도 안 됩니다.**
+있어서 코드로는 넓힐 수 없고, 구글 로그인 동의가 필요해 자동화도 안 됩니다.**
 
-컴퓨터(윈도우/맥 아무거나)에서 한 번만 하면 됩니다.
+두 방법 중 하나를 고르세요.
+
+| | B-1 브라우저만 | B-2 스크립트 |
+|---|---|---|
+| 설치 | 없음 | 파이썬 |
+| 바꾸는 Secret | 3개 (클라이언트를 새로 만듦) | 1개 |
+| 추천 | 명령줄이 익숙하지 않다면 | 파이썬이 이미 있다면 |
+
+#### B-1. OAuth Playground (설치 없이, 브라우저만)
+
+1. https://console.cloud.google.com/apis/credentials 에서
+   **"+ 사용자 인증 정보 만들기"** → **"OAuth 클라이언트 ID"**
+2. 애플리케이션 유형: **웹 애플리케이션**. 이름은 아무거나 (예: `playground`).
+3. **"승인된 리디렉션 URI"** → **"+ URI 추가"** → 아래를 정확히 붙여넣기:
+
+   ```
+   https://developers.google.com/oauthplayground
+   ```
+
+4. **만들기** → 뜨는 팝업의 **클라이언트 ID** 와 **클라이언트 보안 비밀번호**
+   를 둘 다 복사해 둡니다. (이 팝업을 닫으면 보안 비밀번호를 다시 못 봅니다.)
+5. https://developers.google.com/oauthplayground/ 접속 →
+   오른쪽 위 **톱니바퀴(⚙)** 클릭
+6. **"Use your own OAuth credentials"** 체크 → 4에서 복사한 두 값을 입력.
+   같은 패널의 **Access type** 이 **Offline** 인지 확인합니다.
+   (Online 이면 refresh token 이 안 나옵니다.)
+7. 왼쪽 **Step 1** 맨 아래 **"Input your own scopes"** 칸에 아래를 붙여넣고
+   **"Authorize APIs"**:
+
+   ```
+   https://www.googleapis.com/auth/youtube.force-ssl
+   ```
+
+8. **@200-y3b 를 관리하는 계정**으로 로그인하고 **항목을 끄지 말고** 허용.
+9. **Step 2** 의 **"Exchange authorization code for tokens"** 클릭 →
+   오른쪽에 나오는 **Refresh token** 값을 복사.
+10. GitHub 저장소 → **Settings** → **Secrets and variables** → **Actions** 에서
+    **세 개 모두** 새 값으로 바꿉니다:
+    `Y3B_CLIENT_ID`, `Y3B_CLIENT_SECRET` (4에서 복사), `Y3B_REFRESH_TOKEN` (9).
+
+> 새 클라이언트를 쓰므로 세 값이 다 바뀝니다. **기존 데스크톱 클라이언트는
+> 지우지 마세요** — 새 값이 확인될 때까지 남겨 둡니다.
+
+#### B-2. 스크립트 (파이썬이 있다면)
+
+기존 클라이언트를 그대로 쓰므로 `Y3B_REFRESH_TOKEN` 하나만 바뀝니다.
 
 1. 파이썬이 없으면 https://www.python.org/downloads/ 에서 설치.
    윈도우 설치 화면에서 **"Add python.exe to PATH"** 를 꼭 체크하세요.
-2. 터미널(윈도우는 PowerShell)을 열고:
+2. 터미널(윈도우는 PowerShell)에서:
 
    ```bash
    pip install google-auth-oauthlib
    ```
 
-3. 이 저장소를 받았다면 그 폴더에서, 아니면
-   `channel_200y3b/scripts/get_refresh_token.py` 파일 하나만 받아서:
+3. `channel_200y3b/scripts/get_refresh_token.py` 가 있는 폴더에서:
 
    ```bash
    python get_refresh_token.py \
-       --client-id "A-5에서 복사한 클라이언트 ID" \
-       --client-secret "A-5에서 복사한 보안 비밀번호"
+       --client-id "A-4 에서 복사한 클라이언트 ID" \
+       --client-secret "A-5 에서 복사한 보안 비밀번호"
    ```
 
 4. 브라우저가 열립니다. **반드시 @200-y3b 를 관리하는 계정**으로 로그인하세요.
    다른 계정으로 하면 업로드가 엉뚱한 채널로 가려다 채널 확인 로직에 막힙니다.
 5. 동의 화면에서 **항목을 하나도 끄지 말고** 전부 허용합니다.
    하나라도 끄면 스크립트가 경고를 찍고, 나중에 댓글이 조용히 실패합니다.
-6. 터미널에 세 값이 찍힙니다. 그중 `Y3B_REFRESH_TOKEN` 값을 복사합니다.
-7. GitHub 저장소 → **Settings** → 왼쪽 **Secrets and variables** → **Actions**
-   → `Y3B_REFRESH_TOKEN` 의 연필 아이콘 → 값을 붙여넣고 **Update secret**.
-   (A-5 에서 보안 비밀번호를 새로 만들었다면 `Y3B_CLIENT_SECRET` 도 같이.)
-8. 확인: Actions 탭 → **"Channel housekeeping (@200-y3b)"** → Run workflow →
-   `comment-preview`. 403 안내 대신 "달 것: ..." 목록이 나오면 성공입니다.
-   이어서 `comment-apply` 를 돌리면 기존 쇼츠에 댓글이 달립니다.
+6. 터미널에 찍힌 `Y3B_REFRESH_TOKEN` 값을 복사해 GitHub 저장소 →
+   **Settings** → **Secrets and variables** → **Actions** →
+   `Y3B_REFRESH_TOKEN` 의 연필 아이콘 → 붙여넣고 **Update secret**.
 
-> **터미널에 찍힌 토큰은 비밀값입니다.** 채팅·이슈·커밋에 붙여넣지 마세요.
+#### 어느 쪽이든 끝나면 확인
+
+Actions 탭 → **"Channel housekeeping (@200-y3b)"** → Run workflow →
+`comment-preview`. 403 안내 대신 "달 것: ..." 목록이 나오면 성공입니다.
+이어서 `comment-apply` 를 돌리면 기존 쇼츠에 댓글이 달립니다.
+
+`audit` 도 한 번 돌려 보세요. 정상이면 업로드 경로도 멀쩡하다는 뜻입니다.
+
+> **토큰은 비밀값입니다.** 채팅·이슈·커밋에 붙여넣지 마세요.
 > 붙여넣을 곳은 GitHub Secrets 한 곳뿐입니다.
 
 ---
