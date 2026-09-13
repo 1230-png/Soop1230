@@ -630,6 +630,12 @@ def cmd_comment(youtube, channel, args) -> int:
             continue
         todo.append((vid, item["snippet"]["title"]))
 
+    # 댓글 하나가 50단위다. 43편이면 2,200단위로, 하루 10,000단위 안에서
+    # 쇼츠 3편(각 1,700)과 롱폼 1편이 쓰고 남는 자리를 넘길 수 있다.
+    # 나눠 돌릴 수 있게 열어 둔다 — 이미 단 곳은 건너뛰므로 다시 돌려도 된다.
+    if args.limit:
+        todo = todo[:args.limit]
+
     for vid, reason in skipped:
         print(f"건너뜀: {vid}  {reason}")
     for vid, title in todo:
@@ -698,6 +704,8 @@ def main() -> int:
 
     p = sub.add_parser("comment", help="쇼츠에 롱폼 안내 댓글을 단다")
     p.add_argument("--apply", action="store_true", help="실제로 단다")
+    p.add_argument("--limit", type=int, default=0,
+                   help="한 번에 이 편수까지만 (할당량 분할용)")
 
     p = sub.add_parser("dedupe", help="같은 표현 중복분을 정리한다")
     p.add_argument("--apply", action="store_true", help="실제로 실행")
