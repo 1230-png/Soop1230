@@ -19,6 +19,7 @@ on:
           - backfill-preview
           - backfill-apply
           - dedupe-preview
+          - dedupe-private
           - dedupe-apply
           - delete
       video_id:
@@ -77,6 +78,8 @@ jobs:
               python3 "$FIX" backfill --apply ;;
             dedupe-preview)
               python3 "$FIX" dedupe ;;
+            dedupe-private)
+              python3 "$FIX" dedupe --apply --private ;;
             dedupe-apply)
               python3 "$FIX" dedupe --apply ;;
             delete)

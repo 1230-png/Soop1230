@@ -1,8 +1,9 @@
-"""@200-y3b 채널 뒷정리 — 감사, 재생목록 보정, 중복 영상 삭제.
+"""@200-y3b 채널 뒷정리 — 감사, 재생목록 보정, 중복 영상 정리.
 
     python3 channel_200y3b/scripts/channel_fix.py audit
+    python3 channel_200y3b/scripts/channel_fix.py backfill [--apply]
     python3 channel_200y3b/scripts/channel_fix.py playlist-add --video ID --playlist "제목"
-    python3 channel_200y3b/scripts/channel_fix.py dedupe [--apply]
+    python3 channel_200y3b/scripts/channel_fix.py dedupe [--apply] [--private]
     python3 channel_200y3b/scripts/channel_fix.py delete --video ID --confirm ID
 
 무인 발행이라 사람이 Studio를 보지 않는다. 업로드가 실패해도 다음 크론이
@@ -10,11 +11,14 @@
 표현으로 두 번 올라간 영상)은 쌓이기만 하고 아무도 치우지 않는다.
 그 뒷정리를 워크플로에서 손으로 돌릴 수 있게 모아 둔 도구다.
 
-되돌릴 수 없는 삭제는 기본이 미리보기(dry run)다. `delete`는 --confirm 에
-같은 ID를 한 번 더 적어야 실제로 지운다.
+상태를 바꾸는 명령은 전부 기본이 미리보기(dry run)이고 --apply 를 붙여야
+실행된다. dedupe 는 --private 로 비공개 전환만 할 수 있다 — 조회수와 댓글이
+남고 다시 공개할 수 있으므로, 삭제보다 이쪽을 먼저 고려할 것.
+`delete`는 --confirm 에 같은 ID를 한 번 더 적어야 실제로 지운다.
 
 할당량: channels.list 1, playlistItems.list 1/페이지(50개), videos.list 1/50개,
-playlistItems.insert 50, videos.delete 50. audit 전체가 30단위 안쪽이다.
+playlists.insert 50, playlistItems.insert 50, videos.update 50, videos.delete 50.
+audit 전체가 30단위 안쪽이다.
 """
 
 import argparse
@@ -331,14 +335,32 @@ def cmd_dedupe(youtube, channel, args) -> int:
     if not victims:
         print("중복 없음.")
         return 0
+
+    how = "비공개 전환" if args.private else "삭제"
     for key, vid, pub in victims:
-        print(f"{'지운다' if args.apply else '지울 것'}: {vid}  {pub}  {key!r}")
+        print(f"{how}{'' if args.apply else ' 예정'}: {vid}  {pub}  {key!r}")
     if not args.apply:
-        print(f"\n미리보기다. 실제로 지우려면 --apply 를 붙일 것 ({len(victims)}편).")
+        print(f"\n미리보기다. 실제로 실행하려면 --apply ({len(victims)}편, {how}).")
         return 0
+
     for _, vid, _ in victims:
-        youtube.videos().delete(id=vid).execute()
-        print(f"삭제 완료: {vid}")
+        if args.private:
+            # 삭제와 달리 되돌릴 수 있다. 조회수·댓글이 남고 다시 공개할 수 있다.
+            #
+            # videos.update 는 지정한 part 를 통째로 갈아 끼운다. privacyStatus
+            # 하나만 보내면 같은 status 안의 다른 값들이 기본값으로 초기화되므로,
+            # 읽어 둔 status 에 덮어써서 보낸다.
+            status = dict(details[vid]["status"])
+            status.pop("madeForKids", None)  # 읽기 전용
+            status.pop("publishAt", None)
+            status["privacyStatus"] = "private"
+            youtube.videos().update(
+                part="status", body={"id": vid, "status": status},
+            ).execute()
+            print(f"비공개 전환: {vid}")
+        else:
+            youtube.videos().delete(id=vid).execute()
+            print(f"삭제 완료: {vid}")
     return 0
 
 
@@ -371,7 +393,9 @@ def main() -> int:
     p.add_argument("--apply", action="store_true", help="실제로 넣는다")
 
     p = sub.add_parser("dedupe", help="같은 표현 중복분을 정리한다")
-    p.add_argument("--apply", action="store_true", help="실제로 삭제")
+    p.add_argument("--apply", action="store_true", help="실제로 실행")
+    p.add_argument("--private", action="store_true",
+                   help="지우지 않고 비공개로 돌린다 (되돌릴 수 있다)")
 
     p = sub.add_parser("delete", help="영상 하나를 지운다")
     p.add_argument("--video", required=True)
