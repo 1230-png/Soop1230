@@ -391,6 +391,104 @@ def cmd_dedupe(youtube, channel, args) -> int:
     return 0
 
 
+ISO_DURATION = re.compile(
+    r"^P(?:(?P<d>\d+)D)?T(?:(?P<h>\d+)H)?(?:(?P<m>\d+)M)?(?:(?P<s>\d+)S)?$"
+)
+
+
+def duration_seconds(iso: str) -> int:
+    m = ISO_DURATION.match(iso or "")
+    if not m:
+        return 0
+    d, h, mi, s = (int(m.group(k) or 0) for k in ("d", "h", "m", "s"))
+    return ((d * 24 + h) * 60 + mi) * 60 + s
+
+
+def cmd_stats(youtube, channel, args) -> int:
+    """수익 창출 자격까지 얼마나 남았는지.
+
+    시청 시간은 추정이다. 정확한 값은 YouTube Analytics API 에 있는데 그쪽은
+    yt-analytics.readonly 스코프가 따로 필요하고 지금 토큰에는 없다. 그래서
+    조회수 × 길이 × 평균 시청률로 위아래 범위를 낸다. 범위 폭이 크므로 결론을
+    한 숫자로 읽지 말 것.
+    """
+    import datetime
+
+    stats = youtube.channels().list(
+        part="statistics", mine=True).execute()["items"][0]["statistics"]
+    subs = int(stats.get("subscriberCount", 0))
+
+    uploads = all_uploads(youtube, channel)
+    ids = [i["contentDetails"]["videoId"] for i in uploads]
+    details = {}
+    for i in range(0, len(ids), 50):
+        resp = youtube.videos().list(
+            part="snippet,status,contentDetails,statistics",
+            id=",".join(ids[i:i + 50]),
+        ).execute()
+        for item in resp.get("items", []):
+            details[item["id"]] = item
+
+    now = datetime.datetime.now(datetime.timezone.utc)
+    cut_90 = now - datetime.timedelta(days=90)
+    cut_365 = now - datetime.timedelta(days=365)
+
+    long_rows, short_rows = [], []
+    public_90 = 0
+    for vid, item in details.items():
+        if item["status"].get("privacyStatus") != "public":
+            continue
+        pub = datetime.datetime.fromisoformat(
+            item["snippet"]["publishedAt"].replace("Z", "+00:00"))
+        secs = duration_seconds(item["contentDetails"].get("duration", ""))
+        views = int(item["statistics"].get("viewCount", 0))
+        if pub >= cut_90:
+            public_90 += 1
+        # 쇼츠(3분 이하)는 유효 공개 시청 시간에 들어가지 않는다.
+        row = (vid, pub, secs, views)
+        (short_rows if secs <= 180 else long_rows).append(row)
+
+    def hours(rows, retention):
+        return sum(v * s for _, _, s, v in rows) * retention / 3600
+
+    long_12mo = [r for r in long_rows if r[1] >= cut_365]
+    short_90 = [r for r in short_rows if r[1] >= cut_90]
+
+    print(f"기준 시각: {now.date()} (UTC)\n")
+    print("[현재]")
+    print(f"  구독자                     {subs:>8,} 명")
+    print(f"  최근 90일 공개 업로드      {public_90:>8,} 편")
+    print(f"  롱폼(3분 초과) 공개        {len(long_rows):>8,} 편"
+          f"  (최근 12개월 {len(long_12mo)}편)")
+    print(f"  쇼츠 공개                  {len(short_rows):>8,} 편")
+    print(f"  최근 90일 쇼츠 조회수      "
+          f"{sum(v for _, _, _, v in short_90):>8,} 회")
+
+    print("\n[유효 공개 시청 시간 추정 — 최근 12개월 롱폼만]")
+    raw = sum(v * s for _, _, s, v in long_12mo) / 3600
+    print(f"  조회수 × 길이 (시청률 100% 가정, 상한)  {raw:>10.1f} 시간")
+    for r in (0.5, 0.35, 0.2):
+        print(f"  평균 시청률 {int(r * 100):>3}% 라면              "
+              f"{hours(long_12mo, r):>10.1f} 시간")
+
+    print("\n[남은 거리]")
+    for label, need_subs, need_hours in (
+        ("초기 수익 창출 (팬 후원·쇼핑)", 500, 3000),
+        ("정식 파트너 (광고 수익)", 1000, 4000),
+    ):
+        print(f"  {label}")
+        print(f"    구독자   {subs:,} / {need_subs:,}"
+              f"  → {max(0, need_subs - subs):,}명 부족")
+        for r in (0.5, 0.35):
+            got = hours(long_12mo, r)
+            print(f"    시청시간 {got:,.0f} / {need_hours:,}"
+                  f"  → {max(0, need_hours - got):,.0f}시간 부족"
+                  f"  (시청률 {int(r * 100)}% 가정)")
+    print("\n  최근 90일 공개 업로드 3편 요건: "
+          f"{'충족' if public_90 >= 3 else '미충족'} ({public_90}편)")
+    return 0
+
+
 def cmd_delete(youtube, channel, args) -> int:
     if args.confirm != args.video:
         print("--confirm 에 같은 영상 ID 를 한 번 더 적어야 지운다.", file=sys.stderr)
@@ -411,6 +509,7 @@ def main() -> int:
     sub = ap.add_subparsers(dest="cmd", required=True)
 
     sub.add_parser("audit", help="설정·중복·재생목록 누락을 한 번에 본다")
+    sub.add_parser("stats", help="수익 창출 자격까지 남은 거리")
 
     p = sub.add_parser("playlist-add", help="영상을 재생목록에 넣는다")
     p.add_argument("--video", required=True)
@@ -436,6 +535,7 @@ def main() -> int:
         "backfill": cmd_backfill,
         "dedupe": cmd_dedupe,
         "delete": cmd_delete,
+        "stats": cmd_stats,
     }[args.cmd]
     try:
         return handler(youtube, channel, args)

@@ -15,6 +15,7 @@ on:
         default: audit
         options:
           - audit
+          - stats
           - playlist-add
           - backfill-preview
           - backfill-apply
@@ -68,6 +69,8 @@ jobs:
           case "$ACTION" in
             audit)
               python3 "$FIX" audit ;;
+            stats)
+              python3 "$FIX" stats ;;
             playlist-add)
               test -n "$VIDEO_ID" || { echo "video_id 가 필요하다"; exit 1; }
               test -n "$PLAYLIST" || { echo "playlist 가 필요하다"; exit 1; }
