@@ -275,7 +275,13 @@ def cmd_audit(youtube, channel, args) -> int:
         if key:
             groups[key].append(vid)
     dupes = {k: v for k, v in groups.items() if len(v) > 1}
-    print(f"\n[중복] 같은 표현으로 두 번 이상 올라간 묶음: {len(dupes)}건")
+    open_dupes = sum(
+        1 for vids in dupes.values()
+        for v in sorted(vids, key=lambda v: details[v]["snippet"]["publishedAt"])[1:]
+        if details[v]["status"].get("privacyStatus") == "public"
+    )
+    print(f"\n[중복] 같은 표현으로 두 번 이상 올라간 묶음: {len(dupes)}건, "
+          f"아직 공개로 남아 있는 중복분 {open_dupes}편")
     for key, vids in dupes.items():
         rows = sorted(
             ((v, details[v]["snippet"]["publishedAt"],
@@ -284,7 +290,12 @@ def cmd_audit(youtube, channel, args) -> int:
         )
         print(f"  {key!r}")
         for i, (vid, pub, title) in enumerate(rows):
-            mark = "지킴" if i == 0 else "삭제 후보"
+            if i == 0:
+                mark = "지킴"
+            elif details[vid]["status"].get("privacyStatus") != "public":
+                mark = "처리됨"
+            else:
+                mark = "정리 대상"
             print(f"    [{mark}] {vid}  {pub}  {title[:50]}")
 
     # 3) 재생목록에 못 들어간 영상
@@ -342,10 +353,14 @@ def cmd_dedupe(youtube, channel, args) -> int:
             continue
         rows = sorted(vids, key=lambda v: details[v]["snippet"]["publishedAt"])
         for vid in rows[1:]:
+            # 이미 비공개로 내린 것은 다시 건드리지 않는다. 그러지 않으면
+            # 비공개로 처리한 뒤에도 매번 정리 대상으로 다시 올라온다.
+            if details[vid]["status"].get("privacyStatus") != "public":
+                continue
             victims.append((key, vid, details[vid]["snippet"]["publishedAt"]))
 
     if not victims:
-        print("중복 없음.")
+        print("정리할 중복 없음 (이미 처리된 것은 세지 않는다).")
         return 0
 
     how = "비공개 전환" if args.private else "삭제"
