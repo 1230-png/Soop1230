@@ -12,6 +12,8 @@ from PIL import Image, ImageDraw, ImageFont
 
 WIDTH, HEIGHT = 1920, 1080
 THUMB_WIDTH, THUMB_HEIGHT = 1280, 720
+# 숏폼(세로) 컷용. 롱폼과 같은 그리기 함수를 재사용하려고 크기만 인자로 뺐다.
+SHORT_WIDTH, SHORT_HEIGHT = 1080, 1920
 BG_TOP = (14, 20, 32)
 BG_BOTTOM = (10, 32, 42)
 FG = (238, 242, 246)
@@ -65,21 +67,25 @@ def _draw_block(draw, text, font, top, width, color, wrap, gap):
     return y
 
 
-def slide(screen_text, section, out_path, source_note=None):
-    """장면 한 컷. 화면 문구가 주인공이고 섹션 이름은 작게 남긴다."""
-    image = _gradient(WIDTH, HEIGHT)
+def slide(screen_text, section, out_path, source_note=None, width=WIDTH, height=HEIGHT):
+    """장면 한 컷. 화면 문구가 주인공이고 섹션 이름은 작게 남긴다.
+
+    width/height 를 바꾸면 그대로 세로(숏폼) 캔버스가 된다 — 그리기 로직은
+    가로·세로가 같아서 따로 만들지 않았다.
+    """
+    image = _gradient(width, height)
     draw = ImageDraw.Draw(image)
 
-    _draw_block(draw, section, _font(40), 120, WIDTH, MUTED, 40, 12)
+    _draw_block(draw, section, _font(40), 120, width, MUTED, 40, 12)
     body = _font(84)
     lines = len(textwrap.fill(screen_text, width=18).split("\n"))
-    _draw_block(draw, screen_text, body, HEIGHT / 2 - lines * 60, WIDTH, FG, 18, 28)
+    _draw_block(draw, screen_text, body, height / 2 - lines * 60, width, FG, 18, 28)
 
     if source_note:
         note = _font(32)
         box = draw.textbbox((0, 0), source_note, font=note)
         draw.text(
-            ((WIDTH - (box[2] - box[0])) / 2, HEIGHT - 110), source_note, font=note, fill=MUTED
+            ((width - (box[2] - box[0])) / 2, height - 110), source_note, font=note, fill=MUTED
         )
     image.save(out_path)
     return out_path
