@@ -1,0 +1,51 @@
+@echo off
+chcp 65001 >nul
+REM ============================================================
+REM  머니로직 롱폼 자동 생성 (Windows 작업 스케줄러용)
+REM
+REM  업로드는 하지 않는다. 지정한 폴더에 영상만 쌓아 두고,
+REM  결과를 눈으로 본 뒤 사람이 직접 올린다.
+REM
+REM  등록 방법은 NOTES.md "윈도우에서 자동으로 만들기" 참고.
+REM ============================================================
+setlocal
+
+REM ===== 여기 두 줄만 고치면 된다 =====
+set "OUTDIR=D:\MoneyLogic\out"
+set "COUNT=1"
+REM ====================================
+
+REM 인자로 넘기면 그쪽이 이긴다:  make_longform.bat "E:\다른폴더" 2
+if not "%~1"=="" set "OUTDIR=%~1"
+if not "%~2"=="" set "COUNT=%~2"
+
+REM 이 파일은 market-verify\scripts\ 에 있다. 한 칸 위가 프로젝트 폴더다.
+set "REPO=%~dp0.."
+cd /d "%REPO%" || (echo 프로젝트 폴더로 이동하지 못했다: "%REPO%" & exit /b 1)
+
+REM 가상환경이 있으면 그걸 쓴다. 없으면 시스템 파이썬.
+set "PY=python"
+if exist "%REPO%\.venv\Scripts\python.exe" set "PY=%REPO%\.venv\Scripts\python.exe"
+
+REM --- 준비물 확인. 다 만들고 나서 실패하면 시간만 버린다. ---
+"%PY%" --version >nul 2>&1 || (echo 실패: 파이썬을 찾지 못했다. & exit /b 1)
+where ffmpeg >nul 2>&1 || (echo 실패: ffmpeg 을 PATH 에서 찾지 못했다. & exit /b 1)
+if "%ANTHROPIC_API_KEY%"=="" (echo 실패: ANTHROPIC_API_KEY 가 설정되지 않았다. & exit /b 1)
+
+REM --- 로그 파일. 무인 실행이라 남기지 않으면 왜 실패했는지 알 수 없다. ---
+if not exist "%OUTDIR%\_log" mkdir "%OUTDIR%\_log"
+for /f %%i in ('powershell -NoProfile -Command "Get-Date -Format yyyyMMdd-HHmmss"') do set "STAMP=%%i"
+set "LOGFILE=%OUTDIR%\_log\run_%STAMP%.log"
+
+echo [%STAMP%] %COUNT%편 생성 시작 -^> "%OUTDIR%"
+echo [%STAMP%] %COUNT%편 생성 시작 -^> "%OUTDIR%" > "%LOGFILE%"
+
+"%PY%" -m src.daily_pipeline --outdir "%OUTDIR%" --repeat %COUNT% >> "%LOGFILE%" 2>&1
+set "CODE=%ERRORLEVEL%"
+
+if "%CODE%"=="0" (
+  echo 완료. 로그: "%LOGFILE%"
+) else (
+  echo 실패(종료코드 %CODE%^). 로그를 볼 것: "%LOGFILE%"
+)
+exit /b %CODE%

@@ -49,7 +49,17 @@ def parse_args(argv=None):
     parser.add_argument(
         "--log-path", default=str(topics.LOG_PATH), help="토픽 사용 기록 CSV 경로"
     )
-    return parser.parse_args(argv)
+    parser.add_argument(
+        "--repeat", type=int, default=1,
+        help="한 번 실행에 만들 편수. 편마다 다음 토픽으로 넘어간다.",
+    )
+    args = parser.parse_args(argv)
+    if args.repeat < 1:
+        parser.error("--repeat 는 1 이상이어야 한다.")
+    if args.repeat > 1 and args.topic_key:
+        # 같은 토픽을 여러 번 만들어 봐야 같은 영상이 나온다.
+        parser.error("--topic-key 는 한 편만 만들 때 쓴다. --repeat 와 함께 쓸 수 없다.")
+    return args
 
 
 def _latest_script(outdir):
@@ -59,9 +69,8 @@ def _latest_script(outdir):
     return found[-1] if found else None
 
 
-def main(argv=None):
-    args = parse_args(argv)
-
+def run_once(args):
+    """토픽 하나로 롱폼 + 숏폼을 만든다. 종료코드를 돌려준다."""
     topic = (
         topics.topic_by_key(args.topic_key)
         if args.topic_key
@@ -109,6 +118,20 @@ def main(argv=None):
     print(f"  롱폼: {video_path}")
     for path in short_paths:
         print(f"  숏폼: {path}")
+    return 0
+
+
+def main(argv=None):
+    args = parse_args(argv)
+
+    for index in range(1, args.repeat + 1):
+        if args.repeat > 1:
+            print(f"\n=== {index}/{args.repeat}편 ===")
+        code = run_once(args)
+        if code != 0:
+            # 무인 실행이라 여기서 멈춘다. 같은 원인으로 남은 편까지 토큰만 태울 수 있다.
+            print(f"{index}편째에서 멈춘다. 만든 편수: {index - 1}")
+            return code
     return 0
 
 

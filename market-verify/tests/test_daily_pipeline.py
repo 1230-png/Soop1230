@@ -127,6 +127,40 @@ def test_an_unknown_topic_key_is_rejected(tmp_path):
         daily_pipeline.main(["--outdir", str(tmp_path), "--topic-key", "no-such-topic"])
 
 
+def test_repeat_makes_several_episodes_each_with_a_new_topic(tmp_path, stub_run_tool, monkeypatch):
+    log_path = tmp_path / "used_topics.csv"
+    # 두 편이 서로 다른 도구를 부를 수 있으므로 전부 가짜로 바꾼다.
+    for tool in list(daily_pipeline.TOOL_MAIN):
+        monkeypatch.setitem(daily_pipeline.TOOL_MAIN, tool, fake_tool_writing_a_script)
+    code = daily_pipeline.main(
+        ["--outdir", str(tmp_path), "--silent", "--log-path", str(log_path),
+         "--shorts-count", "0", "--repeat", "2"]
+    )
+    assert code == 0
+    assert topics.used_keys(log_path) == {
+        topics.TOPIC_POOL[0].key, topics.TOPIC_POOL[1].key
+    }, "같은 토픽을 두 번 만들었다"
+
+
+def test_repeat_stops_at_the_first_failure(tmp_path, monkeypatch, capsys):
+    log_path = tmp_path / "used_topics.csv"
+    for tool in list(daily_pipeline.TOOL_MAIN):
+        monkeypatch.setitem(daily_pipeline.TOOL_MAIN, tool, lambda argv: 2)
+    code = daily_pipeline.main(
+        ["--outdir", str(tmp_path), "--log-path", str(log_path), "--repeat", "3"]
+    )
+    assert code == 2
+    assert "만든 편수: 0" in capsys.readouterr().out
+    assert topics.used_keys(log_path) == set()
+
+
+def test_repeat_rejects_a_pinned_topic_and_zero(tmp_path):
+    with pytest.raises(SystemExit):
+        daily_pipeline.parse_args(["--repeat", "2", "--topic-key", "gspc-down3"])
+    with pytest.raises(SystemExit):
+        daily_pipeline.parse_args(["--repeat", "0"])
+
+
 def test_without_a_topic_key_it_follows_the_rotation(tmp_path, monkeypatch):
     log_path = tmp_path / "used_topics.csv"
     topics.record_topic(topics.TOPIC_POOL[0], log_path)

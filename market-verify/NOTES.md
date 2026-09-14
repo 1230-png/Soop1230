@@ -303,10 +303,15 @@ edge-tts 가 막힌 환경에서도 영상 조립 전체를 검증할 수 있어
 
 ```bash
 python -m src.daily_pipeline                    # 다음 토픽으로 롱폼 + 숏폼까지
+python -m src.daily_pipeline --repeat 2          # 한 번에 두 편 (편마다 다음 토픽)
 python -m src.daily_pipeline --block-only        # 블록까지만 (비용 0)
 python -m src.daily_pipeline --silent            # 무음으로 조립까지 확인
+python -m src.daily_pipeline --outdir "D:\MoneyLogic\out"
 python -m src.daily_pipeline --topic-key btc-dilution
 ```
+
+`--repeat` 는 **첫 실패에서 멈춘다.** 무인으로 도는 자리라, 같은 원인(키 만료·한도
+초과)으로 남은 편까지 토큰을 태우는 것을 막는다. 몇 편까지 만들고 멈췄는지 찍는다.
 
 **매일 시황 요약은 여전히 하지 않는다.** 위(맨 앞)에 적은 이유가 그대로다 —
 양산형 정책에 걸리고 검색 유입도 없다. 여기서 매일 바뀌는 것은 "오늘의 시황"이
@@ -335,6 +340,45 @@ python -m src.daily_pipeline --topic-key btc-dilution
 
 세로 캔버스는 `render.slide()` 에 크기만 다르게 넘겨서 만든다. 그리기 로직이
 가로·세로가 같아서 따로 만들지 않았다 — 두 벌이 되면 한쪽만 고치는 일이 생긴다.
+
+### 윈도우에서 자동으로 만들기 (작업 스케줄러)
+
+`scripts/make_longform.bat` 이 스케줄러가 부르는 자리다. 준비물(파이썬·ffmpeg·
+`ANTHROPIC_API_KEY`)을 **만들기 전에** 확인하고, 실행 기록을 `<폴더>\_log\` 에 남긴다.
+무인으로 도는 자리라 로그가 없으면 왜 실패했는지 알 방법이 없다.
+
+1. 준비물을 깐다.
+
+```powershell
+winget install Python.Python.3.12
+winget install Gyan.FFmpeg          # 설치 후 새 창을 열어야 PATH 가 잡힌다
+git clone https://github.com/1230-png/Soop1230.git
+cd Soop1230\market-verify
+python -m venv .venv
+.venv\Scripts\pip install -r requirements.txt
+setx ANTHROPIC_API_KEY "sk-ant-..."   # 키는 환경변수로만 둔다. 파일에 적지 않는다.
+```
+
+2. `scripts\make_longform.bat` 위쪽의 `OUTDIR`(저장 폴더)과 `COUNT`(한 번에 몇 편)를
+   고친다. 먼저 손으로 한 번 돌려 보고 영상이 나오는지 확인한다.
+
+3. 주 3회(월·수·금 오전 9시)로 등록한다. 경로는 실제 위치로 바꿀 것.
+
+```powershell
+schtasks /Create /TN "MoneyLogic 롱폼" /SC WEEKLY /D MON,WED,FRI /ST 09:00 ^
+  /TR "\"C:\Soop1230\market-verify\scripts\make_longform.bat\"" /RL LIMITED
+```
+
+주 2회면 `/D MON,THU`, 매일이면 `/SC DAILY`. 지우려면 `schtasks /Delete /TN "MoneyLogic 롱폼"`.
+
+**노트북이 꺼져 있으면 그 회차는 그냥 넘어간다.** 작업 스케줄러는 놓친 실행을
+기본적으로 따라잡지 않는다. 다음 회차에 다음 토픽으로 이어서 만든다 —
+`used_topics.csv` 가 어디까지 썼는지 알고 있어서 같은 소재가 두 번 나오지는 않는다.
+
+**토픽 풀이 소진되면 처음으로 돌아간다.** 주 3편이면 10개짜리 풀이 3주가 조금 넘는다.
+계속 돌릴 생각이면 `src/topics.py` 의 `TOPIC_POOL` 에 소재를 더 넣어야 한다.
+FRED 시리즈 ID·티커는 실제로 존재하는 것만 넣을 것 — 없는 ID 를 적으면 그날 회차가
+통째로 실패한다.
 
 ## 테스트
 
