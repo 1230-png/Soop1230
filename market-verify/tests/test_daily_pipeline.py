@@ -127,6 +127,33 @@ def test_an_unknown_topic_key_is_rejected(tmp_path):
         daily_pipeline.main(["--outdir", str(tmp_path), "--topic-key", "no-such-topic"])
 
 
+def test_a_bad_outdir_is_reported_before_any_work(tmp_path, monkeypatch, capsys):
+    """드라이브가 빠진 채 스케줄러가 돌면 스택트레이스만 남는다. 먼저 본다."""
+    monkeypatch.setitem(
+        daily_pipeline.TOOL_MAIN, "run", lambda argv: pytest.fail("폴더도 없이 시작했다")
+    )
+    monkeypatch.setattr(
+        daily_pipeline, "check_outdir", lambda outdir: "저장 폴더를 쓸 수 없다: Z:\\없음"
+    )
+    code = daily_pipeline.main(["--outdir", "Z:\\없음", "--topic-key", "gspc-down3"])
+    assert code == 2
+    assert "저장 폴더를 쓸 수 없다" in capsys.readouterr().out
+
+
+def test_check_outdir_accepts_a_writable_folder(tmp_path):
+    assert daily_pipeline.check_outdir(tmp_path / "새폴더") is None
+    assert (tmp_path / "새폴더").is_dir()
+    assert not (tmp_path / "새폴더" / ".write_test").exists(), "확인용 파일을 남겼다"
+
+
+def test_check_outdir_reports_an_unusable_path(tmp_path):
+    # 파일을 폴더로 쓰려 하면 실패한다. 드라이브 미연결과 같은 종류의 실패다.
+    blocker = tmp_path / "파일"
+    blocker.write_text("", encoding="utf-8")
+    problem = daily_pipeline.check_outdir(blocker)
+    assert problem and "저장 폴더를 쓸 수 없다" in problem
+
+
 def test_repeat_makes_several_episodes_each_with_a_new_topic(tmp_path, stub_run_tool, monkeypatch):
     log_path = tmp_path / "used_topics.csv"
     # 두 편이 서로 다른 도구를 부를 수 있으므로 전부 가짜로 바꾼다.

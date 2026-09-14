@@ -62,6 +62,27 @@ def parse_args(argv=None):
     return args
 
 
+def check_outdir(outdir):
+    """만들기 전에 저장 폴더를 확인한다. 문제가 없으면 None.
+
+    무인으로 도는 자리다. 드라이브가 빠져 있거나 경로가 틀리면 스택트레이스만
+    남아서, 새벽에 실패했을 때 무엇을 고쳐야 하는지 알 수 없다.
+    """
+    path = Path(outdir)
+    try:
+        path.mkdir(parents=True, exist_ok=True)
+        probe = path / ".write_test"
+        probe.write_text("", encoding="utf-8")
+        probe.unlink()
+    except OSError as error:
+        return (
+            f"저장 폴더를 쓸 수 없다: {path}\n"
+            f"  {type(error).__name__}: {error}\n"
+            "  드라이브가 연결돼 있는지, 경로와 쓰기 권한이 맞는지 확인할 것."
+        )
+    return None
+
+
 def _latest_script(outdir):
     """방금 생성된 대본 파일. run_*.py 는 stem 을 내부에서만 계산하므로
     돌려받는 대신 outdir 에서 가장 최근 파일을 찾는다."""
@@ -123,6 +144,11 @@ def run_once(args):
 
 def main(argv=None):
     args = parse_args(argv)
+
+    problem = check_outdir(args.outdir)
+    if problem:
+        print(f"실패: {problem}")
+        return 2
 
     for index in range(1, args.repeat + 1):
         if args.repeat > 1:
