@@ -15,7 +15,9 @@ import argparse
 import sys
 from pathlib import Path
 
-from src import produce, run, run_macro, run_strategy, run_tokenomics, shorts, topics, voice
+from src import (
+    produce, run, run_macro, run_strategy, run_tokenomics, shorts, topics, voice, writer,
+)
 
 OUT_DIR = Path(__file__).resolve().parent.parent / "out"
 
@@ -123,6 +125,10 @@ def run_once(args):
     video_path, _thumb_path = produce.build(script_text, args.outdir, stem, speak, args.voice)
 
     cuts_total = len(shorts.parse_cuts(script_text))
+    if cuts_total == 0 and shorts.has_section(script_text):
+        # 섹션은 있는데 한 컷도 못 읽었다. 모델이 형식을 바꾼 것이다.
+        # 조용히 0개로 넘어가면 숏폼이 안 나오는 줄도 모른다.
+        print("  ! 숏폼 컷 섹션을 읽지 못했다. 대본의 표기 형식이 바뀐 것 같다 — 대본을 확인할 것.")
     limit = cuts_total if args.shorts_count is None else min(args.shorts_count, cuts_total)
     short_paths = []
     for index in range(limit):
@@ -149,6 +155,9 @@ def main(argv=None):
     if problem:
         print(f"실패: {problem}")
         return 2
+
+    # 어느 지갑을 쓰는지는 로그에 남겨야 한다. 무인으로 돌 때 헷갈린다.
+    print("대본 작성: " + ("Claude Code 구독(claude -p)" if writer.uses_cli() else "API 키"))
 
     for index in range(1, args.repeat + 1):
         if args.repeat > 1:

@@ -1,11 +1,16 @@
 """데이터 블록을 넘겨 대본을 받고, 코드 검증을 통과할 때까지만 재시도한다."""
 
+import os
 from collections import namedtuple
 from pathlib import Path
 
 from src.validator import validate
 
 MODEL = "claude-sonnet-5"
+# 대본을 누가 쓰게 할지 고르는 스위치.
+#   (없음) → anthropic SDK + ANTHROPIC_API_KEY (API 크레딧)
+#   cli    → 이미 깔린 Claude Code(`claude -p`) (구독 사용량)
+CLIENT_ENV = "MARKET_VERIFY_LLM"
 MAX_TOKENS = 16000
 MAX_ATTEMPTS = 3
 FEEDBACK_HEADER = "[이전 시도에서 적발된 위반 — 이번엔 반드시 고친다]"
@@ -51,6 +56,23 @@ class ScriptGenerationError(RuntimeError):
         super().__init__(f"{attempts}회 시도 모두 검증 실패. 마지막 위반:\n{joined}")
 
 
+def uses_cli(env=None):
+    """구독(claude -p)으로 돌지, API 키로 돌지."""
+    environ = os.environ if env is None else env
+    return environ.get(CLIENT_ENV, "").strip().lower() == "cli"
+
+
+def default_client(env=None):
+    """쓸 클라이언트를 고른다. 크레딧이 없어도 구독으로 돌 수 있게 갈래를 둔다."""
+    if uses_cli(env):
+        from src.cli_client import ClaudeCliClient
+
+        return ClaudeCliClient()
+    import anthropic
+
+    return anthropic.Anthropic()
+
+
 def load_system_prompt(path=PROMPT_PATH):
     return Path(path).read_text(encoding="utf-8")
 
@@ -86,6 +108,11 @@ def _is_api_error(error):
     return type(error).__module__.split(".")[0] == "anthropic"
 
 
+def _is_cli_error(error):
+    """`claude -p` 어댑터가 던진 것인지. 키·크레딧 문제와 같은 층이라 같이 묶는다."""
+    return type(error).__module__ == "src.cli_client"
+
+
 def describe_api_error(error):
     status = getattr(error, "status_code", None)
     lines = [f"API 호출 실패 (HTTP {status})" if status else "API 호출 실패"]
@@ -116,7 +143,7 @@ def estimate_cost_usd(usages, model=MODEL):
     return (total_in * price["input"] + total_out * price["output"]) / 1_000_000
 
 
-def format_usage(usages, model=MODEL):
+def format_usage(usages, model=MODEL, env=None):
     """토큰 사용량 한 줄 요약. 실제 청구액이 아니라 추정치임을 밝힌다."""
     total_in = sum(u.input_tokens for u in usages)
     total_out = sum(u.output_tokens for u in usages)
@@ -124,9 +151,13 @@ def format_usage(usages, model=MODEL):
         f"토큰 {len(usages)}회 누적 — 입력 {total_in:,} / 출력 {total_out:,}"
     )
     cost = estimate_cost_usd(usages, model)
-    if cost is not None:
-        line += f" | 추정 ${cost:.4f} ({model} 요금표 기준, 실제 청구액은 콘솔 확인)"
-    return line
+    if cost is None:
+        return line
+    if uses_cli(env):
+        # 구독으로 도는 모드다. 이 금액은 청구되지 않는다.
+        # 그리고 claude 는 입력 대부분을 캐시로 보고해서 입력 토큰이 실제보다 작게 찍힌다.
+        return f"{line} | 구독 사용량으로 나갔다. API 청구 없음 (정가 환산 약 ${cost:.4f})"
+    return f"{line} | 추정 ${cost:.4f} ({model} 요금표 기준, 실제 청구액은 콘솔 확인)"
 
 
 def write_script(
@@ -138,9 +169,7 @@ def write_script(
 ):
     """검증을 통과한 대본을 돌려준다. 못 만들면 ScriptGenerationError."""
     if client is None:
-        import anthropic
-
-        client = anthropic.Anthropic()
+        client = default_client()
     system = load_system_prompt() if system_prompt is None else system_prompt
 
     violations = []
@@ -158,6 +187,8 @@ def write_script(
         except Exception as error:
             if _is_api_error(error):
                 raise APICallError(describe_api_error(error)) from error
+            if _is_cli_error(error):
+                raise APICallError(str(error)) from error
             raise
         script = _response_text(response)
         usages.append(_usage(response))

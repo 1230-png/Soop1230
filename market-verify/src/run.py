@@ -15,6 +15,7 @@ from src.writer import (
     APICallError,
     ScriptGenerationError,
     format_usage,
+    uses_cli,
     write_script,
 )
 
@@ -86,12 +87,21 @@ def add_operator_guide(script):
 
 
 def check_api_key(env=None):
-    """호출 전에 키 형태를 본다. 문제가 없으면 None.
+    """호출 전에 준비물을 본다. 문제가 없으면 None.
 
     터미널에 붙여넣을 때 이스케이프 문자가 섞여 들어가는 일이 잦다.
     그대로 요청을 보내면 서버가 400 만 돌려줘 원인을 찾기 어렵다.
+
+    구독 모드(MARKET_VERIFY_LLM=cli)에서는 키 대신 claude 가 있는지 본다.
     """
-    key = (os.environ if env is None else env).get(KEY_ENV, "")
+    environ = os.environ if env is None else env
+    if uses_cli(environ):
+        # 구독(claude -p)으로 도는 모드다. API 키가 필요 없다.
+        from src.cli_client import check_cli
+
+        return check_cli()
+
+    key = environ.get(KEY_ENV, "")
     if not key:
         # 윈도우 스케줄러에서도 도는 자리다. 맞지 않는 셸 문법을 알려주면
         # 그대로 붙여넣고 또 실패한다.

@@ -10,9 +10,12 @@ REM  등록 방법은 NOTES.md "윈도우에서 자동으로 만들기" 참고.
 REM ============================================================
 setlocal
 
-REM ===== 여기 두 줄만 고치면 된다 =====
-set "OUTDIR=D:\MoneyLogic\out"
+REM ===== 여기 세 줄만 고치면 된다 =====
+set "OUTDIR=C:\MoneyLogic\out"
 set "COUNT=1"
+REM  cli = 이미 깔린 Claude Code 구독으로 대본을 쓴다 (API 크레딧 불필요)
+REM  api = ANTHROPIC_API_KEY 로 쓴다 (API 크레딧 필요)
+set "MARKET_VERIFY_LLM=cli"
 REM ====================================
 
 REM 인자로 넘기면 그쪽이 이긴다:  make_longform.bat "E:\다른폴더" 2
@@ -30,7 +33,11 @@ if exist "%REPO%\.venv\Scripts\python.exe" set "PY=%REPO%\.venv\Scripts\python.e
 REM --- 준비물 확인. 다 만들고 나서 실패하면 시간만 버린다. ---
 "%PY%" --version >nul 2>&1 || (echo 실패: 파이썬을 찾지 못했다. & exit /b 1)
 where ffmpeg >nul 2>&1 || (echo 실패: ffmpeg 을 PATH 에서 찾지 못했다. & exit /b 1)
-if "%ANTHROPIC_API_KEY%"=="" (echo 실패: ANTHROPIC_API_KEY 가 설정되지 않았다. & exit /b 1)
+if /i "%MARKET_VERIFY_LLM%"=="cli" (
+  where claude >nul 2>&1 || (echo 실패: claude 를 PATH 에서 찾지 못했다. npm install -g @anthropic-ai/claude-code & exit /b 1)
+) else (
+  if "%ANTHROPIC_API_KEY%"=="" (echo 실패: ANTHROPIC_API_KEY 가 설정되지 않았다. & exit /b 1)
+)
 
 REM --- 로그 파일. 무인 실행이라 남기지 않으면 왜 실패했는지 알 수 없다. ---
 if not exist "%OUTDIR%\_log" mkdir "%OUTDIR%\_log"

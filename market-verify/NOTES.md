@@ -341,6 +341,35 @@ python -m src.daily_pipeline --topic-key btc-dilution
 세로 캔버스는 `render.slide()` 에 크기만 다르게 넘겨서 만든다. 그리기 로직이
 가로·세로가 같아서 따로 만들지 않았다 — 두 벌이 되면 한쪽만 고치는 일이 생긴다.
 
+### 대본을 누가 쓰는가 — API 키 대신 구독으로도 된다
+
+`MARKET_VERIFY_LLM` 하나로 갈린다.
+
+| 값 | 대본 작성자 | 드는 것 |
+|---|---|---|
+| (없음, 기본) | anthropic SDK | `ANTHROPIC_API_KEY` + **API 크레딧**(선불 충전) |
+| `cli` | 이미 깔린 Claude Code(`claude -p`) | **구독 사용량** (키·크레딧 불필요) |
+
+```bash
+set MARKET_VERIFY_LLM=cli        # 윈도우
+export MARKET_VERIFY_LLM=cli     # 맥·리눅스
+```
+
+구독과 API 크레딧은 **별도 지갑**이다. claude.ai 를 구독 중이어도 API 크레딧은
+따로 충전해야 하는데, `cli` 모드는 그 충전 없이 이미 내고 있는 구독으로 돌린다.
+
+갈아끼우는 자리는 `writer.default_client()` 하나다. `write_script()` 가 원래
+클라이언트를 인자로 받게 돼 있어서, 검증·재시도·피드백 루프는 그대로 돈다.
+`src/cli_client.py` 가 `claude -p --output-format json` 을 부르고 응답을 SDK 와
+같은 모양으로 돌려준다.
+
+**데이터 블록은 표준입력으로 넣는다.** 윈도우 명령줄이 약 8191자에서 잘리는데
+블록은 그보다 길 수 있다. 인자로 넘기면 조용히 잘린 블록으로 대본을 쓰게 된다.
+
+**공짜는 아니다.** 구독 사용량을 깎는다. 무인으로 많이 돌리면 평소 쓰는 한도에
+영향이 간다. 그리고 로그인이 풀리면 그 회차가 실패한다 — 그때는 사람이 한 번
+`claude` 를 실행해 로그인해야 한다. 실패 메시지가 그렇게 안내한다.
+
 ### 윈도우에서 자동으로 만들기 (작업 스케줄러)
 
 `scripts/make_longform.bat` 이 스케줄러가 부르는 자리다. 준비물(파이썬·ffmpeg·

@@ -13,9 +13,17 @@ from pathlib import Path
 
 from src import render, script_parse, voice
 
-CUT_RE = re.compile(
-    r'컷\s*\d+\s*[:：]\s*["“](.+?)["”]\s*부터\s*["“](.+?)["”]\s*까지'
+# 프롬프트는 "시작·종료 문장을 그대로 인용"만 시키고 형식을 못박지 않는다.
+# 검증기도 헤더만 본다. 그래서 모델이 쓰는 모양이 그때그때 다르다.
+# 실제로 본 두 가지를 모두 받는다.
+#   컷 1: "시작" 부터 "종료" 까지
+#   **컷 1**  /  시작: "..."  /  종료: "..."
+QUOTE = r'["“”\'‘’]'
+CUT_ONE_LINE_RE = re.compile(
+    rf'{QUOTE}(.+?){QUOTE}\s*(?:부터|에서)\s*{QUOTE}(.+?){QUOTE}\s*까지'
 )
+CUT_START_RE = re.compile(rf'^[*\s]*(?:시작|start)\s*[:：]\s*{QUOTE}(.+?){QUOTE}', re.I)
+CUT_END_RE = re.compile(rf'^[*\s]*(?:종료|끝|end)\s*[:：]\s*{QUOTE}(.+?){QUOTE}', re.I)
 
 
 class CutNotFoundError(ValueError):
@@ -25,11 +33,27 @@ class CutNotFoundError(ValueError):
 def parse_cuts(script_text):
     """"숏폼 컷 N개" 섹션에서 (시작 문구, 끝 문구) 목록을 뽑는다."""
     cuts = []
+    pending_start = None
     for line in script_parse.shorts_cuts(script_text):
-        match = CUT_RE.search(line)
-        if match:
-            cuts.append((match.group(1).strip(), match.group(2).strip()))
+        one_line = CUT_ONE_LINE_RE.search(line)
+        if one_line:
+            cuts.append((one_line.group(1).strip(), one_line.group(2).strip()))
+            pending_start = None
+            continue
+        start = CUT_START_RE.match(line)
+        if start:
+            pending_start = start.group(1).strip()
+            continue
+        end = CUT_END_RE.match(line)
+        if end and pending_start:
+            cuts.append((pending_start, end.group(1).strip()))
+            pending_start = None
     return cuts
+
+
+def has_section(script_text):
+    """숏폼 컷 섹션이 있기는 한지. 컷 0개가 '섹션이 없어서'인지 '형식이 달라서'인지 가른다."""
+    return bool(script_parse.shorts_cuts(script_text))
 
 
 def select_scenes(scenes, start_phrase, end_phrase):

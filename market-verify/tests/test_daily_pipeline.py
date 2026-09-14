@@ -127,6 +127,19 @@ def test_an_unknown_topic_key_is_rejected(tmp_path):
         daily_pipeline.main(["--outdir", str(tmp_path), "--topic-key", "no-such-topic"])
 
 
+def test_unreadable_shorts_cuts_are_not_silent(tmp_path, monkeypatch, capsys):
+    """섹션은 있는데 한 컷도 못 읽으면, 숏폼이 0개인 줄도 모르고 지나간다."""
+    monkeypatch.setitem(daily_pipeline.TOOL_MAIN, "run", fake_tool_writing_a_script)
+    monkeypatch.setattr(daily_pipeline.shorts, "parse_cuts", lambda text: [])
+    monkeypatch.setattr(daily_pipeline.shorts, "has_section", lambda text: True)
+    code = daily_pipeline.main(
+        ["--outdir", str(tmp_path), "--silent", "--log-path", str(tmp_path / "log.csv"),
+         "--topic-key", "gspc-down3"]
+    )
+    assert code == 0
+    assert "표기 형식이 바뀐 것 같다" in capsys.readouterr().out
+
+
 def test_a_bad_outdir_is_reported_before_any_work(tmp_path, monkeypatch, capsys):
     """드라이브가 빠진 채 스케줄러가 돌면 스택트레이스만 남는다. 먼저 본다."""
     monkeypatch.setitem(

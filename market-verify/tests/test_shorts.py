@@ -22,6 +22,29 @@ def _dimensions(path):
     return stream["width"], stream["height"]
 
 
+# 모델이 실제로 쓴 형식. 프롬프트가 형식을 못박지 않아 픽스처와 다르게 나왔고,
+# 예전 파서는 이걸 한 컷도 못 읽었다. 그때 숏폼이 조용히 0개가 됐다.
+REAL_FORMAT = SCRIPT.replace(
+    '컷 1: "주간 종가가 3주 연속 하락한 뒤, 지수는 어떻게 움직였을까요?" 부터 '
+    '"출처는 Yahoo Finance이고, 수정주가 기준입니다." 까지',
+    '**컷 1**\n시작: "주간 종가가 3주 연속 하락한 뒤, 지수는 어떻게 움직였을까요?"\n'
+    '종료: "출처는 Yahoo Finance이고, 수정주가 기준입니다."',
+)
+
+
+def test_parse_cuts_reads_the_format_the_model_actually_writes():
+    """프롬프트가 형식을 못박지 않는다. 검증기도 헤더만 본다. 파서가 받아줘야 한다."""
+    cuts = shorts.parse_cuts(REAL_FORMAT)
+    assert len(cuts) == 3
+    assert cuts[0][0].startswith("주간 종가가 3주 연속 하락한 뒤")
+    assert cuts[0][1] == "출처는 Yahoo Finance이고, 수정주가 기준입니다."
+
+
+def test_has_section_separates_missing_from_unreadable():
+    assert shorts.has_section(SCRIPT) is True
+    assert shorts.has_section("## 1. 오프닝\n한 문장.\n") is False
+
+
 def test_parse_cuts_reads_every_cut_in_the_script():
     cuts = shorts.parse_cuts(SCRIPT)
     assert len(cuts) == 3
