@@ -93,7 +93,13 @@ def check_api_key(env=None):
     """
     key = (os.environ if env is None else env).get(KEY_ENV, "")
     if not key:
-        return f"{KEY_ENV} 가 설정되지 않았다. export {KEY_ENV}='sk-ant-...' 로 넣을 것."
+        # 윈도우 스케줄러에서도 도는 자리다. 맞지 않는 셸 문법을 알려주면
+        # 그대로 붙여넣고 또 실패한다.
+        if os.name == "nt":
+            how = f'setx {KEY_ENV} "sk-ant-..." 로 넣고 창을 새로 열 것'
+        else:
+            how = f"export {KEY_ENV}='sk-ant-...' 로 넣을 것"
+        return f"{KEY_ENV} 가 설정되지 않았다. {how}."
     if any(ch in key for ch in "\x1b\r\n\t "):
         return (
             f"{KEY_ENV} 에 공백이나 제어문자가 섞여 있다. "

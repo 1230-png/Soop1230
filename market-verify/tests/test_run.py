@@ -241,3 +241,11 @@ def test_saved_script_still_passes_validation():
 
 def test_guide_is_skipped_when_the_header_is_missing():
     assert run.add_operator_guide("헤더 없는 글") == "헤더 없는 글"
+
+
+def test_missing_key_message_matches_the_shell(monkeypatch):
+    """윈도우 스케줄러에서도 돈다. 맞지 않는 셸 문법을 알려주면 또 실패한다."""
+    monkeypatch.setattr(run.os, "name", "nt")
+    assert "setx" in run.check_api_key({})
+    monkeypatch.setattr(run.os, "name", "posix")
+    assert "export" in run.check_api_key({})
