@@ -1,11 +1,16 @@
-"""나레이션 음성. edge-tts 를 먼저 쓰고, 막히면 일레븐랩스로 넘어간다.
+"""나레이션 음성. 막히면 다음 것으로 넘어간다.
 
-edge-tts 는 키도 요금도 없어서 기본으로 둔다. 다만 **깃허브 러너처럼
+    edge-tts → (키 있으면) 일레븐랩스 → 구글 번역 음성
+
+edge-tts 가 기본이다. 키도 요금도 없고 음질이 가장 낫다. 다만 **깃허브 러너처럼
 데이터센터에서 나가는 요청은 마이크로소프트가 막는다** — NoAudioReceived 로
-끝난다. 실제로 그렇게 막혔다. 그래서 무인 실행에서는 대안이 필요하다.
+끝난다. 실제로 그렇게 막혔다. 무인으로 도는 자리라 대안이 필요하다.
 
-ELEVENLABS_API_KEY 가 있으면 그쪽으로 넘어간다. 없으면 왜 실패했는지 적고 멈춘다.
-무음으로 대신 만들지 않는다 — 나레이션 없는 영상이 발행되면 그게 더 나쁘다.
+일레븐랩스는 키가 있을 때만 쓴다. 키가 만료돼 있어도 멈추지 않고 다음으로 넘어간다 —
+그것도 실제로 겪었다. 마지막은 구글 번역 음성이고 키가 필요 없다.
+
+**무음으로 대신 만들지 않는다.** 나레이션 없는 영상이 발행되는 편이 멈추는 것보다
+나쁘다. 전부 실패하면 각각 왜 실패했는지 함께 적고 멈춘다.
 """
 
 import asyncio
@@ -38,7 +43,7 @@ def _edge_once(text, out_path, voice):
 
 
 def edge_tts_speak(text, out_path, voice=DEFAULT_VOICE):
-    """edge-tts 로 한 장면을 읽어 mp3 로 저장한다. 막히면 일레븐랩스로 넘어간다."""
+    """한 장면을 읽어 mp3 로 저장한다. 막히면 다음 수단으로 넘어간다."""
     last = None
     for attempt in range(1, EDGE_ATTEMPTS + 1):
         try:
@@ -48,13 +53,22 @@ def edge_tts_speak(text, out_path, voice=DEFAULT_VOICE):
             if attempt < EDGE_ATTEMPTS:
                 time.sleep(attempt * 2)
 
+    problems = [f"edge-tts: {type(last).__name__}: {last}"]
+
     if os.environ.get(ELEVENLABS_KEY_ENV):
-        return elevenlabs_speak(text, out_path)
+        try:
+            return elevenlabs_speak(text, out_path)
+        except Exception as error:
+            # 키가 만료돼 있어도 여기서 멈추지 않는다. 뒤에 무료 대안이 있다.
+            problems.append(f"일레븐랩스: {error}")
+
+    try:
+        return google_speak(text, out_path)
+    except Exception as error:
+        problems.append(f"구글 번역 음성: {type(error).__name__}: {error}")
 
     raise VoiceError(
-        f"edge-tts 가 {EDGE_ATTEMPTS}회 모두 실패했다: {type(last).__name__}: {last}\n"
-        "  깃허브 러너 같은 데이터센터 주소는 마이크로소프트가 막는다.\n"
-        f"  {ELEVENLABS_KEY_ENV} 를 넣으면 그쪽으로 넘어간다."
+        "음성을 만들지 못했다. 시도한 것:\n  - " + "\n  - ".join(problems)
     ) from last
 
 
@@ -114,3 +128,16 @@ def narrate(scenes, outdir, speak=edge_tts_speak, voice=DEFAULT_VOICE):
         speak(scene.narration, path, voice)
         paths.append(path)
     return paths
+
+
+def google_speak(text, out_path, lang="ko"):
+    """구글 번역 음성. 키도 요금도 없다.
+
+    마지막 대안이다. edge-tts 처럼 데이터센터를 막지는 않는 것으로 알려져 있지만
+    확인된 것은 아니다 — 여기서도 막히면 그 사유가 위에 함께 찍힌다.
+    음질은 edge-tts 보다 떨어진다. 어디까지나 멈추지 않으려는 자리다.
+    """
+    from gtts import gTTS
+
+    gTTS(text=text, lang=lang).save(str(out_path))
+    return out_path

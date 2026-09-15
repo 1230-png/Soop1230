@@ -89,13 +89,21 @@ def test_edge_retries_before_giving_up(tmp_path, monkeypatch):
     assert tries["n"] == 3
 
 
-def test_without_a_fallback_key_it_says_why(tmp_path, monkeypatch):
-    """무음으로 대신 만들지 않는다. 나레이션 없는 영상이 발행되면 더 나쁘다."""
+def test_without_a_key_it_still_tries_the_free_one(tmp_path, monkeypatch):
+    """키가 없어도 멈추지 않는다. 구글 번역 음성은 키가 필요 없다."""
     monkeypatch.setattr(voice, "_edge_once", _boom)
     monkeypatch.setattr(voice.time, "sleep", lambda s: None)
     monkeypatch.delenv(voice.ELEVENLABS_KEY_ENV, raising=False)
-    with pytest.raises(voice.VoiceError, match="ELEVENLABS_API_KEY"):
-        voice.edge_tts_speak("문장", tmp_path / "a.mp3")
+    called = {}
+
+    def fake_google(text, out_path, lang="ko"):
+        called["hit"] = True
+        Path(out_path).write_bytes(b"mp3")
+        return out_path
+
+    monkeypatch.setattr(voice, "google_speak", fake_google)
+    voice.edge_tts_speak("문장", tmp_path / "a.mp3")
+    assert called["hit"]
 
 
 def test_an_empty_voice_id_secret_falls_back_to_the_default(monkeypatch, tmp_path):
@@ -117,3 +125,34 @@ def test_an_empty_voice_id_secret_falls_back_to_the_default(monkeypatch, tmp_pat
     voice.elevenlabs_speak("문장", tmp_path / "a.mp3")
     assert seen["url"].endswith(voice.ELEVENLABS_DEFAULT_VOICE_ID)
     assert not seen["url"].endswith("/")
+
+
+def test_google_is_the_last_resort(tmp_path, monkeypatch):
+    """일레븐랩스 키가 만료돼 있어도 멈추지 않는다. 뒤에 무료 대안이 있다."""
+    monkeypatch.setattr(voice, "_edge_once", _boom)
+    monkeypatch.setattr(voice.time, "sleep", lambda s: None)
+    monkeypatch.setenv(voice.ELEVENLABS_KEY_ENV, "만료된키")
+    monkeypatch.setattr(voice, "elevenlabs_speak", _boom)
+    called = {}
+
+    def fake_google(text, out_path, lang="ko"):
+        called["text"] = text
+        Path(out_path).write_bytes(b"mp3")
+        return out_path
+
+    monkeypatch.setattr(voice, "google_speak", fake_google)
+    voice.edge_tts_speak("문장", tmp_path / "a.mp3")
+    assert called["text"] == "문장"
+
+
+def test_every_failure_is_listed(tmp_path, monkeypatch):
+    """무엇을 시도하고 각각 왜 실패했는지 다 보여야 원인을 찾는다."""
+    monkeypatch.setattr(voice, "_edge_once", _boom)
+    monkeypatch.setattr(voice.time, "sleep", lambda s: None)
+    monkeypatch.setenv(voice.ELEVENLABS_KEY_ENV, "만료된키")
+    monkeypatch.setattr(voice, "elevenlabs_speak", _boom)
+    monkeypatch.setattr(voice, "google_speak", _boom)
+    with pytest.raises(voice.VoiceError) as caught:
+        voice.edge_tts_speak("문장", tmp_path / "a.mp3")
+    message = str(caught.value)
+    assert "edge-tts" in message and "일레븐랩스" in message and "구글" in message

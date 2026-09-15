@@ -5,6 +5,8 @@ yfinance>=0.2.50
 
 # 영상 제작
 edge-tts>=7.0
+# edge-tts 가 막히는 자리(깃허브 러너 등)용 무료 대안
+gTTS>=2.5
 Pillow>=10.0
 
 # 유튜브 업로드
