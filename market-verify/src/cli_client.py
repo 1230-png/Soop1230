@@ -228,11 +228,9 @@ def check_token(token):
     cleaned = token.strip()
     if not cleaned.isascii():
         return f"{OAUTH_ENV} 에 한글·공백 같은 ASCII 가 아닌 문자가 섞여 있다. 다시 복사할 것."
-    if not cleaned.startswith("sk-ant-oat"):
-        return (
-            f"{OAUTH_ENV} 가 'sk-ant-oat' 로 시작하지 않는다. "
-            "`claude setup-token` 이 마지막에 출력하는 값을 넣어야 한다."
-        )
+    # 접두사는 검사하지 않는다. 토큰 형식은 발급하는 쪽 사정이고 바뀔 수 있다.
+    # 확인하지 않은 규칙으로 막았다가 멀쩡한 토큰을 튕겨낸 적이 있다.
+    # 유효한지는 서버가 판단한다. 여기서는 사람이 실수한 티가 나는 것만 본다.
     if len(cleaned) < 80:
         return (
             f"{OAUTH_ENV} 가 {len(cleaned)}자로 너무 짧다. 복사하다 잘린 값이다. "

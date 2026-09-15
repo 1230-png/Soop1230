@@ -276,8 +276,9 @@ def test_check_token_catches_non_ascii():
     assert "ASCII" in cli_client.check_token("sk-ant-oat01-한글섞임" + "x" * 90)
 
 
-def test_check_token_catches_the_wrong_kind_of_value():
-    assert "sk-ant-oat" in cli_client.check_token("sk-ant-api03-" + "x" * 90)
+def test_check_token_does_not_judge_the_prefix():
+    """접두사는 발급하는 쪽 사정이다. 확인하지 않은 규칙으로 막으면 멀쩡한 토큰이 튕긴다."""
+    assert cli_client.check_token("anything-" + "x" * 90) is None
 
 
 def test_check_token_accepts_a_full_token():
