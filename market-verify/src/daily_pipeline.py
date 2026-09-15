@@ -153,6 +153,11 @@ def run_once(args):
         except shorts.CutNotFoundError as error:
             print(f"  ! 숏폼 컷 {index + 1}번 건너뜀: {error}")
 
+    if limit and not short_paths:
+        # 컷은 읽었는데 한 편도 못 만들었다. 인용문이 본문과 어긋난 것이다.
+        # 위 건너뜀 줄이 로그에 묻히기 쉬워 한 번 더 못을 박는다.
+        print("  ! 숏폼 컷을 읽었는데 한 편도 만들지 못했다. 인용문이 본문과 다르다 — 대본을 확인할 것.")
+
     topics.record_topic(topic, args.log_path)
     print(f"완료 — 롱폼 1개, 숏폼 {len(short_paths)}개.")
     print("업로드는 하지 않았다. 결과를 확인한 뒤 사람이 src.produce --upload 로 직접 올릴 것.")

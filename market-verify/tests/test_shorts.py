@@ -40,6 +40,53 @@ def test_parse_cuts_reads_the_format_the_model_actually_writes():
     assert cuts[0][1] == "출처는 Yahoo Finance이고, 수정주가 기준입니다."
 
 
+BODY = SCRIPT.split(script_parse.SHORTS_HEADER)[0]
+START = "주간 종가가 3주 연속 하락한 뒤, 지수는 어떻게 움직였을까요?"
+END = "출처는 Yahoo Finance이고, 수정주가 기준입니다."
+
+
+def with_cut_section(body_lines):
+    """숏폼 컷 섹션만 갈아끼운 대본."""
+    return (
+        BODY + script_parse.SHORTS_HEADER + "\n" + body_lines
+        + "\n## 유튜브 설명란\n설명.\n"
+    )
+
+
+# 형식을 프롬프트에 못박아도 모델이 지킨다는 보장이 없다. 한 회차가 통째로
+# 숏폼 0개로 끝난 적이 있어, 본 적 있는 모양과 있을 법한 모양을 전부 세워 둔다.
+CUT_SECTION_FORMATS = {
+    "대시 + 라벨": f'- 컷 1\n- 시작 문장: "{START}"\n- 종료 문장: "{END}"\n',
+    "굵은 라벨": f'**컷 1**\n**시작**: "{START}"\n**종료**: "{END}"\n',
+    "화살표 한 줄": f'컷 1: "{START}" → "{END}"\n',
+    "라벨 없이 인용만": f'### 컷 1 (훅 구간)\n"{START}"\n"{END}"\n',
+    "따옴표 없이 라벨만": f"컷 1\n시작: {START}\n종료: {END}\n",
+    "인용 뒤 괄호 주석": f'컷 1\n시작: "{START}" (약 20초)\n종료: "{END}"\n',
+}
+
+
+@pytest.mark.parametrize("label", sorted(CUT_SECTION_FORMATS))
+def test_parse_cuts_survives_whatever_shape_the_model_writes(label):
+    cuts = shorts.parse_cuts(with_cut_section(CUT_SECTION_FORMATS[label]))
+    assert cuts == [(START, END)], f"{label} 형식을 읽지 못했다"
+
+
+def test_select_scenes_matches_across_punctuation_the_model_changed():
+    """모델이 본문을 옮기며 따옴표·띄어쓰기를 바꾼다. 그 정도로는 놓치지 않는다."""
+    scenes = script_parse.scenes(SCRIPT)
+    start, end = shorts.parse_cuts(SCRIPT)[0]
+    loosened = start.replace(", ", ",").rstrip("?")
+    selected = shorts.select_scenes(scenes, loosened, end)
+    assert selected[0].narration.startswith("주간 종가가 3주 연속 하락한 뒤")
+
+
+def test_select_scenes_still_refuses_a_short_fragment():
+    """느슨하게 맞추더라도 짧은 조각으로 엉뚱한 장면을 잡지 않는다."""
+    scenes = script_parse.scenes(SCRIPT)
+    with pytest.raises(shorts.CutNotFoundError):
+        shorts.select_scenes(scenes, "없는말", "판단은 각자.")
+
+
 def test_has_section_separates_missing_from_unreadable():
     assert shorts.has_section(SCRIPT) is True
     assert shorts.has_section("## 1. 오프닝\n한 문장.\n") is False

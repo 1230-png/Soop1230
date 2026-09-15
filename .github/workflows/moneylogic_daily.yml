@@ -97,6 +97,28 @@ jobs:
             --source "${{ inputs.source || 'news' }}" \
             --repeat "${{ inputs.repeat || 1 }}"
 
+      - name: 오늘 나온 것 요약
+        # 로그를 열지 않아도 무엇이 몇 개 나왔는지 보이게 한다.
+        # 숏폼이 0개로 끝난 회차를 한참 뒤에야 알아챈 적이 있다.
+        if: always()
+        working-directory: market-verify
+        run: |
+          long=$(ls out/*.mp4 2>/dev/null | grep -vc "_short[0-9]*\.mp4$" || true)
+          short=$(ls out/*_short*.mp4 2>/dev/null | wc -l || true)
+          {
+            echo "## 오늘 나온 것"
+            echo ""
+            echo "- 롱폼 ${long:-0}개 · 숏폼 ${short:-0}개"
+            echo ""
+            if [ "${short:-0}" -eq 0 ]; then
+              echo "> 숏폼이 0개다. 대본의 \`## 숏폼 컷\` 섹션과 생성 단계 로그의 \`!\` 줄을 볼 것."
+              echo ""
+            fi
+            echo '```'
+            ls -1 out 2>/dev/null || echo "(out 폴더가 없다)"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: 결과물 올리기 (받아서 사람이 발행)
         if: always()
         uses: actions/upload-artifact@v4
