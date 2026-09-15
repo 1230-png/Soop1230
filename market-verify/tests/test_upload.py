@@ -23,9 +23,23 @@ def test_complete_credentials_pass():
     assert upload.check_credentials(_env()) is None
 
 
-def test_sibling_channel_env_names_work_as_fallback():
+def test_sibling_channel_credentials_are_not_borrowed():
+    """공용 YT_* 로 떨어지지 않는다.
+
+    대체 경로가 있으면 MV_* 를 빠뜨렸을 때 조용히 남의 자격 증명으로 올라간다.
+    틀린 채널에 올라간 영상은 사람이 손으로 지워야 하고, 할당량도 남의 것을 깎는다.
+    채널마다 제 자격 증명과 제 구글 클라우드 프로젝트를 쓰는 것이 이 저장소 방침이다.
+    """
     env = {"YT_CLIENT_ID": "id", "YT_CLIENT_SECRET": "s", "YT_REFRESH_TOKEN": "r"}
-    assert upload.check_credentials(env) is None
+    problem = upload.check_credentials(env)
+    assert problem is not None, "남의 자격 증명으로 올라갈 뻔했다"
+    assert upload.CLIENT_ID_ENV in problem
+
+
+def test_the_error_says_the_values_must_be_this_channels():
+    problem = upload.check_credentials({})
+    assert "다른 채널 것을 넣으면" in problem
+    assert upload.CHANNEL_ID_ENV in problem, "채널 확인 장치를 알려주지 않으면 안 쓴다"
 
 
 def test_blank_values_count_as_missing():

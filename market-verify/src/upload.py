@@ -16,12 +16,16 @@ CLIENT_SECRET_ENV = "MV_CLIENT_SECRET"
 REFRESH_TOKEN_ENV = "MV_REFRESH_TOKEN"
 CHANNEL_ID_ENV = "MV_CHANNEL_ID"
 
-# 형제 채널이 이미 쓰는 이름. 전용 값이 없으면 이쪽으로 떨어진다.
-FALLBACK_ENV = {
-    CLIENT_ID_ENV: "YT_CLIENT_ID",
-    CLIENT_SECRET_ENV: "YT_CLIENT_SECRET",
-    REFRESH_TOKEN_ENV: "YT_REFRESH_TOKEN",
-}
+REQUIRED_ENV = (CLIENT_ID_ENV, CLIENT_SECRET_ENV, REFRESH_TOKEN_ENV)
+
+# **공용 YT_* 로 떨어지지 않는다.** 채널마다 제 자격 증명과 제 구글 클라우드
+# 프로젝트를 쓴다는 것이 이 저장소의 방침이다. 대체 경로를 열어 두면 MV_* 를
+# 빠뜨렸을 때 조용히 남의 자격 증명으로 올라간다 — 틀린 채널에 올라간 영상은
+# 사람이 손으로 지워야 하고, 할당량도 남의 것을 깎는다.
+#
+# 형제 채널(run_shorts.yml)이 YT_* 를 대체로 열어 둔 적이 있고, 그 주석에
+# "하나를 여러 채널이 같이 쓰다가 업로드가 깨졌다"는 기록이 남아 있다.
+# 없으면 없다고 말하고 멈추는 편이 낫다.
 
 
 # market-verify 에는 발급 스크립트를 따로 두지 않는다. 형제 채널 것과 하는 일이
@@ -32,9 +36,10 @@ HOW_TO_GET = """  발급은 본인 PC 에서 한 번만 한다(브라우저 로�
     python3 channel_food/scripts/get_refresh_token.py --client-secret client_secret.json
     윈도우 PowerShell 이면 python3 대신 python, 경로 구분자는 역슬래시.
 
-  client_secret.json 은 앱(구글 클라우드 프로젝트)을 가리키는 파일이지 채널이
-  아니다. 다른 채널 설정 때 쓴 것이 있으면 그대로 쓰고, 브라우저에서 **머니로직
-  계정으로** 로그인하면 된다. 없으면 channel_food/SETUP.md 의 1~3 절을 따를 것
+  client_secret.json 은 **머니로직 전용 구글 클라우드 프로젝트**에서 받은 것을
+  쓴다. 다른 채널 것을 돌려쓰지 않는다 — 그러면 할당량을 나눠 쓰게 되고(할당량은
+  채널이 아니라 프로젝트 단위다), 어느 채널이 먼저 떨어질지 그날 순서에 달린다.
+  프로젝트 만드는 절차는 channel_food/SETUP.md 의 1~3 절과 같다
   (동의 화면을 '프로덕션'으로 올리지 않으면 토큰이 7일마다 만료된다).
 
   출력된 세 값을 저장소 Secrets 에 넣는다:
@@ -47,21 +52,19 @@ class UploadConfigError(RuntimeError):
 
 
 def _env(name, env):
-    value = env.get(name) or env.get(FALLBACK_ENV.get(name, ""), "")
-    return value.strip()
+    return (env.get(name) or "").strip()
 
 
 def check_credentials(env=None):
     """업로드 전에 자격 증명을 본다. 문제가 없으면 None."""
     env = os.environ if env is None else env
-    missing = [
-        name
-        for name in (CLIENT_ID_ENV, CLIENT_SECRET_ENV, REFRESH_TOKEN_ENV)
-        if not _env(name, env)
-    ]
+    missing = [name for name in REQUIRED_ENV if not _env(name, env)]
     if missing:
-        pairs = ", ".join(f"{n}(또는 {FALLBACK_ENV[n]})" for n in missing)
-        return f"업로드 자격 증명이 없다: {pairs}.\n{HOW_TO_GET}"
+        return (
+            f"업로드 자격 증명이 없다: {', '.join(missing)}.\n"
+            "  이 채널 전용 값이어야 한다. 다른 채널 것을 넣으면 그 채널에 올라간다.\n"
+            f"{HOW_TO_GET}"
+        )
     return None
 
 

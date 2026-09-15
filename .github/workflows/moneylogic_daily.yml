@@ -9,10 +9,14 @@ name: MoneyLogic 롱폼·숏폼 생성 (market-verify)
 # 숏폼이 사람 확인 없이 공개로 올라간다. 되돌리려면 유튜브 스튜디오에서 직접 지워야 한다.
 # 아티팩트는 발행과 별개로 계속 남긴다.
 #
-# 자격 증명은 이 채널 전용을 먼저 쓴다. 저장소가 채널을 여럿 굴리고, YT_* 를 함께
-# 쓰다가 업로드가 엉킨 적이 있다(run_shorts.yml 주석). MV_* 가 없으면 YT_* 로 떨어진다.
+# 자격 증명은 **이 채널 전용만** 쓴다. 공용 YT_* 로 떨어지지 않는다 — 대체 경로가
+# 있으면 MV_* 를 빠뜨렸을 때 조용히 남의 자격 증명으로 올라간다. 틀린 채널에 올라간
+# 영상은 사람이 손으로 지워야 한다. 없으면 없다고 말하고 멈춘다.
 #   MV_CLIENT_ID / MV_CLIENT_SECRET / MV_REFRESH_TOKEN
-#   MV_CHANNEL_ID  — 넣어 두면 다른 채널로 올라가는 사고를 upload.py 가 막는다
+#   MV_CHANNEL_ID  — 넣어 두면 다른 채널로 올라가는 사고를 upload.py 가 한 번 더 막는다
+#
+# 구글 클라우드 프로젝트도 이 채널 전용을 쓴다. 할당량이 채널이 아니라 프로젝트
+# 단위라, 돌려쓰면 다른 채널의 몫을 깎는다.
 
 on:
   schedule:
@@ -102,14 +106,12 @@ jobs:
           # 매크로 토픽에만 쓰인다. 없으면 그 토픽만 건너뛰고 나머지는 돈다.
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
           COINGECKO_API_KEY: ${{ secrets.COINGECKO_API_KEY }}
-          # 이 채널 전용 자격 증명. 없으면 upload.py 가 YT_* 로 떨어진다.
+          # 이 채널 전용이다. 공용 YT_* 는 넘기지 않는다 — 대체 경로를 열어 두면
+          # MV_* 를 빠뜨렸을 때 조용히 남의 자격 증명으로 올라간다.
           MV_CLIENT_ID: ${{ secrets.MV_CLIENT_ID }}
           MV_CLIENT_SECRET: ${{ secrets.MV_CLIENT_SECRET }}
           MV_REFRESH_TOKEN: ${{ secrets.MV_REFRESH_TOKEN }}
           MV_CHANNEL_ID: ${{ secrets.MV_CHANNEL_ID }}
-          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
-          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
-          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
         run: |
           python -m src.daily_pipeline \
             --outdir out \
