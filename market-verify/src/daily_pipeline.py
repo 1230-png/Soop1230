@@ -16,8 +16,8 @@ import sys
 from pathlib import Path
 
 from src import (
-    news_topics, produce, run, run_macro, run_strategy, run_tokenomics, shorts, topics,
-    voice, writer,
+    brand, news_topics, operator_note, produce, run, run_macro, run_strategy,
+    run_tokenomics, script_parse, shorts, topics, upload, voice, writer,
 )
 
 OUT_DIR = Path(__file__).resolve().parent.parent / "out"
@@ -52,6 +52,18 @@ def parse_args(argv=None):
     parser.add_argument(
         "--shorts-max-seconds", type=float, default=shorts.MAX_SHORT_SECONDS,
         help="숏폼 한 편의 길이 상한(초). 넘치면 뒤 장면을 뺀다.",
+    )
+    parser.add_argument(
+        "--upload", action="store_true",
+        help="만든 영상을 유튜브에 올린다. 기본은 올리지 않는다.",
+    )
+    parser.add_argument(
+        "--privacy", default="private", choices=upload.PRIVACY_CHOICES,
+        help="업로드 공개 범위. 기본은 비공개.",
+    )
+    parser.add_argument(
+        "--no-operator-note", action="store_true",
+        help="운영자 코멘트를 자동으로 채우지 않는다. 사람이 직접 쓸 때 쓴다.",
     )
     parser.add_argument(
         "--log-path", default=str(topics.LOG_PATH), help="토픽 사용 기록 CSV 경로"
@@ -116,6 +128,13 @@ def pick_topic(args):
 
 def run_once(args):
     """토픽 하나로 롱폼 + 숏폼을 만든다. 종료코드를 돌려준다."""
+    if args.upload:
+        # 만들기 전에 본다. 5분 걸려 만들고 나서 자격 증명이 없다고 하면 그 시간이 버려진다.
+        problem = upload.check_credentials()
+        if problem:
+            print(f"실패: {problem}")
+            return 2
+
     topic = pick_topic(args)
     print(f"토픽: {topic.label}  ({topic.tool} · {topic.key})")
 
@@ -139,8 +158,16 @@ def run_once(args):
     script_text = script_path.read_text(encoding="utf-8")
     stem = script_path.stem.replace("_script", "")
 
+    # 검증이 끝난 뒤다. 작성 루프는 이 칸을 비운 채로 내놓아야 하고 검증기도 그대로
+    # 그걸 요구한다 — 여기서 채우는 것은 사람이 손으로 쓰던 자리를 대신하는 것이다.
+    if not args.no_operator_note:
+        filled = operator_note.fill(script_text)
+        if filled != script_text:
+            script_text = filled
+            script_path.write_text(script_text, encoding="utf-8")
+
     speak = voice.silent_speak if args.silent else voice.edge_tts_speak
-    video_path, _thumb_path = produce.build(script_text, args.outdir, stem, speak, args.voice)
+    video_path, thumb_path = produce.build(script_text, args.outdir, stem, speak, args.voice)
 
     cuts_total = len(shorts.parse_cuts(script_text))
     if cuts_total == 0 and shorts.has_section(script_text):
@@ -167,11 +194,61 @@ def run_once(args):
 
     topics.record_topic(topic, args.log_path)
     print(f"완료 — 롱폼 1개, 숏폼 {len(short_paths)}개.")
-    print("업로드는 하지 않았다. 결과를 확인한 뒤 사람이 src.produce --upload 로 직접 올릴 것.")
     print(f"  롱폼: {video_path}")
     for path in short_paths:
         print(f"  숏폼: {path}")
-    return 0
+
+    if not args.upload:
+        print("업로드하지 않았다. 올리려면 --upload 를 붙일 것.")
+        return 0
+    return upload_all(script_text, video_path, thumb_path, short_paths, args)
+
+
+def short_title(base_title, index):
+    """숏폼 제목. #Shorts 가 붙어야 유튜브가 숏폼으로 잡는다.
+
+    제목은 100자까지다. #Shorts 자리를 남겨 두고 자른다 — 뒤에서 잘리면 태그가
+    통째로 날아가고, 그러면 세로 영상이 일반 영상으로 올라간다.
+    """
+    suffix = f" ({index}) #Shorts"
+    return base_title[: 100 - len(suffix)].rstrip() + suffix
+
+
+def upload_all(script_text, video_path, thumb_path, short_paths, args):
+    """롱폼과 숏폼을 올린다. 하나가 실패해도 나머지는 계속 올린다.
+
+    한 편이 막혔다고 그날 발행이 통째로 없어지는 것이 더 나쁘다. 무엇이 올라갔고
+    무엇이 안 올라갔는지는 마지막에 모아 찍는다.
+    """
+    titles = script_parse.titles(script_text)
+    base_title = titles[0] if titles else Path(video_path).stem
+    description = brand.video_description(script_parse.description(script_text))
+
+    jobs = [(video_path, base_title, thumb_path)]
+    jobs += [
+        (path, short_title(base_title, index), None)
+        for index, path in enumerate(short_paths, start=1)
+    ]
+
+    uploaded, failed = [], []
+    for path, title, thumb in jobs:
+        try:
+            video_id = upload.upload(
+                path, title=title, description=description, tags=brand.TAGS,
+                privacy=args.privacy, thumbnail_path=thumb,
+            )
+        except Exception as error:
+            print(f"  ! 올리지 못했다({Path(path).name}): {type(error).__name__}: {error}")
+            failed.append(path)
+            continue
+        print(f"  올림({args.privacy}): {title} — https://youtu.be/{video_id}")
+        uploaded.append(video_id)
+
+    print(f"업로드 — 성공 {len(uploaded)}개, 실패 {len(failed)}개.")
+    if args.privacy == "private":
+        print("비공개 상태다. 확인 후 유튜브 스튜디오에서 공개로 바꿀 것.")
+    # 하나도 못 올렸으면 실패다. 로그만 보고 올라간 줄 알면 안 된다.
+    return 0 if uploaded else 4
 
 
 def main(argv=None):
