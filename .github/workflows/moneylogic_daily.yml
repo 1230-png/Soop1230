@@ -1,0 +1,114 @@
+name: MoneyLogic 롱폼·숏폼 생성 (market-verify)
+
+# PC 가 꺼져 있어도 돌아야 해서 여기(깃허브 러너)에서 만든다.
+# 대본은 ANTHROPIC_API_KEY(유료 크레딧) 가 아니라 구독 토큰으로 쓴다.
+#   1) 내 PC 에서: claude setup-token
+#   2) 나온 토큰을 이 저장소 Secrets 에 CLAUDE_CODE_OAUTH_TOKEN 으로 넣는다
+#
+# **업로드는 하지 않는다.** 만든 영상을 아티팩트로 올려 두고 사람이 받아서 올린다.
+# 무인 발행으로 바꾸려면 market-verify/NOTES.md 의 "업로드는 사람이" 대목을 먼저 읽을 것.
+
+on:
+  schedule:
+    # 매일 22:00 UTC = 한국 07:00. 전날 미국장 마감(06:00 KST) 뒤라 어제 움직임이 다 들어온다.
+    - cron: "0 22 * * *"
+  workflow_dispatch:
+    inputs:
+      source:
+        description: "소재 고르는 방식"
+        type: choice
+        options: [news, pool]
+        default: news
+      repeat:
+        description: "만들 편수"
+        default: "1"
+
+permissions:
+  # 다룬 소재 기록(used_topics.csv)을 커밋해야 다음 회차가 같은 소재를 피한다.
+  contents: write
+
+concurrency:
+  # 앞 회차가 아직 돌고 있으면 겹쳐 돌리지 않는다. 같은 소재를 두 번 만들 수 있다.
+  group: moneylogic-daily
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: 시스템 준비물 (ffmpeg · 한글 폰트)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-noto-cjk
+
+      - name: 파이썬 패키지
+        run: pip install -r market-verify/requirements.txt
+
+      - name: Claude Code
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: 토큰 확인
+        env:
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+        run: |
+          if [ -z "$CLAUDE_CODE_OAUTH_TOKEN" ]; then
+            echo "::error::CLAUDE_CODE_OAUTH_TOKEN 시크릿이 없다."
+            echo "내 PC 에서 'claude setup-token' 을 돌려 나온 값을"
+            echo "저장소 Settings > Secrets and variables > Actions 에 넣을 것."
+            exit 1
+          fi
+
+      - name: 롱폼·숏폼 생성
+        working-directory: market-verify
+        env:
+          MARKET_VERIFY_LLM: cli
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          # 매크로 토픽에만 쓰인다. 없으면 그 토픽만 건너뛰고 나머지는 돈다.
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+          COINGECKO_API_KEY: ${{ secrets.COINGECKO_API_KEY }}
+        run: |
+          python -m src.daily_pipeline \
+            --outdir out \
+            --source "${{ inputs.source || 'news' }}" \
+            --repeat "${{ inputs.repeat || 1 }}"
+
+      - name: 결과물 올리기 (받아서 사람이 발행)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: moneylogic-${{ github.run_number }}
+          path: |
+            market-verify/out/*.mp4
+            market-verify/out/*.jpg
+            market-verify/out/*_script.md
+            market-verify/out/*_block.txt
+          retention-days: 30
+          if-no-files-found: warn
+
+      - name: 다룬 소재 기록 커밋
+        # 같은 소재를 다음 회차에 또 만들지 않으려면 로그가 남아야 한다.
+        if: success()
+        run: |
+          cd "$GITHUB_WORKSPACE"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # 첫 회차에는 파일이 새로 생긴다. add 부터 하고 스테이징된 것을 본다
+          # (새 파일은 git diff 로 잡히지 않는다).
+          git add market-verify/used_topics.csv 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "기록에 바뀐 것이 없다."
+            exit 0
+          fi
+          git commit -m "chore(market-verify): 다룬 소재 기록 [skip ci]"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

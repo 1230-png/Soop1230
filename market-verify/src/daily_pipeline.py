@@ -16,7 +16,8 @@ import sys
 from pathlib import Path
 
 from src import (
-    produce, run, run_macro, run_strategy, run_tokenomics, shorts, topics, voice, writer,
+    news_topics, produce, run, run_macro, run_strategy, run_tokenomics, shorts, topics,
+    voice, writer,
 )
 
 OUT_DIR = Path(__file__).resolve().parent.parent / "out"
@@ -55,6 +56,11 @@ def parse_args(argv=None):
         "--repeat", type=int, default=1,
         help="한 번 실행에 만들 편수. 편마다 다음 토픽으로 넘어간다.",
     )
+    parser.add_argument(
+        "--source", default="news", choices=["news", "pool"],
+        help="news: 어제 크게 움직인 자산에서 소재를 고른다(움직임이 없으면 pool). "
+             "pool: 순환 풀에서만 고른다.",
+    )
     args = parser.parse_args(argv)
     if args.repeat < 1:
         parser.error("--repeat 는 1 이상이어야 한다.")
@@ -92,13 +98,21 @@ def _latest_script(outdir):
     return found[-1] if found else None
 
 
+def pick_topic(args):
+    """오늘 다룰 소재. 어제 움직임 → 없으면 순환 풀."""
+    if args.topic_key:
+        return topics.topic_by_key(args.topic_key)
+    if args.source == "news":
+        found = news_topics.topic_from_yesterday(used=topics.used_keys(args.log_path))
+        if found:
+            return found
+        print("어제 눈에 띄는 움직임이 없다. 순환 풀에서 고른다.")
+    return topics.next_topic(args.log_path)
+
+
 def run_once(args):
     """토픽 하나로 롱폼 + 숏폼을 만든다. 종료코드를 돌려준다."""
-    topic = (
-        topics.topic_by_key(args.topic_key)
-        if args.topic_key
-        else topics.next_topic(args.log_path)
-    )
+    topic = pick_topic(args)
     print(f"토픽: {topic.label}  ({topic.tool} · {topic.key})")
 
     tool_argv = list(topic.argv) + ["--outdir", args.outdir]
