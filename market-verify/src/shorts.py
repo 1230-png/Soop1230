@@ -36,6 +36,9 @@ TRIM_CHARS = " \t*-–—~→>\"“”'‘’「」『』"
 NOISE_RE = re.compile(r"[\s\"“”'‘’.,!?~…·「」『』]")
 # 이보다 짧은 조각으로는 느슨하게 맞추지 않는다. 엉뚱한 장면이 걸린다.
 MIN_LOOSE_MATCH = 6
+# 숏폼 길이 상한. 프롬프트가 "60초 이내"라고 적어도 모델은 길이를 재지 못한다.
+# 실제로 128초짜리 컷이 나왔다. 재는 것은 여기서 한다.
+MAX_SHORT_SECONDS = 60.0
 
 
 class CutNotFoundError(ValueError):
@@ -130,7 +133,25 @@ def select_scenes(scenes, start_phrase, end_phrase):
     return scenes[start_index : end_index + 1]
 
 
-def build(script_text, outdir, stem, speak, voice_name, cut_index=0, log=print):
+def fit_to_limit(durations, max_seconds=MAX_SHORT_SECONDS):
+    """앞에서부터 몇 장면까지 담을 수 있는지. 최소 한 장면은 남긴다.
+
+    프롬프트가 "60초 이내"라고 적어도 모델은 길이를 잴 수 없다. 실제로 128초짜리
+    컷이 나왔다. **길이는 여기서 코드가 정한다** — 숫자를 코드가 뽑는다는 원칙과
+    같은 자리다. 한 장면만으로 이미 넘치면 그 장면은 그대로 둔다. 자를 데가 없다.
+    """
+    kept = 0
+    total = 0.0
+    for seconds in durations:
+        if kept and total + seconds > max_seconds:
+            break
+        total += seconds
+        kept += 1
+    return kept
+
+
+def build(script_text, outdir, stem, speak, voice_name, cut_index=0, log=print,
+          max_seconds=MAX_SHORT_SECONDS):
     """지정한 숏폼 컷 하나를 세로 영상으로 만든다. 영상 경로를 돌려준다."""
     scenes = script_parse.scenes(script_text)
     cuts = parse_cuts(script_text)
@@ -149,18 +170,31 @@ def build(script_text, outdir, stem, speak, voice_name, cut_index=0, log=print):
     with tempfile.TemporaryDirectory() as tmp:
         tmp = Path(tmp)
         audio_paths = voice.narrate(cut_scenes, tmp, speak=speak, voice=voice_name)
+        durations = [render.audio_duration(audio) for audio in audio_paths]
+
+        # 훅은 앞에 있다. 넘치면 뒤를 버린다.
+        kept = fit_to_limit(durations, max_seconds)
+        if kept < len(cut_scenes):
+            log(
+                f"  ! {sum(durations):.1f}초라 {max_seconds:.0f}초를 넘는다. "
+                f"뒤 장면 {len(cut_scenes) - kept}개를 뺐다."
+            )
+        elif sum(durations) > max_seconds:
+            # 한 장면이 통째로 넘친다. 자를 데가 없으니 그대로 두고 말만 해 둔다.
+            log(f"  ! 장면 하나가 {sum(durations):.1f}초다. {max_seconds:.0f}초로 줄일 수 없다.")
+
         parts = []
         total = 0.0
-        for index, (scene, audio) in enumerate(zip(cut_scenes, audio_paths), start=1):
+        for index in range(kept):
+            scene, audio = cut_scenes[index], audio_paths[index]
             image = render.slide(
-                scene.screen_text, scene.section, tmp / f"short_slide_{index:03d}.png",
+                scene.screen_text, scene.section, tmp / f"short_slide_{index + 1:03d}.png",
                 width=render.SHORT_WIDTH, height=render.SHORT_HEIGHT,
             )
-            part = render.mux(image, audio, tmp / f"short_part_{index:03d}.mp4")
-            seconds = render.audio_duration(audio)
-            total += seconds
+            part = render.mux(image, audio, tmp / f"short_part_{index + 1:03d}.mp4")
+            total += durations[index]
             parts.append(part)
-            log(f"  {index:>2}/{len(cut_scenes)} {scene.section} · {seconds:5.1f}초")
+            log(f"  {index + 1:>2}/{kept} {scene.section} · {durations[index]:5.1f}초")
 
         video_path = outdir / f"{stem}_short{cut_index + 1}.mp4"
         render.concat(parts, video_path, tmp)
@@ -169,13 +203,17 @@ def build(script_text, outdir, stem, speak, voice_name, cut_index=0, log=print):
     return video_path
 
 
-def build_all(script_text, outdir, stem, speak, voice_name, log=print):
+def build_all(script_text, outdir, stem, speak, voice_name, log=print,
+              max_seconds=MAX_SHORT_SECONDS):
     """대본에 있는 숏폼 컷을 전부 만든다. 문구를 못 찾은 컷은 건너뛰고 계속한다."""
     cuts = parse_cuts(script_text)
     paths = []
     for index in range(len(cuts)):
         try:
-            paths.append(build(script_text, outdir, stem, speak, voice_name, index, log))
+            paths.append(
+                build(script_text, outdir, stem, speak, voice_name, index, log,
+                      max_seconds=max_seconds)
+            )
         except CutNotFoundError as error:
             log(f"  ! 컷 {index + 1}번 건너뜀: {error}")
     return paths

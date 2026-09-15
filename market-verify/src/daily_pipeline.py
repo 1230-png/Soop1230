@@ -50,6 +50,10 @@ def parse_args(argv=None):
         help="만들 숏폼 컷 개수. 기본은 대본에 있는 만큼 전부.",
     )
     parser.add_argument(
+        "--shorts-max-seconds", type=float, default=shorts.MAX_SHORT_SECONDS,
+        help="숏폼 한 편의 길이 상한(초). 넘치면 뒤 장면을 뺀다.",
+    )
+    parser.add_argument(
         "--log-path", default=str(topics.LOG_PATH), help="토픽 사용 기록 CSV 경로"
     )
     parser.add_argument(
@@ -148,7 +152,10 @@ def run_once(args):
     for index in range(limit):
         try:
             short_paths.append(
-                shorts.build(script_text, args.outdir, stem, speak, args.voice, index)
+                shorts.build(
+                    script_text, args.outdir, stem, speak, args.voice, index,
+                    max_seconds=args.shorts_max_seconds,
+                )
             )
         except shorts.CutNotFoundError as error:
             print(f"  ! 숏폼 컷 {index + 1}번 건너뜀: {error}")

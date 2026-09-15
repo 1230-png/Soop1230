@@ -71,6 +71,31 @@ def test_parse_cuts_survives_whatever_shape_the_model_writes(label):
     assert cuts == [(START, END)], f"{label} 형식을 읽지 못했다"
 
 
+# 실제 12회차 컷들의 장면 길이. 모델은 "60초 이내"를 지키지 못한다 — 잴 수가 없다.
+RUN12_CUT1 = [7.7, 28.8, 16.3, 12.9, 27.6, 4.6, 30.2]   # 합 128.1초
+RUN12_CUT2 = [40.7]                                      # 이미 60초 안
+RUN12_CUT3 = [72.0, 49.3, 2.4]                           # 첫 장면이 혼자 72초
+
+
+def test_fit_to_limit_trims_the_tail_of_an_overlong_cut():
+    kept = shorts.fit_to_limit(RUN12_CUT1, max_seconds=60)
+    assert kept == 3
+    assert sum(RUN12_CUT1[:kept]) <= 60
+
+
+def test_fit_to_limit_leaves_a_cut_that_already_fits():
+    assert shorts.fit_to_limit(RUN12_CUT2, max_seconds=60) == 1
+
+
+def test_fit_to_limit_keeps_one_scene_even_when_it_alone_overflows():
+    """자를 데가 없으면 빈 영상을 만들지 않는다. 그대로 두고 로그로 알린다."""
+    assert shorts.fit_to_limit(RUN12_CUT3, max_seconds=60) == 1
+
+
+def test_fit_to_limit_handles_no_scenes():
+    assert shorts.fit_to_limit([], max_seconds=60) == 0
+
+
 def test_select_scenes_matches_across_punctuation_the_model_changed():
     """모델이 본문을 옮기며 따옴표·띄어쓰기를 바꾼다. 그 정도로는 놓치지 않는다."""
     scenes = script_parse.scenes(SCRIPT)
