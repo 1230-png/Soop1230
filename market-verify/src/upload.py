@@ -24,6 +24,24 @@ FALLBACK_ENV = {
 }
 
 
+# market-verify 에는 발급 스크립트를 따로 두지 않는다. 형제 채널 것과 하는 일이
+# 같고, 네 번째 사본이 생기면 한쪽만 고치는 일이 생긴다. 대신 어느 것을 어떻게
+# 부르는지 여기 적어 둔다 — 없는 절차를 가리키는 에러만큼 사람을 헤매게 하는 것이 없다.
+HOW_TO_GET = """  발급은 본인 PC 에서 한 번만 한다(브라우저 로그인이 필요해 CI 에서는 안 된다).
+    pip install google-auth-oauthlib
+    python3 channel_food/scripts/get_refresh_token.py --client-secret client_secret.json
+    윈도우 PowerShell 이면 python3 대신 python, 경로 구분자는 역슬래시.
+
+  client_secret.json 은 앱(구글 클라우드 프로젝트)을 가리키는 파일이지 채널이
+  아니다. 다른 채널 설정 때 쓴 것이 있으면 그대로 쓰고, 브라우저에서 **머니로직
+  계정으로** 로그인하면 된다. 없으면 channel_food/SETUP.md 의 1~3 절을 따를 것
+  (동의 화면을 '프로덕션'으로 올리지 않으면 토큰이 7일마다 만료된다).
+
+  출력된 세 값을 저장소 Secrets 에 넣는다:
+    MV_CLIENT_ID / MV_CLIENT_SECRET / MV_REFRESH_TOKEN
+    MV_CHANNEL_ID — 머니로직 채널 ID(UC...). 넣어 두면 엉뚱한 채널로 올라가지 않는다."""
+
+
 class UploadConfigError(RuntimeError):
     """자격 증명이 없거나 올릴 채널이 확인되지 않는다."""
 
@@ -43,7 +61,7 @@ def check_credentials(env=None):
     ]
     if missing:
         pairs = ", ".join(f"{n}(또는 {FALLBACK_ENV[n]})" for n in missing)
-        return f"업로드 자격 증명이 없다: {pairs}. get_refresh_token 절차로 발급할 것."
+        return f"업로드 자격 증명이 없다: {pairs}.\n{HOW_TO_GET}"
     return None
 
 

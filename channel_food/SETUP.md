@@ -48,6 +48,18 @@ pip install -r requirements.txt
 python3 get_refresh_token.py --client-secret /경로/client_secret.json
 ```
 
+**윈도우 PowerShell 이면** `python3` 이 없습니다. `python` 으로 부르고 경로 구분자도
+역슬래시를 쓰세요:
+
+```powershell
+cd channel_food\scripts
+pip install -r requirements.txt
+python get_refresh_token.py --client-secret C:\경로\client_secret.json
+```
+
+`python3 : 용어가 cmdlet, 함수, 스크립트 파일 또는 실행할 수 있는 프로그램 이름으로
+인식되지 않습니다` 가 뜨면 이것입니다.
+
 브라우저가 열리면 **이 채널의 구글 계정**으로 로그인하고 권한을 허용하세요.
 터미널에 세 값이 출력됩니다:
 

@@ -10,6 +10,9 @@
     python3 get_refresh_token.py --client-id "1234-abc.apps.googleusercontent.com" \
                                  --client-secret "GOCSPX-..."
 
+윈도우 PowerShell 에서는 `python3` 가 없다. `python` 으로 부르고 경로 구분자도
+역슬래시를 쓸 것 — `python scripts\\get_refresh_token.py ...`
+
 브라우저가 열리면 반드시 @200-y3b 를 관리하는 계정으로 로그인할 것.
 자세한 순서는 ../SETUP.md 참고.
 """

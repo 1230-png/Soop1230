@@ -5,6 +5,11 @@ client_secret.json from Google Cloud Console. See ../SETUP.md step 5.
 
     pip install google-auth-oauthlib
     python3 get_refresh_token.py --client-secret client_secret.json
+
+윈도우 PowerShell 에서는 `python3` 가 없다. `python` 으로 부를 것.
+경로 구분자도 역슬래시다:
+
+    python scripts\\get_refresh_token.py --client-secret client_secret.json
 """
 
 import argparse
