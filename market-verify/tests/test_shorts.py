@@ -162,6 +162,37 @@ def test_build_makes_a_vertical_short(tmp_path):
     assert _dimensions(path) == (render.SHORT_WIDTH, render.SHORT_HEIGHT)
 
 
+def test_build_trims_a_cut_that_runs_over_the_limit(tmp_path):
+    """상한을 넘으면 뒤 장면을 빼고 실제로 짧은 영상이 나와야 한다.
+
+    fit_to_limit 의 산수만 맞아서는 소용이 없다. 잘라낸 장면 수만큼 concat 에
+    넘기는 조각도 줄어야 한다.
+    """
+    full = shorts.build(
+        FILLED, tmp_path, "full", voice.silent_speak, voice.DEFAULT_VOICE,
+        cut_index=0, log=lambda *a: None, max_seconds=999,
+    )
+    limit = render.audio_duration(full) / 2
+    trimmed = shorts.build(
+        FILLED, tmp_path, "trim", voice.silent_speak, voice.DEFAULT_VOICE,
+        cut_index=0, log=lambda *a: None, max_seconds=limit,
+    )
+    assert render.audio_duration(trimmed) < render.audio_duration(full)
+    assert render.audio_duration(trimmed) <= limit
+    # 잘라도 세로 규격은 그대로다.
+    assert _dimensions(trimmed) == (render.SHORT_WIDTH, render.SHORT_HEIGHT)
+
+
+def test_build_keeps_the_first_scene_even_under_an_impossible_limit(tmp_path):
+    """상한이 첫 장면보다 짧아도 빈 영상을 만들지 않는다."""
+    path = shorts.build(
+        FILLED, tmp_path, "tiny", voice.silent_speak, voice.DEFAULT_VOICE,
+        cut_index=0, log=lambda *a: None, max_seconds=0.1,
+    )
+    assert path.exists()
+    assert render.audio_duration(path) > 1
+
+
 def test_build_rejects_a_cut_index_that_does_not_exist(tmp_path):
     with pytest.raises(IndexError):
         shorts.build(FILLED, tmp_path, "demo", voice.silent_speak,
