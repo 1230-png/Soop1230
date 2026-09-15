@@ -5,8 +5,14 @@ name: MoneyLogic 롱폼·숏폼 생성 (market-verify)
 #   1) 내 PC 에서: claude setup-token
 #   2) 나온 토큰을 이 저장소 Secrets 에 CLAUDE_CODE_OAUTH_TOKEN 으로 넣는다
 #
-# **업로드는 하지 않는다.** 만든 영상을 아티팩트로 올려 두고 사람이 받아서 올린다.
-# 무인 발행으로 바꾸려면 market-verify/NOTES.md 의 "업로드는 사람이" 대목을 먼저 읽을 것.
+# **업로드까지 한다.** 형제 채널(run_shorts.yml)과 같은 방식이다. 돌 때마다 롱폼 1편과
+# 숏폼이 사람 확인 없이 공개로 올라간다. 되돌리려면 유튜브 스튜디오에서 직접 지워야 한다.
+# 아티팩트는 발행과 별개로 계속 남긴다.
+#
+# 자격 증명은 이 채널 전용을 먼저 쓴다. 저장소가 채널을 여럿 굴리고, YT_* 를 함께
+# 쓰다가 업로드가 엉킨 적이 있다(run_shorts.yml 주석). MV_* 가 없으면 YT_* 로 떨어진다.
+#   MV_CLIENT_ID / MV_CLIENT_SECRET / MV_REFRESH_TOKEN
+#   MV_CHANNEL_ID  — 넣어 두면 다른 채널로 올라가는 사고를 upload.py 가 막는다
 
 on:
   schedule:
@@ -22,6 +28,11 @@ on:
       repeat:
         description: "만들 편수"
         default: "1"
+      privacy:
+        description: "공개 범위"
+        type: choice
+        options: [public, unlisted, private]
+        default: public
 
 permissions:
   # 다룬 소재 기록(used_topics.csv)을 커밋해야 다음 회차가 같은 소재를 피한다.
@@ -91,11 +102,21 @@ jobs:
           # 매크로 토픽에만 쓰인다. 없으면 그 토픽만 건너뛰고 나머지는 돈다.
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
           COINGECKO_API_KEY: ${{ secrets.COINGECKO_API_KEY }}
+          # 이 채널 전용 자격 증명. 없으면 upload.py 가 YT_* 로 떨어진다.
+          MV_CLIENT_ID: ${{ secrets.MV_CLIENT_ID }}
+          MV_CLIENT_SECRET: ${{ secrets.MV_CLIENT_SECRET }}
+          MV_REFRESH_TOKEN: ${{ secrets.MV_REFRESH_TOKEN }}
+          MV_CHANNEL_ID: ${{ secrets.MV_CHANNEL_ID }}
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
         run: |
           python -m src.daily_pipeline \
             --outdir out \
             --source "${{ inputs.source || 'news' }}" \
-            --repeat "${{ inputs.repeat || 1 }}"
+            --repeat "${{ inputs.repeat || 1 }}" \
+            --upload \
+            --privacy "${{ inputs.privacy || 'public' }}"
 
       - name: 오늘 나온 것 요약
         # 로그를 열지 않아도 무엇이 몇 개 나왔는지 보이게 한다.
@@ -108,7 +129,7 @@ jobs:
           {
             echo "## 오늘 나온 것"
             echo ""
-            echo "- 롱폼 ${long:-0}개 · 숏폼 ${short:-0}개"
+            echo "- 롱폼 ${long:-0}개 · 숏폼 ${short:-0}개 — 발행 여부는 생성 단계 로그의 '올림' 줄"
             echo ""
             if [ "${short:-0}" -eq 0 ]; then
               echo "> 숏폼이 0개다. 대본의 \`## 숏폼 컷\` 섹션과 생성 단계 로그의 \`!\` 줄을 볼 것."
@@ -119,7 +140,7 @@ jobs:
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: 결과물 올리기 (받아서 사람이 발행)
+      - name: 결과물 보관 (발행과 별개로 남겨 둔다)
         if: always()
         uses: actions/upload-artifact@v4
         with:
