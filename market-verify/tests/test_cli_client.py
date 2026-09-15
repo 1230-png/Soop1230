@@ -233,3 +233,22 @@ def test_an_unresolvable_command_falls_back_to_the_bare_name(monkeypatch):
     """찾지 못하면 그대로 넘겨서 FileNotFoundError 와 안내 문구가 나오게 둔다."""
     monkeypatch.setattr(cli_client.shutil, "which", lambda name: None)
     assert cli_client.resolve_command("claude") == "claude"
+
+
+def test_a_failure_pulls_the_reason_out_of_the_result_json(monkeypatch):
+    """실패 JSON 을 통째로 자르면 사유가 담긴 뒤쪽이 날아간다. 필드를 뽑아낸다."""
+    big = json.dumps({
+        "usage": {"input_tokens": 0, "x": "가" * 900},
+        "terminal_reason": "api_error",
+        "subtype": "error_during_execution",
+        "result": "OAuth token is invalid or expired",
+    })
+    monkeypatch.setattr(
+        cli_client.subprocess, "run",
+        lambda argv, **k: fake_completed(stdout=big, returncode=1),
+    )
+    with pytest.raises(cli_client.CliClientError) as caught:
+        cli_client.ClaudeCliClient().messages.create(messages=[{"role": "user", "content": "x"}])
+    message = str(caught.value)
+    assert "OAuth token is invalid or expired" in message
+    assert "api_error" in message

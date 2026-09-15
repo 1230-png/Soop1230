@@ -49,6 +49,31 @@ def resolve_command(command=DEFAULT_COMMAND):
     return shutil.which(command) or command
 
 
+def _describe_failure(done):
+    """실패 사유를 읽을 수 있게 추린다.
+
+    claude 는 실패해도 stdout 에 결과 JSON 을 뱉는다. 그 JSON 을 통째로 잘라 찍으면
+    정작 사유가 담긴 뒤쪽(result·subtype)이 날아간다. 실제로 그래서 두 번 헤맸다.
+    """
+    stdout = (done.stdout or "").strip()
+    stderr = (done.stderr or "").strip()
+    lines = []
+    try:
+        payload = json.loads(stdout)
+    except (json.JSONDecodeError, TypeError):
+        payload = None
+    if isinstance(payload, dict):
+        for key in ("result", "subtype", "terminal_reason", "api_error_status"):
+            value = payload.get(key)
+            if value not in (None, "", []):
+                lines.append(f"  {key}: {str(value)[:400]}")
+    if not lines and stdout:
+        lines.append(f"  stdout: {stdout[:400]}")
+    if stderr:
+        lines.append(f"  stderr: {stderr[:400]}")
+    return "\n".join(lines) or "  (출력이 없다)"
+
+
 class CliClientError(RuntimeError):
     """claude 실행 자체가 실패했다. 대본 내용 문제가 아니다."""
 
@@ -132,12 +157,9 @@ class ClaudeCliClient:
 
     def _parse(self, done):
         if done.returncode != 0:
-            # claude 는 실패 사유를 stdout 으로 내보내는 경우가 있다. stderr 만 찍으면
-            # 무인 실행에서 "종료코드 1" 만 남아 원인을 알 수 없다. 실제로 그랬다.
             raise CliClientError(
                 f"claude 가 종료코드 {done.returncode} 로 끝났다.\n"
-                f"  stdout: {(done.stdout or '').strip()[:800] or '(없음)'}\n"
-                f"  stderr: {(done.stderr or '').strip()[:800] or '(없음)'}\n"
+                f"{_describe_failure(done)}\n"
                 "  로그인이 풀렸을 수 있다. 사람이 한 번 `claude` 를 실행해 확인할 것."
             )
         try:
