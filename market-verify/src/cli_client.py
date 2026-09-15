@@ -11,6 +11,7 @@ anthropic SDK 응답과 같은 모양으로 돌려주므로 검증·재시도 �
 """
 
 import json
+import os
 import subprocess
 import tempfile
 from pathlib import Path
@@ -21,6 +22,20 @@ DEFAULT_TIMEOUT = 900
 BLOCKED_TOOLS = (
     "Bash,Read,Write,Edit,NotebookEdit,Glob,Grep,WebFetch,WebSearch,Task,Agent"
 )
+
+
+# claude 는 이 변수들이 있으면 구독 로그인보다 그쪽을 먼저 쓴다.
+# 크레딧이 0 인 옛날 키가 환경에 남아 있으면 "Credit balance is too low" 로
+# 매번 조용히 실패한다. 무인으로 도는 자리라 이걸 사람이 알아채기 어렵다.
+AUTH_ENV_TO_DROP = ("ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN", "ANTHROPIC_API_URL")
+
+
+def _subscription_env():
+    """구독 로그인을 가로채는 인증 변수를 뺀 환경을 만든다."""
+    env = os.environ.copy()
+    for name in AUTH_ENV_TO_DROP:
+        env.pop(name, None)
+    return env
 
 
 class CliClientError(RuntimeError):
@@ -92,7 +107,7 @@ class ClaudeCliClient:
         try:
             return subprocess.run(
                 argv, input=prompt, capture_output=True, text=True,
-                encoding="utf-8", timeout=self.timeout,
+                encoding="utf-8", timeout=self.timeout, env=_subscription_env(),
             )
         except FileNotFoundError as error:
             raise CliClientError(
@@ -140,7 +155,8 @@ def check_cli(command=DEFAULT_COMMAND):
     """
     try:
         done = subprocess.run(
-            [command, "--version"], capture_output=True, text=True, timeout=60
+            [command, "--version"], capture_output=True, text=True, timeout=60,
+            env=_subscription_env(),
         )
     except FileNotFoundError:
         return (

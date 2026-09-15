@@ -168,3 +168,34 @@ def test_usage_line_does_not_claim_a_charge_in_cli_mode():
     assert "API 청구 없음" in cli_line
     api_line = writer.format_usage(usages, env={})
     assert "추정 $" in api_line and "API 청구 없음" not in api_line
+
+
+def test_a_stale_api_key_cannot_hijack_the_subscription(monkeypatch):
+    """죽은 키가 환경에 남아 있으면 claude 가 구독 대신 그 키를 쓰고 조용히 실패한다."""
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-ant-잔액없는키")
+    monkeypatch.setenv("ANTHROPIC_AUTH_TOKEN", "토큰")
+    seen = {}
+
+    def fake_run(argv, **kwargs):
+        seen["env"] = kwargs.get("env")
+        return fake_completed(payload())
+
+    monkeypatch.setattr(cli_client.subprocess, "run", fake_run)
+    cli_client.ClaudeCliClient().messages.create(messages=[{"role": "user", "content": "x"}])
+    assert "ANTHROPIC_API_KEY" not in seen["env"]
+    assert "ANTHROPIC_AUTH_TOKEN" not in seen["env"]
+    # 나머지 환경은 그대로여야 한다. PATH 가 없으면 claude 를 찾지 못한다.
+    assert "PATH" in seen["env"]
+
+
+def test_check_cli_also_ignores_a_stale_key(monkeypatch):
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-ant-잔액없는키")
+    seen = {}
+
+    def fake_run(argv, **kwargs):
+        seen["env"] = kwargs.get("env")
+        return fake_completed("2.1.272")
+
+    monkeypatch.setattr(cli_client.subprocess, "run", fake_run)
+    assert cli_client.check_cli() is None
+    assert "ANTHROPIC_API_KEY" not in seen["env"]
