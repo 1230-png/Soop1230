@@ -58,21 +58,31 @@ jobs:
       - name: Claude Code
         run: npm install -g @anthropic-ai/claude-code
 
-      - name: 토큰 확인
+      - name: 대본 작성 방식 결정
+        id: llm
         env:
-          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OAUTH: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
         run: |
-          if [ -z "$CLAUDE_CODE_OAUTH_TOKEN" ]; then
-            echo "::error::CLAUDE_CODE_OAUTH_TOKEN 시크릿이 없다."
-            echo "내 PC 에서 'claude setup-token' 을 돌려 나온 값을"
-            echo "저장소 Settings > Secrets and variables > Actions 에 넣을 것."
+          # 둘 중 있는 것을 쓴다. API 키가 있으면 그쪽이 확실하므로 먼저 본다.
+          if [ -n "$API_KEY" ]; then
+            echo "mode=api" >> "$GITHUB_OUTPUT"
+            echo "대본: ANTHROPIC_API_KEY (크레딧 차감)"
+          elif [ -n "$OAUTH" ]; then
+            echo "mode=cli" >> "$GITHUB_OUTPUT"
+            echo "대본: CLAUDE_CODE_OAUTH_TOKEN (구독 사용량)"
+          else
+            echo "::error::대본을 쓸 자격 증명이 없다. 둘 중 하나를 시크릿에 넣을 것:"
+            echo "  ANTHROPIC_API_KEY        — console.anthropic.com 에서 크레딧 충전 후 발급"
+            echo "  CLAUDE_CODE_OAUTH_TOKEN  — 내 PC 에서 'claude setup-token'"
             exit 1
           fi
 
       - name: 롱폼·숏폼 생성
         working-directory: market-verify
         env:
-          MARKET_VERIFY_LLM: cli
+          MARKET_VERIFY_LLM: ${{ steps.llm.outputs.mode }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           # 매크로 토픽에만 쓰인다. 없으면 그 토픽만 건너뛰고 나머지는 돈다.
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
