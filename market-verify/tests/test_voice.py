@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pytest
 
 from src import render, voice
@@ -46,3 +48,51 @@ def test_narrate_creates_the_directory(tmp_path):
 
 def test_default_voice_is_korean():
     assert voice.DEFAULT_VOICE.startswith("ko-KR")
+
+
+def _boom(*a, **k):
+    raise RuntimeError("NoAudioReceived")
+
+
+def test_edge_failure_falls_back_to_elevenlabs(tmp_path, monkeypatch):
+    """깃허브 러너에서는 edge-tts 가 막힌다. 무인 실행이 거기서 멈추면 안 된다."""
+    monkeypatch.setattr(voice, "_edge_once", _boom)
+    monkeypatch.setattr(voice.time, "sleep", lambda s: None)
+    monkeypatch.setenv(voice.ELEVENLABS_KEY_ENV, "키")
+    called = {}
+
+    def fake_eleven(text, out_path, voice_id=None):
+        called["text"] = text
+        Path(out_path).write_bytes(b"mp3")
+        return out_path
+
+    monkeypatch.setattr(voice, "elevenlabs_speak", fake_eleven)
+    out = voice.edge_tts_speak("한 문장", tmp_path / "a.mp3")
+    assert called["text"] == "한 문장"
+    assert Path(out).exists()
+
+
+def test_edge_retries_before_giving_up(tmp_path, monkeypatch):
+    """한 번 튕긴 것만으로 넘기지 않는다. 일시적인 실패가 잦다."""
+    monkeypatch.setattr(voice.time, "sleep", lambda s: None)
+    tries = {"n": 0}
+
+    def flaky(text, out_path, voice_name):
+        tries["n"] += 1
+        if tries["n"] < 3:
+            raise RuntimeError("일시적")
+        Path(out_path).write_bytes(b"mp3")
+        return out_path
+
+    monkeypatch.setattr(voice, "_edge_once", flaky)
+    voice.edge_tts_speak("문장", tmp_path / "a.mp3")
+    assert tries["n"] == 3
+
+
+def test_without_a_fallback_key_it_says_why(tmp_path, monkeypatch):
+    """무음으로 대신 만들지 않는다. 나레이션 없는 영상이 발행되면 더 나쁘다."""
+    monkeypatch.setattr(voice, "_edge_once", _boom)
+    monkeypatch.setattr(voice.time, "sleep", lambda s: None)
+    monkeypatch.delenv(voice.ELEVENLABS_KEY_ENV, raising=False)
+    with pytest.raises(voice.VoiceError, match="ELEVENLABS_API_KEY"):
+        voice.edge_tts_speak("문장", tmp_path / "a.mp3")

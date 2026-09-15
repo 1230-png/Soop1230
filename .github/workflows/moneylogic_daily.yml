@@ -84,6 +84,10 @@ jobs:
           MARKET_VERIFY_LLM: ${{ steps.llm.outputs.mode }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          # 나레이션. edge-tts 가 먼저지만 러너에서는 마이크로소프트가 막는다.
+          # 그때 이 키로 넘어간다. 없으면 음성 단계에서 멈춘다.
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+          ELEVENLABS_VOICE_ID: ${{ secrets.ELEVENLABS_VOICE_ID }}
           # 매크로 토픽에만 쓰인다. 없으면 그 토픽만 건너뛰고 나머지는 돈다.
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
           COINGECKO_API_KEY: ${{ secrets.COINGECKO_API_KEY }}
