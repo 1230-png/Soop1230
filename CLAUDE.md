@@ -11,7 +11,7 @@
 | `channel_200y3b/` | @200-y3b — 매일 영어 한마디 쇼츠 + 주간 롱폼 + 월간 총정리 | **가동 중** (GitHub Actions 무인 발행) |
 | `channel_food/` | 현실 속 기괴한 현상 — 매일 쇼츠 1편 | **가동 중** |
 | `channel/` | 새벽공기 — Suno 감성 힙합 플레이리스트 | 문서·기록 위주 (코드 없음) |
-| `market-verify/` | 머니로직(MoneyLogic) 롱폼+숏폼 — 대본·영상 | **가동 중** (GitHub Actions 매일 생성, **업로드는 사람이**) |
+| `market-verify/` | 머니로직(MoneyLogic) 롱폼+숏폼 — 대본·영상 | **가동 중** (GitHub Actions 매일 **무인 공개 발행**) |
 | `shorts_engine/` | 피드백 루프 쇼츠 파이프라인 (FastAPI + Postgres 큐) | **참고 구현. 지금 돌지 않는다** |
 
 `shorts_engine/`은 규모가 커질 때를 위한 판이다. 매일 발행은 `channel_food/`가 한다.
@@ -37,9 +37,16 @@ cd channel_food  && python -m pytest tests/   # ffmpeg·네트워크 불필요
 **환경변수로만 다룬다. 코드·커밋·로그에 절대 넣지 않는다.**
 
 - `market-verify` → `ANTHROPIC_API_KEY`, `FRED_API_KEY`(매크로), `COINGECKO_API_KEY`(실측 희석률)
-- `channel_200y3b` → `YT_CLIENT_ID` / `YT_CLIENT_SECRET` / `YT_REFRESH_TOKEN`
+- `market-verify` 업로드 → `MV_CLIENT_ID` / `MV_CLIENT_SECRET` / `MV_REFRESH_TOKEN` / `MV_CHANNEL_ID`
+- `channel_200y3b` → `Y3B_CLIENT_ID` / `Y3B_CLIENT_SECRET` / `Y3B_REFRESH_TOKEN`
 - `channel_food` → `WEIRD_CLIENT_ID` / `WEIRD_CLIENT_SECRET` / `WEIRD_REFRESH_TOKEN`
 - `channel_food` TTS → `ELEVENLABS_API_KEY` (+ 선택 `ELEVENLABS_VOICE_ID`)
+
+**채널마다 제 자격 증명과 제 구글 클라우드 프로젝트를 쓴다.** 공용 `YT_*` 가 아직
+남아 있지만 새로 쓰지 않는다. 하나를 여러 채널이 같이 쓰다가 업로드가 깨진 적이
+있고(`run_shorts.yml` 주석), 유튜브 일일 할당량도 채널이 아니라 **프로젝트 단위**라
+돌려쓰면 서로의 몫을 깎는다. `market-verify` 는 대체 경로 없이 `MV_*` 만 쓴다 —
+없으면 남의 자격 증명으로 올라가느니 멈춘다.
 
 `.env`, `*.key`, `client_secret*.json`은 gitignore 대상이다. 커밋 전 `git status`로
 스테이징 목록을 확인하고, 파일명이 무해해 보여도 내용을 의심할 것.
@@ -49,9 +56,21 @@ cd channel_food  && python -m pytest tests/   # ffmpeg·네트워크 불필요
 `.github/workflows/`의 워크플로 대부분이 **cron으로 실제 채널에 업로드한다.**
 스케줄이나 스크립트를 고치면 라이브 발행이 바뀐다. 손대기 전에 확인을 받을 것.
 
-예외가 하나 있다. `moneylogic_daily.yml`(market-verify)은 **업로드하지 않는다.**
-영상을 만들어 아티팩트로만 올려 두고 사람이 받아서 발행한다. 대본은 API 크레딧이
-아니라 구독 토큰(`CLAUDE_CODE_OAUTH_TOKEN` 시크릿)으로 쓴다.
+cron 으로 실제 올리는 것은 셋이다. 앞의 둘은 같은 채널(@200-y3b)이다.
+
+| 워크플로 | 채널 | 하루 |
+|---|---|---|
+| `run_shorts.yml` | @200-y3b | 쇼츠 3편 |
+| `longform.yml` | @200-y3b | 롱폼 1편 |
+| `moneylogic_daily.yml` | 머니로직 | 롱폼 1 + 숏폼 3 |
+
+`channel_food` 를 업로드로 돌리는 cron 워크플로는 **없다.** `WEIRD_*` 를 쓰는
+`channel_branding.yml` · `channel_report.yml` 은 수동 실행이고 발행이 아니다.
+
+`moneylogic_daily.yml` 은 만든 영상을 **공개로 발행하고** 아티팩트로도 남긴다.
+대본은 `ANTHROPIC_API_KEY` 가 있으면 그쪽(크레딧 차감), 없으면 구독
+토큰(`CLAUDE_CODE_OAUTH_TOKEN`)으로 쓴다. 자격 증명 검사가 영상을 만들기 전에
+돌아서, 시크릿이 없으면 1분 안에 깨끗하게 실패한다(크레딧도 소재 기록도 안 쓴다).
 
 `used_log*.csv`와 `metrics.csv`는 워크플로가 append하는 실행 기록이다. append-only로
 다루고 임의로 정리하거나 되돌리지 않는다. `[skip ci]` 커밋 대부분이 이것이다.
@@ -70,8 +89,11 @@ cd channel_food  && python -m pytest tests/   # ffmpeg·네트워크 불필요
    데이터 블록을 만들고 모델은 그 안의 숫자만 쓴다.
 2. **규칙 판정은 `validator.py`만 한다.** 모델에게 자체 점검을 시켰더니 위반해놓고
    통과했다고 답했다. 모델의 자기 보고를 근거로 쓰지 않는다.
-3. **`## 6. [운영자 코멘트]`는 비워 둔다.** 사람이 채우는 칸이고, 모델이 채우면
-   검증기가 위반으로 잡는다. 이 동작을 완화하지 말 것.
+3. **`## 6. [운영자 코멘트]`는 대본 작성 모델이 채우지 않는다.** 채우면 검증기가
+   위반으로 잡는다. **이 동작을 완화하지 말 것.** 칸을 채우는 것은 검증이 끝난 뒤
+   `operator_note.py` 가 별도 단계로 한다 — 작성 루프가 제 대본에 사람 목소리를
+   지어 넣고 스스로 통과시키는 것을 막는 규칙이라 두 단계가 섞이면 안 된다.
+   나온 문장도 코드가 판정한다(숫자·금지어·권유 표현이면 버리고 칸을 비운다).
 4. **예측·매수매도 추천·목표가를 생성하지 않는다.** 국내 유사투자자문 규제 때문이다.
 
 `apply_min_gap()`의 60거래일 필터와 `summarize()`의 분포(중앙값·최저·최고)는
@@ -92,9 +114,16 @@ API 호출은 비용이 든다. 블록만 확인할 때는 `--block-only`를 쓴
 검증기·작성기·프롬프트·영상 파이프라인을 공유하고 블록 내용만 다르다.
 
 영상은 `src/produce.py` 가 만든다. 화면 문구는 대본의 `[자료 화면:]` 표기에서
-나오므로 따로 짓지 않는다. 업로드 기본값은 **비공개**이고, 공개 전환은 사람이 한다.
-`assert_target_channel` 로 엉뚱한 채널에 올라가는 것을 막는다 — 이 저장소는
-채널을 여러 개 운영한다.
+나오므로 따로 짓지 않는다. 숏폼은 `src/shorts.py` 가 롱폼 대본의 컷 지시에서
+잘라낸다. **컷 지시의 표기 형식을 믿지 않고 인용문을 순서대로 짝짓는다** — 모양을
+맞히려던 파서가 한 회차를 통째로 숏폼 0개로 끝낸 적이 있다. 길이도 코드가 정한다
+(`MAX_SHORT_SECONDS`). 모델은 나레이션이 몇 초가 될지 잴 수 없어서 "60초 이내"를
+지킬 방법이 없다.
+
+`upload.py` 의 기본값은 **비공개**지만, `moneylogic_daily.yml` 은 `--privacy public`
+으로 부른다. 무인 공개 발행이다. `assert_target_channel` 이 마지막 방어선으로,
+`MV_CHANNEL_ID` 와 토큰이 가리키는 채널이 다르면 올리지 않고 멈춘다 — 실제로
+한 번 잡았다. 이 저장소는 채널을 여러 개 운영한다.
 
 ### channel_food / shorts_engine
 
