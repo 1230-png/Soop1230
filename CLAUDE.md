@@ -11,7 +11,7 @@
 | `channel_200y3b/` | @200-y3b — 매일 영어 한마디 쇼츠 + 주간 롱폼 + 월간 총정리 | **가동 중** (GitHub Actions 무인 발행) |
 | `channel_food/` | 현실 속 기괴한 현상 — 매일 쇼츠 1편 | **가동 중** |
 | `channel/` | 새벽공기 — Suno 감성 힙합 플레이리스트 | 문서·기록 위주 (코드 없음) |
-| `market-verify/` | 머니로직(MoneyLogic) 롱폼 — 대본·영상·업로드 | 신규, 로컬 실행 |
+| `market-verify/` | 머니로직(MoneyLogic) 롱폼+숏폼 — 대본·영상 | **가동 중** (GitHub Actions 매일 생성, **업로드는 사람이**) |
 | `shorts_engine/` | 피드백 루프 쇼츠 파이프라인 (FastAPI + Postgres 큐) | **참고 구현. 지금 돌지 않는다** |
 
 `shorts_engine/`은 규모가 커질 때를 위한 판이다. 매일 발행은 `channel_food/`가 한다.
@@ -48,6 +48,10 @@ cd channel_food  && python -m pytest tests/   # ffmpeg·네트워크 불필요
 
 `.github/workflows/`의 워크플로 대부분이 **cron으로 실제 채널에 업로드한다.**
 스케줄이나 스크립트를 고치면 라이브 발행이 바뀐다. 손대기 전에 확인을 받을 것.
+
+예외가 하나 있다. `moneylogic_daily.yml`(market-verify)은 **업로드하지 않는다.**
+영상을 만들어 아티팩트로만 올려 두고 사람이 받아서 발행한다. 대본은 API 크레딧이
+아니라 구독 토큰(`CLAUDE_CODE_OAUTH_TOKEN` 시크릿)으로 쓴다.
 
 `used_log*.csv`와 `metrics.csv`는 워크플로가 append하는 실행 기록이다. append-only로
 다루고 임의로 정리하거나 되돌리지 않는다. `[skip ci]` 커밋 대부분이 이것이다.
