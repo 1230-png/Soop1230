@@ -11,7 +11,9 @@ REM ============================================================
 setlocal
 
 REM ===== 여기 세 줄만 고치면 된다 =====
-set "OUTDIR=C:\MoneyLogic\out"
+REM  비워 두면 바탕화면\클로드\머니로직 으로 간다.
+REM  (원드라이브로 바탕화면이 옮겨져 있어도 실제 위치를 따라간다)
+set "OUTDIR="
 set "COUNT=1"
 REM  cli = 이미 깔린 Claude Code 구독으로 대본을 쓴다 (API 크레딧 불필요)
 REM  api = ANTHROPIC_API_KEY 로 쓴다 (API 크레딧 필요)
@@ -21,6 +23,11 @@ REM ====================================
 REM 인자로 넘기면 그쪽이 이긴다:  make_longform.bat "E:\다른폴더" 2
 if not "%~1"=="" set "OUTDIR=%~1"
 if not "%~2"=="" set "COUNT=%~2"
+
+REM 저장 폴더를 안 정했으면 바탕화면 아래로 보낸다. 바탕화면 실제 경로는
+REM 원드라이브로 옮겨져 있을 수 있어서 박아 두지 않고 윈도우에 물어본다.
+for /f "usebackq delims=" %%i in (`powershell -NoProfile -Command "[Environment]::GetFolderPath('Desktop')"`) do set "DESKTOP=%%i"
+if "%OUTDIR%"=="" set "OUTDIR=%DESKTOP%\클로드\머니로직"
 
 REM 이 파일은 market-verify\scripts\ 에 있다. 한 칸 위가 프로젝트 폴더다.
 set "REPO=%~dp0.."
