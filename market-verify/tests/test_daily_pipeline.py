@@ -311,3 +311,70 @@ def test_it_checks_credentials_before_spending_five_minutes(monkeypatch, capsys)
     assert daily_pipeline.run_once(upload_args(upload=True)) == 2
     assert called == [], "자격 증명이 없는데 토픽부터 골랐다"
     assert "자격 증명이 없다" in capsys.readouterr().out
+
+
+# --- 할당량 -----------------------------------------------------------------
+# 유튜브 일일 할당량은 구글 클라우드 프로젝트 단위다. 이 저장소는 채널을 여럿
+# 굴리므로 한 프로젝트를 같이 쓰면 서로의 몫을 깎는다.
+
+
+class QuotaError(Exception):
+    """googleapiclient 가 돌려주는 모양을 흉내낸다. 타입이 아니라 문구로 구분된다."""
+
+    def __init__(self):
+        super().__init__(
+            '<HttpError 403 "The request cannot be completed because you have '
+            'exceeded your <a href="/youtube/v3/getting-started#quota">quota</a>.">'
+            " Reason: quotaExceeded"
+        )
+
+
+@pytest.mark.parametrize(
+    "message,expected",
+    [
+        ("Reason: quotaExceeded", True),
+        ("dailyLimitExceeded", True),
+        ("Quota exceeded for quota metric", True),
+        ("HttpError 403 ... Reason: forbidden", False),
+        ("연결이 끊겼다", False),
+    ],
+)
+def test_is_quota_error_reads_the_message_not_the_type(message, expected):
+    assert daily_pipeline.is_quota_error(Exception(message)) is expected
+
+
+def test_upload_all_stops_the_moment_the_quota_runs_out(monkeypatch, tmp_path, capsys):
+    """남은 것도 전부 떨어진다. 계속 두드려봐야 같은 에러만 쌓인다."""
+    attempted = []
+
+    def sender(video_path, **_):
+        attempted.append(Path(video_path).name)
+        if len(attempted) == 2:
+            raise QuotaError()
+        return "id"
+
+    monkeypatch.setattr(daily_pipeline.upload, "upload", sender)
+    code = daily_pipeline.upload_all(
+        FILLED, tmp_path / "v.mp4", None,
+        [tmp_path / f"v_short{n}.mp4" for n in (1, 2, 3)],
+        upload_args(upload=True, privacy="public"),
+    )
+
+    assert attempted == ["v.mp4", "v_short1.mp4"], "할당량이 떨어졌는데 계속 올렸다"
+    out = capsys.readouterr().out
+    assert "남은 2편은 시도하지 않는다" in out
+    assert "프로젝트 단위" in out, "왜 떨어졌는지 짚어주지 않으면 원인을 못 찾는다"
+    assert "성공 1개, 실패 3개" in out, "시도하지 않은 것도 실패로 세야 한다"
+    assert code == 0, "한 편이라도 올라갔으면 실패가 아니다"
+
+
+def test_upload_all_does_not_stop_on_an_ordinary_failure(monkeypatch, tmp_path):
+    """할당량이 아닌 실패는 그 한 편만 건너뛴다."""
+    sender = FakeUpload(fail_on=("v_short1.mp4",))
+    monkeypatch.setattr(daily_pipeline.upload, "upload", sender)
+    daily_pipeline.upload_all(
+        FILLED, tmp_path / "v.mp4", None,
+        [tmp_path / "v_short1.mp4", tmp_path / "v_short2.mp4"],
+        upload_args(upload=True),
+    )
+    assert [call["path"] for call in sender.calls] == ["v.mp4", "v_short2.mp4"]

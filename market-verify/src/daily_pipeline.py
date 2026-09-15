@@ -214,6 +214,27 @@ def short_title(base_title, index):
     return base_title[: 100 - len(suffix)].rstrip() + suffix
 
 
+# 유튜브 일일 할당량은 **구글 클라우드 프로젝트** 단위다. 채널 단위가 아니다.
+# 한 프로젝트를 여러 채널이 나눠 쓰면 서로의 할당량을 깎는다. 업로드 한 편이
+# 1,600 units, 기본 할당량이 10,000 이라 하루 6편이 한계다
+# (근거: channel_food/scripts/common.py 의 같은 주석).
+# 이 저장소는 채널을 여럿 굴린다 — market-verify 는 프로젝트를 따로 쓰는 편이 낫다.
+QUOTA_MARKERS = ("quotaexceeded", "dailylimitexceeded", "quota exceeded")
+QUOTA_HINT = """    할당량은 구글 클라우드 프로젝트 단위다(채널 단위가 아니다). 이 저장소는
+    채널을 여럿 굴리므로, 한 프로젝트를 같이 쓰면 서로의 몫을 깎는다.
+    다음 날 자동으로 초기화된다. 매일 모자라면 market-verify 용 프로젝트를
+    따로 만들어 MV_* 를 그쪽 것으로 바꿀 것."""
+
+
+def is_quota_error(error):
+    """할당량이 떨어져서 난 실패인지. 문구로 본다.
+
+    googleapiclient 는 HttpError 하나로 온갖 것을 돌려준다. 예외 타입만 보면
+    할당량인지 권한인지 잘못된 파일인지 구분되지 않는다.
+    """
+    return any(marker in str(error).lower() for marker in QUOTA_MARKERS)
+
+
 def upload_all(script_text, video_path, thumb_path, short_paths, args):
     """롱폼과 숏폼을 올린다. 하나가 실패해도 나머지는 계속 올린다.
 
@@ -231,7 +252,7 @@ def upload_all(script_text, video_path, thumb_path, short_paths, args):
     ]
 
     uploaded, failed = [], []
-    for path, title, thumb in jobs:
+    for index, (path, title, thumb) in enumerate(jobs):
         try:
             video_id = upload.upload(
                 path, title=title, description=description, tags=brand.TAGS,
@@ -240,6 +261,17 @@ def upload_all(script_text, video_path, thumb_path, short_paths, args):
         except Exception as error:
             print(f"  ! 올리지 못했다({Path(path).name}): {type(error).__name__}: {error}")
             failed.append(path)
+            if is_quota_error(error):
+                # 할당량이 떨어졌으면 남은 것도 전부 떨어진다. 계속 두드려봐야
+                # 같은 에러가 쌓일 뿐이다. channel_food 도 같은 판단을 한다
+                # (SETUP.md: "할당량 초과 시 즉시 중단").
+                remaining = len(jobs) - index - 1
+                print(
+                    f"  ! 오늘 할당량이 떨어졌다. 남은 {remaining}편은 시도하지 않는다.\n"
+                    f"{QUOTA_HINT}"
+                )
+                failed.extend(job[0] for job in jobs[index + 1:])
+                break
             continue
         print(f"  올림({args.privacy}): {title} — https://youtu.be/{video_id}")
         uploaded.append(video_id)
