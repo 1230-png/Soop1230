@@ -199,3 +199,25 @@ def test_check_cli_also_ignores_a_stale_key(monkeypatch):
     monkeypatch.setattr(cli_client.subprocess, "run", fake_run)
     assert cli_client.check_cli() is None
     assert "ANTHROPIC_API_KEY" not in seen["env"]
+
+
+def test_the_command_is_resolved_through_pathext(monkeypatch):
+    """윈도우 npm 전역 설치는 claude.cmd 다. subprocess 는 PATHEXT 를 보지 않는다."""
+    monkeypatch.setattr(
+        cli_client.shutil, "which", lambda name: r"C:\Users\admin\AppData\Roaming\npm\claude.cmd"
+    )
+    seen = {}
+
+    def fake_run(argv, **kwargs):
+        seen["argv"] = argv
+        return fake_completed(payload())
+
+    monkeypatch.setattr(cli_client.subprocess, "run", fake_run)
+    cli_client.ClaudeCliClient().messages.create(messages=[{"role": "user", "content": "x"}])
+    assert seen["argv"][0].endswith("claude.cmd")
+
+
+def test_an_unresolvable_command_falls_back_to_the_bare_name(monkeypatch):
+    """찾지 못하면 그대로 넘겨서 FileNotFoundError 와 안내 문구가 나오게 둔다."""
+    monkeypatch.setattr(cli_client.shutil, "which", lambda name: None)
+    assert cli_client.resolve_command("claude") == "claude"

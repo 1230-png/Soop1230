@@ -12,6 +12,7 @@ anthropic SDK 응답과 같은 모양으로 돌려주므로 검증·재시도 �
 
 import json
 import os
+import shutil
 import subprocess
 import tempfile
 from pathlib import Path
@@ -36,6 +37,16 @@ def _subscription_env():
     for name in AUTH_ENV_TO_DROP:
         env.pop(name, None)
     return env
+
+
+def resolve_command(command=DEFAULT_COMMAND):
+    """실행 파일의 실제 경로를 찾는다. 못 찾으면 이름을 그대로 돌려준다.
+
+    윈도우에서 npm 전역 설치는 `claude.cmd` 를 만든다. 명령 프롬프트는 PATHEXT 를
+    보고 확장자를 붙여 찾아주지만 subprocess 는 그러지 않아서, 터미널에서는 되는
+    `claude` 가 파이썬에서만 "찾지 못했다" 로 끝난다. shutil.which 는 PATHEXT 를 본다.
+    """
+    return shutil.which(command) or command
 
 
 class CliClientError(RuntimeError):
@@ -90,7 +101,7 @@ class ClaudeCliClient:
         )
         with tempfile.TemporaryDirectory() as tmp:
             argv = [
-                self.command, "-p",
+                resolve_command(self.command), "-p",
                 "--output-format", "json",
                 "--disallowedTools", BLOCKED_TOOLS,
             ]
@@ -155,14 +166,16 @@ def check_cli(command=DEFAULT_COMMAND):
     """
     try:
         done = subprocess.run(
-            [command, "--version"], capture_output=True, text=True, timeout=60,
-            env=_subscription_env(),
+            [resolve_command(command), "--version"], capture_output=True, text=True,
+            timeout=60, env=_subscription_env(),
         )
     except FileNotFoundError:
         return (
             f"'{command}' 를 찾지 못했다. Claude Code 를 깔고 PATH 에 넣을 것:\n"
             "  npm install -g @anthropic-ai/claude-code\n"
-            "  깐 뒤 `claude` 를 한 번 실행해 로그인해 둘 것."
+            "  깐 뒤 `claude` 를 한 번 실행해 로그인해 둘 것.\n"
+            "  이미 깔았는데도 이 메시지가 나오면, 깔기 전에 열어 둔 창이라 PATH 가\n"
+            "  갱신되지 않은 것이다. 창을 새로 열 것."
         )
     except (subprocess.TimeoutExpired, OSError) as error:
         return f"'{command} --version' 이 응답하지 않는다: {error}"
