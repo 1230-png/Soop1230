@@ -29,13 +29,20 @@ BLOCKED_TOOLS = (
 # 크레딧이 0 인 옛날 키가 환경에 남아 있으면 "Credit balance is too low" 로
 # 매번 조용히 실패한다. 무인으로 도는 자리라 이걸 사람이 알아채기 어렵다.
 AUTH_ENV_TO_DROP = ("ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN", "ANTHROPIC_API_URL")
+# CI 에서 구독으로 인증하는 통로. `claude setup-token` 이 만든 값을 여기에 둔다.
+OAUTH_ENV = "CLAUDE_CODE_OAUTH_TOKEN"
 
 
 def _subscription_env():
-    """구독 로그인을 가로채는 인증 변수를 뺀 환경을 만든다."""
+    """구독 로그인을 가로채는 인증 변수를 빼고, 남길 토큰은 다듬는다."""
     env = os.environ.copy()
     for name in AUTH_ENV_TO_DROP:
         env.pop(name, None)
+    # 토큰은 터미널에서 복사해 시크릿에 붙여넣는 값이라 앞뒤 공백·줄바꿈·따옴표가
+    # 딸려 들어가기 쉽다. 그대로 헤더에 실리면 인증이 깨진다.
+    token = env.get(OAUTH_ENV)
+    if token:
+        env[OAUTH_ENV] = token.strip().strip("'\"").strip()
     return env
 
 
@@ -206,4 +213,29 @@ def check_cli(command=DEFAULT_COMMAND):
         return f"'{command} --version' 이 응답하지 않는다: {error}"
     if done.returncode != 0:
         return f"'{command} --version' 이 종료코드 {done.returncode} 로 끝났다."
+    return check_token(os.environ.get(OAUTH_ENV))
+
+
+def check_token(token):
+    """CI 토큰의 모양을 본다. 문제가 없으면 None.
+
+    서버는 잘린 토큰에도 그냥 401 만 돌려줘서, 값이 짧은 것인지 만료된 것인지
+    구분할 수 없다. 모양이라도 먼저 보면 "복사하다 잘렸다" 를 바로 짚을 수 있다.
+    값 자체는 절대 찍지 않는다.
+    """
+    if not token:
+        return None  # 로컬 로그인으로 도는 경우다. 토큰이 없어도 된다.
+    cleaned = token.strip()
+    if not cleaned.isascii():
+        return f"{OAUTH_ENV} 에 한글·공백 같은 ASCII 가 아닌 문자가 섞여 있다. 다시 복사할 것."
+    if not cleaned.startswith("sk-ant-oat"):
+        return (
+            f"{OAUTH_ENV} 가 'sk-ant-oat' 로 시작하지 않는다. "
+            "`claude setup-token` 이 마지막에 출력하는 값을 넣어야 한다."
+        )
+    if len(cleaned) < 80:
+        return (
+            f"{OAUTH_ENV} 가 {len(cleaned)}자로 너무 짧다. 복사하다 잘린 값이다. "
+            "터미널에서 줄바꿈이 섞이지 않게 다시 복사할 것."
+        )
     return None

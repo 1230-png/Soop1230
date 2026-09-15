@@ -252,3 +252,39 @@ def test_a_failure_pulls_the_reason_out_of_the_result_json(monkeypatch):
     message = str(caught.value)
     assert "OAuth token is invalid or expired" in message
     assert "api_error" in message
+
+
+def test_the_token_is_trimmed_before_it_reaches_claude(monkeypatch):
+    """시크릿에 붙여넣을 때 앞뒤 공백·줄바꿈·따옴표가 딸려 들어가기 쉽다."""
+    monkeypatch.setenv(cli_client.OAUTH_ENV, '  "sk-ant-oat01-값"\n')
+    seen = {}
+
+    def fake_run(argv, **kwargs):
+        seen["env"] = kwargs.get("env")
+        return fake_completed(payload())
+
+    monkeypatch.setattr(cli_client.subprocess, "run", fake_run)
+    cli_client.ClaudeCliClient().messages.create(messages=[{"role": "user", "content": "x"}])
+    assert seen["env"][cli_client.OAUTH_ENV] == "sk-ant-oat01-값"
+
+
+def test_check_token_catches_a_truncated_paste():
+    assert "잘린" in cli_client.check_token("sk-ant-oat01-tooshort")
+
+
+def test_check_token_catches_non_ascii():
+    assert "ASCII" in cli_client.check_token("sk-ant-oat01-한글섞임" + "x" * 90)
+
+
+def test_check_token_catches_the_wrong_kind_of_value():
+    assert "sk-ant-oat" in cli_client.check_token("sk-ant-api03-" + "x" * 90)
+
+
+def test_check_token_accepts_a_full_token():
+    assert cli_client.check_token("sk-ant-oat01-" + "x" * 90) is None
+
+
+def test_check_token_is_quiet_without_a_token():
+    """로컬은 로그인으로 돈다. 토큰이 없다고 막으면 안 된다."""
+    assert cli_client.check_token(None) is None
+    assert cli_client.check_token("") is None
