@@ -78,6 +78,18 @@ def test_a_nonzero_exit_says_to_check_the_login(monkeypatch):
         cli_client.ClaudeCliClient().messages.create(messages=[{"role": "user", "content": "x"}])
 
 
+def test_a_failure_shows_stdout_too(monkeypatch):
+    """claude 는 실패 사유를 stdout 으로 내기도 한다. stderr 만 찍으면 원인을 못 찾는다."""
+    monkeypatch.setattr(
+        cli_client.subprocess, "run",
+        lambda argv, **k: fake_completed(
+            stdout="Invalid API key · Please run /login", returncode=1, stderr=""
+        ),
+    )
+    with pytest.raises(cli_client.CliClientError, match="Invalid API key"):
+        cli_client.ClaudeCliClient().messages.create(messages=[{"role": "user", "content": "x"}])
+
+
 def test_unreadable_output_is_reported(monkeypatch):
     monkeypatch.setattr(
         cli_client.subprocess, "run", lambda argv, **k: fake_completed(stdout="JSON 아님")
