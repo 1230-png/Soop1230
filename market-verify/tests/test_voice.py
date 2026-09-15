@@ -96,3 +96,24 @@ def test_without_a_fallback_key_it_says_why(tmp_path, monkeypatch):
     monkeypatch.delenv(voice.ELEVENLABS_KEY_ENV, raising=False)
     with pytest.raises(voice.VoiceError, match="ELEVENLABS_API_KEY"):
         voice.edge_tts_speak("문장", tmp_path / "a.mp3")
+
+
+def test_an_empty_voice_id_secret_falls_back_to_the_default(monkeypatch, tmp_path):
+    """워크플로는 없는 시크릿을 빈 문자열로 넘긴다. 그걸 값으로 쓰면 주소가 깨진다."""
+    monkeypatch.setenv(voice.ELEVENLABS_KEY_ENV, "키")
+    monkeypatch.setenv("ELEVENLABS_VOICE_ID", "")
+    seen = {}
+
+    class Response:
+        status_code = 200
+        content = b"mp3"
+
+    def fake_post(url, **kwargs):
+        seen["url"] = url
+        return Response()
+
+    import requests
+    monkeypatch.setattr(requests, "post", fake_post)
+    voice.elevenlabs_speak("문장", tmp_path / "a.mp3")
+    assert seen["url"].endswith(voice.ELEVENLABS_DEFAULT_VOICE_ID)
+    assert not seen["url"].endswith("/")

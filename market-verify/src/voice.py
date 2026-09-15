@@ -62,7 +62,10 @@ def elevenlabs_speak(text, out_path, voice=None):
     """일레븐랩스로 읽는다. 데이터센터에서도 막히지 않는다."""
     import requests
 
-    voice_id = voice or os.environ.get("ELEVENLABS_VOICE_ID", ELEVENLABS_DEFAULT_VOICE_ID)
+    # 빈 값과 없는 값은 다르다. 워크플로가 없는 시크릿을 빈 문자열로 넘기는데,
+    # get(이름, 기본값) 은 그걸 유효한 값으로 보고 기본값을 쓰지 않는다.
+    # 그러면 주소가 /text-to-speech/ 로 끝나 404 가 난다. 실제로 그랬다.
+    voice_id = voice or os.environ.get("ELEVENLABS_VOICE_ID") or ELEVENLABS_DEFAULT_VOICE_ID
     response = requests.post(
         f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}",
         headers={
