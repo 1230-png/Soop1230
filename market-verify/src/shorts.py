@@ -169,7 +169,7 @@ def build(script_text, outdir, stem, speak, voice_name, cut_index=0, log=print,
 
     with tempfile.TemporaryDirectory() as tmp:
         tmp = Path(tmp)
-        audio_paths = voice.narrate(cut_scenes, tmp, speak=speak, voice=voice_name)
+        audio_paths = voice.narrate(cut_scenes, tmp, speak=speak, voice=voice_name, log=log)
         durations = [render.audio_duration(audio) for audio in audio_paths]
 
         # 훅은 앞에 있다. 넘치면 뒤를 버린다.
@@ -191,7 +191,10 @@ def build(script_text, outdir, stem, speak, voice_name, cut_index=0, log=print,
                 scene.screen_text, scene.section, tmp / f"short_slide_{index + 1:03d}.png",
                 width=render.SHORT_WIDTH, height=render.SHORT_HEIGHT,
             )
-            part = render.mux(image, audio, tmp / f"short_part_{index + 1:03d}.mp4")
+            part = render.mux(
+                image, audio, tmp / f"short_part_{index + 1:03d}.mp4",
+                seconds=durations[index],
+            )
             total += durations[index]
             parts.append(part)
             log(f"  {index + 1:>2}/{kept} {scene.section} · {durations[index]:5.1f}초")

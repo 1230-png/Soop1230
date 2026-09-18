@@ -167,7 +167,10 @@ def run_once(args):
             script_path.write_text(script_text, encoding="utf-8")
 
     speak = voice.silent_speak if args.silent else voice.edge_tts_speak
-    video_path, thumb_path = produce.build(script_text, args.outdir, stem, speak, args.voice)
+    video_path, thumb_path = produce.build(
+        script_text, args.outdir, stem, speak, args.voice,
+        block_text=produce.block_beside(script_path),
+    )
 
     cuts_total = len(shorts.parse_cuts(script_text))
     if cuts_total == 0 and shorts.has_section(script_text):

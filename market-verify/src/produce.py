@@ -9,10 +9,12 @@ import sys
 import tempfile
 from pathlib import Path
 
-from src import brand, render, script_parse, voice
+from src import brand, chart, render, script_parse, voice
 from src.upload import UploadConfigError, check_credentials, upload
 
 OUT_DIR = Path(__file__).resolve().parent.parent / "out"
+# 분포 그림을 쓰는 구간. 수치가 나오는 자리는 여기다.
+CHART_SECTION = "4."
 
 
 def parse_args(argv=None):
@@ -35,12 +37,41 @@ def parse_args(argv=None):
     return parser.parse_args(argv)
 
 
+def block_beside(script_path):
+    """대본 옆의 데이터 블록. run.py 가 같은 stem 으로 써 둔다. 없으면 None."""
+    script_path = Path(script_path)
+    stem = script_path.stem.replace("_script", "")
+    path = script_path.with_name(f"{stem}_block.txt")
+    return path.read_text(encoding="utf-8") if path.exists() else None
+
+
 def _operator_note_filled(scenes):
     return any(scene.section.startswith("6.") for scene in scenes)
 
 
-def build(script_text, outdir, stem, speak, voice_name, log=print):
-    """장면을 만들고 영상과 썸네일을 낸다. 경로 두 개를 돌려준다."""
+def _scene_image(scene, series, out_path, log):
+    """결과 구간에는 분포 그림을, 나머지에는 글자 화면을 쓴다.
+
+    그림을 못 그리면 글자 화면으로 돌아간다. 사람 확인 없이 공개로 나가는
+    자리라, 그림 하나 때문에 그날 영상이 통째로 안 나오면 안 된다. 다만 조용히
+    넘어가지는 않는다 — 그림이 매일 빠지고 있는데 모르는 쪽이 더 나쁘다.
+    """
+    if series and scene.section.startswith(CHART_SECTION):
+        try:
+            return render.distribution_slide(
+                series, scene.screen_text, scene.section, out_path
+            )
+        except Exception as error:
+            log(f"  ! 분포 그림 실패({type(error).__name__}: {error}). 글자 화면으로 간다.")
+    return render.slide(scene.screen_text, scene.section, out_path)
+
+
+def build(script_text, outdir, stem, speak, voice_name, log=print, block_text=None):
+    """장면을 만들고 영상과 썸네일을 낸다. 경로 두 개를 돌려준다.
+
+    block_text 를 주면 결과 구간을 분포 그림으로 그린다. 숫자는 블록에 적힌 것을
+    그대로 읽어 쓴다 — 대본이 말하는 값과 그림이 보여 주는 값이 갈라지면 안 된다.
+    """
     scenes = script_parse.scenes(script_text)
     if not scenes:
         raise ValueError("대본에서 나레이션 구간을 찾지 못했다. 헤더 표기를 확인할 것.")
@@ -54,17 +85,22 @@ def build(script_text, outdir, stem, speak, voice_name, log=print):
     if not _operator_note_filled(scenes):
         log("  ! [운영자 코멘트]가 비어 있다. 채우지 않으면 그 대목이 영상에서 빠진다.")
 
+    series = chart.parse_cases(block_text) if block_text else []
+    if series:
+        log(f"  분포 그림: 구간 {len(series)}개 · 사례 {len(series[0][1])}건")
+    elif block_text:
+        log("  분포 그림 없음 — 이 블록에는 사례별 표가 없다(전략·토크노믹스).")
+
     with tempfile.TemporaryDirectory() as tmp:
         tmp = Path(tmp)
-        audio_paths = voice.narrate(scenes, tmp, speak=speak, voice=voice_name)
+        audio_paths = voice.narrate(scenes, tmp, speak=speak, voice=voice_name, log=log)
         parts = []
         total = 0.0
         for index, (scene, audio) in enumerate(zip(scenes, audio_paths), start=1):
-            image = render.slide(
-                scene.screen_text, scene.section, tmp / f"slide_{index:03d}.png"
-            )
-            part = render.mux(image, audio, tmp / f"part_{index:03d}.mp4")
+            image = _scene_image(scene, series, tmp / f"slide_{index:03d}.png", log)
+            # 길이를 먼저 잰다. mux 가 이 길이로 확대 프레임 수를 잡는다.
             seconds = render.audio_duration(audio)
+            part = render.mux(image, audio, tmp / f"part_{index:03d}.mp4", seconds=seconds)
             total += seconds
             parts.append(part)
             log(f"  {index:>2}/{len(scenes)} {scene.section} · {seconds:5.1f}초")
@@ -102,7 +138,7 @@ def main(argv=None):
     try:
         video_path, thumb_path = build(
             script_text, args.outdir, script_path.stem.replace("_script", ""),
-            speak, args.voice,
+            speak, args.voice, block_text=block_beside(script_path),
         )
     except Exception as error:
         print(f"실패: 영상을 만들지 못했다. {type(error).__name__}: {error}")

@@ -156,3 +156,86 @@ def test_every_failure_is_listed(tmp_path, monkeypatch):
         voice.edge_tts_speak("문장", tmp_path / "a.mp3")
     message = str(caught.value)
     assert "edge-tts" in message and "일레븐랩스" in message and "구글" in message
+
+
+# --- 어느 엔진이 읽었나 -------------------------------------------------
+#
+# 엔진 세 개가 조용히 갈아타는 구조라, 성공한 경로가 로그에 안 남았다.
+# 러너에서 edge-tts 가 막히는 것은 이미 알려진 사실이므로, 매일 아침 어떤
+# 목소리로 발행되는지 확인할 수단이 없었다는 뜻이다.
+
+
+def _blocked(*args, **kwargs):
+    raise RuntimeError("NoAudioReceived")
+
+
+def _fake(engine):
+    """파일을 남기고 엔진만 기록하는 speak."""
+    def speak(text, out_path, voice_name=None):
+        Path(out_path).write_bytes(b"")
+        voice._record(engine)
+        return out_path
+    return speak
+
+
+def test_edge_is_recorded_when_it_speaks(monkeypatch, tmp_path):
+    voice.reset_engines()
+    monkeypatch.setattr(voice, "_edge_once", lambda text, path, name: path)
+
+    voice.edge_tts_speak("안녕하세요.", tmp_path / "a.mp3")
+
+    assert voice.engines_used() == {voice.EDGE: 1}
+
+
+def test_records_the_engine_that_spoke_not_the_one_tried_first(monkeypatch, tmp_path):
+    """러너에서 실제로 일어나는 일이다. 막히면 조용히 내려간다."""
+    voice.reset_engines()
+    monkeypatch.setattr(voice, "EDGE_ATTEMPTS", 1)
+    monkeypatch.setattr(voice, "_edge_once", _blocked)
+    monkeypatch.delenv(voice.ELEVENLABS_KEY_ENV, raising=False)
+    monkeypatch.setattr(voice, "google_speak", lambda text, path: path)
+
+    voice.edge_tts_speak("안녕하세요.", tmp_path / "a.mp3")
+
+    assert voice.engines_used() == {voice.GOOGLE: 1}
+
+
+def test_records_elevenlabs_when_the_key_is_present(monkeypatch, tmp_path):
+    voice.reset_engines()
+    monkeypatch.setattr(voice, "EDGE_ATTEMPTS", 1)
+    monkeypatch.setattr(voice, "_edge_once", _blocked)
+    monkeypatch.setenv(voice.ELEVENLABS_KEY_ENV, "키가-있다")
+    monkeypatch.setattr(voice, "elevenlabs_speak", lambda text, path: path)
+
+    voice.edge_tts_speak("안녕하세요.", tmp_path / "a.mp3")
+
+    assert voice.engines_used() == {voice.ELEVENLABS: 1}
+
+
+def test_narrate_flags_a_fallback_so_it_is_not_buried(tmp_path):
+    scenes = [Scene("1. 오프닝", "화면", "가"), Scene("7. 엔딩", "화면", "나")]
+    lines = []
+
+    voice.narrate(scenes, tmp_path, speak=_fake(voice.GOOGLE), log=lines.append)
+
+    assert any("구글 번역 음성 2개" in line for line in lines)
+    # 느낌표가 없으면 로그 수십 줄 사이에 묻힌다. 저장소의 다른 경고와 같은 표기다.
+    assert any(line.lstrip().startswith("!") for line in lines)
+
+
+def test_narrate_does_not_cry_wolf_when_edge_worked(tmp_path):
+    lines = []
+
+    voice.narrate([Scene("s", "화면", "가")], tmp_path,
+                  speak=_fake(voice.EDGE), log=lines.append)
+
+    assert any("edge-tts 1개" in line for line in lines)
+    assert not any(line.lstrip().startswith("!") for line in lines)
+
+
+def test_counts_do_not_leak_from_the_previous_video(tmp_path):
+    """앞 영상의 집계가 남으면 멀쩡한 영상이 대체 음성을 쓴 것처럼 보인다."""
+    voice.narrate([Scene("s", "화면", "가")], tmp_path, speak=_fake(voice.GOOGLE))
+    voice.narrate([Scene("s", "화면", "가")], tmp_path, speak=_fake(voice.EDGE))
+
+    assert voice.engines_used() == {voice.EDGE: 1}
