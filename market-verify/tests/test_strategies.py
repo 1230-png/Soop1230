@@ -1,10 +1,24 @@
 import io
 
+import numpy as np
 import pandas as pd
 import pytest
 
-from src import strategies
-from src.strategies import MONTH_DAYS, build_dca_block, compare, dca_vs_lumpsum, to_dca_block
+from src.strategies import (
+    DEFAULT_INTERVALS,
+    MONTH_DAYS,
+    NO_REBALANCE,
+    align,
+    build_dca_block,
+    build_rebalance_block,
+    compare,
+    compare_intervals,
+    dca_vs_lumpsum,
+    interval_label,
+    rebalance_intervals,
+    simulate_rebalance,
+    to_dca_block,
+)
 from src.validator import validate
 
 
@@ -201,19 +215,6 @@ def _minimal_script(date, starts, win_ratio):
 
 # ─── 리밸런싱 ────────────────────────────────────────────────────────
 
-import numpy as np
-
-from src.strategies import (
-    DEFAULT_INTERVALS,
-    NO_REBALANCE,
-    align,
-    build_rebalance_block,
-    compare_intervals,
-    interval_label,
-    rebalance_intervals,
-    simulate_rebalance,
-)
-
 HOLD = 60
 SPAN = HOLD * MONTH_DAYS
 
@@ -297,7 +298,7 @@ def test_rows_carry_every_interval():
         assert set(row["drawdowns"]) == set(DEFAULT_INTERVALS)
 
 
-def test_rejects_impossible_settings():
+def test_rebalance_rejects_impossible_settings():
     a, b = flat_pair()
     with pytest.raises(ValueError):
         rebalance_intervals(a, b, weight_a=0.0)

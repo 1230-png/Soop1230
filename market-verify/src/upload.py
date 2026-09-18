@@ -33,13 +33,13 @@ REQUIRED_ENV = (CLIENT_ID_ENV, CLIENT_SECRET_ENV, REFRESH_TOKEN_ENV)
 # 부르는지 여기 적어 둔다 — 없는 절차를 가리키는 에러만큼 사람을 헤매게 하는 것이 없다.
 HOW_TO_GET = """  발급은 본인 PC 에서 한 번만 한다(브라우저 로그인이 필요해 CI 에서는 안 된다).
     pip install google-auth-oauthlib
-    python3 channel_food/scripts/get_refresh_token.py --client-secret client_secret.json
+    python3 channel_200y3b/scripts/get_refresh_token.py --client-secret-file client_secret.json
     윈도우 PowerShell 이면 python3 대신 python, 경로 구분자는 역슬래시.
 
   client_secret.json 은 **머니로직 전용 구글 클라우드 프로젝트**에서 받은 것을
   쓴다. 다른 채널 것을 돌려쓰지 않는다 — 그러면 할당량을 나눠 쓰게 되고(할당량은
   채널이 아니라 프로젝트 단위다), 어느 채널이 먼저 떨어질지 그날 순서에 달린다.
-  프로젝트 만드는 절차는 channel_food/SETUP.md 의 1~3 절과 같다
+  프로젝트 만드는 절차는 channel_200y3b/SETUP.md 의 1~4 절과 같다
   (동의 화면을 '프로덕션'으로 올리지 않으면 토큰이 7일마다 만료된다).
 
   출력된 세 값을 저장소 Secrets 에 넣는다:

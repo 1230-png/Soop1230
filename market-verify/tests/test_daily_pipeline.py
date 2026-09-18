@@ -172,9 +172,12 @@ def test_repeat_makes_several_episodes_each_with_a_new_topic(tmp_path, stub_run_
     # 두 편이 서로 다른 도구를 부를 수 있으므로 전부 가짜로 바꾼다.
     for tool in list(daily_pipeline.TOOL_MAIN):
         monkeypatch.setitem(daily_pipeline.TOOL_MAIN, tool, fake_tool_writing_a_script)
+    # --source pool 을 준다. 기본값 news 는 news_topics 가 야후로 나가는 경로라
+    # 테스트가 네트워크를 타고, 어제 움직임이 크면 순환 풀 대신 뉴스 토픽을 골라
+    # 아래 단언이 깨진다. 이 테스트가 보는 것은 풀 순환이지 소재 출처가 아니다.
     code = daily_pipeline.main(
         ["--outdir", str(tmp_path), "--silent", "--log-path", str(log_path),
-         "--shorts-count", "0", "--repeat", "2"]
+         "--shorts-count", "0", "--repeat", "2", "--source", "pool"]
     )
     assert code == 0
     assert topics.used_keys(log_path) == {
@@ -186,8 +189,12 @@ def test_repeat_stops_at_the_first_failure(tmp_path, monkeypatch, capsys):
     log_path = tmp_path / "used_topics.csv"
     for tool in list(daily_pipeline.TOOL_MAIN):
         monkeypatch.setitem(daily_pipeline.TOOL_MAIN, tool, lambda argv: 2)
+    # --source pool 을 준다. 기본값 news 는 news_topics 가 야후로 나가는 경로라
+    # 테스트가 네트워크를 타고, 어제 움직임이 크면 순환 풀 대신 뉴스 토픽을 골라
+    # 아래 단언이 깨진다. 이 테스트가 보는 것은 풀 순환이지 소재 출처가 아니다.
     code = daily_pipeline.main(
-        ["--outdir", str(tmp_path), "--log-path", str(log_path), "--repeat", "3"]
+        ["--outdir", str(tmp_path), "--log-path", str(log_path), "--repeat", "3",
+         "--source", "pool"]
     )
     assert code == 2
     assert "만든 편수: 0" in capsys.readouterr().out
@@ -207,8 +214,12 @@ def test_without_a_topic_key_it_follows_the_rotation(tmp_path, monkeypatch):
     expected = topics.TOPIC_POOL[1]
     # 두 번째 토픽이 어떤 도구를 부르든 그 도구를 가짜로 바꾼다.
     monkeypatch.setitem(daily_pipeline.TOOL_MAIN, expected.tool, fake_tool_writing_a_script)
+    # --source pool 을 준다. 기본값 news 는 news_topics 가 야후로 나가는 경로라
+    # 테스트가 네트워크를 타고, 어제 움직임이 크면 순환 풀 대신 뉴스 토픽을 골라
+    # 아래 단언이 깨진다. 이 테스트가 보는 것은 풀 순환이지 소재 출처가 아니다.
     code = daily_pipeline.main(
-        ["--outdir", str(tmp_path), "--silent", "--log-path", str(log_path)]
+        ["--outdir", str(tmp_path), "--silent", "--log-path", str(log_path),
+         "--source", "pool"]
     )
     assert code == 0
     assert topics.used_keys(log_path) == {topics.TOPIC_POOL[0].key, expected.key}

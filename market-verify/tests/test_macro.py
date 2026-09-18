@@ -188,7 +188,6 @@ def test_block_warns_below_five_cases(capsys):
 
 
 def test_block_accepts_an_injected_stream():
-    close = daily_close()
     buffer = io.StringIO()
     macro.to_block(
         series_id="X", ticker="^Y", condition="테스트", rows=[], summary={},

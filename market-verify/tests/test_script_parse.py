@@ -1,5 +1,3 @@
-import pytest
-
 from src import script_parse as sp
 from tests.fixtures import SCRIPT
 

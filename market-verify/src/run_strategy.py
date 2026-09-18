@@ -14,7 +14,9 @@ from pathlib import Path
 
 from src import market_events as me
 from src import strategies
-from src.run import KEY_ENV, _slug, add_operator_guide, check_api_key
+# KEY_ENV 는 이 파일에서 직접 쓰지 않지만 재노출이다. 테스트가
+# run_strategy.KEY_ENV 로 집어 든다. ruff 는 F401 로 지우자고 하지만 지우면 깨진다.
+from src.run import KEY_ENV, _slug, add_operator_guide, check_api_key  # noqa: F401
 from src.writer import (
     APICallError,
     ScriptGenerationError,

@@ -80,7 +80,7 @@ def topic_for(move):
     """움직인 자산 하나를 에버그린 검증 토픽으로 바꾼다."""
     if move.ticker == "^VIX":
         # 지금 수준 바로 아래 기준선을 쓴다. "이 선을 넘었던 적들" 을 보는 것이다.
-        level = max((l for l in VIX_LEVELS if l <= move.last_close), default=VIX_LEVELS[0])
+        level = max((lv for lv in VIX_LEVELS if lv <= move.last_close), default=VIX_LEVELS[0])
         return Topic(
             f"news-vix-{level:g}", "run",
             ("--ticker", "^VIX", "--condition", "threshold", "--level", f"{level:g}",

@@ -8,17 +8,23 @@
 
 | 디렉터리 | 채널/용도 | 상태 |
 |---|---|---|
-| `channel_200y3b/` | @200-y3b — 매일 영어 한마디 쇼츠 + 주간 롱폼 + 월간 총정리 | **가동 중** (GitHub Actions 무인 발행) |
-| `channel_food/` | 현실 속 기괴한 현상 — 매일 쇼츠 1편 | **가동 중** |
-| `channel/` | 새벽공기 — Suno 감성 힙합 플레이리스트 | 문서·기록 위주 (코드 없음) |
+| `channel_200y3b/` | @200-y3b — 매일 영어 한마디 쇼츠 | **가동 중** (GitHub Actions 무인 발행) |
+| `longform/` | @200-y3b — 롱폼 팩(주간 리뷰·섀도잉·상황별) | **가동 중** (GitHub Actions 무인 발행) |
 | `market-verify/` | 머니로직(MoneyLogic) 롱폼+숏폼 — 대본·영상 | **가동 중** (GitHub Actions 매일 **무인 공개 발행**) |
-| `shorts_engine/` | 피드백 루프 쇼츠 파이프라인 (FastAPI + Postgres 큐) | **참고 구현. 지금 돌지 않는다** |
+| `channel/` | 새벽공기 — Suno 감성 힙합 플레이리스트 | 문서·기록 위주 (코드 없음) |
 
-`shorts_engine/`은 규모가 커질 때를 위한 판이다. 매일 발행은 `channel_food/`가 한다.
-여기를 "현재 파이프라인"으로 착각하고 고치지 말 것.
+`longform/` 은 같은 채널(@200-y3b)을 쓰지만 `channel_200y3b/` 와 **파일도 상태도
+공유하지 않는다.** 한쪽이 망가져도 다른 쪽은 그대로 돈다. 합치지 말 것 — 이유는
+`longform/README.md` 에 있다(쇼츠 시청 시간은 파트너 프로그램 3,000시간에 안 들어간다).
 
-디렉터리 이름 `channel_food`는 이전 음식 채널에서 이어받은 것이고 지금 내용은
-음식과 무관하다. 워크플로 경로가 묶여 있어 그대로 둔다. 이름 보고 추측하지 말 것.
+접은 것:
+
+- `channel_food/` — "현실 속 기괴한 현상" 채널. 채널을 접어서 2026-09 에 지웠다.
+  같이 지운 것: `channel_branding.yml` · `channel_report.yml`, `WEIRD_*` 시크릿을
+  쓰던 곳. 시크릿 자체는 저장소 설정에 남아 있을 수 있으니 쓰지 말 것.
+- `shorts_engine/` — 피드백 루프 쇼츠 파이프라인(FastAPI + Postgres). 참고 구현이라
+  돌린 적이 없고, `channel_food/scripts/` 를 끌어다 쓰고 있어서 함께 지웠다.
+  되살리려면 `99237fa` 이전 커밋에 전부 있다.
 
 ## 테스트
 
@@ -26,11 +32,16 @@
 
 ```bash
 cd market-verify && python -m pytest      # 네트워크·API 안 탐 (영상 조립까지 돌려 4분)
-cd shorts_engine && python -m pytest      # pythonpath=. , asyncio_mode=auto
-cd channel_food  && python -m pytest tests/   # ffmpeg·네트워크 불필요
 ```
 
 새 테스트는 네트워크와 외부 API를 타지 않게 쓴다. 기존 테스트가 전부 그렇게 돼 있다.
+
+**ffmpeg 와 한글 폰트가 없으면 30개가 깨진다**(ffmpeg 19, 폰트 8, ffmpeg 실패가
+번진 것 3). 코드 문제가 아니다. 러너는 둘 다 깔고 시작한다.
+
+```bash
+sudo apt-get install -y ffmpeg fonts-noto-cjk
+```
 
 ## 비밀값
 
@@ -39,8 +50,6 @@ cd channel_food  && python -m pytest tests/   # ffmpeg·네트워크 불필요
 - `market-verify` → `ANTHROPIC_API_KEY`, `FRED_API_KEY`(매크로), `COINGECKO_API_KEY`(실측 희석률)
 - `market-verify` 업로드 → `MV_CLIENT_ID` / `MV_CLIENT_SECRET` / `MV_REFRESH_TOKEN` / `MV_CHANNEL_ID`
 - `channel_200y3b` → `Y3B_CLIENT_ID` / `Y3B_CLIENT_SECRET` / `Y3B_REFRESH_TOKEN`
-- `channel_food` → `WEIRD_CLIENT_ID` / `WEIRD_CLIENT_SECRET` / `WEIRD_REFRESH_TOKEN`
-- `channel_food` TTS → `ELEVENLABS_API_KEY` (+ 선택 `ELEVENLABS_VOICE_ID`)
 
 **채널마다 제 자격 증명과 제 구글 클라우드 프로젝트를 쓴다.** 공용 `YT_*` 가 아직
 남아 있지만 새로 쓰지 않는다. 하나를 여러 채널이 같이 쓰다가 업로드가 깨진 적이
@@ -64,13 +73,16 @@ cron 으로 실제 올리는 것은 셋이다. 앞의 둘은 같은 채널(@200-
 | `longform.yml` | @200-y3b | 롱폼 1편 |
 | `moneylogic_daily.yml` | 머니로직 | 롱폼 1 + 숏폼 3 |
 
-`channel_food` 를 업로드로 돌리는 cron 워크플로는 **없다.** `WEIRD_*` 를 쓰는
-`channel_branding.yml` · `channel_report.yml` 은 수동 실행이고 발행이 아니다.
-
 `moneylogic_daily.yml` 은 만든 영상을 **공개로 발행하고** 아티팩트로도 남긴다.
 대본은 `ANTHROPIC_API_KEY` 가 있으면 그쪽(크레딧 차감), 없으면 구독
 토큰(`CLAUDE_CODE_OAUTH_TOKEN`)으로 쓴다. 자격 증명 검사가 영상을 만들기 전에
 돌아서, 시크릿이 없으면 1분 안에 깨끗하게 실패한다(크레딧도 소재 기록도 안 쓴다).
+
+**코드 검사도 같은 자리에 있다.** `ruff check` 와 `pytest` 가 Claude Code 설치보다
+앞에서 돌아, 깨진 코드면 크레딧을 쓰기 전에 멈춘다. 사람 확인 없이 공개로 나가는
+파이프라인이라 이 순서가 핵심이다 — 뒤로 옮기지 말 것. `ruff` 는 버전을 고정해
+둔다. 안 그러면 새 판이 규칙을 추가한 날 아침, 코드를 건드리지도 않았는데 발행이
+멈춘다.
 
 `used_log*.csv`와 `metrics.csv`는 워크플로가 append하는 실행 기록이다. append-only로
 다루고 임의로 정리하거나 되돌리지 않는다. `[skip ci]` 커밋 대부분이 이것이다.
@@ -124,13 +136,6 @@ API 호출은 비용이 든다. 블록만 확인할 때는 `--block-only`를 쓴
 으로 부른다. 무인 공개 발행이다. `assert_target_channel` 이 마지막 방어선으로,
 `MV_CHANNEL_ID` 와 토큰이 가리키는 채널이 다르면 올리지 않고 멈춘다 — 실제로
 한 번 잡았다. 이 저장소는 채널을 여러 개 운영한다.
-
-### channel_food / shorts_engine
-
-컷 계산은 `channel_food/scripts/timeline.py` **한 곳에만** 있고 `shorts_engine`은
-재노출만 한다. 두 파이프라인이 다른 컷을 만들지 않게 하려는 것이므로 복제하지 말 것.
-
-채널 이름·핸들·설명문은 `channel_food/scripts/brand.py` 상수에서만 고친다.
 
 ## 산출물
 
