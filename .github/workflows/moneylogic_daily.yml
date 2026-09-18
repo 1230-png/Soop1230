@@ -70,6 +70,25 @@ jobs:
       - name: 파이썬 패키지
         run: pip install -r market-verify/requirements.txt
 
+      - name: 코드 검사 (깨진 코드가 공개로 올라가는 것을 막는다)
+        working-directory: market-verify
+        run: |
+          # 여기는 크레딧도 소재 기록도 아직 안 쓴 지점이다. 자격 증명 검사를
+          # 영상 만들기 전에 두는 것과 같은 이유로, 코드 검사도 여기 둔다 —
+          # 실패하면 1~2 분 안에 깨끗하게 멈춘다.
+          #
+          # 이 검사가 없던 동안, 문법은 맞지만 깨진 코드가 사람 확인 없이
+          # 공개로 발행될 수 있었다. 되돌리려면 유튜브 스튜디오에서 손으로
+          # 지워야 한다.
+          #
+          # ruff 는 버전을 고정한다. 새 판이 규칙을 추가하면 코드를 건드리지
+          # 않았는데도 어느 날 아침 발행이 멈춘다. 올릴 때는 사람이 올린다.
+          pip install "ruff==0.15.8"
+          ruff check src tests
+          # pytest 는 requirements.txt 에 이미 있다. 위에서 ffmpeg 와 한글
+          # 폰트를 깔았으므로 영상 조립 테스트까지 전부 돌아간다.
+          python -m pytest -q
+
       - name: Claude Code
         run: npm install -g @anthropic-ai/claude-code
 
