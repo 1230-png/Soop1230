@@ -4,7 +4,6 @@ import pytest
 
 from src import run_strategy
 from src.strategies import MONTH_DAYS
-from src.strategies import MONTH_DAYS as MD
 from src.writer import AttemptUsage, ScriptGenerationError
 
 
@@ -103,7 +102,7 @@ def test_failure_saves_no_script_but_reports_the_spend(stub_market, tmp_path, ca
 
 
 def swinging_pair(months=140):
-    n = months * MD
+    n = months * MONTH_DAYS
     idx = pd.bdate_range("1990-01-02", periods=n)
     a = pd.Series([100 * (1.0003**i) * (1 + 0.30 * np.sin(i / 85.0)) for i in range(n)], index=idx)
     b = pd.Series([50 * (1.00008**i) for i in range(n)], index=idx)
