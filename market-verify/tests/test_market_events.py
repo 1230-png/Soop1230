@@ -4,7 +4,6 @@ import pandas as pd
 import pytest
 
 from src.market_events import (
-    HORIZONS,
     MIN_GAP_TRADING_DAYS,
     _extract_close,
     apply_min_gap,

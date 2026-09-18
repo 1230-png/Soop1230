@@ -3,7 +3,6 @@ import io
 import pandas as pd
 import pytest
 
-from src import strategies
 from src.strategies import MONTH_DAYS, build_dca_block, compare, dca_vs_lumpsum, to_dca_block
 from src.validator import validate
 
