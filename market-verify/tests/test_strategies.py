@@ -297,7 +297,7 @@ def test_rows_carry_every_interval():
         assert set(row["drawdowns"]) == set(DEFAULT_INTERVALS)
 
 
-def test_rejects_impossible_settings():
+def test_rebalance_rejects_impossible_settings():
     a, b = flat_pair()
     with pytest.raises(ValueError):
         rebalance_intervals(a, b, weight_a=0.0)
