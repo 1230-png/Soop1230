@@ -85,7 +85,7 @@ def main() -> int:
         if st.get("publishAt"):
             print(f"             ⏰ 예약 공개: {st['publishAt']}  (UTC 기준)")
         else:
-            print(f"             ⏰ 예약 공개: 없음")
+            print("             ⏰ 예약 공개: 없음")
 
     for vid in args.delete:
         try:
