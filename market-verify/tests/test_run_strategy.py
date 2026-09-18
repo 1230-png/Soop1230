@@ -1,8 +1,10 @@
+import numpy as np
 import pandas as pd
 import pytest
 
 from src import run_strategy
 from src.strategies import MONTH_DAYS
+from src.strategies import MONTH_DAYS as MD
 from src.writer import AttemptUsage, ScriptGenerationError
 
 
@@ -98,10 +100,6 @@ def test_failure_saves_no_script_but_reports_the_spend(stub_market, tmp_path, ca
 
 
 # ─── 리밸런싱 모드 ───────────────────────────────────────────────────
-
-import numpy as np
-
-from src.strategies import MONTH_DAYS as MD
 
 
 def swinging_pair(months=140):
