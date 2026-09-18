@@ -206,7 +206,11 @@ def test_cta_override_wins():
 
 def test_every_bank_item_gets_a_question():
     import json
+    # 콘텐츠 뱅크도 생성기와 같이 저장소에 없다. 있으면 진짜 뱅크를 검사하고,
+    # 없으면 건너뛴다 — 나중에 커밋되면 손 안 대도 다시 돌기 시작한다.
     bank = Path(__file__).resolve().parent.parent / "scripts" / "weird_content.json"
+    if not bank.exists():
+        pytest.skip("scripts/weird_content.json 이 저장소에 없다 (로컬 전용)")
     items = json.loads(bank.read_text(encoding="utf-8"))
     for item in items:
         question = cta.pick(item)
