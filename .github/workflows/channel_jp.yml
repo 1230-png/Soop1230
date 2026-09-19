@@ -72,9 +72,12 @@ jobs:
         run: |
           python -m pip install --quiet --upgrade pip
           pip install --quiet -r channel_jp/requirements.txt
-          # ruff 는 버전을 고정한다. 안 그러면 새 판이 규칙을 추가한 날
-          # 아침, 코드를 건드리지도 않았는데 발행이 멈춘다.
-          pip install --quiet ruff==0.6.9
+          # 검사 도구는 requirements.txt 에 없다. 그쪽은 영상을 만드는 데
+          # 실제로 필요한 것만 담는다 — 여기서 따로 깐다.
+          #
+          # 버전을 고정한다. 안 그러면 새 판이 규칙을 추가한 날 아침, 코드를
+          # 건드리지도 않았는데 발행이 멈춘다.
+          pip install --quiet ruff==0.6.9 pytest==8.3.3
 
       # 돈이 드는 단계 앞에 검사를 둔다(CLAUDE.md). 깨진 코드로 ElevenLabs
       # 를 부르면 글자 값은 그대로 나가고 영상은 안 나온다.
