@@ -10,18 +10,32 @@
 """
 
 import argparse
-import csv
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import channels as channel_registry
+import monetization
+import rows as row_tools
 
 ROOT = Path(__file__).resolve().parent
 METRICS_PATH = ROOT / "metrics.csv"
+STATS_PATH = ROOT / "channel_stats.csv"
 
-# 숏폼·롱폼을 가르는 우리 기준. 유튜브의 분류와 정확히 같다고 보지 말 것 —
-# 보고서를 읽기 위한 칸막이지 채널 설정이 아니다.
-SHORT_MAX_SECONDS = 180
+# 줄을 읽는 규칙은 rows.py 한 곳에 있다. 여기 이름은 그 별칭이다 —
+# report 와 monetization 이 같은 기준으로 같은 채널을 말해야 한다.
+SHORT_MAX_SECONDS = row_tools.SHORT_MAX_SECONDS
+is_short = row_tools.is_short
+snapshots = row_tools.snapshots
+at_snapshot = row_tools.at_snapshot
+_int = row_tools.as_int
+_when = row_tools.when
+_median = row_tools.median
+_views = row_tools.views
+
+
+def load_rows(path=METRICS_PATH):
+    return row_tools.load_rows(path)
+
 
 # 낸 지 이만큼 지났는데도 조회수가 0 이면 짚는다. 너무 짧게 잡으면 어제
 # 올린 것까지 실패로 세고, 너무 길게 잡으면 손쓸 시점을 놓친다.
@@ -44,69 +58,6 @@ BASELINE_MIN = 2
 # 정상이라 기준을 낮게 잡는다 — 매주 울리는 경고는 안 읽힌다.
 LONGFORM_LAG_RATIO = 0.25
 LONGFORM_MIN_FOR_COMPARISON = 2
-
-
-def load_rows(path=METRICS_PATH):
-    path = Path(path)
-    if not path.exists():
-        return []
-    with path.open(encoding="utf-8", newline="") as handle:
-        return list(csv.DictReader(handle))
-
-
-def _int(value):
-    """빈 칸은 None. 0 과 구별한다."""
-    text = (value or "").strip()
-    if not text:
-        return None
-    try:
-        return int(text)
-    except ValueError:
-        return None
-
-
-def _when(value):
-    text = (value or "").strip().replace("Z", "+00:00")
-    if not text:
-        return None
-    try:
-        parsed = datetime.fromisoformat(text)
-    except ValueError:
-        return None
-    return parsed if parsed.tzinfo else parsed.replace(tzinfo=timezone.utc)
-
-
-def snapshots(rows, channel_name):
-    """이 채널의 스냅샷 시각을 오래된 순으로."""
-    return sorted({row["observed_at"] for row in rows
-                   if row.get("channel") == channel_name})
-
-
-def at_snapshot(rows, channel_name, observed_at):
-    return [row for row in rows if row.get("channel") == channel_name
-            and row.get("observed_at") == observed_at]
-
-
-def is_short(row):
-    seconds = _int(row.get("duration_s"))
-    # 길이를 모르면 롱폼으로 둔다. 숏폼으로 잘못 넣으면 롱폼 통계가
-    # 조용히 얇아지는데, 롱폼 쪽이 이 채널들이 보려는 숫자다.
-    return seconds is not None and seconds <= SHORT_MAX_SECONDS
-
-
-def _median(numbers):
-    ordered = sorted(numbers)
-    if not ordered:
-        return None
-    middle = len(ordered) // 2
-    if len(ordered) % 2:
-        return ordered[middle]
-    return (ordered[middle - 1] + ordered[middle]) / 2
-
-
-def _views(rows):
-    return [value for value in (_int(row.get("views")) for row in rows)
-            if value is not None]
 
 
 def channel_findings(rows, channel, now):
@@ -192,13 +143,18 @@ def channel_findings(rows, channel, now):
     return findings
 
 
-def build(rows, now=None, registry=channel_registry.CHANNELS):
+def build(rows, now=None, *, stats_rows=(), registry=channel_registry.CHANNELS):
     now = now or datetime.now(timezone.utc)
     lines = [f"# 채널 상태 — {now.strftime('%Y-%m-%d')}", ""]
     for channel in registry:
         lines.append(f"## {channel.label}")
         for finding in channel_findings(rows, channel, now):
             lines.append(f"- {finding}")
+        lines.append("")
+        lines.append("**수익화까지**")
+        place = monetization.standing(rows, list(stats_rows), channel.name, now)
+        for line in monetization.lines(place):
+            lines.append(f"- {line}")
         lines.append("")
     lines += [
         "---",
@@ -207,6 +163,13 @@ def build(rows, now=None, registry=channel_registry.CHANNELS):
         "3,000시간은 Analytics API 에 있고 지금 토큰으로는 읽지 못한다. "
         "숏폼은 조회수가 잘 늘면서 그 3,000시간에는 들어가지 않으므로, "
         "숏폼 조회수가 올랐다고 수익화가 가까워졌다고 읽으면 정확히 반대다.",
+        "",
+        "위의 **롱폼 시청 시간은 추정치다.** `조회수 × 길이 × 가정 시청률` 로 "
+        "짐작한 값이라 유튜브가 세는 숫자와 다르다. 가정 시청률이 실제보다 "
+        "높으면 부풀려지고, 12개월보다 전에 올린 영상이 최근에 받은 조회수는 "
+        "빠져서 모자라게도 나온다. 두 오차가 서로를 지운다고 볼 근거는 없다. "
+        "이 값으로 '이제 곧 된다'를 판단하지 말 것 — 실측은 "
+        "`yt-analytics.readonly` 스코프를 받아야 열린다.",
     ]
     return "\n".join(lines)
 
@@ -214,10 +177,12 @@ def build(rows, now=None, registry=channel_registry.CHANNELS):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--metrics-path", default=str(METRICS_PATH))
+    parser.add_argument("--stats-path", default=str(STATS_PATH))
     parser.add_argument("--out", help="적을 파일. 없으면 화면으로")
     args = parser.parse_args(argv)
 
-    text = build(load_rows(args.metrics_path))
+    text = build(load_rows(args.metrics_path),
+                 stats_rows=row_tools.load_rows(args.stats_path))
     if args.out:
         Path(args.out).write_text(text + "\n", encoding="utf-8")
         print(f"보고서: {args.out}")

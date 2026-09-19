@@ -3,6 +3,8 @@
 여러 곳에 흩어 두면 채널 이름을 바꿀 때 한 군데를 빠뜨린다.
 """
 
+import re
+
 NAME = "머니로직"
 NAME_EN = "MoneyLogic"
 
@@ -41,7 +43,39 @@ TAGS = [
 ]
 
 
+# 이 채널은 제휴 링크를 쓰지 않는다.
+#
+# 다른 채널(@200-y3b)에는 쿠팡 파트너스 자리를 뒀지만 여기는 다르다. 바로 위
+# DISCLAIMER 가 "추천하거나 권유하지 않습니다"라고 약속하는데, 수수료를 받는
+# 상품 링크는 그 자체로 대가를 받은 추천이다. 한 화면에 같이 두면 시청자가
+# 보는 것은 면책이 아니라 모순이고, 이 채널이 파는 것은 그 신뢰뿐이다.
+#
+# 금융 주제는 광고 단가가 높은 편으로 알려져 있어, 제휴 수수료 때문에 정식
+# 파트너 쪽을 위험에 빠뜨리는 것은 큰 것을 작은 것과 바꾸는 거래다.
+# `validator.py` 가 대본을 판정하듯 여기서도 코드가 판정한다 — 급할 때
+# 사람이 한 번만 눈감으면 무인으로 나간다.
+AFFILIATE_HOSTS = ("coupa.ng", "coupang.com", "aliexpress", "amzn.to")
+
+_AFFILIATE_RE = re.compile(
+    r"https?://\S*(?:" + "|".join(re.escape(h) for h in AFFILIATE_HOSTS) + r")\S*",
+    re.IGNORECASE)
+
+
+class AffiliateLinkError(RuntimeError):
+    """제휴 링크가 머니로직 설명란에 들어갔다."""
+
+
 def video_description(script_description):
-    """대본의 설명란 뒤에 채널 표준 문구를 붙인다."""
+    """대본의 설명란 뒤에 채널 표준 문구를 붙인다.
+
+    제휴 링크가 섞여 있으면 올리지 않고 멈춘다.
+    """
     parts = [script_description.strip(), DISCLAIMER]
-    return "\n\n".join(part for part in parts if part)
+    text = "\n\n".join(part for part in parts if part)
+    found = _AFFILIATE_RE.findall(text)
+    if found:
+        raise AffiliateLinkError(
+            f"머니로직 설명란에 제휴 링크가 있다: {found[0]}\n"
+            "  이 채널은 제휴 링크를 쓰지 않는다 — 면책 문구와 정면으로 어긋난다.\n"
+            "  이유는 brand.py 의 주석에 적어 뒀다.")
+    return text

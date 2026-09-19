@@ -131,9 +131,51 @@ def test_collect_walks_channel_then_playlist_then_videos():
         playlist_pages=[playlist_page(["a", "b"])],
         video_pages=[{"items": [video_item("a"), video_item("b")]}],
     )
-    rows = collect.collect(Y3B, youtube=youtube, env=ENV, now=NOW)
-    assert [row["video_id"] for row in rows] == ["a", "b"]
-    assert all(row["observed_at"] == "2026-09-19T03:00:00+00:00" for row in rows)
+    result = collect.collect(Y3B, youtube=youtube, env=ENV, now=NOW)
+    assert [row["video_id"] for row in result.videos] == ["a", "b"]
+    assert all(row["observed_at"] == "2026-09-19T03:00:00+00:00"
+               for row in result.videos)
+
+
+def test_video_rows_and_the_subscriber_row_share_one_timestamp():
+    """두 파일의 스냅샷이 어긋나면 '이때 구독자가 몇이었나'를 짝지을 수 없다."""
+    youtube = FakeYouTube(
+        channel_items=[channel_item(Y3B.expected_channel_id, "UU-y3b",
+                                    subscribers="412")],
+        playlist_pages=[playlist_page(["a"])],
+        video_pages=[{"items": [video_item("a")]}],
+    )
+    result = collect.collect(Y3B, youtube=youtube, env=ENV, now=NOW)
+    assert result.stats["observed_at"] == result.videos[0]["observed_at"]
+    assert result.stats["subscribers"] == "412"
+    assert result.stats["channel"] == Y3B.name
+
+
+def test_a_hidden_subscriber_count_is_blank_not_zero():
+    """구독자를 숨긴 채널과 구독자가 0 인 채널은 다르다."""
+    youtube = FakeYouTube(
+        channel_items=[channel_item(Y3B.expected_channel_id, "UU-y3b",
+                                    subscribers=None)],
+        playlist_pages=[playlist_page([])],
+        video_pages=[],
+    )
+    result = collect.collect(Y3B, youtube=youtube, env=ENV, now=NOW)
+    assert result.stats["subscribers"] == ""
+
+
+def test_the_subscriber_row_also_refuses_another_channel():
+    """영상 쪽만 막고 구독자 쪽이 뚫리면 남의 채널 구독자가 이 채널로 기록된다."""
+    youtube = FakeYouTube(channel_items=[channel_item("UC-남의채널")])
+    with pytest.raises(collect.CollectError):
+        collect.channel_stats(youtube, Y3B, "2026-09-19T03:00:00+00:00", ENV)
+
+
+def test_stats_are_written_with_their_own_header(tmp_path):
+    path = tmp_path / "channel_stats.csv"
+    collect.append_rows([dict.fromkeys(collect.STATS_FIELDS, "x")], path,
+                        collect.STATS_FIELDS)
+    header = path.read_text(encoding="utf-8").splitlines()[0]
+    assert header == ",".join(collect.STATS_FIELDS)
 
 
 # --- 파일 ---------------------------------------------------------------

@@ -47,9 +47,15 @@ class FakeYouTube:
         return _Resource(handler)
 
 
-def channel_item(channel_id, uploads="UU-uploads"):
+def channel_item(channel_id, uploads="UU-uploads", *, subscribers="100",
+                 videos="7", views="1234"):
+    """채널 항목. subscribers=None 이면 구독자를 숨긴 채널이다."""
+    stats = {"videoCount": videos, "viewCount": views}
+    if subscribers is not None:
+        stats["subscriberCount"] = subscribers
     return {"id": channel_id,
-            "contentDetails": {"relatedPlaylists": {"uploads": uploads}}}
+            "contentDetails": {"relatedPlaylists": {"uploads": uploads}},
+            "statistics": stats}
 
 
 def playlist_page(video_ids, next_token=None):

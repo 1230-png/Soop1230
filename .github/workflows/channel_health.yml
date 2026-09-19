@@ -78,12 +78,22 @@ jobs:
           cd "$GITHUB_WORKSPACE"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add channel_health/metrics.csv
+          # 구독자 수는 metrics.csv 가 아니라 channel_stats.csv 에 쌓인다.
+          # 여기 빠뜨리면 수익화 거리가 매주 "기록 없음"으로 나온다.
+          #
+          # 있는 것만 넣는다. `git add` 는 없는 경로를 받으면 실패하는데,
+          # 그러면 이 단계가 통째로 죽어서 지표 스냅샷까지 같이 잃는다.
+          # `git add -A channel_health/` 로 뭉뚱그리지 않는 이유는, 그러면
+          # 나중에 이 잡이 코드를 건드리게 됐을 때 그것까지 조용히 커밋되기
+          # 때문이다. 기록 파일만 이름으로 넣는다.
+          for record in channel_health/metrics.csv channel_health/channel_stats.csv; do
+            [ -f "$record" ] && git add "$record"
+          done
           if git diff --cached --quiet; then
             echo "기록에 바뀐 것이 없다."
             exit 0
           fi
-          git commit -m "chore(channel_health): 채널 지표 스냅샷 [skip ci]"
+          git commit -m "chore(channel_health): 채널 지표·구독자 스냅샷 [skip ci]"
           # 같은 브랜치에 발행 워크플로들도 기록을 밀어 넣는다. 자세한 이유는
           # moneylogic_daily.yml 의 같은 자리에.
           for i in 1 2 3; do

@@ -24,16 +24,25 @@ import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import NamedTuple
 
 import channels as channel_registry
 
 ROOT = Path(__file__).resolve().parent
 METRICS_PATH = ROOT / "metrics.csv"
 
+# 구독자 수는 영상이 아니라 채널에 붙는 값이라 metrics.csv 에 넣을 자리가 없다.
+# 줄마다 같은 값을 반복하는 것도 방법이지만, 이미 쌓인 파일의 헤더를 바꾸면
+# 예전 줄(9칸)과 새 줄(10칸)이 섞여 DictReader 가 통째로 어긋난다.
+# append-only 기록은 칸을 늘리지 않는 편이 안전하다.
+STATS_PATH = ROOT / "channel_stats.csv"
+
 PAGE_SIZE = 50
 
 FIELDS = ("observed_at", "channel", "video_id", "published_at",
           "duration_s", "title", "views", "likes", "comments")
+
+STATS_FIELDS = ("observed_at", "channel", "subscribers", "videos", "views")
 
 _DURATION = re.compile(
     r"^P(?:(?P<days>\d+)D)?"
@@ -91,14 +100,14 @@ def build_client(channel, env=None):
     return build("youtube", "v3", credentials=creds)
 
 
-def uploads_playlist(youtube, channel, env=None):
-    """이 토큰이 가리키는 채널의 '업로드' 재생목록 ID.
+def own_channel(youtube, channel, env=None, part="contentDetails"):
+    """이 토큰이 가리키는 채널 항목 하나.
 
     지정한 채널과 다르면 멈춘다. 틀린 채널 숫자를 이 채널 것으로 적으면,
     그 뒤로 이 파일을 근거로 내리는 판단이 전부 엉뚱한 채널을 따라간다.
     """
     env = os.environ if env is None else env
-    response = youtube.channels().list(part="contentDetails", mine=True).execute()
+    response = youtube.channels().list(part=part, mine=True).execute()
     items = response.get("items", [])
     if not items:
         raise CollectError(f"{channel.label}: 토큰이 채널을 가리키지 않는다.")
@@ -109,12 +118,34 @@ def uploads_playlist(youtube, channel, env=None):
         raise CollectError(
             f"{channel.label}: 토큰이 가리키는 채널({actual})이 지정한 채널"
             f"({expected})과 다르다. 기록하지 않는다.")
+    return items[0]
 
-    related = items[0].get("contentDetails", {}).get("relatedPlaylists", {})
+
+def uploads_playlist(youtube, channel, env=None):
+    """이 토큰이 가리키는 채널의 '업로드' 재생목록 ID."""
+    item = own_channel(youtube, channel, env, part="contentDetails")
+    related = item.get("contentDetails", {}).get("relatedPlaylists", {})
     playlist = related.get("uploads")
     if not playlist:
         raise CollectError(f"{channel.label}: 업로드 재생목록을 찾지 못했다.")
     return playlist
+
+
+def channel_stats(youtube, channel, observed_at, env=None):
+    """구독자 수 한 줄. 수익화 거리의 절반이 이 숫자다.
+
+    구독자를 숨긴 채널은 subscriberCount 가 아예 오지 않는다. 0 으로 적지
+    않고 빈 칸으로 둔다 — 없는 것과 0 은 다르다.
+    """
+    item = own_channel(youtube, channel, env, part="statistics")
+    stats = item.get("statistics", {})
+    return {
+        "observed_at": observed_at,
+        "channel": channel.name,
+        "subscribers": stats.get("subscriberCount", ""),
+        "videos": stats.get("videoCount", ""),
+        "views": stats.get("viewCount", ""),
+    }
 
 
 def video_ids(youtube, playlist_id):
@@ -162,18 +193,30 @@ def video_rows(youtube, ids, channel_name, observed_at):
     return rows
 
 
+class Collected(NamedTuple):
+    """한 채널에서 한 번에 읽어 온 것. 두 파일로 나뉘어 저장된다."""
+
+    videos: list
+    stats: dict
+
+
 def collect(channel, youtube=None, env=None, now=None):
-    """한 채널의 지표 줄을 만든다. 파일에는 쓰지 않는다."""
+    """한 채널의 지표를 만든다. 파일에는 쓰지 않는다.
+
+    영상 지표와 구독자 수를 **같은 시각(observed_at)으로** 묶는다. 따로 읽으면
+    두 파일의 스냅샷이 어긋나서 "이때 구독자가 몇이었나"를 짝지을 수 없다.
+    """
     env = os.environ if env is None else env
     observed_at = (now or datetime.now(timezone.utc)).isoformat(timespec="seconds")
     if youtube is None:
         youtube = build_client(channel, env)
     playlist = uploads_playlist(youtube, channel, env)
-    return video_rows(youtube, video_ids(youtube, playlist),
-                      channel.name, observed_at)
+    videos = video_rows(youtube, video_ids(youtube, playlist),
+                        channel.name, observed_at)
+    return Collected(videos, channel_stats(youtube, channel, observed_at, env))
 
 
-def append_rows(rows, path=METRICS_PATH):
+def append_rows(rows, path=METRICS_PATH, fields=FIELDS):
     """스냅샷을 덧붙인다. 기존 줄은 건드리지 않는다."""
     if not rows:
         return 0
@@ -181,7 +224,7 @@ def append_rows(rows, path=METRICS_PATH):
     fresh = not path.exists()
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("a", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=FIELDS)
+        writer = csv.DictWriter(handle, fieldnames=fields)
         if fresh:
             writer.writeheader()
         writer.writerows(rows)
@@ -194,6 +237,7 @@ def main(argv=None):
                         choices=sorted(channel_registry.BY_NAME),
                         help="기본값은 전부")
     parser.add_argument("--metrics-path", default=str(METRICS_PATH))
+    parser.add_argument("--stats-path", default=str(STATS_PATH))
     args = parser.parse_args(argv)
 
     wanted = [channel_registry.BY_NAME[name] for name in args.names] \
@@ -202,7 +246,7 @@ def main(argv=None):
     total, failed = 0, []
     for channel in wanted:
         try:
-            rows = collect(channel)
+            result = collect(channel)
         except CollectError as error:
             # 한 채널이 안 된다고 나머지를 포기하지 않는다. 채널마다 자격
             # 증명이 따로라 한쪽만 만료되는 일이 실제로 생긴다.
@@ -213,9 +257,11 @@ def main(argv=None):
             print(f"⚠️  {channel.label}: 수집 실패 — {error}", file=sys.stderr)
             failed.append(channel.name)
             continue
-        written = append_rows(rows, args.metrics_path)
+        written = append_rows(result.videos, args.metrics_path)
+        append_rows([result.stats], args.stats_path, STATS_FIELDS)
         total += written
-        print(f"  {channel.label}: 영상 {written}편 기록")
+        subs = result.stats.get("subscribers") or "비공개"
+        print(f"  {channel.label}: 영상 {written}편 기록 (구독자 {subs})")
 
     if not total:
         print("::error::아무 채널도 읽지 못했다.", file=sys.stderr)
