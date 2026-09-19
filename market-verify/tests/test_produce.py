@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pytest
 
 from src import brand, produce, render, voice
@@ -187,3 +189,65 @@ def test_a_missing_block_is_not_an_error(tmp_path):
     script.write_text("대본", encoding="utf-8")
 
     assert produce.block_beside(script) is None
+
+
+# --- 썸네일 ------------------------------------------------------------
+#
+# 썸네일도 같은 사례 표에서 그린다. 여기서 다시 계산하면 목록에서 본 그림과
+# 눌러서 본 그림이 갈라진다.
+
+def _block_with_cases():
+    """사례 표가 들어 있는 진짜 블록. 형식이 바뀌면 여기서 깨져야 한다."""
+    import pandas as pd
+
+    from src import market_events
+
+    rows = [
+        {
+            "date": pd.Timestamp(date),
+            "returns": dict(zip([h for h, _ in market_events.HORIZONS], values)),
+        }
+        for date, *values in [
+            ("2008-09-12", -12.34, -5.67, 3.21),
+            ("2011-08-05", 4.12, 8.90, 15.00),
+            ("2018-10-26", -1.00, 2.50, 7.75),
+            ("2020-03-06", -9.99, 22.10, 40.20),
+        ]
+    ]
+    return market_events.to_block(
+        ticker="^IXIC", condition="주간 종가 3주 연속 하락", rows=rows,
+        summary=market_events.summarize(rows),
+        data_start="1990-01-02", data_end="2026-09-04", asof="2026-09-05",
+    )
+
+
+def _thumbnail_spy(monkeypatch):
+    seen = {}
+
+    def fake(title, path, subtitle=None, series=None):
+        seen["series"] = series
+        Path(path).write_bytes(b"")
+        return Path(path)
+
+    monkeypatch.setattr(produce.render, "thumbnail", fake)
+    return seen
+
+
+def test_the_thumbnail_gets_the_same_case_data_as_the_video(monkeypatch, tmp_path):
+    seen = _thumbnail_spy(monkeypatch)
+
+    produce.build(FILLED, tmp_path, "demo", voice.silent_speak, voice.DEFAULT_VOICE,
+                  log=lambda *a: None, block_text=_block_with_cases())
+
+    assert [name for name, _ in seen["series"]], "썸네일에 사례 표가 넘어가지 않았다"
+    assert all(len(values) == 4 for _, values in seen["series"])
+
+
+def test_a_block_without_cases_leaves_the_thumbnail_plain(monkeypatch, tmp_path):
+    """전략·토크노믹스 블록에는 사례 표가 없다. 그때도 썸네일은 나와야 한다."""
+    seen = _thumbnail_spy(monkeypatch)
+
+    produce.build(FILLED, tmp_path, "demo", voice.silent_speak, voice.DEFAULT_VOICE,
+                  log=lambda *a: None)
+
+    assert seen["series"] == []

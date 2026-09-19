@@ -114,3 +114,14 @@ def test_span_is_shared_across_horizons():
     """구간마다 축을 따로 잡으면 눈으로 비교할 수 없다."""
     series = [("1개월", [-2.0, 1.0, 3.0]), ("12개월", [-40.0, 10.0, 55.0])]
     assert chart.span(series) == (-40.0, 55.0)
+
+
+def test_short_name_takes_what_is_in_the_parentheses():
+    """블록의 '252거래일(12개월)' 은 썸네일에 넣기엔 길다."""
+    assert chart.short_name("252거래일(12개월)") == "12개월"
+    assert chart.short_name("21거래일(1개월)") == "1개월"
+
+
+def test_short_name_leaves_an_unknown_shape_alone():
+    """블록 형식이 바뀌면 길게 나올지언정 이름을 지어내지는 않는다."""
+    assert chart.short_name("1년 뒤") == "1년 뒤"

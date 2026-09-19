@@ -27,6 +27,16 @@ VISUAL_CUE = "[자료 화면:"
 MIN_VISUAL_CUES = 5
 
 OPERATOR_HEADER = "## 6. [운영자 코멘트]"
+OPENING_HEADER = "## 1. 오프닝"
+
+# 오프닝은 오랫동안 "물음표로 끝나는 질문 한 문장"이었고, 그 규칙은 프롬프트에만
+# 있었다. 지키는지 아무도 보지 않았다는 뜻이다. 사실 한 줄을 앞에 세우도록
+# 풀어 주면서 여기로 가져온다 — 규칙 판정은 코드가 한다는 원칙이 이 칸에도 걸린다.
+#
+# 코드가 판정할 수 있는 것은 둘뿐이다. 질문이 남아 있는가, 그리고 훅이 요약으로
+# 자라지 않았는가. "결과를 먼저 말하지 않는다"는 문장 뜻을 읽어야 해서 여기서
+# 가리지 못한다 — 그건 프롬프트에 남긴다.
+OPENING_MAX_CHARS = 220
 
 # 헤더와 목록 번호를 지워도 본문에 남는 구조 숫자는 숏폼 컷 번호뿐이다.
 # ("컷 1:"은 줄 첫머리가 아니라 목록 번호로 지워지지 않는다.)
@@ -41,6 +51,8 @@ HORIZONTAL_RULE_RE = re.compile(r"^\s*(?:-{3,}|\*{3,}|_{3,})\s*$", re.MULTILINE)
 # HTML 주석. 렌더링되지 않으므로 시청자에게 보이지 않는다.
 # 저장할 때 넣는 작성 안내가 여기 들어가며, 그건 운영자 코멘트가 아니다.
 HTML_COMMENT_RE = re.compile(r"<!--.*?-->", re.DOTALL)
+# 화면 표기는 읽지 않는다. 오프닝 길이를 잴 때 같이 세면 안 된다.
+VISUAL_CUE_RE = re.compile(r"\[자료 화면:.*?\]", re.DOTALL)
 
 
 def _normalize_number(token):
@@ -97,14 +109,37 @@ def _number_contexts(text):
     return contexts
 
 
-def _operator_section_body(script):
-    start = script.find(OPERATOR_HEADER)
+def _section_body(script, header):
+    """헤더 아래부터 다음 헤더 전까지. 헤더가 없으면 None(누락은 따로 잡는다)."""
+    start = script.find(header)
     if start == -1:
         return None
-    after = script[start + len(OPERATOR_HEADER):]
+    after = script[start + len(header):]
     next_header = re.search(r"^##\s", after, re.MULTILINE)
     body = after[: next_header.start()] if next_header else after
     return body
+
+
+def _opening_violations(script):
+    """오프닝이 훅 자리를 지키는지. 질문이 있어야 하고, 요약만큼 길면 안 된다."""
+    body = _section_body(script, OPENING_HEADER)
+    if body is None:
+        return []
+    text = VISUAL_CUE_RE.sub("", HTML_COMMENT_RE.sub("", body)).strip()
+    if not text:
+        return [f"{OPENING_HEADER} 이 비어 있다."]
+
+    found = []
+    if "?" not in text and "？" not in text:
+        found.append(
+            f"{OPENING_HEADER} 에 질문이 없다. 물음표로 끝나는 질문 한 문장으로 닫을 것."
+        )
+    if len(text) > OPENING_MAX_CHARS:
+        found.append(
+            f"{OPENING_HEADER} 이 {len(text)}자다. {OPENING_MAX_CHARS}자 이내로 줄일 것 — "
+            "사실 한 문장과 질문 한 문장이면 된다."
+        )
+    return found
 
 
 def validate(script, block):
@@ -129,7 +164,7 @@ def validate(script, block):
             f'"{VISUAL_CUE}" 표기가 {cue_count}개다. {MIN_VISUAL_CUES}개 이상 필요하다.'
         )
 
-    body = _operator_section_body(script)
+    body = _section_body(script, OPERATOR_HEADER)
     if body is not None:
         # 구분선과 HTML 주석은 지우고 본다. 둘 다 코멘트 본문이 아니다.
         body = HORIZONTAL_RULE_RE.sub("", HTML_COMMENT_RE.sub("", body))
@@ -138,6 +173,8 @@ def validate(script, block):
             f"{OPERATOR_HEADER} 섹션은 비워야 한다. 사람이 채우는 칸이다. "
             f"작성된 내용: {body.strip()[:60]}"
         )
+
+    violations += _opening_violations(script)
 
     block_dates = set(DATE_RE.findall(block))
     for date in sorted(set(DATE_RE.findall(script))):

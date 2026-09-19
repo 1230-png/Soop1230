@@ -37,6 +37,76 @@ def test_thumbnail_is_youtube_sized(tmp_path):
         assert image.size == (render.THUMB_WIDTH, render.THUMB_HEIGHT)
 
 
+# --- 썸네일 분포 조각 --------------------------------------------------------
+#
+# 글자만 있는 썸네일은 추천 목록에서 옆 영상과 구분되지 않는다. 아래쪽에 분포를
+# 한 줄로 얹는다. 조각이 실제로 그려졌는지는 그 자리의 짙은 점을 세어 본다 —
+# 좌표를 하나하나 확인하면 판을 조금만 바꿔도 시험이 깨진다.
+
+THUMB_SERIES = [
+    ("21거래일(1개월)", [-5.2, 2.3, -1.4, 3.8, 0.5, -2.2, 6.1, -0.3]),
+    ("252거래일(12개월)", [12.1, 25.4, -8.9, 18.3, 6.7, -14.2, 21.0, 3.3]),
+]
+# 제목이 길면 글자가 조각 자리까지 내려온다. 그때는 조각을 포기한다.
+LONG_TITLE = "S&P 500 주간 종가가 3주 연속 하락한 시점 이후 12개월 지표 변화를 전부 확인한다"
+
+
+def _ink_below_the_fold(path):
+    """조각 자리(아래쪽)의 짙은 픽셀 수. 미색 종이만 있으면 0 에 가깝다.
+
+    종이 결은 매번 새로 뿌려지므로 두 장을 바이트로 비교할 수 없다. 세어서 본다.
+    """
+    with Image.open(path) as image:
+        band = image.convert("L").crop(
+            (0, int(render.THUMB_HEIGHT * render.THUMB_STRIP_TOP),
+             render.THUMB_WIDTH, render.THUMB_HEIGHT)
+        )
+    return sum(band.histogram()[:140])
+
+
+def test_thumbnail_with_a_chart_is_still_youtube_sized(tmp_path):
+    out = render.thumbnail("3주 연속 하락 이후 12개월은?", tmp_path / "t.jpg",
+                           subtitle="머니로직", series=THUMB_SERIES)
+    with Image.open(out) as image:
+        assert image.size == (render.THUMB_WIDTH, render.THUMB_HEIGHT)
+
+
+def test_the_chart_fragment_actually_gets_drawn(tmp_path):
+    plain = render.thumbnail("3주 연속 하락 이후 12개월은?", tmp_path / "plain.jpg",
+                             subtitle="머니로직")
+    charted = render.thumbnail("3주 연속 하락 이후 12개월은?", tmp_path / "chart.jpg",
+                               subtitle="머니로직", series=THUMB_SERIES)
+    assert _ink_below_the_fold(charted) > _ink_below_the_fold(plain) + 500
+
+
+def _strip_spy(monkeypatch):
+    """조각을 그렸는지, 그렸다면 어느 구간으로 그렸는지만 본다."""
+    seen = []
+    monkeypatch.setattr(
+        render, "_thumbnail_strip",
+        lambda draw, name, values, *args: seen.append(name),
+    )
+    return seen
+
+
+def test_a_long_title_drops_the_fragment_instead_of_overlapping(monkeypatch, tmp_path):
+    """겹쳐 찍힌 썸네일이 조각 없는 썸네일보다 나쁘다."""
+    seen = _strip_spy(monkeypatch)
+    render.thumbnail(LONG_TITLE, tmp_path / "l.jpg", subtitle="머니로직", series=THUMB_SERIES)
+    assert seen == []
+
+    render.thumbnail("3주 연속 하락 이후 12개월은?", tmp_path / "s.jpg",
+                     subtitle="머니로직", series=THUMB_SERIES)
+    assert len(seen) == 1, "짧은 제목에는 조각이 들어가야 한다"
+
+
+def test_the_fragment_uses_the_longest_horizon(monkeypatch, tmp_path):
+    """블록의 마지막 구간이 가장 긴 기간이다. 짧은 구간은 점이 0 에 뭉친다."""
+    seen = _strip_spy(monkeypatch)
+    render.thumbnail("무엇이 있었나?", tmp_path / "t.jpg", series=THUMB_SERIES)
+    assert seen == ["252거래일(12개월)"]
+
+
 def _silence(path, seconds):
     subprocess.run(
         ["ffmpeg", "-y", "-hide_banner", "-loglevel", "error",
