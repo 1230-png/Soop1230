@@ -13,8 +13,11 @@ import upload
 
 # --- 자격 증명 -----------------------------------------------------------
 
-FULL = {"JPN_CLIENT_ID": "id", "JPN_CLIENT_SECRET": "secret",
-        "JPN_REFRESH_TOKEN": "token"}
+# `MV` 는 MoneyLogic 에서 온 글자지만 그 채널은 없다 — 이름을 바꾼 것이지
+# 지운 것이 아니라서 같은 채널이 지금 「귀트는 일본어」다. 접두사를 안 바꾼
+# 이유는 GitHub 시크릿의 값을 다시 읽을 수 없기 때문이다(upload.py 참고).
+FULL = {"MV_CLIENT_ID": "id", "MV_CLIENT_SECRET": "secret",
+        "MV_REFRESH_TOKEN": "token"}
 
 
 def test_complete_credentials_are_read():
@@ -23,15 +26,15 @@ def test_complete_credentials_are_read():
 
 def test_missing_credentials_are_named_not_guessed():
     with pytest.raises(SystemExit) as stopped:
-        upload.credentials({"JPN_CLIENT_ID": "id"})
+        upload.credentials({"MV_CLIENT_ID": "id"})
     message = str(stopped.value)
-    assert "JPN_CLIENT_SECRET" in message and "JPN_REFRESH_TOKEN" in message
+    assert "MV_CLIENT_SECRET" in message and "MV_REFRESH_TOKEN" in message
 
 
 def test_blank_credentials_count_as_missing():
     """워크플로는 없는 시크릿을 빈 문자열로 넘긴다."""
     with pytest.raises(SystemExit):
-        upload.credentials({**FULL, "JPN_REFRESH_TOKEN": "   "})
+        upload.credentials({**FULL, "MV_REFRESH_TOKEN": "   "})
 
 
 def test_there_is_no_fallback_to_the_shared_credentials():
@@ -40,21 +43,25 @@ def test_there_is_no_fallback_to_the_shared_credentials():
               "YT_REFRESH_TOKEN": "token"}
     with pytest.raises(SystemExit) as stopped:
         upload.credentials(shared)
-    assert "JPN_CLIENT_ID" in str(stopped.value)
+    assert "MV_CLIENT_ID" in str(stopped.value)
 
 
-def test_there_is_no_fallback_to_the_retired_channel_credentials():
-    """머니로직의 MV_* 는 저장소 설정에 남아 있을 수 있다."""
-    retired = {"MV_CLIENT_ID": "id", "MV_CLIENT_SECRET": "secret",
-               "MV_REFRESH_TOKEN": "token"}
+def test_the_retired_channels_credentials_are_not_accepted():
+    """머니로직 말고 **다른** 접은 채널 값으로는 올라가지 않는다.
+
+    머니로직의 MV_* 는 이 채널 것이 맞다(이름만 바꿨다). 하지만 채널푸드의
+    WEIRD_* 는 정말 남의 것이고, 저장소 설정에 아직 남아 있을 수 있다.
+    """
+    other = {"WEIRD_CLIENT_ID": "id", "WEIRD_CLIENT_SECRET": "secret",
+             "WEIRD_REFRESH_TOKEN": "token"}
     with pytest.raises(SystemExit):
-        upload.credentials(retired)
+        upload.credentials(other)
 
 
 def test_the_error_never_prints_a_credential_value():
     """오류 메시지는 로그에 남는다. 이름만 말하고 값은 말하지 않는다."""
     with pytest.raises(SystemExit) as stopped:
-        upload.credentials({"JPN_CLIENT_ID": "sk-비밀값"})
+        upload.credentials({"MV_CLIENT_ID": "sk-비밀값"})
     assert "sk-비밀값" not in str(stopped.value)
 
 
