@@ -125,3 +125,49 @@ def topic_from_yesterday(
         log(f"어제 움직임: {move.label} {move.change_pct:+.2f}% ({move.asof} 종가 기준)")
         return topic
     return None
+
+
+def topic_from_key(key, watchlist=WATCHLIST):
+    """로그에 남은 key 하나를 토픽으로 되돌린다. 못 알아보면 None.
+
+    몰아보기(recap)가 지난 회차를 다시 세우려면 그때 쓴 tool 인자가 필요한데,
+    `used_topics.csv` 에는 key·tool·label 만 남는다. 다행히 news 계열 key 는
+    티커와 조건을 그대로 담고 있고 나머지(표기명·시작일)는 WATCHLIST 에 있어서,
+    로그 형식을 바꾸지 않고도 복원된다 — append-only 기록에 열을 덧붙이는 것보다
+    이쪽이 안전하다.
+
+    **key 를 쪼개지 않고 후보를 만들어 맞춰 본다.** 티커에 '-'(ETH-USD)와
+    '^'(^GSPC), '='(GC=F) 가 섞여 있어서 구분자로 자르면 ETH-USD 가 'ETH' 로
+    잘린다. 만들어서 비교하면 그런 착각이 생기지 않는다.
+    """
+    for move_ticker, label, start in watchlist:
+        if move_ticker == "^VIX":
+            continue
+        pct = 20.0 if move_ticker in ("^GSPC", "^IXIC") else 30.0
+        if key == f"news-{move_ticker}-drawdown{pct:g}":
+            return Topic(
+                key, "run",
+                ("--ticker", move_ticker, "--condition", "drawdown", "--pct", f"{pct:g}",
+                 "--start", start, "--label", label),
+                f"{label} 고점 대비 {pct:g}% 하락",
+            )
+        if key == f"news-{move_ticker}-down3":
+            return Topic(
+                key, "run",
+                ("--ticker", move_ticker, "--condition", "down-weeks", "--n", "3",
+                 "--start", start, "--label", label),
+                f"{label} 주간 3주 연속 하락",
+            )
+
+    vix = next((entry for entry in watchlist if entry[0] == "^VIX"), None)
+    if vix is not None:
+        _, vix_label, vix_start = vix
+        for level in VIX_LEVELS:
+            if key == f"news-vix-{level:g}":
+                return Topic(
+                    key, "run",
+                    ("--ticker", "^VIX", "--condition", "threshold", "--level", f"{level:g}",
+                     "--start", vix_start, "--label", vix_label),
+                    f"VIX {level:g} 돌파",
+                )
+    return None

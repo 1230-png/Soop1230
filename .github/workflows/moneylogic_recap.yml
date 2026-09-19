@@ -1,0 +1,147 @@
+name: MoneyLogic 몰아보기 (market-verify)
+
+# 이번 주·이번 달에 낸 회차를 묶어 긴 한 편을 만든다.
+#
+# **소재를 새로 쓰지 않는다.** 평소 파이프라인은 이미 다룬 조건을 건너뛰지만
+# 몰아보기는 정반대로 이미 다룬 것만 모은다. 같은 조건을 새 회차인 척 다시
+# 내는 것이 아니라 지난 회차를 한자리에 모으는 것이라, 시청자에게 이것은
+# 반복이 아니라 정리다.
+#
+# 이 편이 필요한 이유는 시청 시간이다. 숏폼 시청 시간은 파트너 프로그램의
+# 3,000시간에 들어가지 않는다. 이미 만든 회차를 묶어 긴 편을 내는 것은
+# 새 소재를 쓰지 않고 시청 시간을 쌓는 유일한 경로다.
+#
+# **아직 cron 이 없다. 손으로 돌려 결과를 보고 나서 켠다.**
+# 무인으로 공개 발행하는 자리라 첫 편은 사람이 보고 판단할 것.
+# 켤 때 쓸 값(한국 시각 기준, 러너가 약 2시간 늦게 뜨는 것을 감안했다):
+#   - cron: "0 22 * * 5"      # 토 07:00 KST — 주간. 월·수·금 회차가 다 끝난 뒤다.
+#   - cron: "0 22 28-31 * *"  # 말일 아침 — 월간. 날짜 확인 단계가 필요하다.
+# 주간을 일요일이 아니라 토요일에 두는 이유: recap 은 "이번 주"를 월요일부터
+# 세는데, 일요일에 돌리면 이미 다음 주가 시작된 뒤라 빈 구간을 묶는다.
+
+on:
+  workflow_dispatch:
+    inputs:
+      window:
+        description: "묶을 구간"
+        type: choice
+        options: [week, month]
+        default: week
+      privacy:
+        description: "공개 범위"
+        type: choice
+        options: [private, unlisted, public]
+        default: private
+      block_only:
+        description: "데이터 블록까지만 (API 비용 없음)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  # 평소 발행과 같은 그룹에 둔다. 둘 다 used_topics.csv 를 건드리고,
+  # 같은 시간에 돌면 한쪽 기록이 밀린다.
+  group: moneylogic-daily
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: market-verify
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 시스템 준비물 (ffmpeg · 한글 폰트)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg fonts-noto-cjk
+
+      - name: 파이썬 패키지
+        run: pip install -r requirements.txt
+
+      - name: 코드 검사 (깨진 코드가 공개로 올라가는 것을 막는다)
+        run: |
+          pip install "ruff==0.6.9"
+          ruff check src tests
+          python -m pytest -q
+
+      - name: 대본 작성 방식 결정
+        id: llm
+        env:
+          API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OAUTH: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+        run: |
+          if [ -n "$API_KEY" ]; then
+            echo "mode=api" >> "$GITHUB_OUTPUT"
+            echo "대본: ANTHROPIC_API_KEY (크레딧 차감)"
+          elif [ -n "$OAUTH" ]; then
+            echo "mode=cli" >> "$GITHUB_OUTPUT"
+            echo "대본: CLAUDE_CODE_OAUTH_TOKEN (구독 사용량)"
+          else
+            echo "::error::대본을 쓸 자격 증명이 없다."
+            exit 1
+          fi
+
+      - name: 몰아보기 생성
+        env:
+          MARKET_VERIFY_LLM: ${{ steps.llm.outputs.mode }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+          ELEVENLABS_VOICE_ID: ${{ secrets.ELEVENLABS_VOICE_ID }}
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+          COINGECKO_API_KEY: ${{ secrets.COINGECKO_API_KEY }}
+          MV_CLIENT_ID: ${{ secrets.MV_CLIENT_ID }}
+          MV_CLIENT_SECRET: ${{ secrets.MV_CLIENT_SECRET }}
+          MV_REFRESH_TOKEN: ${{ secrets.MV_REFRESH_TOKEN }}
+          MV_CHANNEL_ID: ${{ secrets.MV_CHANNEL_ID }}
+        run: |
+          python -m src.daily_pipeline \
+            --outdir out \
+            --source "${{ inputs.window }}" \
+            ${{ inputs.block_only && '--block-only' || '--upload' }} \
+            --privacy "${{ inputs.privacy }}"
+
+      - name: 결과물 보관
+        uses: actions/upload-artifact@v4
+        with:
+          name: moneylogic-recap-${{ github.run_number }}
+          path: |
+            market-verify/out/*.mp4
+            market-verify/out/*.jpg
+            market-verify/out/*_script.md
+            market-verify/out/*_block.txt
+          retention-days: 30
+          if-no-files-found: warn
+
+      - name: 몰아보기 기록 커밋
+        if: success()
+        run: |
+          cd "$GITHUB_WORKSPACE"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add market-verify/used_topics.csv 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "기록에 바뀐 것이 없다(묶을 회차가 없었을 수 있다)."
+            exit 0
+          fi
+          git commit -m "chore(market-verify): 몰아보기 기록 [skip ci]"
+          # 같은 브랜치에 다른 채널도 기록을 밀어 넣는다. 자세한 이유는
+          # moneylogic_daily.yml 의 같은 자리에.
+          for i in 1 2 3; do
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && \
+              git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            sleep $((i * 5))
+          done
+          echo "::error::몰아보기 기록을 push 하지 못했다. 같은 구간이 다시 묶일 수 있다."
+          exit 1

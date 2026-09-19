@@ -16,8 +16,9 @@ import sys
 from pathlib import Path
 
 from src import (
-    brand, news_topics, operator_note, produce, run, run_macro, run_strategy,
-    run_tokenomics, script_parse, shorts, topics, upload, voice, writer,
+    brand, news_topics, operator_note, produce, recap, run, run_macro,
+    run_recap, run_strategy, run_tokenomics, script_parse, shorts, topics,
+    upload, voice, writer,
 )
 
 OUT_DIR = Path(__file__).resolve().parent.parent / "out"
@@ -73,9 +74,10 @@ def parse_args(argv=None):
         help="한 번 실행에 만들 편수. 편마다 다음 토픽으로 넘어간다.",
     )
     parser.add_argument(
-        "--source", default="news", choices=["news", "pool"],
+        "--source", default="news", choices=["news", "pool", "week", "month"],
         help="news: 어제 크게 움직인 자산에서 소재를 고른다(움직임이 없으면 pool). "
-             "pool: 순환 풀에서만 고른다.",
+             "pool: 순환 풀에서만 고른다. "
+             "week/month: 새 소재를 쓰지 않고 이번 주·이번 달 회차를 묶는다(몰아보기).",
     )
     args = parser.parse_args(argv)
     if args.repeat < 1:
@@ -83,6 +85,12 @@ def parse_args(argv=None):
     if args.repeat > 1 and args.topic_key:
         # 같은 토픽을 여러 번 만들어 봐야 같은 영상이 나온다.
         parser.error("--topic-key 는 한 편만 만들 때 쓴다. --repeat 와 함께 쓸 수 없다.")
+    if args.source in recap.WINDOWS:
+        # 한 구간은 한 편이다. 두 번 만들면 같은 편이 두 번 올라간다.
+        if args.repeat > 1:
+            parser.error(f"--source {args.source} 는 한 구간에 한 편이다. --repeat 를 쓸 수 없다.")
+        if args.topic_key:
+            parser.error(f"--source {args.source} 는 소재를 새로 고르지 않는다. --topic-key 를 쓸 수 없다.")
     return args
 
 
@@ -135,26 +143,51 @@ def run_once(args):
             print(f"실패: {problem}")
             return 2
 
-    topic = pick_topic(args)
-    print(f"토픽: {topic.label}  ({topic.tool} · {topic.key})")
+    if args.source in recap.WINDOWS:
+        # 몰아보기. 새 소재를 고르지 않고 이번 구간에 이미 낸 회차를 묶는다.
+        # 여기가 소재 반복 금지의 예외다 — 이유는 src/recap.py 머리말에.
+        topic = topics.Topic(
+            recap.window_key(args.source), recap.RECAP_TOOL, (),
+            f"{run_recap.WINDOW_LABEL[args.source]} 몰아보기",
+        )
+        try:
+            script_path = run_recap.build(
+                args.source, args.outdir, args.log_path,
+                block_only=args.block_only,
+            )
+        except writer.ScriptGenerationError as error:
+            print(f"실패: {error.attempts}회 모두 검증을 통과하지 못했다.")
+            print(writer.format_usage(error.usages))
+            return 1
+        except writer.APICallError as error:
+            print(f"실패: API 를 호출하지 못했다. {error}")
+            return 3
+        if script_path is None:
+            # 묶을 것이 없거나 --block-only 다. 둘 다 실패가 아니다.
+            # **여기서 _latest_script 로 넘어가면 안 된다** — outdir 에 남은
+            # 지난 회차 대본을 새로 만든 것으로 착각해 다시 발행한다.
+            return 0
+    else:
+        topic = pick_topic(args)
+        print(f"토픽: {topic.label}  ({topic.tool} · {topic.key})")
 
-    tool_argv = list(topic.argv) + ["--outdir", args.outdir]
-    if args.block_only:
-        tool_argv.append("--block-only")
+        tool_argv = list(topic.argv) + ["--outdir", args.outdir]
+        if args.block_only:
+            tool_argv.append("--block-only")
 
-    retcode = TOOL_MAIN[topic.tool](tool_argv)
-    if retcode != 0:
-        print(f"실패: {topic.tool} 이(가) 종료코드 {retcode}로 끝났다. 여기서 멈춘다.")
-        return retcode
+        retcode = TOOL_MAIN[topic.tool](tool_argv)
+        if retcode != 0:
+            print(f"실패: {topic.tool} 이(가) 종료코드 {retcode}로 끝났다. 여기서 멈춘다.")
+            return retcode
 
-    if args.block_only:
-        print("--block-only 이므로 영상은 만들지 않았다.")
-        return 0
+        if args.block_only:
+            print("--block-only 이므로 영상은 만들지 않았다.")
+            return 0
 
-    script_path = _latest_script(args.outdir)
-    if script_path is None:
-        print("실패: 대본 파일(_script.md)을 찾지 못했다.")
-        return 3
+        script_path = _latest_script(args.outdir)
+        if script_path is None:
+            print("실패: 대본 파일(_script.md)을 찾지 못했다.")
+            return 3
     script_text = script_path.read_text(encoding="utf-8")
     stem = script_path.stem.replace("_script", "")
 
@@ -167,9 +200,19 @@ def run_once(args):
             script_path.write_text(script_text, encoding="utf-8")
 
     speak = voice.silent_speak if args.silent else voice.edge_tts_speak
+
+    # 몰아보기는 분포 그림을 그리지 않는다. 묶은 블록에는 사례 표가 조건마다
+    # 하나씩 들어 있는데 chart.parse_cases 는 **첫 표에서 멈춘다.** 그대로
+    # 넘기면 2번·3번 조건을 읽는 동안 1번 조건 그림이 떠 있게 된다 — 대본이
+    # 말하는 값과 화면에 보이는 값이 갈라지는, 이 파이프라인이 제일 피하는 일이다.
+    # 전략·토크노믹스 블록처럼 글자 화면으로 돌아간다.
+    block_text = None if args.source in recap.WINDOWS else produce.block_beside(script_path)
+    if block_text is None and args.source in recap.WINDOWS:
+        print("  몰아보기라 분포 그림 없이 글자 화면으로 간다(조건마다 표가 달라서다).")
+
     video_path, thumb_path = produce.build(
         script_text, args.outdir, stem, speak, args.voice,
-        block_text=produce.block_beside(script_path),
+        block_text=block_text,
     )
 
     cuts_total = len(shorts.parse_cuts(script_text))
