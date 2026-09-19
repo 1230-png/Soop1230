@@ -1,8 +1,0 @@
-.env
-*.key
-__pycache__/
-*.py[cod]
-.venv/
-venv/
-out/
-.pytest_cache/

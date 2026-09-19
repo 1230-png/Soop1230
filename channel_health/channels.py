@@ -50,14 +50,6 @@ CHANNELS = (
         expected_channel_id="UCeXsmdfyW4hoxgWV2K8EwFw",
         channel_id_env="Y3B_CHANNEL_ID",
     ),
-    Channel(
-        name="moneylogic",
-        label="머니로직 MoneyLogic",
-        client_id_env="MV_CLIENT_ID",
-        client_secret_env="MV_CLIENT_SECRET",
-        refresh_token_env="MV_REFRESH_TOKEN",
-        channel_id_env="MV_CHANNEL_ID",
-    ),
 )
 
 BY_NAME = {channel.name: channel for channel in CHANNELS}

@@ -76,10 +76,18 @@ def test_an_env_channel_id_overrides_the_copy_in_code():
 
 
 def test_a_channel_without_a_known_id_is_not_blocked():
-    """MV_CHANNEL_ID 를 안 넣은 사람의 수집까지 막지는 않는다."""
-    moneylogic = registry.BY_NAME["moneylogic"]
-    youtube = FakeYouTube(channel_items=[channel_item("UC-아무거나", "UU-mv")])
-    assert collect.uploads_playlist(youtube, moneylogic, {}) == "UU-mv"
+    """채널 ID 를 코드에도 환경변수에도 안 둔 사람의 수집까지 막지는 않는다.
+
+    예전에는 등록표의 머니로직 항목이 이 경우였다. 채널을 접으면서 표에서
+    빠졌지만 동작은 남아 있어야 한다 — 새 채널을 ID 없이 먼저 넣어 보는
+    것이 흔한 순서다. 그래서 표를 뒤지지 않고 여기서 직접 세운다.
+    """
+    nameless = registry.Channel(
+        name="이름없음", label="아직 ID 를 모르는 채널",
+        client_id_env="X_CLIENT_ID", client_secret_env="X_CLIENT_SECRET",
+        refresh_token_env="X_REFRESH_TOKEN")
+    youtube = FakeYouTube(channel_items=[channel_item("UC-아무거나", "UU-x")])
+    assert collect.uploads_playlist(youtube, nameless, {}) == "UU-x"
 
 
 # --- 목록 넘기기 -------------------------------------------------------

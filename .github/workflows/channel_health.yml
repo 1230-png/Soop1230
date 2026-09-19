@@ -52,10 +52,6 @@ jobs:
           Y3B_CLIENT_ID: ${{ secrets.Y3B_CLIENT_ID }}
           Y3B_CLIENT_SECRET: ${{ secrets.Y3B_CLIENT_SECRET }}
           Y3B_REFRESH_TOKEN: ${{ secrets.Y3B_REFRESH_TOKEN }}
-          MV_CLIENT_ID: ${{ secrets.MV_CLIENT_ID }}
-          MV_CLIENT_SECRET: ${{ secrets.MV_CLIENT_SECRET }}
-          MV_REFRESH_TOKEN: ${{ secrets.MV_REFRESH_TOKEN }}
-          MV_CHANNEL_ID: ${{ secrets.MV_CHANNEL_ID }}
         run: python -m collect
 
       - name: 보고서
@@ -94,8 +90,11 @@ jobs:
             exit 0
           fi
           git commit -m "chore(channel_health): 채널 지표·구독자 스냅샷 [skip ci]"
-          # 같은 브랜치에 발행 워크플로들도 기록을 밀어 넣는다. 자세한 이유는
-          # moneylogic_daily.yml 의 같은 자리에.
+          # 같은 브랜치에 발행 워크플로들(run_shorts·longform)도 기록을 밀어
+          # 넣는다. 워크플로마다 concurrency 그룹이 달라 겹쳐 돌 수 있고, 무료
+          # 러너가 늦게 뜨는 날은 간격이 더 좁아진다. 그냥 push 하면
+          # non-fast-forward 로 튕겨 이번 스냅샷만 잃는다. 파일이 서로 달라
+          # rebase 는 충돌 없이 얹힌다.
           for i in 1 2 3; do
             git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && \
               git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0

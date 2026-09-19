@@ -10,7 +10,7 @@
 ```bash
 python3 collect.py                      # 지표를 metrics.csv · channel_stats.csv 에 덧붙인다
 python3 report.py                       # 무엇이 부족한지 한국어로 적는다
-python3 collect.py --channel moneylogic # 한 채널만
+python3 collect.py --channel y3b        # 한 채널만
 ```
 
 기록은 두 파일로 나뉜다. `metrics.csv` 는 **영상마다** 한 줄이고,
