@@ -10,7 +10,6 @@
 |---|---|---|
 | `channel_200y3b/` | @200-y3b — 매일 영어 한마디 쇼츠 | **가동 중** (GitHub Actions 무인 발행) |
 | `longform/` | @200-y3b — 롱폼 팩(주간 리뷰·섀도잉·상황별) | **가동 중** (GitHub Actions 무인 발행) |
-| `channel/` | 새벽공기 — Suno 감성 힙합 플레이리스트 | 문서·기록 위주 (코드 없음) |
 | `channel_health/` | 채널 지표 수집·보고 (**읽기 전용**) | **가동 중** (주 1회, 올리는 것 없음) |
 
 `longform/` 은 같은 채널(@200-y3b)을 쓰지만 `channel_200y3b/` 와 **파일도 상태도
@@ -25,6 +24,10 @@
 - `shorts_engine/` — 피드백 루프 쇼츠 파이프라인(FastAPI + Postgres). 참고 구현이라
   돌린 적이 없고, `channel_food/scripts/` 를 끌어다 쓰고 있어서 함께 지웠다.
   되살리려면 `99237fa` 이전 커밋에 전부 있다.
+- `channel/` — 새벽공기(Dawn Air), Suno 한국어 감성 힙합 플레이리스트 채널.
+  설계 문서(10곡 기획·가사·Suno 프롬프트)만 있고 곡을 한 번도 뽑지 않았다
+  (`song_log.csv` 가 머리글만 있는 빈 파일이었다). 음악 채널을 접기로 해서
+  2026-09 에 지웠다. **Suno 를 쓰지 않는다.** 되살리려면 `f22da30` 에 있다.
 - `market-verify/` — 머니로직(MoneyLogic) 금융 데이터 검증 채널. 2026-09 에
   접었다. 공개 8편(9/15~9/19)까지 무인 발행이 돌던 상태였다. 같이 지운 것:
   `moneylogic_daily.yml` · `moneylogic_recap.yml`, 소재 기록 `used_topics.csv`,
