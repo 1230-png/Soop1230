@@ -108,7 +108,9 @@ def build(script_text, outdir, stem, speak, voice_name, log=print, block_text=No
         video_path = outdir / f"{stem}.mp4"
         render.concat(parts, video_path, tmp)
 
-    thumb_path = render.thumbnail(title, outdir / f"{stem}.jpg", subtitle=brand.NAME)
+    thumb_path = render.thumbnail(
+        title, outdir / f"{stem}.jpg", subtitle=brand.NAME, series=series
+    )
     log(f"영상 저장: {video_path}  ({total / 60:.1f}분)")
     log(f"썸네일 저장: {thumb_path}")
     return video_path, thumb_path

@@ -1,6 +1,8 @@
 import pytest
 
-from src.validator import REQUIRED_HEADERS, STRUCTURAL_NUMBERS, validate
+from src.validator import (
+    OPENING_MAX_CHARS, REQUIRED_HEADERS, STRUCTURAL_NUMBERS, validate,
+)
 from tests.fixtures import BLOCK, SCRIPT
 
 
@@ -209,3 +211,51 @@ def test_real_text_beside_an_html_comment_is_still_caught():
         "## 6. [운영자 코멘트]\n<!-- 안내 -->\n저는 이때 비중을 줄였습니다.\n\n",
     )
     assert any("운영자 코멘트] 섹션은 비워야 한다" in v for v in validate(broken, BLOCK))
+
+
+# --- 오프닝 훅 ---------------------------------------------------------------
+# 사실 한 줄 + 질문 한 줄. 질문만 있던 자리를 푼 것이라, 푼 뒤에도 질문이 남아
+# 있는지는 코드가 본다. 규칙이 프롬프트에만 있으면 아무도 보지 않는다.
+
+OPENING_CUE = '[자료 화면: 조건 정의 / 화면 텍스트 "주간 종가 3주 연속 하락"]'
+
+
+def _with_opening(text, cue=OPENING_CUE):
+    """오프닝 본문만 갈아 끼운 대본. 화면 표기는 그대로 둔다(5개를 채워야 한다)."""
+    start = SCRIPT.index("## 1. 오프닝")
+    end = SCRIPT.index("## 2. 조건 설정")
+    return SCRIPT[:start] + f"## 1. 오프닝\n{text}\n\n{cue}\n\n" + SCRIPT[end:]
+
+
+def test_fact_then_question_opening_passes():
+    """새 모양(사실 한 문장 + 질문 한 문장)이 그대로 통과한다."""
+    assert validate(SCRIPT, BLOCK) == []
+    assert SCRIPT.count("?") >= 1
+
+
+def test_question_only_opening_still_passes():
+    """훅을 못 붙인 회차가 발행을 멈추지는 않는다. 질문만 있어도 통과다."""
+    script = _with_opening("지수는 그 뒤로 어떻게 움직였을까요?")
+    assert validate(script, BLOCK) == []
+
+
+def test_opening_without_a_question_is_caught():
+    script = _with_opening("주간 종가가 3주 연속 하락한 사례는 12건입니다.")
+    assert any("질문이 없다" in v for v in validate(script, BLOCK))
+
+
+def test_opening_that_grew_into_a_summary_is_caught():
+    long_opening = "사례는 12건입니다. " * 30 + "그 뒤는 어땠을까요?"
+    violations = validate(_with_opening(long_opening), BLOCK)
+    assert any(f"{OPENING_MAX_CHARS}자 이내" in v for v in violations)
+
+
+def test_visual_cue_is_not_counted_in_opening_length():
+    """화면 표기는 읽지 않는다. 길이에 같이 세면 멀쩡한 오프닝이 걸린다."""
+    cue = "[자료 화면: " + "조건 정의 " * 40 + '/ 화면 텍스트 "조건"]'
+    script = _with_opening("사례는 12건입니다. 그 뒤는 어땠을까요?", cue=cue)
+    assert not any("자 이내" in v for v in validate(script, BLOCK))
+
+
+def test_empty_opening_is_caught():
+    assert any("비어 있다" in v for v in validate(_with_opening(""), BLOCK))

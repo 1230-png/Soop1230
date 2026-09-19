@@ -18,3 +18,11 @@ shorts_engine/.pytest_cache/
 # market-verify
 market-verify/out/
 market-verify/.pytest_cache/
+
+# channel_health — metrics.csv 는 기록이라 커밋한다. 보고서는 매번 다시 만든다.
+channel_health/report.md
+channel_health/.pytest_cache/
+
+# channel_200y3b — 문장집은 파는 물건이라 매번 다시 만든다. 커밋하지 않는다.
+channel_200y3b/scripts/*.html
+channel_200y3b/.pytest_cache/

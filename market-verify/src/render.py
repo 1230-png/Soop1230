@@ -38,6 +38,15 @@ DOT = (92, 88, 79)
 ZERO_LINE = (168, 162, 148)
 JITTER_ROWS = 5  # 점을 세로로 흩는 단 수. 겹쳐 뭉치면 건수가 적어 보인다.
 
+# 썸네일 아래쪽에 얹는 분포 조각의 자리(세로 비율).
+THUMB_STRIP_TOP = 0.66
+THUMB_STRIP_BOTTOM = 0.90
+# 조각을 얹을 수 있는 제목 줄 수. 이보다 길면 글자가 조각 자리까지 내려온다.
+THUMB_STRIP_MAX_TITLE_LINES = 3
+# 썸네일 제목 판 (글자 크기, 줄바꿈 폭, 줄 간격). 조각이 들어가면 줄여 잡는다.
+THUMB_TITLE = (78, 13, 26)
+THUMB_TITLE_WITH_STRIP = (68, 15, 22)
+
 # 느린 확대(켄 번즈). 정지 화면이 몇십 장 이어지면 사람은 '멈춘 영상'으로 본다.
 FPS = 30
 ZOOM_MAX = 1.07  # 더 당기면 글자가 흐려진다. 눈에 띄면 그것대로 산만하다.
@@ -236,21 +245,94 @@ def distribution_slide(series, caption, section, out_path, source_note=None,
     return out_path
 
 
-def thumbnail(title, out_path, subtitle=None):
+def _thumbnail_strip(draw, name, values, left, right, top, bottom):
+    """한 구간의 분포를 한 줄로 압축해 그린다.
+
+    썸네일은 목록에서 엄지손톱만 하게 보인다. 읽히는 것은 "점들이 어디에
+    몰려 있는가" 하나뿐이라 그것만 남긴다 — 중앙값은 굵은 눈금으로 두고
+    숫자를 붙이지 않는다. 폭이 좁아 글자를 더 넣으면 그림이 먼저 안 읽힌다.
+    """
+    bounds = chart.span([(name, values)])
+    if bounds is None:
+        return
+    data_low, data_high = bounds
+    pad = (data_high - data_low) * 0.08 or 1.0
+    low, high = data_low - pad, data_high + pad
+
+    small = _font(30)
+    draw.text((left, top), f"{chart.short_name(name)} 뒤 · 사례 {len(values)}건",
+              font=small, fill=MUTED)
+
+    axis_y = top + 82
+    reach = (bottom - top) * 0.28
+
+    def x_of(value):
+        return left + (value - low) / (high - low) * (right - left)
+
+    draw.line([(left, axis_y), (right, axis_y)], fill=RULE, width=2)
+    zero_x = x_of(0.0)
+    draw.line([(zero_x, axis_y - reach), (zero_x, axis_y + reach)], fill=ZERO_LINE, width=3)
+
+    dot = 6
+    for order, value in enumerate(values):
+        x = x_of(value)
+        y = axis_y + ((order % JITTER_ROWS) - (JITTER_ROWS - 1) / 2) * dot * 1.1
+        draw.ellipse([x - dot, y - dot, x + dot, y + dot], fill=DOT)
+
+    tick_x = x_of(chart.median(values))
+    draw.line([(tick_x, axis_y - reach * 0.9), (tick_x, axis_y + reach * 0.9)],
+              fill=INK, width=5)
+
+    # 양 끝과 0 만. 어디부터 어디까지인지 모르면 점이 그냥 무늬가 되고,
+    # 0 을 안 적으면 가운데 세로선이 무엇인지 알 수 없다.
+    for value, anchor in ((data_low, "lt"), (0.0, "mt"), (data_high, "rt")):
+        draw.text((x_of(value), axis_y + reach + 10),
+                  "0" if value == 0.0 else f"{value:+.0f}%",
+                  font=small, fill=MUTED, anchor=anchor)
+
+
+def thumbnail(title, out_path, subtitle=None, series=None):
+    """제목 썸네일. series 를 주면 아래쪽에 분포 조각을 한 줄 얹는다.
+
+    글자만 있는 썸네일은 추천 목록에서 옆 영상과 구분되지 않는다. 얼굴이나
+    빨간 화살표를 쓰지 않는 채널이라 남는 것은 이 영상이 실제로 보여 주는
+    것뿐이고, 그게 분포다. **조각의 숫자도 영상 안 그림과 같은 곳(블록)에서
+    온다** — 썸네일만 따로 계산하면 눌러 본 사람이 다른 그림을 본다.
+
+    series 가 없으면(전략·토크노믹스 블록) 예전 그대로 글자만 있는 썸네일이다.
+    """
     image = _paper(THUMB_WIDTH, THUMB_HEIGHT)
     draw = ImageDraw.Draw(image)
 
     margin = int(THUMB_WIDTH * 0.085)
-    body = _font(78)
-    line_gap = 26
-    lines = len(textwrap.fill(title, width=13).split("\n"))
-    top = (THUMB_HEIGHT - lines * (body.size + line_gap)) / 2 - 20
-    end = _draw_block(draw, title, body, top, margin, INK, 13, line_gap)
+    # 블록의 마지막 구간이 가장 긴 기간이다(1개월 · 6개월 · 12개월 순).
+    # 짧은 구간은 점이 0 근처에 뭉쳐서 엄지손톱 크기에서 아무것도 안 보인다.
+    row = series[-1] if series else None
+
+    # 조각이 들어가면 글자를 작게 잡고 위로 올린다. 가운데 정렬로 두면 겹친다.
+    size, wrap, line_gap = THUMB_TITLE_WITH_STRIP if row else THUMB_TITLE
+    if row and len(textwrap.fill(title, width=wrap).split("\n")) > THUMB_STRIP_MAX_TITLE_LINES:
+        # 제목이 길어 글자가 조각 자리까지 내려온다. 겹쳐 찍거나 아래를 비워 두느니
+        # 조각을 포기하고 예전 판(가운데 정렬)으로 돌아간다.
+        row = None
+        size, wrap, line_gap = THUMB_TITLE
+
+    body = _font(size)
+    lines = len(textwrap.fill(title, width=wrap).split("\n"))
+    top = (
+        int(THUMB_HEIGHT * 0.10) if row
+        else (THUMB_HEIGHT - lines * (body.size + line_gap)) / 2 - 20
+    )
+    end = _draw_block(draw, title, body, top, margin, INK, wrap, line_gap)
 
     if subtitle:
         rule_y = end + 26
         draw.line([(margin, rule_y), (margin + 150, rule_y)], fill=INK, width=4)
         _draw_block(draw, subtitle, _font(34), rule_y + 24, margin, MUTED, 30, 10)
+
+    if row is not None:
+        _thumbnail_strip(draw, row[0], row[1], margin, THUMB_WIDTH - margin,
+                         THUMB_HEIGHT * THUMB_STRIP_TOP, THUMB_HEIGHT * THUMB_STRIP_BOTTOM)
     image.save(out_path)
     return out_path
 

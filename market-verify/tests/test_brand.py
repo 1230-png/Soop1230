@@ -1,3 +1,5 @@
+import pytest
+
 from src import brand
 
 
@@ -33,3 +35,21 @@ def test_video_description_survives_an_empty_script_section():
 def test_tags_lead_with_the_channel_name():
     assert brand.TAGS[0] == brand.NAME
     assert len(brand.TAGS) <= 20
+
+
+# --- 제휴 링크 거부 -----------------------------------------------------
+
+def test_an_affiliate_link_in_the_description_stops_the_upload():
+    """면책 문구가 '추천하지 않는다'고 적힌 채널에 수수료 링크를 붙일 수 없다."""
+    with pytest.raises(brand.AffiliateLinkError):
+        brand.video_description("교재는 여기 https://link.coupang.com/a/abc")
+
+
+def test_the_shortened_coupang_domain_is_caught_too():
+    with pytest.raises(brand.AffiliateLinkError):
+        brand.video_description("https://coupa.ng/xyz 에서 보세요")
+
+
+def test_an_ordinary_link_still_passes():
+    text = brand.video_description("출처: https://fred.stlouisfed.org/series/DGS10")
+    assert "fred.stlouisfed.org" in text

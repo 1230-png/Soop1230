@@ -102,7 +102,8 @@ def test_select_scenes_matches_across_punctuation_the_model_changed():
     start, end = shorts.parse_cuts(SCRIPT)[0]
     loosened = start.replace(", ", ",").rstrip("?")
     selected = shorts.select_scenes(scenes, loosened, end)
-    assert selected[0].narration.startswith("주간 종가가 3주 연속 하락한 뒤")
+    assert selected[0].section == "1. 오프닝"
+    assert start in selected[0].narration
 
 
 def test_select_scenes_still_refuses_a_short_fragment():
@@ -132,7 +133,7 @@ def test_select_scenes_spans_from_the_start_phrase_to_the_end_phrase():
     scenes = script_parse.scenes(SCRIPT)
     start, end = shorts.parse_cuts(SCRIPT)[0]
     selected = shorts.select_scenes(scenes, start, end)
-    assert selected[0].narration.startswith("주간 종가가 3주 연속 하락한 뒤")
+    assert start in selected[0].narration
     assert end in selected[-1].narration
     assert len(selected) < len(scenes), "컷이 대본 전체를 그대로 가져왔다"
 
@@ -172,7 +173,14 @@ def test_build_trims_a_cut_that_runs_over_the_limit(tmp_path):
         FILLED, tmp_path, "full", voice.silent_speak, voice.DEFAULT_VOICE,
         cut_index=0, log=lambda *a: None, max_seconds=999,
     )
-    limit = render.audio_duration(full) / 2
+    # 상한은 첫 장면보다 길고 전체보다는 짧아야 자를 자리가 있다. 절반으로
+    # 잡아 두면 첫 장면이 길어진 날 이 시험이 대신 깨진다 — 실제로 그랬다.
+    # (상한이 첫 장면보다 짧은 경우는 바로 아래 시험이 따로 본다.)
+    one_scene = shorts.build(
+        FILLED, tmp_path, "one", voice.silent_speak, voice.DEFAULT_VOICE,
+        cut_index=0, log=lambda *a: None, max_seconds=0.1,
+    )
+    limit = (render.audio_duration(one_scene) + render.audio_duration(full)) / 2
     trimmed = shorts.build(
         FILLED, tmp_path, "trim", voice.silent_speak, voice.DEFAULT_VOICE,
         cut_index=0, log=lambda *a: None, max_seconds=limit,

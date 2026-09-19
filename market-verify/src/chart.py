@@ -13,9 +13,12 @@
 한글 폰트가 없는 곳에서도 시험이 돈다.
 """
 
+import re
 import statistics
 
 CASES_MARKER = "[사례별 이후 수익률 %]"
+# 블록의 구간 이름은 "252거래일(12개월)" 꼴이다. 괄호 안이 사람이 읽는 이름이다.
+PAREN_RE = re.compile(r"[(（]([^)）]+)[)）]")
 # 점이 두엇뿐이면 분포라고 부를 것이 없다. 그때는 글자 화면이 낫다.
 MIN_POINTS = 3
 
@@ -106,3 +109,13 @@ def span(series):
     if low == high:
         return low - 1.0, high + 1.0
     return low, high
+
+
+def short_name(horizon):
+    """'252거래일(12개월)' → '12개월'. 썸네일처럼 폭이 좁은 자리에서 쓴다.
+
+    괄호가 없으면 손대지 않고 그대로 돌려준다 — 블록 형식이 바뀌었을 때
+    이름을 지어내는 것보다 길게 나오는 편이 낫다.
+    """
+    match = PAREN_RE.search(horizon)
+    return match.group(1).strip() if match else horizon.strip()

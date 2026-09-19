@@ -22,6 +22,8 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 
+import affiliate
+
 ROOT = Path(__file__).resolve().parent.parent
 # 새로고침 요청에 스코프를 실어 보내지 않는다.
 #
@@ -36,9 +38,11 @@ ROOT = Path(__file__).resolve().parent.parent
 SCOPES = None
 ENV_FILE = ROOT / ".env.youtube"
 
-# Coupang Partners affiliate link — must be generated per-product at
-# partners.coupang.com (there's no formula to construct a working coupa.ng
-# link from just a partner ID). Empty until a real link is added.
+# 쿠팡 파트너스 링크. 파트너 ID 로 조합할 수 없고 partners.coupang.com 에서
+# 상품별로 만들어야 한다. 비어 있으면 설명란에 아무것도 붙지 않는다.
+#
+# **여기를 채우기 전에 affiliate.py 를 읽을 것.** 대가성 고지는 선택이
+# 아니고, 이 값이 채워지는 순간 무인으로 발행된다.
 COUPANG_LINK = ""
 
 CHANNEL_ID = "UCeXsmdfyW4hoxgWV2K8EwFw"  # @200-y3b
@@ -58,6 +62,27 @@ LONGFORM_COMMENT = (
 )
 
 
+def _warn(message: str) -> None:
+    """실행 페이지에 보이게 경고를 남긴다.
+
+    ::warning:: 주석은 러너가 stderr 에서도 읽어 주지만(longform/build.py 가
+    같은 방식이다), 거기에만 기대지 않는다. 이 경고가 뜨지 않으면 기능이
+    몇 달째 죽어 있어도 실행은 매번 초록색이고 아무도 모른다 — 실제로
+    그랬다. $GITHUB_STEP_SUMMARY 는 channel_health.yml 에서 이미 확인된
+    경로라 한 벌 더 적는다.
+    """
+    print(f"::warning::{message}", file=sys.stderr)
+    summary = os.environ.get("GITHUB_STEP_SUMMARY")
+    if not summary:
+        return
+    try:
+        with open(summary, "a", encoding="utf-8") as handle:
+            handle.write(f"- ⚠️ {message}\n")
+    except OSError as error:
+        # 요약을 못 적는다고 업로드를 깨지 않는다. 이미 올라간 뒤다.
+        print(f"(요약에 적지 못했다: {error})", file=sys.stderr)
+
+
 def _post_longform_comment(youtube, video_id: str) -> None:
     """업로드 직후 롱폼으로 가는 채널 댓글을 단다.
 
@@ -75,7 +100,11 @@ def _post_longform_comment(youtube, video_id: str) -> None:
         ).execute()
         print(f"✅ Long-form comment posted on {video_id}")
     except HttpError as e:
-        print(f"⚠️  Comment failed (ignored): {e}", file=sys.stderr)
+        # 여기서 조용히 넘어가면 쇼츠→롱폼 동선이 끊긴 채로 몇 달이 간다.
+        # 업로드 자체는 이미 끝났으므로 예외를 올리지는 않는다(올리면
+        # used_log 가 안 남아 다음 실행이 같은 표현을 또 올린다).
+        _warn(f"롱폼 유도 댓글 실패 ({video_id}): {e} — force-ssl 스코프가 "
+              "없으면 403 이다. get_refresh_token.py 로 토큰을 다시 받을 것.")
 
 
 def _load_env_file():
@@ -243,11 +272,11 @@ def upload_video(
     """
     youtube = get_youtube_client()
 
-    # Add Coupang Partners affiliate link to description, if one is set
-    if COUPANG_LINK:
-        full_description = f"{description}\n\n📚 추천 상품: {COUPANG_LINK}"
-    else:
-        full_description = description
+    # 제휴 링크는 affiliate.py 를 거쳐서만 붙는다. 고지가 먼저 오고, 손으로
+    # 설명란에 적어 넣은 링크는 assert_disclosed 가 잡아 업로드를 멈춘다.
+    # 여기서 예외를 삼키면 고지 없는 링크가 그대로 나간다 — 삼키지 말 것.
+    full_description = affiliate.assert_disclosed(
+        affiliate.with_disclosure(description, COUPANG_LINK))
 
     # Upload video
     body = {

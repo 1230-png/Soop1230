@@ -389,3 +389,121 @@ def test_upload_all_does_not_stop_on_an_ordinary_failure(monkeypatch, tmp_path):
         upload_args(upload=True),
     )
     assert [call["path"] for call in sender.calls] == ["v.mp4", "v_short2.mp4"]
+
+
+# --- 몰아보기 (--source week/month) ----------------------------------
+
+def test_recap_sources_refuse_repeat_and_a_topic_key():
+    """한 구간은 한 편이고, 소재를 새로 고르지도 않는다."""
+    for argv in (["--source", "week", "--repeat", "2"],
+                 ["--source", "month", "--topic-key", "gspc-down3"]):
+        with pytest.raises(SystemExit):
+            daily_pipeline.parse_args(argv)
+
+
+def test_an_empty_recap_does_not_republish_a_leftover_script(tmp_path, monkeypatch, capsys):
+    """묶을 것이 없는데 outdir 에 지난 대본이 남아 있으면 그것이 다시 올라간다.
+
+    실제로 일어날 수 있는 조합이다 — 같은 out/ 을 계속 쓰고, 주 초에는 묶을
+    회차가 아직 모이지 않는다. 이미 발행한 편이 한 번 더 공개로 나가는 일이다.
+    """
+    outdir = tmp_path / "out"
+    outdir.mkdir()
+    stale = outdir / "GSPC_down-weeks_20260101-000000_script.md"
+    stale.write_text(FILLED, encoding="utf-8")
+
+    built = []
+    monkeypatch.setattr(daily_pipeline.produce, "build",
+                        lambda *a, **k: built.append(a) or ("영상", "썸네일"))
+    # 묶을 회차가 없는 상태: 로그가 비어 있다.
+    log_path = tmp_path / "used_topics.csv"
+
+    code = daily_pipeline.run_once(daily_pipeline.parse_args([
+        "--source", "week", "--outdir", str(outdir), "--log-path", str(log_path),
+    ]))
+
+    assert code == 0
+    assert built == [], "묶을 것이 없는데 영상을 만들었다 — 남은 대본을 집었다는 뜻이다"
+    assert stale.read_text(encoding="utf-8") == FILLED
+    assert "모여야 묶는다" in capsys.readouterr().out
+
+
+def test_a_recap_is_recorded_under_its_window_key(tmp_path, monkeypatch, capsys):
+    """기록이 남아야 같은 주를 두 번 묶지 않는다. 순환 풀은 건드리지 않는다."""
+    from src import recap, run_recap
+
+    outdir = tmp_path / "out"
+    outdir.mkdir()
+    script = outdir / "recap_week_20260101-000000_script.md"
+    script.write_text(FILLED, encoding="utf-8")
+
+    monkeypatch.setattr(run_recap, "build", lambda *a, **k: script)
+    monkeypatch.setattr(daily_pipeline.produce, "build", lambda *a, **k: ("영상", "썸네일"))
+    monkeypatch.setattr(daily_pipeline.shorts, "build", lambda *a, **k: "숏폼")
+
+    log_path = tmp_path / "used_topics.csv"
+    code = daily_pipeline.run_once(daily_pipeline.parse_args([
+        "--source", "week", "--outdir", str(outdir), "--log-path", str(log_path),
+    ]))
+
+    assert code == 0
+    recorded = log_path.read_text(encoding="utf-8")
+    assert recap.window_key(recap.WEEK) in recorded
+    assert recap.RECAP_TOOL in recorded
+    # 몰아보기를 냈다고 새 소재가 소진되면 안 된다.
+    assert topics.next_topic(log_path).key == topics.TOPIC_POOL[0].key
+
+
+def test_a_recap_does_not_draw_a_distribution_chart(tmp_path, monkeypatch):
+    """묶은 블록에는 조건마다 사례 표가 있는데 parse_cases 는 첫 표에서 멈춘다.
+
+    그대로 넘기면 2번 조건을 읽는 동안 1번 조건 그림이 떠 있다. 대본이 말하는
+    값과 화면에 보이는 값이 갈라지는 것을 이 파이프라인은 하지 않는다.
+    """
+    from src import run_recap
+
+    outdir = tmp_path / "out"
+    outdir.mkdir()
+    script = outdir / "recap_week_20260101-000000_script.md"
+    script.write_text(FILLED, encoding="utf-8")
+    # 블록 파일이 옆에 있어도 넘기지 않는다는 것이 요점이다.
+    (outdir / "recap_week_20260101-000000_block.txt").write_text(
+        "[사례별 이후 수익률 %]\n| 발생일 | 21거래일(1개월) |\n", encoding="utf-8"
+    )
+
+    monkeypatch.setattr(run_recap, "build", lambda *a, **k: script)
+    monkeypatch.setattr(daily_pipeline.shorts, "build", lambda *a, **k: "숏폼")
+    passed = {}
+
+    def spy(script_text, outdir_, stem, speak, voice_name, log=print, block_text=None):
+        passed["block_text"] = block_text
+        return ("영상", "썸네일")
+
+    monkeypatch.setattr(daily_pipeline.produce, "build", spy)
+
+    daily_pipeline.run_once(daily_pipeline.parse_args([
+        "--source", "week", "--outdir", str(outdir),
+        "--log-path", str(tmp_path / "used_topics.csv"),
+    ]))
+
+    assert passed["block_text"] is None
+
+
+def test_a_normal_episode_still_gets_its_block(tmp_path, stub_run_tool, monkeypatch):
+    """위 폴백이 평소 회차의 분포 그림까지 꺼 버리면 안 된다."""
+    passed = {}
+
+    def spy(script_text, outdir_, stem, speak, voice_name, log=print, block_text=None):
+        passed["block_text"] = block_text
+        return ("영상", "썸네일")
+
+    monkeypatch.setattr(daily_pipeline.produce, "build", spy)
+    monkeypatch.setattr(daily_pipeline.shorts, "build", lambda *a, **k: "숏폼")
+    outdir = tmp_path / "out"
+
+    daily_pipeline.run_once(daily_pipeline.parse_args([
+        "--outdir", str(outdir), "--source", "pool",
+        "--log-path", str(tmp_path / "used_topics.csv"),
+    ]))
+
+    assert "block_text" in passed  # 평소 경로는 block_beside 결과를 그대로 넘긴다
