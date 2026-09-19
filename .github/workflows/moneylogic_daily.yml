@@ -201,4 +201,19 @@ jobs:
             exit 0
           fi
           git commit -m "chore(market-verify): 다룬 소재 기록 [skip ci]"
-          git push origin "HEAD:${GITHUB_REF_NAME}"
+          # 같은 브랜치에 @200-y3b 쇼츠·롱폼도 기록을 밀어 넣는다. 워크플로마다
+          # concurrency 그룹이 달라서 겹쳐 돌 수 있고, 무료 러너가 두 시간쯤
+          # 늦게 뜨는 날은 간격이 더 좁아진다. 그냥 push 하면 non-fast-forward 로
+          # 튕기는데, 그 시점에는 영상이 이미 공개로 올라간 뒤라 기록만 잃는다.
+          # 파일이 서로 달라서(used_topics.csv / used_log.csv / used.json)
+          # rebase 는 충돌 없이 얹힌다.
+          for i in 1 2 3; do
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && \
+              git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            sleep $((i * 5))
+          done
+          # 경고로 넘기지 않는다. 기록이 없으면 다음 회차가 같은 소재를 다시
+          # 뽑는다 — 주 3회로 줄인 이유가 바로 소재 겹침이었다. 회차를 빨갛게
+          # 만들어서 사람이 used_topics.csv 에 손으로 한 줄 채우게 한다.
+          echo "::error::소재 기록을 push 하지 못했다. market-verify/used_topics.csv 에 이번 회차를 직접 추가할 것."
+          exit 1
