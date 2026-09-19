@@ -18,3 +18,7 @@ shorts_engine/.pytest_cache/
 # market-verify
 market-verify/out/
 market-verify/.pytest_cache/
+
+# channel_health — metrics.csv 는 기록이라 커밋한다. 보고서는 매번 다시 만든다.
+channel_health/report.md
+channel_health/.pytest_cache/

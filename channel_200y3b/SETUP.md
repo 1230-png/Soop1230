@@ -299,6 +299,21 @@ Actions 탭 → **"Channel housekeeping (@200-y3b)"** → Run workflow →
 쇼츠 댓글을 쓰려면 `get_refresh_token.py` 를 다시 돌려 `Y3B_REFRESH_TOKEN` 을
 갈아 끼워야 합니다. 업로드·재생목록·썸네일은 기존 토큰으로도 그대로 돕니다.
 
+**어차피 다시 받는다면 시청 시간 권한도 같이 받으세요.** `--with-analytics` 를
+붙이면 `yt-analytics.readonly` 가 함께 들어옵니다. 지금 `channel_health/` 가
+읽는 것은 조회수까지이고, 파트너 프로그램이 세는 3,000시간은 그 스코프가
+있어야 읽힙니다 — 숏폼은 조회수가 잘 늘면서 그 시간에는 안 들어가기 때문에,
+조회수만 보면 수익화가 가까워지는지 알 수 없습니다. 한 번 다시 받으면 막혀
+있던 댓글과 이 둘이 같이 풀립니다.
+
+먼저 클라우드 콘솔 **OAuth 동의 화면 → 범위**에 `yt-analytics.readonly` 를
+추가해 두세요. 등록되지 않은 스코프를 요청하면 발급 자체가 실패합니다.
+
+```bash
+python3 scripts/get_refresh_token.py \
+    --client-secret-file client_secret.json --with-analytics
+```
+
 **댓글 고정은 자동화할 수 없습니다** — Data API 에 고정(pin) 엔드포인트가
 없습니다. 스크립트가 다는 것은 고정되지 않은 채널 댓글이고, 고정은
 스튜디오에서 직접 해야 합니다.

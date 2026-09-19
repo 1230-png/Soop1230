@@ -1,0 +1,7 @@
+# 읽기 전용 유튜브 조회. 업로드 쪽과 같은 클라이언트를 쓰지만 쓰기 호출은 없다.
+google-auth>=2.32
+google-auth-oauthlib>=1.2
+google-api-python-client>=2.140
+
+# 테스트
+pytest>=8.0
