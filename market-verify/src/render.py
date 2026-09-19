@@ -15,6 +15,8 @@ from pathlib import Path
 
 from PIL import Image, ImageChops, ImageDraw, ImageFont
 
+from src import chart
+
 WIDTH, HEIGHT = 1920, 1080
 THUMB_WIDTH, THUMB_HEIGHT = 1280, 720
 # 숏폼(세로) 컷용. 롱폼과 같은 그리기 함수를 재사용하려고 크기만 인자로 뺐다.
@@ -30,6 +32,18 @@ GRAIN_MIX = 0.07  # 더 올리면 종이가 탁해진다.
 # 본문 크기는 가로폭에 비례시키되, 세로(숏폼)는 폰에서 보므로 훨씬 키운다.
 BODY_RATIO_LANDSCAPE = 0.040
 BODY_RATIO_PORTRAIT = 0.092
+
+# 분포 그림
+DOT = (92, 88, 79)
+ZERO_LINE = (168, 162, 148)
+JITTER_ROWS = 5  # 점을 세로로 흩는 단 수. 겹쳐 뭉치면 건수가 적어 보인다.
+
+# 느린 확대(켄 번즈). 정지 화면이 몇십 장 이어지면 사람은 '멈춘 영상'으로 본다.
+FPS = 30
+ZOOM_MAX = 1.07  # 더 당기면 글자가 흐려진다. 눈에 띄면 그것대로 산만하다.
+# 1.07 배까지만 당기므로 1.5 배로 미리 키우면 충분하다. 흔히 말하는 2 배는
+# 크게 당길 때 이야기고, 여기서는 러너 시간만 먹는다.
+ZOOM_PRESCALE = 1.5
 
 FONT_CANDIDATES = [
     "/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc",
@@ -120,6 +134,108 @@ def slide(screen_text, section, out_path, source_note=None, width=WIDTH, height=
     return out_path
 
 
+def distribution_slide(series, caption, section, out_path, source_note=None,
+                       width=WIDTH, height=HEIGHT):
+    """사례별 수익률을 구간마다 한 줄씩 점으로 흩어 그린다.
+
+    이 채널의 결론은 "평균이 아니라 분포"다. 그런데 분포를 글자로 읽어 주면
+    듣는 쪽은 숫자 세 개(중앙값·최저·최고)만 남는다. 점을 흩어 놓으면 어디에
+    몰려 있는지가 한 번에 보인다 — 몰린 정도는 말로 옮기기 어려운 종류의 사실이다.
+
+    판은 slide() 와 같다(미색 종이·머리말·괘선). 한 영상 안에서 글자 화면과
+    그림 화면이 섞이는데, 판이 다르면 다른 영상을 이어 붙인 것처럼 보인다.
+    """
+    bounds = chart.span(series)
+    if not series or bounds is None:
+        raise ValueError("그릴 분포가 없다.")
+
+    data_low, data_high = bounds
+    pad = (data_high - data_low) * 0.08 or 1.0
+    low, high = data_low - pad, data_high + pad
+
+    portrait = height > width
+    image = _paper(width, height)
+    draw = ImageDraw.Draw(image)
+
+    margin = int(width * 0.085)
+    body_size = int(width * (BODY_RATIO_PORTRAIT if portrait else BODY_RATIO_LANDSCAPE))
+    small = max(18, int(body_size * 0.40))
+    cap_size = max(small, int(body_size * 0.62))
+    hairline = max(1, round(width / 960))
+    small_font, cap_font = _font(small), _font(cap_size)
+
+    head_y = int(height * (0.07 if portrait else 0.11))
+    draw.text((margin, head_y), section, font=small_font, fill=MUTED)
+    rule_y = head_y + int(small * 1.9)
+    draw.line([(margin, rule_y), (width - margin, rule_y)], fill=RULE, width=hairline)
+
+    top = rule_y + int(cap_size * 0.9)
+    if caption:
+        top = _draw_block(
+            draw, caption, cap_font, top, margin, INK,
+            18 if portrait else 28, int(cap_size * 0.35),
+        )
+
+    foot_y = height - int(height * (0.06 if portrait else 0.11))
+    plot_top = top + int(cap_size * 0.9)
+    plot_bottom = foot_y - int(small * 2.6)  # 가로축 숫자 자리
+
+    gap = int(width * 0.02)
+    label_width = max(draw.textlength(name, font=small_font) for name, _ in series)
+    plot_left = margin + int(label_width) + gap
+    plot_right = width - margin
+
+    def x_of(value):
+        return plot_left + (value - low) / (high - low) * (plot_right - plot_left)
+
+    row_height = (plot_bottom - plot_top) / len(series)
+    dot = max(3, int(width * 0.0042))
+
+    # 0 선은 줄 전체를 관통한다. 손실 쪽과 이득 쪽이 갈리는 자리라 구간마다
+    # 끊으면 눈이 다시 맞춰야 한다.
+    zero_x = x_of(0.0)
+    draw.line([(zero_x, plot_top), (zero_x, plot_bottom)], fill=ZERO_LINE, width=hairline * 2)
+
+    for index, (name, values) in enumerate(series):
+        center_y = plot_top + row_height * (index + 0.5)
+        draw.text((plot_left - gap, center_y), name, font=small_font, fill=MUTED, anchor="rm")
+        draw.line([(plot_left, center_y), (plot_right, center_y)], fill=RULE, width=hairline)
+
+        # 점이 겹쳐 뭉치면 63건이 10건처럼 보인다. 세로로 조금씩 흩는다.
+        # 난수를 쓰지 않는다 — 같은 데이터는 같은 그림이어야 한다.
+        for order, value in enumerate(values):
+            x = x_of(value)
+            y = center_y + ((order % JITTER_ROWS) - (JITTER_ROWS - 1) / 2) * dot * 1.1
+            draw.ellipse([x - dot, y - dot, x + dot, y + dot], fill=DOT)
+
+        middle = chart.median(values)
+        tick = row_height * 0.30
+        tick_x = x_of(middle)
+        draw.line(
+            [(tick_x, center_y - tick), (tick_x, center_y + tick)],
+            fill=INK, width=max(2, hairline * 3),
+        )
+        label = f"중앙값 {middle:+.1f}%"
+        half = draw.textlength(label, font=small_font) / 2
+        draw.text(
+            (min(max(tick_x, plot_left + half), plot_right - half), center_y - tick - hairline * 3),
+            label, font=small_font, fill=INK, anchor="mb",
+        )
+
+    # 가로축은 양 끝과 0 만 적는다. 눈금을 촘촘히 넣으면 인쇄물 톤이 깨진다.
+    axis_y = plot_bottom + int(small * 0.6)
+    for value, anchor in ((data_low, "lt"), (0.0, "mt"), (data_high, "rt")):
+        draw.text((x_of(value), axis_y), f"{value:+.0f}%", font=small_font,
+                  fill=MUTED, anchor=anchor)
+
+    draw.line([(margin, foot_y), (width - margin, foot_y)], fill=RULE, width=hairline)
+    if source_note:
+        draw.text((margin, foot_y + int(small * 0.7)), source_note,
+                  font=small_font, fill=MUTED)
+    image.save(out_path)
+    return out_path
+
+
 def thumbnail(title, out_path, subtitle=None):
     image = _paper(THUMB_WIDTH, THUMB_HEIGHT)
     draw = ImageDraw.Draw(image)
@@ -148,14 +264,53 @@ def audio_duration(path):
     return float(result.stdout.strip())
 
 
-def mux(image_path, audio_path, out_path):
-    """정지 화면 + 음성 → 영상 한 토막."""
+def _even(value):
+    """yuv420p 는 가로·세로가 짝수여야 한다."""
+    return int(value) // 2 * 2
+
+
+def zoom_filter(width, height, seconds):
+    """느린 확대 필터 문자열. 시험이 들여다볼 수 있게 따로 뺐다."""
+    # -shortest 가 음성 길이에서 자른다. 그보다 프레임을 넉넉히 잡는 이유는,
+    # 모자라게 잡으면 zoompan 이 확대를 처음부터 다시 시작해 화면이 한 번 튀기 때문이다.
+    frames = int(round(seconds * FPS)) + FPS
+    step = (ZOOM_MAX - 1.0) / frames
+    return (
+        f"scale={_even(width * ZOOM_PRESCALE)}:{_even(height * ZOOM_PRESCALE)}"
+        ":flags=lanczos,"
+        f"zoompan=z='min(1+{step:.9f}*on,{ZOOM_MAX})'"
+        # 기본값은 왼쪽 위를 향해 당긴다. 글자가 한쪽으로 쏠려 보여서 가운데로 잡는다.
+        ":x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'"
+        f":d={frames}:s={width}x{height}:fps={FPS},setsar=1"
+    )
+
+
+def mux(image_path, audio_path, out_path, seconds=None, zoom=True):
+    """정지 화면 + 음성 → 영상 한 토막.
+
+    seconds 를 주면 화면을 아주 느리게 당긴다. 1.07 배라 보는 사람이 움직임을
+    알아채지는 못하지만, 화면이 멈춰 있다는 느낌은 사라진다. 한 편에 정지 화면이
+    수십 장 이어지던 자리다.
+
+    **한 영상 안에서는 모든 토막이 같은 길로 가야 한다.** concat 이 다시 인코딩하지
+    않고 이어 붙이므로(-c copy), 어떤 토막은 -tune stillimage 로 굳고 어떤 토막은
+    아니면 이어 붙인 파일이 깨진다. seconds 를 줄 거면 전부 준다.
+    """
+    if not zoom or not seconds or seconds <= 0:
+        # 길이를 모르면 zoompan 이 몇 프레임을 낼지 정할 수 없다. 예전 길로 간다.
+        video_filter, tune = [], ["-tune", "stillimage"]
+    else:
+        with Image.open(image_path) as source:
+            width, height = source.size
+        video_filter, tune = ["-vf", zoom_filter(width, height, seconds)], []
+
     subprocess.run(
         ["ffmpeg", "-y", "-hide_banner", "-loglevel", "error",
          "-loop", "1", "-i", str(image_path),
          "-i", str(audio_path),
-         "-c:v", "libx264", "-tune", "stillimage", "-pix_fmt", "yuv420p",
-         "-r", "30", "-c:a", "aac", "-b:a", "192k",
+         *video_filter,
+         "-c:v", "libx264", *tune, "-pix_fmt", "yuv420p",
+         "-r", str(FPS), "-c:a", "aac", "-b:a", "192k",
          "-shortest", str(out_path)],
         check=True, capture_output=True,
     )

@@ -109,3 +109,81 @@ def test_upload_passes_private_by_default(tmp_path, monkeypatch):
     # 채널 표준 면책 문구가 영상마다 함께 나가야 한다.
     assert seen["description"].endswith(brand.DISCLAIMER)
     assert brand.NAME in seen["tags"]
+
+
+# --- 결과 구간의 분포 그림 ----------------------------------------------
+#
+# 그리기는 갈아끼운다. 여기서 보는 것은 "어느 화면을 골랐나"이지 그림 자체가 아니다.
+# 덕분에 한글 폰트 없이도 돈다.
+
+from src.script_parse import Scene  # noqa: E402
+
+SERIES = [("21거래일(1개월)", [-12.3, 4.1, -1.0, 7.7])]
+
+
+def _spy(monkeypatch):
+    picked = []
+    monkeypatch.setattr(
+        produce.render, "distribution_slide",
+        lambda series, caption, section, path: picked.append(("그림", section)) or path,
+    )
+    monkeypatch.setattr(
+        produce.render, "slide",
+        lambda text, section, path: picked.append(("글자", section)) or path,
+    )
+    return picked
+
+
+def test_the_result_section_gets_the_chart_and_others_stay_text(monkeypatch, tmp_path):
+    picked = _spy(monkeypatch)
+
+    produce._scene_image(Scene("4. 결과", "화면", "가"), SERIES, tmp_path / "a.png", print)
+    produce._scene_image(Scene("2. 조건 설정", "화면", "가"), SERIES, tmp_path / "b.png", print)
+    produce._scene_image(Scene("1. 오프닝", "화면", "가"), SERIES, tmp_path / "c.png", print)
+
+    assert picked == [("그림", "4. 결과"), ("글자", "2. 조건 설정"), ("글자", "1. 오프닝")]
+
+
+def test_without_case_data_every_scene_stays_text(monkeypatch, tmp_path):
+    """전략·토크노믹스 블록에는 사례 표가 없다. 그때도 영상은 나와야 한다."""
+    picked = _spy(monkeypatch)
+
+    produce._scene_image(Scene("4. 결과", "화면", "가"), [], tmp_path / "a.png", print)
+
+    assert picked == [("글자", "4. 결과")]
+
+
+def test_a_failed_chart_falls_back_to_text_and_says_why(monkeypatch, tmp_path):
+    """그림 하나 때문에 그날 영상이 통째로 안 나오면 안 된다. 다만 조용히 넘어가지도 않는다."""
+    lines = []
+
+    def boom(*args, **kwargs):
+        raise RuntimeError("폰트를 찾지 못했다")
+
+    monkeypatch.setattr(produce.render, "distribution_slide", boom)
+    monkeypatch.setattr(produce.render, "slide", lambda text, section, path: path)
+
+    result = produce._scene_image(
+        Scene("4. 결과", "화면", "가"), SERIES, tmp_path / "a.png", lines.append
+    )
+
+    assert result == tmp_path / "a.png"
+    assert any("분포 그림 실패" in line for line in lines)
+
+
+def test_block_is_found_beside_the_script(tmp_path):
+    """run.py 가 대본과 같은 stem 으로 써 둔다."""
+    script = tmp_path / "IXIC_down-weeks_20260918-2359_script.md"
+    script.write_text("대본", encoding="utf-8")
+    (tmp_path / "IXIC_down-weeks_20260918-2359_block.txt").write_text(
+        "블록", encoding="utf-8"
+    )
+
+    assert produce.block_beside(script) == "블록"
+
+
+def test_a_missing_block_is_not_an_error(tmp_path):
+    script = tmp_path / "x_script.md"
+    script.write_text("대본", encoding="utf-8")
+
+    assert produce.block_beside(script) is None

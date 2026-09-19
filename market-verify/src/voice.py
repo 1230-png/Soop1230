@@ -26,6 +26,43 @@ ELEVENLABS_KEY_ENV = "ELEVENLABS_API_KEY"
 ELEVENLABS_DEFAULT_VOICE_ID = "pNInz6obpgDQGcFmaJgB"
 ELEVENLABS_MODEL_ID = "eleven_multilingual_v2"
 
+EDGE = "edge-tts"
+ELEVENLABS = "일레븐랩스"
+GOOGLE = "구글 번역 음성"
+SILENT = "무음(화면 확인용)"
+
+# 어느 엔진이 읽었는지 센다.
+#
+# 여기까지 오는 길이 셋인데 **어디로 갔는지 로그에 아무 흔적이 없었다.** 성공하면
+# 조용히 넘어가고 셋 다 실패할 때만 사유를 찍었기 때문이다. 러너에서는 edge-tts 가
+# 막히는 것이 이미 알려져 있으므로, 매일 아침 발행되는 영상이 어떤 목소리인지
+# 확인할 방법이 없었다는 뜻이다. 목소리 톤은 시청자가 가장 먼저 느끼는 부분이다.
+#
+# 모듈 수준 상태가 달갑지는 않다. 다만 speak(text, out_path, voice) 라는 자리는
+# narrate·shorts·시험이 함께 쓰고 있어서 반환값을 바꾸면 그 전부가 바뀐다.
+# 세는 것 말고는 동작을 바꾸지 않는 값이라 여기 둔다.
+_ENGINE_COUNTS = {}
+
+
+def _record(engine):
+    _ENGINE_COUNTS[engine] = _ENGINE_COUNTS.get(engine, 0) + 1
+    return engine
+
+
+def reset_engines():
+    _ENGINE_COUNTS.clear()
+
+
+def engines_used():
+    return dict(_ENGINE_COUNTS)
+
+
+def engine_summary():
+    """'edge-tts 12개 · 구글 번역 음성 28개' 같은 한 줄."""
+    if not _ENGINE_COUNTS:
+        return "없음"
+    return " · ".join(f"{name} {count}개" for name, count in _ENGINE_COUNTS.items())
+
 
 class VoiceError(RuntimeError):
     """음성을 만들지 못했다."""
@@ -47,7 +84,9 @@ def edge_tts_speak(text, out_path, voice=DEFAULT_VOICE):
     last = None
     for attempt in range(1, EDGE_ATTEMPTS + 1):
         try:
-            return _edge_once(text, out_path, voice)
+            path = _edge_once(text, out_path, voice)
+            _record(EDGE)
+            return path
         except Exception as error:
             last = error
             if attempt < EDGE_ATTEMPTS:
@@ -57,13 +96,17 @@ def edge_tts_speak(text, out_path, voice=DEFAULT_VOICE):
 
     if os.environ.get(ELEVENLABS_KEY_ENV):
         try:
-            return elevenlabs_speak(text, out_path)
+            path = elevenlabs_speak(text, out_path)
+            _record(ELEVENLABS)
+            return path
         except Exception as error:
             # 키가 만료돼 있어도 여기서 멈추지 않는다. 뒤에 무료 대안이 있다.
             problems.append(f"일레븐랩스: {error}")
 
     try:
-        return google_speak(text, out_path)
+        path = google_speak(text, out_path)
+        _record(GOOGLE)
+        return path
     except Exception as error:
         problems.append(f"구글 번역 음성: {type(error).__name__}: {error}")
 
@@ -115,11 +158,18 @@ def silent_speak(text, out_path, voice=DEFAULT_VOICE):
          "-t", f"{seconds:.2f}", "-q:a", "9", str(out_path)],
         check=True, capture_output=True,
     )
+    _record(SILENT)
     return out_path
 
 
-def narrate(scenes, outdir, speak=edge_tts_speak, voice=DEFAULT_VOICE):
-    """장면마다 음성 파일을 만들어 경로 목록을 돌려준다."""
+def narrate(scenes, outdir, speak=edge_tts_speak, voice=DEFAULT_VOICE, log=None):
+    """장면마다 음성 파일을 만들어 경로 목록을 돌려준다.
+
+    어느 엔진이 읽었는지 한 줄로 남긴다. 대체 음성으로 내려갔으면 느낌표를 붙인다 —
+    edge-tts 가 막히면 음질이 눈에 띄게 떨어지는데, 그동안은 그 사실이 로그
+    어디에도 남지 않아 영상을 직접 듣기 전에는 알 수 없었다.
+    """
+    reset_engines()
     outdir = Path(outdir)
     outdir.mkdir(parents=True, exist_ok=True)
     paths = []
@@ -127,6 +177,12 @@ def narrate(scenes, outdir, speak=edge_tts_speak, voice=DEFAULT_VOICE):
         path = outdir / f"line_{index:03d}.mp3"
         speak(scene.narration, path, voice)
         paths.append(path)
+
+    if log:
+        if set(engines_used()) - {EDGE, SILENT}:
+            log(f"  ! 음성: {engine_summary()} — edge-tts 가 막혀 대체 음성으로 내려갔다.")
+        else:
+            log(f"  음성: {engine_summary()}")
     return paths
 
 

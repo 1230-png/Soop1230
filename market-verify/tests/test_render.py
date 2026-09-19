@@ -76,3 +76,68 @@ def test_concat_cleans_up_its_list_file(tmp_path):
     part = render.mux(image, audio, tmp_path / "p.mp4")
     render.concat([part], tmp_path / "all.mp4", tmp_path)
     assert not (tmp_path / "parts.txt").exists()
+
+
+# --- 느린 확대 ----------------------------------------------------------
+#
+# 필터 문자열만 검사한다. ffmpeg 를 돌리지 않으므로 어디서나 돈다.
+
+
+def _frames(filter_text):
+    return int(filter_text.split(":d=")[1].split(":")[0])
+
+
+def _step(filter_text):
+    return float(filter_text.split("min(1+")[1].split("*on")[0])
+
+
+def test_zoom_pulls_toward_the_centre():
+    """zoompan 기본값은 왼쪽 위로 당긴다. 글자가 한쪽으로 쏠려 보인다."""
+    text = render.zoom_filter(1920, 1080, 10)
+    assert "x='iw/2-(iw/zoom/2)'" in text
+    assert "y='ih/2-(ih/zoom/2)'" in text
+
+
+def test_zoom_keeps_the_original_output_size():
+    """미리 키운 크기가 결과로 새어 나가면 concat 이 토막을 못 잇는다."""
+    assert ":s=1920x1080:" in render.zoom_filter(1920, 1080, 10)
+    assert ":s=1080x1920:" in render.zoom_filter(1080, 1920, 10)
+
+
+def test_prescale_is_even_on_both_sides():
+    """yuv420p 는 홀수 크기를 거부한다."""
+    scale = render.zoom_filter(1081, 1921, 10).split(",")[0]
+    width, height = scale.removeprefix("scale=").split(":")[:2]
+    assert int(width) % 2 == 0
+    assert int(height) % 2 == 0
+
+
+def test_prescale_is_larger_than_the_zoom_ever_needs():
+    """상한보다 작게 키우면 끝에서 화면이 뭉개진다."""
+    scale = render.zoom_filter(1920, 1080, 10).split(",")[0]
+    width = int(scale.removeprefix("scale=").split(":")[0])
+    assert width >= 1920 * render.ZOOM_MAX
+
+
+def test_longer_audio_gets_more_frames():
+    """프레임을 모자라게 잡으면 zoompan 이 확대를 처음부터 다시 시작해 화면이 튄다."""
+    assert _frames(render.zoom_filter(1920, 1080, 60)) > _frames(
+        render.zoom_filter(1920, 1080, 5)
+    )
+
+
+def test_frames_cover_the_whole_clip_with_room_to_spare():
+    seconds = 42
+    text = render.zoom_filter(1920, 1080, seconds)
+    assert _frames(text) > seconds * render.FPS
+
+
+def test_zoom_reaches_the_cap_exactly_and_no_further():
+    """상한 계산이 틀리면 끝에서 글자가 흐려지거나, 아예 안 움직인다."""
+    text = render.zoom_filter(1920, 1080, 30)
+    assert 1 + _step(text) * _frames(text) == pytest.approx(render.ZOOM_MAX, rel=1e-6)
+
+
+def test_zoom_is_gentle_enough_to_go_unnoticed():
+    """눈에 띄면 그것대로 산만하다. 정지 화면 느낌만 없애는 정도다."""
+    assert 1.0 < render.ZOOM_MAX <= 1.15
