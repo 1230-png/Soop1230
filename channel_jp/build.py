@@ -413,6 +413,10 @@ def main() -> int:
     minutes = max(1, round(duration / 60))
 
     metadata = {
+        # 팩 이름과 목표 길이를 남긴다. upload.py 가 올리기 직전에 같은 검사를
+        # 다시 하는데, 그때 이 둘이 없으면 길이가 이름표와 맞는지 볼 수 없다.
+        "pack": args.pack,
+        "target_minutes": pack.get("target_minutes"),
         "title": pack["title"].format(count=count, minutes=minutes, topic=topic),
         "description": build_description(pack, chapters, count, topic, minutes),
         # 팩별 태그를 앞에 둔다. 태그는 앞쪽에 가중치가 있고, 공통 태그만으로는
