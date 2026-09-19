@@ -11,6 +11,7 @@
 | `channel_200y3b/` | @200-y3b — 매일 영어 한마디 쇼츠 | **가동 중** (GitHub Actions 무인 발행) |
 | `longform/` | @200-y3b — 롱폼 팩(주간 리뷰·섀도잉·상황별) | **가동 중** (GitHub Actions 무인 발행) |
 | `channel_health/` | 채널 지표 수집·보고 (**읽기 전용**) | **가동 중** (주 1회, 올리는 것 없음) |
+| `channel_jp/` | 귀트는 일본어 — 한국어 화자용 일본어 듣기 롱폼 | **준비 중** (문장 은행만, 발행 없음) |
 
 `longform/` 은 같은 채널(@200-y3b)을 쓰지만 `channel_200y3b/` 와 **파일도 상태도
 공유하지 않는다.** 한쪽이 망가져도 다른 쪽은 그대로 돈다. 합치지 말 것 — 이유는
@@ -43,6 +44,7 @@
 ```bash
 cd channel_health  && python -m pytest    # 유튜브를 가짜로 세운다 (1초)
 cd channel_200y3b  && python -m pytest    # 제휴 고지·문장집 (1초, google 패키지 없이 돈다)
+cd channel_jp      && python -m pytest    # 문장 은행 검사기 (1초)
 ```
 
 새 테스트는 네트워크와 외부 API를 타지 않게 쓴다. 기존 테스트가 전부 그렇게 돼 있다.
