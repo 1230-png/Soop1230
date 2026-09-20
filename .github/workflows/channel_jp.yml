@@ -21,10 +21,18 @@ on:
           - shadowing_drill
           - sleep_japanese
       limit:
-        description: "문장 수 (비우면 팩 기본값 — 수면 팩은 150문장이다)"
-        required: false
-        type: string
+        # string 이 아니라 choice 다. 빈 칸으로 "팩 기본값"을 뜻하게 했더니
+        # 실제로는 그 뜻이 전달되지 않았다 — 빈 값을 넘기면 GitHub 이 여기
+        # default 를 도로 끼워 넣어서, 150문장을 시켰는데 10문장이 나왔다.
+        # 고르는 값으로 두면 "전체"를 빈 칸으로 말할 일이 없다.
+        description: "문장 수"
+        required: true
+        type: choice
         default: "10"
+        options:
+          - "10"
+          - "30"
+          - 전체
       dry_run:
         description: "무음으로 만든다 (ElevenLabs 를 부르지 않는다)"
         required: true
@@ -100,13 +108,22 @@ jobs:
             exit 1
           fi
 
+      # 문장을 줄여 만든 영상은 제목이 "40분"인데 길이가 2분이라 upload.py
+      # 가 발행을 거절한다. 거절 자체는 맞지만, 그 거절이 글자 값을 다 쓰고
+      # 난 **뒤에** 나온다. 실제로 한 번 그렇게 버렸다.
+      - name: 줄인 영상은 올릴 수 없다
+        if: ${{ inputs.upload && !inputs.dry_run && inputs.limit != '전체' }}
+        run: |
+          echo "::error::limit=${{ inputs.limit }} 로는 올릴 수 없다 — 팩 길이에 못 미쳐 upload.py 가 어차피 막는다. 올리려면 limit 을 '전체' 로 둘 것."
+          exit 1
+
       - name: 영상 만들기
         env:
           ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
         run: |
           set -e
           args="--pack ${{ inputs.pack }}"
-          if [ -n "${{ inputs.limit }}" ]; then
+          if [ "${{ inputs.limit }}" != "전체" ]; then
             args="$args --limit ${{ inputs.limit }}"
           fi
           if [ "${{ inputs.dry_run }}" = "true" ]; then
