@@ -50,6 +50,20 @@ CHANNELS = (
         expected_channel_id="UCeXsmdfyW4hoxgWV2K8EwFw",
         channel_id_env="Y3B_CHANNEL_ID",
     ),
+    Channel(
+        name="jp",
+        label="@귀트는일본어 — 한국어 화자용 일본어 듣기",
+        # MV_ 는 머니로직에서 온 글자지만 그 채널은 없다. 이름을 바꾼 것이지
+        # 지운 것이 아니라서 같은 채널이 지금 「귀트는 일본어」다(CLAUDE.md).
+        client_id_env="MV_CLIENT_ID",
+        client_secret_env="MV_CLIENT_SECRET",
+        refresh_token_env="MV_REFRESH_TOKEN",
+        # 위와 달리 코드에 사본을 두지 않는다. channel_jp/upload.py 가 같은
+        # 규칙이고(「채널 ID 를 코드에 박지 않는다」), 그쪽의 원본이 시크릿
+        # 하나뿐이라 여기에 적어 두면 두 값이 갈라질 자리만 생긴다.
+        # 시크릿이 없으면 collect.own_channel 이 멈춘다 — 짐작해서 적지 않는다.
+        channel_id_env="MV_CHANNEL_ID",
+    ),
 )
 
 BY_NAME = {channel.name: channel for channel in CHANNELS}

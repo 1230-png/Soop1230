@@ -113,6 +113,20 @@ def own_channel(youtube, channel, env=None, part="contentDetails"):
         raise CollectError(f"{channel.label}: 토큰이 채널을 가리키지 않는다.")
 
     expected = channel.target_channel_id(env)
+    if not expected and channel.channel_id_env:
+        # "아직 모른다"와 "빠뜨렸다"는 다르다.
+        #
+        # 등록표에 채널 ID 자리를 아예 안 둔 채널은 전자다 — 새 채널을 ID
+        # 없이 먼저 넣어 보는 것이 흔한 순서이고, 그 수집까지 막지는 않는다
+        # (test_a_channel_without_a_known_id_is_not_blocked 가 그것을 지킨다).
+        #
+        # 여기는 후자다. 어디서 읽을지까지 적어 놓고 그 값이 비었다면 그것은
+        # 시크릿을 빠뜨린 것이다. 그냥 지나가면 남의 채널 숫자가 이 채널
+        # 이름으로 쌓이고, 그 뒤 판단이 전부 엉뚱한 채널을 따라간다.
+        # 한 채널이 멈춰도 나머지는 그대로 기록된다(main 이 채널마다 따로 받는다).
+        raise CollectError(
+            f"{channel.label}: 어느 채널이어야 하는지 모른다 — "
+            f"{channel.channel_id_env} 를 넣을 것. 짐작해서 기록하지 않는다.")
     actual = [item["id"] for item in items]
     if expected and expected not in actual:
         raise CollectError(
