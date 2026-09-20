@@ -193,3 +193,63 @@ def test_metadata_records_the_privacy_that_went_out():
     meta = sound_meta(privacyStatus="private")
     meta["privacyStatus"] = upload.chosen_privacy(meta, "public")
     assert meta["privacyStatus"] == "public"
+
+
+# --- 발행 기록 ------------------------------------------------------------
+
+def test_a_published_row_carries_what_a_comparison_needs():
+    """어느 팩이 잘되는지 묻는 순간 필요한 것들이다.
+
+    used.json 은 문장 ID 만 적고 영상 ID 를 적지 않는다. 그래서 지금까지는
+    "수면 팩과 상황별 팩 중 뭐가 낫나"에 답할 자료가 아예 없었다 — 조회수는
+    metrics.csv 에 쌓이지만 그 영상이 어느 팩인지 아는 곳이 없었다.
+    """
+    meta = {"pack": "situation_pack", "topic": "여행·교통",
+            "title": "상황별 일본어", "duration_seconds": 726.0,
+            "phrase_ids": ["J111", "J112"]}
+    row = upload.published_row(meta, "abc123", "public", "2026-09-20T07:11:26Z")
+    assert row == {
+        "published_at": "2026-09-20T07:11:26Z", "pack": "situation_pack",
+        "topic": "여행·교통", "video_id": "abc123", "duration_seconds": "726.0",
+        "phrase_count": "2", "privacy": "public", "title": "상황별 일본어",
+    }
+
+
+def test_a_pack_without_a_topic_leaves_the_column_blank():
+    """수면·쉐도잉 팩에는 주제가 없다. 빈 칸이지 0 이 아니다."""
+    meta = {"pack": "sleep_japanese", "title": "자기 전 일본어",
+            "duration_seconds": 2100.0, "phrase_ids": ["J001"]}
+    assert upload.published_row(meta, "x", "private", "t")["topic"] == ""
+
+
+def test_the_first_write_lays_down_a_header(tmp_path):
+    path = tmp_path / "published.csv"
+    upload.append_published(dict.fromkeys(upload.PUBLISHED_FIELDS, "x"), path)
+    header = path.read_text(encoding="utf-8").splitlines()[0]
+    assert header == ",".join(upload.PUBLISHED_FIELDS)
+
+
+def test_later_writes_append_and_never_rewrite(tmp_path):
+    """발행 기록은 쌓는 것이다. 덮어쓰면 '얼마나 늘고 있나'가 사라진다."""
+    path = tmp_path / "published.csv"
+    for video in ("one", "two"):
+        row = dict.fromkeys(upload.PUBLISHED_FIELDS, "x")
+        row["video_id"] = video
+        upload.append_published(row, path)
+    lines = path.read_text(encoding="utf-8").splitlines()
+    assert len(lines) == 3          # 머리글 + 두 줄
+    assert "one" in lines[1] and "two" in lines[2]
+
+
+def test_a_comma_in_the_title_does_not_shift_the_columns(tmp_path):
+    """제목에 쉼표가 들어간다. 손으로 이어 붙이면 여기서 칸이 밀린다."""
+    import csv
+    path = tmp_path / "published.csv"
+    row = dict.fromkeys(upload.PUBLISHED_FIELDS, "x")
+    row["title"] = "일본어, 상황별 30문장"
+    row["video_id"] = "vid"
+    upload.append_published(row, path)
+    with open(path, encoding="utf-8") as handle:
+        got = next(iter(csv.DictReader(handle)))
+    assert got["title"] == "일본어, 상황별 30문장"
+    assert got["video_id"] == "vid"

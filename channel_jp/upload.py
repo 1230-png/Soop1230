@@ -20,6 +20,8 @@
 """
 
 import argparse
+import csv
+import datetime
 import json
 import os
 import sys
@@ -163,6 +165,50 @@ def assert_not_uploaded(meta: dict, again: bool) -> None:
             f"이 폴더는 이미 올렸다: "
             f"https://www.youtube.com/watch?v={existing}\n"
             "정말 한 편 더 올리려면 --again 을 줄 것.")
+
+
+# 발행 기록. **used.json 과 다른 것을 센다** — 저쪽은 "어느 문장을 썼나"이고
+# 여기는 "어느 영상이 어느 팩이었나"다. 그 둘을 잇는 자료가 없어서, 지금까지는
+# 「수면 팩과 상황별 팩 중 뭐가 낫나」에 답할 방법이 아예 없었다. 조회수는
+# channel_health 의 metrics.csv 에 쌓이지만 영상이 어느 팩인지 아는 곳이 없다.
+#
+# append-only 다. 덮어쓰면 "지금 몇 편"만 남고 "얼마나 늘고 있나"가 사라진다.
+# **이미 쌓인 파일에 칸을 늘리지 말 것** — 예전 줄과 칸 수가 달라지면
+# DictReader 가 통째로 어긋난다(CLAUDE.md 의 channel_health 규칙과 같다).
+PUBLISHED_PATH = Path(__file__).resolve().parent / "data" / "published.csv"
+PUBLISHED_FIELDS = ("published_at", "pack", "topic", "video_id",
+                    "duration_seconds", "phrase_count", "privacy", "title")
+
+
+def published_row(meta: dict, video_id: str, privacy: str, now: str) -> dict:
+    """발행 기록 한 줄. 전부 문자열로 둔다 — csv 가 어차피 그렇게 읽는다."""
+    return {
+        "published_at": now,
+        "pack": meta.get("pack", ""),
+        # 수면·쉐도잉 팩에는 주제가 없다. 빈 칸이지 0 이 아니다.
+        "topic": meta.get("topic", "") or "",
+        "video_id": video_id,
+        "duration_seconds": str(meta.get("duration_seconds", "")),
+        "phrase_count": str(len(meta.get("phrase_ids", []))),
+        "privacy": privacy,
+        "title": meta.get("title", ""),
+    }
+
+
+def append_published(row: dict, path: Path = None) -> None:
+    """한 줄 덧붙인다. 처음이면 머리글부터.
+
+    csv 모듈로 쓴다 — 제목에 쉼표가 들어가고, 손으로 이어 붙이면 그 줄부터
+    칸이 밀린다. channel_200y3b 에서 실제로 그렇게 어긋난 적이 있다.
+    """
+    path = PUBLISHED_PATH if path is None else path
+    path.parent.mkdir(parents=True, exist_ok=True)
+    new_file = not path.exists() or path.stat().st_size == 0
+    with open(path, "a", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=PUBLISHED_FIELDS)
+        if new_file:
+            writer.writeheader()
+        writer.writerow(row)
 
 
 def chosen_privacy(meta: dict, privacy: str = "") -> str:
@@ -337,6 +383,11 @@ def main() -> int:
     meta["privacyStatus"] = privacy
     meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n",
                          encoding="utf-8")
+
+    # 올라간 뒤에 적는다. 올라가지 않은 영상은 발행이 아니다.
+    now = datetime.datetime.now(datetime.timezone.utc).isoformat(
+        timespec="seconds").replace("+00:00", "Z")
+    append_published(published_row(meta, video_id, privacy, now))
 
     if privacy != "public":
         print(f"[upload] 공개 설정: {privacy} — 확인하고 직접 공개할 것",
