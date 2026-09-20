@@ -123,6 +123,33 @@ def assign_ids(entries: list) -> list:
             for number, entry in enumerate(entries, start=1)]
 
 
+def moved_ids(before: list, after: list) -> list:
+    """뜻이 바뀐 번호 목록.
+
+    번호는 위치로 매겨진다(assign_ids). 그래서 앞쪽 조각에 문장을 하나
+    끼워 넣으면 그 뒤가 전부 한 칸씩 밀리고, used.json 에 적힌 J001 이
+    **다른 문장**을 가리키게 된다. 이미 두 편이 나간 뒤라 그 순간 "쓴 문장"과
+    "안 쓴 문장"이 통째로 뒤바뀐다 — 영상은 멀쩡해 보이고 아무도 모른다.
+
+    그래서 은행을 늘릴 때는 **뒤에 붙인다.** 조각 파일 이름이 정렬 순서이므로
+    기존 것보다 뒤에 오는 이름(13-, 14-, ...)을 쓰면 기존 번호는 그대로 있고
+    새 문장이 다음 번호를 받는다.
+    """
+    old_by_id = {entry["id"]: entry["ja"] for entry in before}
+    return [entry["id"] for entry in after
+            if entry["id"] in old_by_id and old_by_id[entry["id"]] != entry["ja"]]
+
+
+def previous_entries() -> list:
+    """직전에 쓴 은행. 없으면 빈 목록 — 첫 빌드를 막지 않는다."""
+    if not OUT_PATH.exists():
+        return []
+    try:
+        return json.loads(OUT_PATH.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return []
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true",
@@ -137,6 +164,21 @@ def main() -> int:
 
     entries, dropped = drop_duplicates(entries)
     entries = assign_ids(entries)
+
+    moved = moved_ids(previous_entries(), entries)
+    if moved:
+        print(
+            "이미 나간 번호의 뜻이 바뀐다:\n  "
+            + ", ".join(moved[:10])
+            + (f" 외 {len(moved) - 10}개" if len(moved) > 10 else "")
+            + "\n  used.json 이 이 번호로 '쓴 문장'을 기억한다. 지금 쓰면"
+              " 발행한 편의 기록이 다른 문장을 가리킨다.\n"
+              "  은행을 늘릴 때는 뒤에 붙일 것 — 기존 것보다 뒤에 오는 이름"
+              "(13-, 14-, ...)의 조각 파일을 만들면 기존 번호는 그대로다.\n"
+              "  정말로 다시 매겨야 한다면 data/phrases.json 을 지우고 돌릴 것"
+              " (그 전에 used.json 을 어떻게 할지 정할 것).",
+            file=sys.stderr)
+        return 1
 
     for text in dropped:
         print(f"  · 중복이라 뺐다: {text}")
