@@ -84,9 +84,26 @@ def build_client(channel, env=None):
             f"{channel.label}: 자격 증명이 없다 — {', '.join(missing)}.\n"
             "  이 채널 전용 값이어야 한다. 다른 채널 것을 넣으면 그 채널 숫자가 기록된다.")
 
+    from googleapiclient.discovery import build
+
+    return build("youtube", "v3", credentials=credentials(channel, env))
+
+
+def credentials(channel, env=None):
+    """새로고침까지 끝낸 자격 증명.
+
+    analytics.py 가 같은 값으로 다른 서비스(youtubeAnalytics)를 세운다.
+    두 벌로 두면 한쪽만 고쳐 놓고 다른 쪽이 조용히 예전대로 도는 날이 온다.
+    """
+    env = os.environ if env is None else env
+    missing = channel.credentials_missing(env)
+    if missing:
+        raise CollectError(
+            f"{channel.label}: 자격 증명이 없다 — {', '.join(missing)}.\n"
+            "  이 채널 전용 값이어야 한다. 다른 채널 것을 넣으면 그 채널 숫자가 기록된다.")
+
     from google.auth.transport.requests import Request
     from google.oauth2.credentials import Credentials
-    from googleapiclient.discovery import build
 
     creds = Credentials(
         token=None,
@@ -97,7 +114,7 @@ def build_client(channel, env=None):
         scopes=None,
     )
     creds.refresh(Request())
-    return build("youtube", "v3", credentials=creds)
+    return creds
 
 
 def own_channel(youtube, channel, env=None, part="contentDetails"):
@@ -230,6 +247,30 @@ def collect(channel, youtube=None, env=None, now=None):
     return Collected(videos, channel_stats(youtube, channel, observed_at, env))
 
 
+def retention_rows_for(channel, observed_at, video_ids=(),
+                       client=None, rows_for=None, env=None):
+    """이 채널의 지속률 줄. **못 읽어도 수집을 멈추지 않는다.**
+
+    스코프는 토큰마다 다르다 — @귀트는일본어 에는 있고 @200-y3b 에는 없다.
+    없는 채널 때문에 일요일 수집 전체가 죽으면, 읽을 수 있었던 채널의
+    스냅샷까지 같이 잃는다. 조회수는 이미 다 읽어 놓은 뒤에 부르는 자리라
+    더욱 그렇다.
+
+    부르는 쪽을 인자로 받는 것은 테스트가 네트워크 없이 여기까지를 확인할 수
+    있게 하려는 것이다.
+    """
+    import analytics
+
+    client = analytics.analytics_client if client is None else client
+    rows_for = analytics.rows_for if rows_for is None else rows_for
+    try:
+        return rows_for(channel, client(channel, env), list(video_ids),
+                        observed_at)
+    except Exception as error:      # noqa: BLE001 — 권한·네트워크·API 오류
+        print(f"⚠️  지속률을 읽지 못했다 — {error}", file=sys.stderr)
+        return []
+
+
 def append_rows(rows, path=METRICS_PATH, fields=FIELDS):
     """스냅샷을 덧붙인다. 기존 줄은 건드리지 않는다."""
     if not rows:
@@ -252,6 +293,9 @@ def main(argv=None):
                         help="기본값은 전부")
     parser.add_argument("--metrics-path", default=str(METRICS_PATH))
     parser.add_argument("--stats-path", default=str(STATS_PATH))
+    parser.add_argument("--retention-path",
+                        default=str(Path(__file__).resolve().parent
+                                    / "retention.csv"))
     args = parser.parse_args(argv)
 
     wanted = [channel_registry.BY_NAME[name] for name in args.names] \
@@ -276,6 +320,17 @@ def main(argv=None):
         total += written
         subs = result.stats.get("subscribers") or "비공개"
         print(f"  {channel.label}: 영상 {written}편 기록 (구독자 {subs})")
+
+        # 조회수를 다 적은 **뒤에** 부른다. 지속률은 토큰에 권한이 있는
+        # 채널만 읽히므로, 앞에 두면 못 읽는 채널의 조회수까지 잃는다.
+        import analytics
+        observed_at = result.stats.get("observed_at", "")
+        retention = retention_rows_for(
+            channel, observed_at,
+            [row["video_id"] for row in result.videos])
+        if retention:
+            analytics.append_rows(retention, args.retention_path)
+            print(f"  {channel.label}: 지속률 {len(retention)}줄 기록")
 
     if not total:
         print("::error::아무 채널도 읽지 못했다.", file=sys.stderr)
