@@ -38,6 +38,11 @@ jobs:
         with:
           python-version: "3.11"
 
+      # 테스트 몇 개가 무음 파일을 만들어 길이를 재느라 ffmpeg 을 부른다.
+      # 폰트는 안 깐다 — 여기서는 카드를 그리지 않는다.
+      - name: ffmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+
       - name: 파이썬 의존성
         run: |
           python -m pip install --quiet --upgrade pip
