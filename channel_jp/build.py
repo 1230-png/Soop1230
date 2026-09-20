@@ -416,6 +416,9 @@ def main() -> int:
         # 팩 이름과 목표 길이를 남긴다. upload.py 가 올리기 직전에 같은 검사를
         # 다시 하는데, 그때 이 둘이 없으면 길이가 이름표와 맞는지 볼 수 없다.
         "pack": args.pack,
+        # 주제는 제목에만 있었다. 발행 기록이 팩별·주제별 성적을 묻기
+        # 시작하면서 칸으로 필요해졌다(upload.py 의 published.csv).
+        "topic": topic,
         "target_minutes": pack.get("target_minutes"),
         "title": pack["title"].format(count=count, minutes=minutes, topic=topic),
         "description": build_description(pack, chapters, count, topic, minutes),
