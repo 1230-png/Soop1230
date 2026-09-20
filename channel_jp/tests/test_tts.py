@@ -122,3 +122,32 @@ def test_offline_silence_is_longer_for_a_longer_sentence(tmp_path, monkeypatch):
         tts.synthesize("すみません、駅はどこですか。とても急いでいます。",
                        "V", offline=True))
     assert long > short
+
+
+def test_the_cache_key_separates_offline_silence_from_real_speech():
+    """무음과 진짜 음성이 같은 칸을 쓰면 나중에 온 쪽이 앞의 것을 얻어 쓴다."""
+    assert (tts._key("あ", "V", "+0%", "elevenlabs", True)
+            != tts._key("あ", "V", "+0%", "elevenlabs", False))
+
+
+def test_offline_silence_does_not_take_the_place_of_real_speech(
+        tmp_path, monkeypatch):
+    """`--offline` 을 한 번 돌리면 캐시가 무음으로 찬다. 그 다음 진짜 실행이
+    그 칸에 걸리면 API 를 한 번도 부르지 않고 무음 영상이 나온다. 길이는
+    글자 수대로라 target_minutes 검사도 그대로 지나간다 — 올리고 나서야
+    안다. 그래서 값이 아니라 **칸**을 나눈다.
+    """
+    monkeypatch.setattr(tts, "CACHE_DIR", tmp_path)
+    tts.synthesize("おはよう。", "V", offline=True)
+
+    asked = []
+
+    def fake_fetch(text, voice, path, env=None):
+        asked.append(text)
+        path.write_bytes(b"real-audio")
+
+    monkeypatch.setattr(tts, "_fetch_eleven", fake_fetch)
+    path = tts.synthesize("おはよう。", "V", env={"ELEVENLABS_API_KEY": "k"})
+
+    assert asked == ["おはよう。"]
+    assert path.read_bytes() == b"real-audio"

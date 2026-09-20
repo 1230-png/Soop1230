@@ -57,9 +57,24 @@ class TTSError(RuntimeError):
     pass
 
 
-def _key(text: str, voice: str, rate: str, engine: str) -> str:
+def _key(text: str, voice: str, rate: str, engine: str,
+         offline: bool = False) -> str:
+    """캐시 파일 이름.
+
+    `offline` 이 여기 들어 있는 이유는, 빠져 있을 때 무음이 진짜 음성의 자리를
+    차지했기 때문이다. `--offline` 을 한 번 돌리면 캐시가 무음으로 차고, 그
+    다음 진짜 실행이 그 칸에 걸려 ElevenLabs 를 한 번도 부르지 않는다. 무음
+    길이는 글자 수를 따라가므로 target_minutes 검사도 그대로 지나가고, 영상이
+    올라간 뒤에야 안다.
+
+    무음 쪽만 다른 칸으로 옮긴다 — 진짜 음성의 이름을 바꾸면 이미 받아 둔
+    캐시가 통째로 버려지고, 글자마다 돈이 나가는 엔진에서 그 값을 다시 낸다.
+    엔진 이름을 지우고 `offline` 을 넣는 것으로 충분하다. 무음은 어느 엔진으로
+    돌렸든 같은 무음이라 나눌 것이 없다.
+    """
+    mode = "offline" if offline else engine
     return hashlib.sha1(
-        f"{engine}|{text}|{voice}|{rate}".encode("utf-8")).hexdigest()
+        f"{mode}|{text}|{voice}|{rate}".encode("utf-8")).hexdigest()
 
 
 def tempo_for(rate: str) -> float:
@@ -187,7 +202,7 @@ def synthesize(text: str, voice: str, rate: str = "+0%", *,
     글자마다 돈이 나가는 엔진에서는 이것이 비용 장치이기도 하다.
     """
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
-    path = CACHE_DIR / f"{_key(text, voice, rate, engine)}.mp3"
+    path = CACHE_DIR / f"{_key(text, voice, rate, engine, offline)}.mp3"
     if path.exists() and path.stat().st_size > 0:
         return path
 
