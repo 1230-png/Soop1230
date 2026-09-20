@@ -209,3 +209,51 @@ def test_nothing_to_write_leaves_no_file(tmp_path):
     path = tmp_path / "metrics.csv"
     assert collect.append_rows([], path) == 0
     assert not path.exists()
+
+
+def test_a_declared_channel_id_that_is_missing_is_refused():
+    """바로 위와 갈리는 자리다.
+
+    ID 자리를 아예 안 둔 채널은 "아직 모른다"이고 통과시킨다. 어디서 읽을지
+    까지 적어 놓고 그 값이 비었다면 그것은 시크릿을 빠뜨린 것이다. 그냥
+    지나가면 남의 채널 숫자가 이 채널 이름으로 쌓이고, 그 뒤로 이 파일을
+    근거로 내리는 판단이 전부 엉뚱한 채널을 따라간다.
+    """
+    unknown = registry.Channel(
+        name="x", label="X 채널",
+        client_id_env="A", client_secret_env="B", refresh_token_env="C",
+        channel_id_env="X_CHANNEL_ID")
+    youtube = FakeYouTube(channel_items=[channel_item("UC-무엇이든", "UU-x")])
+    with pytest.raises(collect.CollectError) as caught:
+        collect.uploads_playlist(youtube, unknown,
+                                 {"A": "a", "B": "b", "C": "c"})
+    assert "X_CHANNEL_ID" in str(caught.value)
+
+
+# --- 귀트는 일본어 -------------------------------------------------------
+
+JP = registry.BY_NAME["jp"]
+JP_ENV = {"MV_CLIENT_ID": "id", "MV_CLIENT_SECRET": "secret",
+          "MV_REFRESH_TOKEN": "token", "MV_CHANNEL_ID": "UC-일본어"}
+
+
+def test_the_japanese_channel_keeps_its_id_out_of_the_code():
+    """channel_jp/upload.py 와 같은 규칙이다 — 채널 ID 를 코드에 박지 않는다."""
+    assert JP.expected_channel_id == ""
+    assert JP.channel_id_env == "MV_CHANNEL_ID"
+    assert JP.target_channel_id(JP_ENV) == "UC-일본어"
+
+
+def test_the_japanese_channel_uses_its_own_credentials():
+    """공용 YT_* 로 넘어가는 대체 경로를 두지 않는다(CLAUDE.md)."""
+    missing = JP.credentials_missing({"YT_CLIENT_ID": "남의 것"})
+    assert missing == ["MV_CLIENT_ID", "MV_CLIENT_SECRET", "MV_REFRESH_TOKEN"]
+
+
+def test_a_japanese_run_without_its_channel_id_records_nothing():
+    """MV_CHANNEL_ID 가 없으면 짐작해서 적지 않는다."""
+    youtube = FakeYouTube(channel_items=[channel_item("UC-일본어", "UU-일본어")])
+    env = {k: v for k, v in JP_ENV.items() if k != "MV_CHANNEL_ID"}
+    with pytest.raises(collect.CollectError) as caught:
+        collect.uploads_playlist(youtube, JP, env)
+    assert "MV_CHANNEL_ID" in str(caught.value)
