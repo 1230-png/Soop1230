@@ -39,10 +39,30 @@ on:
         type: boolean
         default: true
       upload:
-        description: "유튜브에 올린다 (비공개)"
+        description: "유튜브에 올린다"
         required: true
         type: boolean
         default: false
+      privacy:
+        # 기본이 private 인 근거는 머니로직이다. 그 채널은 **사람 확인 없이**
+        # 공개로 여드레 동안 제목에 nan% 가 박힌 영상을 냈다.
+        #
+        # 그 장치가 막으려던 것은 무인 발행이지, 사람이 눌러서 돌리고 결과를
+        # 보는 이 워크플로가 아니다. 이 워크플로에는 cron 이 없다 — 누군가
+        # 버튼을 누르지 않으면 한 편도 나가지 않는다. 그래서 고를 수 있게
+        # 열어 두되, **기본값은 그대로 private 이다.** 공개로 내보내려면
+        # 여기를 일부러 바꿔야 한다.
+        #
+        # 비공개 영상은 시청 시간이 0이다. 이 채널이 쌓으려는 것이 그것이므로,
+        # 확인이 끝난 편을 계속 비공개로 두는 것도 그 나름의 대가가 있다.
+        description: "공개 설정"
+        required: true
+        type: choice
+        default: private
+        options:
+          - private
+          - unlisted
+          - public
 
 # used.json 을 저장소에 되돌려 놓아야 한다(아래 「쓴 문장을 기록에 남기기」).
 # 유튜브 쪽 권한과는 상관없다 — 이것은 GITHUB_TOKEN 이 이 저장소에 커밋할
@@ -150,7 +170,11 @@ jobs:
           print(f"## {meta['title']}\n")
           print(f"- 길이: **{meta['duration_seconds']/60:.1f}분**")
           print(f"- 문장: {len(meta['phrase_ids'])}개")
-          print(f"- 공개: `{meta['privacyStatus']}`")
+          # 이 단계는 올리기 **앞**이라 metadata 만 보면 언제나 private 이라고
+          # 찍는다. 실제로 나갈 값은 입력 쪽에 있다.
+          going_out = "${{ inputs.upload }}" == "true"
+          print(f"- 공개: `${{ inputs.privacy }}`" if going_out
+                else "- 공개: 올리지 않는다")
           print(f"\n<details><summary>설명란</summary>\n\n```\n"
                 f"{meta['description']}\n```\n</details>")
           PY
@@ -167,7 +191,7 @@ jobs:
             ${{ env.BUILD_DIR }}/metadata.json
           retention-days: 7
 
-      - name: 유튜브에 올리기 (비공개)
+      - name: 유튜브에 올리기
         if: ${{ inputs.upload && !inputs.dry_run }}
         env:
           # 이 채널 전용이다. 공용 YT_* 는 넘기지 않는다 — 대체 경로를 열어
@@ -184,7 +208,8 @@ jobs:
             echo "::error::MV_REFRESH_TOKEN 이 없다. 올리지 않는다."
             exit 1
           fi
-          python3 channel_jp/upload.py --dir "$BUILD_DIR"
+          python3 channel_jp/upload.py --dir "$BUILD_DIR" \
+            --privacy "${{ inputs.privacy }}"
 
       # build.py 가 used.json 에 "이 문장들을 썼다"고 적지만 그것은 러너 안의
       # 파일이고, 잡이 끝나면 러너와 함께 사라진다. 되돌려 놓지 않으면 다음

@@ -165,6 +165,16 @@ def assert_not_uploaded(meta: dict, again: bool) -> None:
             "정말 한 편 더 올리려면 --again 을 줄 것.")
 
 
+def chosen_privacy(meta: dict, privacy: str = "") -> str:
+    """실제로 나가는 공개 설정.
+
+    metadata 의 값이 기본이다. build.py 가 private 으로 적어 둔다 — 사람이
+    한 번 보고 공개하라는 뜻이고, 그 기본값을 코드가 조용히 뒤집지 않는다.
+    뒤집으려면 부르는 쪽이 값을 **적어서** 줘야 한다(워크플로의 privacy 입력).
+    """
+    return privacy or meta.get("privacyStatus", "private")
+
+
 def video_body(meta: dict, privacy: str = "") -> dict:
     """videos().insert 에 넣을 본문.
 
@@ -181,10 +191,7 @@ def video_body(meta: dict, privacy: str = "") -> dict:
             "defaultAudioLanguage": "ko",
         },
         "status": {
-            # metadata 의 값이 기본이다. build.py 가 private 으로 적어 둔다 —
-            # 사람이 한 번 보고 공개하라는 뜻이고, 그 기본값을 여기서 조용히
-            # 뒤집지 않는다.
-            "privacyStatus": privacy or meta.get("privacyStatus", "private"),
+            "privacyStatus": chosen_privacy(meta, privacy),
             "madeForKids": False,
         },
     }
@@ -322,11 +329,15 @@ def main() -> int:
     if playlist:
         add_to_playlist(youtube, video_id, playlist)
 
+    privacy = chosen_privacy(meta, args.privacy or "")
+
     meta["youtube_video_id"] = video_id
+    # 올린 뒤의 metadata.json 은 "무엇이 나갔나"의 기록이다. 공개로 올렸는데
+    # private 이 남아 있으면 나중에 그 파일을 보고 반대로 읽는다.
+    meta["privacyStatus"] = privacy
     meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n",
                          encoding="utf-8")
 
-    privacy = args.privacy or meta.get("privacyStatus", "private")
     if privacy != "public":
         print(f"[upload] 공개 설정: {privacy} — 확인하고 직접 공개할 것",
               file=sys.stderr)
