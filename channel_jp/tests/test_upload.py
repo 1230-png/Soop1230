@@ -173,3 +173,23 @@ def test_a_complete_folder_loads(tmp_path):
     (tmp_path / "video.mp4").write_bytes(b"\x00")
     _, meta, video = upload.load_build(tmp_path)
     assert meta["target_minutes"] == 40 and video.name == "video.mp4"
+
+
+# --- 실제로 나간 공개 설정 ------------------------------------------------
+
+def test_the_chosen_privacy_is_what_actually_goes_out():
+    """빌드가 정한 값이 기본이고, 준 값이 있으면 그것이 이긴다."""
+    assert upload.chosen_privacy(sound_meta(privacyStatus="private")) == "private"
+    assert upload.chosen_privacy(sound_meta(), "public") == "public"
+    assert upload.chosen_privacy(sound_meta(privacyStatus="public")) == "public"
+
+
+def test_metadata_records_the_privacy_that_went_out():
+    """올린 뒤의 metadata.json 은 "무엇이 나갔나"의 기록이다.
+
+    공개로 올렸는데 기록에 private 이 남아 있으면, 나중에 그 파일을 보고
+    "이 편은 아직 비공개구나" 하고 잘못 읽는다. 실행 요약도 같은 값을 읽는다.
+    """
+    meta = sound_meta(privacyStatus="private")
+    meta["privacyStatus"] = upload.chosen_privacy(meta, "public")
+    assert meta["privacyStatus"] == "public"
