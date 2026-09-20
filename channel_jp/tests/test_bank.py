@@ -140,3 +140,32 @@ def test_the_real_bank_has_no_duplicate_ids_after_building():
     entries, _ = build_bank.drop_duplicates(build_bank.load_parts())
     numbered = build_bank.assign_ids(entries)
     assert len({item["id"] for item in numbered}) == len(numbered)
+
+
+# --- 이미 나간 번호 -------------------------------------------------------
+
+def test_an_id_that_already_went_out_may_not_change_meaning():
+    """번호는 위치로 매겨진다. 앞쪽 조각에 문장을 끼워 넣으면 그 뒤가 전부
+    한 칸씩 밀리고, used.json 에 적힌 J001 이 **다른 문장**을 가리키게 된다.
+    이미 두 편이 나갔으므로 그 순간 "쓴 문장"과 "안 쓴 문장"이 통째로
+    뒤바뀐다. 영상은 멀쩡해 보이고 아무도 모른다.
+    """
+    before = [{"id": "J001", "ja": "おはようございます。"},
+              {"id": "J002", "ja": "こんにちは。"}]
+    after = [{"id": "J001", "ja": "新しい文です。"},
+             {"id": "J002", "ja": "おはようございます。"}]
+    moved = build_bank.moved_ids(before, after)
+    assert moved == ["J001", "J002"]
+
+
+def test_adding_to_the_end_moves_nothing():
+    """새 조각을 뒤에 붙이는 것은 안전하다 — 이것이 은행을 늘리는 방법이다."""
+    before = [{"id": "J001", "ja": "おはようございます。"}]
+    after = [{"id": "J001", "ja": "おはようございます。"},
+             {"id": "J002", "ja": "新しい文です。"}]
+    assert build_bank.moved_ids(before, after) == []
+
+
+def test_a_bank_that_never_went_out_may_be_renumbered_freely():
+    """기존 파일이 없으면 비교할 과거가 없다. 첫 빌드를 막지 않는다."""
+    assert build_bank.moved_ids([], [{"id": "J001", "ja": "何でも。"}]) == []
