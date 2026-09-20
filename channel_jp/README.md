@@ -226,6 +226,47 @@ CLAUDE.md 규칙과 같은 자리다.
 조각을 더 넣는 방법은 위 「은행을 늘릴 때는 뒤에 붙인다」를 볼 것 — 은행을
 늘리는 것은 여전히 도움이 되지만, 주 150문장을 따라잡지는 못한다.
 
+## 토큰 재발급 (시청 시간·지속률을 열려면)
+
+지금 `MV_REFRESH_TOKEN` 에는 `yt-analytics.readonly` 가 없다. 그래서
+`channel_health` 가 읽는 것은 **조회수까지**이고, 파트너 프로그램이 세는
+시청 시간과 지속률은 안 보인다. 「수면 팩이 반복돼도 괜찮은가」 같은 질문에
+숫자로 답하려면 이것이 필요하다.
+
+**순서를 지킬 것 — 1번을 건너뛰면 발급 자체가 실패한다.**
+
+1. 구글 클라우드 콘솔 → **OAuth 동의 화면 → 범위**에
+   `https://www.googleapis.com/auth/yt-analytics.readonly` 를 추가한다.
+   **이 채널이 쓰는 프로젝트에서** 해야 한다 — 머니로직 때 쓰던 그
+   프로젝트이고, `channel_200y3b` 것과 다르다.
+2. 동의 화면 게시 상태가 **"테스트"** 면 테스트 사용자에 이 채널을 관리하는
+   계정이 들어 있어야 한다.
+3. 본인 컴퓨터에서 (CI 아님):
+
+   ```bash
+   pip install google-auth-oauthlib
+   python3 channel_jp/get_refresh_token.py        --client-id "...apps.googleusercontent.com"        --client-secret "GOCSPX-..." --with-analytics
+   ```
+
+   브라우저에서 **「귀트는 일본어」를 관리하는 계정**으로 로그인하고,
+   동의 화면에서 **항목을 하나도 끄지 않는다.**
+4. 찍힌 `MV_REFRESH_TOKEN` 을 저장소 Secrets 에 갈아 끼운다.
+   (Settings → Secrets and variables → Actions)
+5. 「귀트는 일본어 — 채널 설명·키워드」 워크플로를 **dry-run 으로** 한 번
+   돌린다. 토큰이 멀쩡한지 돈 안 쓰고 확인된다.
+
+`channel_200y3b/scripts/get_refresh_token.py` 를 쓰지 말 것. 저쪽은 `Y3B_`
+이름으로 찍고 저쪽 채널로 로그인하라고 안내한다.
+
+**새 토큰이 지금보다 좁아지면 안 된다.** 스크립트가 요청하는
+`youtube.force-ssl` 은 지금 쓰는 권한의 상위 집합이라 업로드·재생목록·썸네일이
+그대로 된다. 동의 화면에서 항목을 끄면 다음 화요일 cron 이 재생목록에서
+403 으로 죽는다.
+
+**토큰만 바꾼다고 숫자가 나오지는 않는다.** `channel_health/collect.py` 는
+Data API 만 부른다 — Analytics API 를 읽는 코드는 아직 없다. 스코프는 그
+코드를 쓸 수 있게 하는 전제 조건이고, 읽어 오는 것은 따로 만들어야 한다.
+
 ## 비밀값
 
 **환경변수로만 다룬다. 코드·커밋·로그에 절대 넣지 않는다.**
