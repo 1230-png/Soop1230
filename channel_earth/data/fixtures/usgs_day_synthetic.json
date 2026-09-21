@@ -1,0 +1,7288 @@
+{
+ "type": "FeatureCollection",
+ "metadata": {
+  "generated": 1790035200000,
+  "url": "SYNTHETIC — 실제 USGS 응답이 아니다",
+  "title": "가짜 데이터 (렌더 확인용)",
+  "status": 200,
+  "api": "synthetic",
+  "count": 291
+ },
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.8,
+    "place": "1km 지점 (가짜 데이터)",
+    "time": 1789949014913,
+    "updated": 1789949074913,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 12,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.8 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -113.5188,
+     39.0419,
+     2.2
+    ]
+   },
+   "id": "synthetic00209"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.5,
+    "place": "220km 지점 (가짜 데이터)",
+    "time": 1789949432255,
+    "updated": 1789949492255,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 405,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -130.564,
+     56.3924,
+     8.2
+    ]
+   },
+   "id": "synthetic00016"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.8,
+    "place": "57km 지점 (가짜 데이터)",
+    "time": 1789949450801,
+    "updated": 1789949510801,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 12,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.8 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -98.3499,
+     34.7519,
+     446.8
+    ]
+   },
+   "id": "synthetic00288"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.6,
+    "place": "144km 지점 (가짜 데이터)",
+    "time": 1789949470509,
+    "updated": 1789949530509,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 51,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -148.5569,
+     62.8936,
+     19.8
+    ]
+   },
+   "id": "synthetic00089"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "66km 지점 (가짜 데이터)",
+    "time": 1789949834930,
+    "updated": 1789949894930,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -115.4693,
+     35.6123,
+     2.7
+    ]
+   },
+   "id": "synthetic00152"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "211km 지점 (가짜 데이터)",
+    "time": 1789950453620,
+    "updated": 1789950513620,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -114.1181,
+     39.9083,
+     7.0
+    ]
+   },
+   "id": "synthetic00184"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.1,
+    "place": "190km 지점 (가짜 데이터)",
+    "time": 1789950697071,
+    "updated": 1789950757071,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 24,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.6181,
+     19.8585,
+     14.1
+    ]
+   },
+   "id": "synthetic00285"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "172km 지점 (가짜 데이터)",
+    "time": 1789951116227,
+    "updated": 1789951176227,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.2994,
+     16.0907,
+     11.2
+    ]
+   },
+   "id": "synthetic00072"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.1,
+    "place": "198km 지점 (가짜 데이터)",
+    "time": 1789951521466,
+    "updated": 1789951581466,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 336,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     125.6769,
+     11.1807,
+     15.1
+    ]
+   },
+   "id": "synthetic00006"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.0,
+    "place": "187km 지점 (가짜 데이터)",
+    "time": 1789951733891,
+    "updated": 1789951793891,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 20,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.0 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -118.1743,
+     36.9894,
+     14.8
+    ]
+   },
+   "id": "synthetic00082"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "10km 지점 (가짜 데이터)",
+    "time": 1789951805460,
+    "updated": 1789951865460,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -112.004,
+     38.834,
+     29.9
+    ]
+   },
+   "id": "synthetic00150"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.0,
+    "place": "236km 지점 (가짜 데이터)",
+    "time": 1789951931230,
+    "updated": 1789951991230,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 20,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.0 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -95.4221,
+     36.0571,
+     2.8
+    ]
+   },
+   "id": "synthetic00157"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.2,
+    "place": "218km 지점 (가짜 데이터)",
+    "time": 1789951966979,
+    "updated": 1789952026979,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 28,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.2 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -115.992,
+     35.0227,
+     14.6
+    ]
+   },
+   "id": "synthetic00062"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.2,
+    "place": "17km 지점 (가짜 데이터)",
+    "time": 1789952084777,
+    "updated": 1789952144777,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 28,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.2 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -155.9048,
+     20.1558,
+     10.4
+    ]
+   },
+   "id": "synthetic00091"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.1,
+    "place": "234km 지점 (가짜 데이터)",
+    "time": 1789952142630,
+    "updated": 1789952202630,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 24,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -152.5139,
+     61.4073,
+     4.2
+    ]
+   },
+   "id": "synthetic00169"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "180km 지점 (가짜 데이터)",
+    "time": 1789952343508,
+    "updated": 1789952403508,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -155.7424,
+     19.5422,
+     29.1
+    ]
+   },
+   "id": "synthetic00213"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.8,
+    "place": "240km 지점 (가짜 데이터)",
+    "time": 1789952845159,
+    "updated": 1789952905159,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 460,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.8 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     174.656,
+     -40.6699,
+     4.7
+    ]
+   },
+   "id": "synthetic00030"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.3,
+    "place": "163km 지점 (가짜 데이터)",
+    "time": 1789953589021,
+    "updated": 1789953649021,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 33,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.3 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -121.0002,
+     34.1906,
+     18.0
+    ]
+   },
+   "id": "synthetic00237"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "147km 지점 (가짜 데이터)",
+    "time": 1789953607686,
+    "updated": 1789953667686,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -117.8094,
+     35.6289,
+     5.3
+    ]
+   },
+   "id": "synthetic00190"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.8,
+    "place": "107km 지점 (가짜 데이터)",
+    "time": 1789953608461,
+    "updated": 1789953668461,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 12,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.8 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.7735,
+     17.4711,
+     124.3
+    ]
+   },
+   "id": "synthetic00081"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.7,
+    "place": "217km 지점 (가짜 데이터)",
+    "time": 1789953712961,
+    "updated": 1789953772961,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 9,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -96.3896,
+     39.4186,
+     9.0
+    ]
+   },
+   "id": "synthetic00050"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.3,
+    "place": "158km 지점 (가짜 데이터)",
+    "time": 1789954916069,
+    "updated": 1789954976069,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 369,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.3 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     118.963,
+     -4.3188,
+     5.5
+    ]
+   },
+   "id": "synthetic00004"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.4,
+    "place": "202km 지점 (가짜 데이터)",
+    "time": 1789955306087,
+    "updated": 1789955366087,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 39,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.4 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -112.0595,
+     34.6524,
+     17.9
+    ]
+   },
+   "id": "synthetic00164"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.5,
+    "place": "40km 지점 (가짜 데이터)",
+    "time": 1789955306224,
+    "updated": 1789955366224,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 45,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -113.2779,
+     40.9899,
+     363.1
+    ]
+   },
+   "id": "synthetic00085"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "194km 지점 (가짜 데이터)",
+    "time": 1789956200966,
+    "updated": 1789956260966,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.822,
+     17.0783,
+     11.5
+    ]
+   },
+   "id": "synthetic00166"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "23km 지점 (가짜 데이터)",
+    "time": 1789956204689,
+    "updated": 1789956264689,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -120.6064,
+     37.0801,
+     4.7
+    ]
+   },
+   "id": "synthetic00058"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": null,
+    "place": "23km 지점 (가짜 데이터)",
+    "time": 1789956204689,
+    "updated": 1789956264689,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -120.6064,
+     37.0801,
+     4.7
+    ]
+   },
+   "id": "synthetic00058x"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.2,
+    "place": "182km 지점 (가짜 데이터)",
+    "time": 1789956410198,
+    "updated": 1789956470198,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 352,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.2 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -72.7216,
+     -40.7275,
+     4.7
+    ]
+   },
+   "id": "synthetic00022"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.8,
+    "place": "226km 지점 (가짜 데이터)",
+    "time": 1789956445269,
+    "updated": 1789956505269,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 12,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.8 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.7213,
+     17.4532,
+     7.9
+    ]
+   },
+   "id": "synthetic00226"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.2,
+    "place": "180km 지점 (가짜 데이터)",
+    "time": 1789957481706,
+    "updated": 1789957541706,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 352,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.2 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -40.7649,
+     19.2822,
+     22.6
+    ]
+   },
+   "id": "synthetic00012"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "16km 지점 (가짜 데이터)",
+    "time": 1789957652661,
+    "updated": 1789957712661,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -99.1971,
+     37.1749,
+     29.7
+    ]
+   },
+   "id": "synthetic00148"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 5.6,
+    "place": "52km 지점 (가짜 데이터)",
+    "time": 1789957890221,
+    "updated": 1789957950221,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 627,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 5.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     160.632,
+     -7.9877,
+     16.1
+    ]
+   },
+   "id": "synthetic00019"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.9,
+    "place": "20km 지점 (가짜 데이터)",
+    "time": 1789958102919,
+    "updated": 1789958162919,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 16,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.9 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -155.5856,
+     18.8159,
+     19.0
+    ]
+   },
+   "id": "synthetic00256"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.1,
+    "place": "158km 지점 (가짜 데이터)",
+    "time": 1789958279288,
+    "updated": 1789958339288,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 24,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.9927,
+     17.9348,
+     10.9
+    ]
+   },
+   "id": "synthetic00088"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.4,
+    "place": "225km 지점 (가짜 데이터)",
+    "time": 1789958302306,
+    "updated": 1789958362306,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 387,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.4 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     120.2035,
+     21.7973,
+     8.4
+    ]
+   },
+   "id": "synthetic00021"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.8,
+    "place": "233km 지점 (가짜 데이터)",
+    "time": 1789958336242,
+    "updated": 1789958396242,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 12,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.8 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -156.6767,
+     18.4446,
+     12.9
+    ]
+   },
+   "id": "synthetic00198"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "161km 지점 (가짜 데이터)",
+    "time": 1789958386531,
+    "updated": 1789958446531,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -111.029,
+     39.9022,
+     29.8
+    ]
+   },
+   "id": "synthetic00238"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.1,
+    "place": "165km 지점 (가짜 데이터)",
+    "time": 1789958570360,
+    "updated": 1789958630360,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 24,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -98.6731,
+     37.6529,
+     4.0
+    ]
+   },
+   "id": "synthetic00208"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.2,
+    "place": "77km 지점 (가짜 데이터)",
+    "time": 1789958963775,
+    "updated": 1789959023775,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 28,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.2 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -117.1103,
+     38.0767,
+     3.4
+    ]
+   },
+   "id": "synthetic00189"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.1,
+    "place": "182km 지점 (가짜 데이터)",
+    "time": 1789959044471,
+    "updated": 1789959104471,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 336,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -141.5957,
+     55.9147,
+     26.3
+    ]
+   },
+   "id": "synthetic00031"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.6,
+    "place": "119km 지점 (가짜 데이터)",
+    "time": 1789959599570,
+    "updated": 1789959659570,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 423,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -16.3735,
+     -37.4048,
+     12.6
+    ]
+   },
+   "id": "synthetic00034"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "115km 지점 (가짜 데이터)",
+    "time": 1789959640965,
+    "updated": 1789959700965,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -114.4632,
+     41.8372,
+     37.0
+    ]
+   },
+   "id": "synthetic00268"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "7km 지점 (가짜 데이터)",
+    "time": 1789959781351,
+    "updated": 1789959841351,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -150.5187,
+     59.6697,
+     23.0
+    ]
+   },
+   "id": "synthetic00137"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "12km 지점 (가짜 데이터)",
+    "time": 1789960986959,
+    "updated": 1789961046959,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -97.6105,
+     35.9751,
+     238.6
+    ]
+   },
+   "id": "synthetic00247"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "146km 지점 (가짜 데이터)",
+    "time": 1789961392014,
+    "updated": 1789961452014,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -118.678,
+     30.8362,
+     6.8
+    ]
+   },
+   "id": "synthetic00172"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.0,
+    "place": "205km 지점 (가짜 데이터)",
+    "time": 1789961478834,
+    "updated": 1789961538834,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 20,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.0 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -155.0188,
+     18.1362,
+     499.3
+    ]
+   },
+   "id": "synthetic00111"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "84km 지점 (가짜 데이터)",
+    "time": 1789961928538,
+    "updated": 1789961988538,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -154.7415,
+     20.1351,
+     8.4
+    ]
+   },
+   "id": "synthetic00255"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.5,
+    "place": "14km 지점 (가짜 데이터)",
+    "time": 1789962252455,
+    "updated": 1789962312455,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 45,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -155.1548,
+     18.8722,
+     11.9
+    ]
+   },
+   "id": "synthetic00059"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.8,
+    "place": "19km 지점 (가짜 데이터)",
+    "time": 1789962789913,
+    "updated": 1789962849913,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 12,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.8 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -144.6738,
+     59.7198,
+     3.7
+    ]
+   },
+   "id": "synthetic00275"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.1,
+    "place": "90km 지점 (가짜 데이터)",
+    "time": 1789963193334,
+    "updated": 1789963253334,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 24,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -112.9111,
+     39.3732,
+     30.6
+    ]
+   },
+   "id": "synthetic00109"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "193km 지점 (가짜 데이터)",
+    "time": 1789963487662,
+    "updated": 1789963547662,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -122.9337,
+     38.6935,
+     17.7
+    ]
+   },
+   "id": "synthetic00048"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.5,
+    "place": "183km 지점 (가짜 데이터)",
+    "time": 1789964073490,
+    "updated": 1789964133490,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 405,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -9.6352,
+     -12.6962,
+     542.5
+    ]
+   },
+   "id": "synthetic00010"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.4,
+    "place": "168km 지점 (가짜 데이터)",
+    "time": 1789964467606,
+    "updated": 1789964527606,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 387,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.4 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -28.3098,
+     -1.9077,
+     201.5
+    ]
+   },
+   "id": "synthetic00036"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "205km 지점 (가짜 데이터)",
+    "time": 1789964635400,
+    "updated": 1789964695400,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.4781,
+     18.0445,
+     2.2
+    ]
+   },
+   "id": "synthetic00187"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.2,
+    "place": "146km 지점 (가짜 데이터)",
+    "time": 1789965264176,
+    "updated": 1789965324176,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 28,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.2 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -149.2432,
+     69.4065,
+     16.6
+    ]
+   },
+   "id": "synthetic00103"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.7,
+    "place": "57km 지점 (가짜 데이터)",
+    "time": 1789965487364,
+    "updated": 1789965547364,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 9,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.724,
+     18.0177,
+     4.5
+    ]
+   },
+   "id": "synthetic00042"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.7,
+    "place": "152km 지점 (가짜 데이터)",
+    "time": 1789965528592,
+    "updated": 1789965588592,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 9,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -109.8031,
+     41.489,
+     317.3
+    ]
+   },
+   "id": "synthetic00060"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.7,
+    "place": "165km 지점 (가짜 데이터)",
+    "time": 1789966726272,
+    "updated": 1789966786272,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 9,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -99.5709,
+     36.9783,
+     32.0
+    ]
+   },
+   "id": "synthetic00178"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.0,
+    "place": "136km 지점 (가짜 데이터)",
+    "time": 1789967331976,
+    "updated": 1789967391976,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 320,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.0 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     83.0767,
+     27.6202,
+     2.9
+    ]
+   },
+   "id": "synthetic00003"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.8,
+    "place": "168km 지점 (가짜 데이터)",
+    "time": 1789967517725,
+    "updated": 1789967577725,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 12,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.8 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -98.2913,
+     36.3213,
+     5.7
+    ]
+   },
+   "id": "synthetic00101"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "23km 지점 (가짜 데이터)",
+    "time": 1789967855952,
+    "updated": 1789967915952,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.0191,
+     17.8071,
+     302.0
+    ]
+   },
+   "id": "synthetic00134"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.0,
+    "place": "150km 지점 (가짜 데이터)",
+    "time": 1789967921085,
+    "updated": 1789967981085,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 20,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.0 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.7137,
+     17.6367,
+     24.7
+    ]
+   },
+   "id": "synthetic00165"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.7,
+    "place": "134km 지점 (가짜 데이터)",
+    "time": 1789967989433,
+    "updated": 1789968049433,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 57,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -155.0225,
+     19.1478,
+     5.8
+    ]
+   },
+   "id": "synthetic00144"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.1,
+    "place": "84km 지점 (가짜 데이터)",
+    "time": 1789968045926,
+    "updated": 1789968105926,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 24,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -120.8839,
+     38.0141,
+     25.1
+    ]
+   },
+   "id": "synthetic00263"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 3.5,
+    "place": "145km 지점 (가짜 데이터)",
+    "time": 1789968371220,
+    "updated": 1789968431220,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 245,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 3.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -107.7311,
+     40.0365,
+     16.7
+    ]
+   },
+   "id": "synthetic00151"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "200km 지점 (가짜 데이터)",
+    "time": 1789968553996,
+    "updated": 1789968613996,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -117.4184,
+     37.777,
+     2.4
+    ]
+   },
+   "id": "synthetic00162"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "237km 지점 (가짜 데이터)",
+    "time": 1789968732648,
+    "updated": 1789968792648,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -154.1124,
+     19.5852,
+     52.2
+    ]
+   },
+   "id": "synthetic00264"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "80km 지점 (가짜 데이터)",
+    "time": 1789968851190,
+    "updated": 1789968911190,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -154.4464,
+     18.861,
+     8.0
+    ]
+   },
+   "id": "synthetic00055"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.8,
+    "place": "218km 지점 (가짜 데이터)",
+    "time": 1789969105201,
+    "updated": 1789969165201,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 12,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.8 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -120.6054,
+     37.826,
+     5.4
+    ]
+   },
+   "id": "synthetic00280"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "3km 지점 (가짜 데이터)",
+    "time": 1789969153300,
+    "updated": 1789969213300,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -116.4654,
+     40.5984,
+     346.6
+    ]
+   },
+   "id": "synthetic00182"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "114km 지점 (가짜 데이터)",
+    "time": 1789969653756,
+    "updated": 1789969713756,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.5482,
+     18.9562,
+     4.8
+    ]
+   },
+   "id": "synthetic00047"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.6,
+    "place": "29km 지점 (가짜 데이터)",
+    "time": 1789969659877,
+    "updated": 1789969719877,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 51,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -118.8319,
+     40.0407,
+     20.0
+    ]
+   },
+   "id": "synthetic00086"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.2,
+    "place": "26km 지점 (가짜 데이터)",
+    "time": 1789969736745,
+    "updated": 1789969796745,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 352,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.2 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     92.6719,
+     27.0343,
+     5.4
+    ]
+   },
+   "id": "synthetic00023"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.1,
+    "place": "240km 지점 (가짜 데이터)",
+    "time": 1789969857888,
+    "updated": 1789969917888,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 24,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -113.3594,
+     36.1094,
+     3.2
+    ]
+   },
+   "id": "synthetic00179"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "64km 지점 (가짜 데이터)",
+    "time": 1789970769619,
+    "updated": 1789970829619,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -117.7637,
+     36.5959,
+     1.5
+    ]
+   },
+   "id": "synthetic00257"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.3,
+    "place": "159km 지점 (가짜 데이터)",
+    "time": 1789970782893,
+    "updated": 1789970842893,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 33,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.3 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -155.1393,
+     58.3684,
+     2.8
+    ]
+   },
+   "id": "synthetic00236"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "25km 지점 (가짜 데이터)",
+    "time": 1789971096630,
+    "updated": 1789971156630,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -115.8449,
+     40.3388,
+     22.7
+    ]
+   },
+   "id": "synthetic00214"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.3,
+    "place": "218km 지점 (가짜 데이터)",
+    "time": 1789971281381,
+    "updated": 1789971341381,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 369,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.3 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -14.4067,
+     -32.9828,
+     43.6
+    ]
+   },
+   "id": "synthetic00032"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 2.5,
+    "place": "240km 지점 (가짜 데이터)",
+    "time": 1789971400765,
+    "updated": 1789971460765,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 125,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 2.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -116.4967,
+     37.2652,
+     8.4
+    ]
+   },
+   "id": "synthetic00080"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "212km 지점 (가짜 데이터)",
+    "time": 1789971949026,
+    "updated": 1789972009026,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.9315,
+     17.8625,
+     146.5
+    ]
+   },
+   "id": "synthetic00261"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.1,
+    "place": "225km 지점 (가짜 데이터)",
+    "time": 1789972287776,
+    "updated": 1789972347776,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 24,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -97.0014,
+     37.4125,
+     2.5
+    ]
+   },
+   "id": "synthetic00099"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.1,
+    "place": "161km 지점 (가짜 데이터)",
+    "time": 1789972846105,
+    "updated": 1789972906105,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 24,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -119.407,
+     38.9769,
+     3.8
+    ]
+   },
+   "id": "synthetic00246"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 2.3,
+    "place": "9km 지점 (가짜 데이터)",
+    "time": 1789973452681,
+    "updated": 1789973512681,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 105,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 2.3 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -115.3775,
+     37.0659,
+     8.5
+    ]
+   },
+   "id": "synthetic00068"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.7,
+    "place": "87km 지점 (가짜 데이터)",
+    "time": 1789973916972,
+    "updated": 1789973976972,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 9,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -121.5781,
+     37.9774,
+     6.7
+    ]
+   },
+   "id": "synthetic00181"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "28km 지점 (가짜 데이터)",
+    "time": 1789973974568,
+    "updated": 1789974034568,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -120.4232,
+     38.4527,
+     11.9
+    ]
+   },
+   "id": "synthetic00244"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.7,
+    "place": "150km 지점 (가짜 데이터)",
+    "time": 1789974222621,
+    "updated": 1789974282621,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 9,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -111.7978,
+     39.4914,
+     4.4
+    ]
+   },
+   "id": "synthetic00083"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.8,
+    "place": "96km 지점 (가짜 데이터)",
+    "time": 1789974847734,
+    "updated": 1789974907734,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 12,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.8 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -112.2417,
+     39.8421,
+     3.8
+    ]
+   },
+   "id": "synthetic00146"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "119km 지점 (가짜 데이터)",
+    "time": 1789975088872,
+    "updated": 1789975148872,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -148.563,
+     65.5772,
+     5.6
+    ]
+   },
+   "id": "synthetic00272"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "223km 지점 (가짜 데이터)",
+    "time": 1789975314377,
+    "updated": 1789975374377,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -118.0117,
+     37.152,
+     42.4
+    ]
+   },
+   "id": "synthetic00170"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.6,
+    "place": "165km 지점 (가짜 데이터)",
+    "time": 1789975616315,
+    "updated": 1789975676315,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 51,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -119.9952,
+     38.5884,
+     41.9
+    ]
+   },
+   "id": "synthetic00160"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.0,
+    "place": "177km 지점 (가짜 데이터)",
+    "time": 1789975620828,
+    "updated": 1789975680828,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 20,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.0 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.1944,
+     18.6436,
+     8.6
+    ]
+   },
+   "id": "synthetic00126"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "130km 지점 (가짜 데이터)",
+    "time": 1789975852154,
+    "updated": 1789975912154,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -155.182,
+     18.9149,
+     13.3
+    ]
+   },
+   "id": "synthetic00197"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "125km 지점 (가짜 데이터)",
+    "time": 1789976275895,
+    "updated": 1789976335895,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -99.0415,
+     37.1743,
+     300.3
+    ]
+   },
+   "id": "synthetic00168"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "216km 지점 (가짜 데이터)",
+    "time": 1789976470937,
+    "updated": 1789976530937,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -116.6556,
+     36.9589,
+     15.2
+    ]
+   },
+   "id": "synthetic00131"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "194km 지점 (가짜 데이터)",
+    "time": 1789976861673,
+    "updated": 1789976921673,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -154.7821,
+     19.5145,
+     20.2
+    ]
+   },
+   "id": "synthetic00065"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "162km 지점 (가짜 데이터)",
+    "time": 1789977266264,
+    "updated": 1789977326264,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -98.4527,
+     37.4211,
+     533.6
+    ]
+   },
+   "id": "synthetic00273"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.8,
+    "place": "226km 지점 (가짜 데이터)",
+    "time": 1789977500298,
+    "updated": 1789977560298,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 12,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.8 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -120.3116,
+     37.9976,
+     30.0
+    ]
+   },
+   "id": "synthetic00240"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "211km 지점 (가짜 데이터)",
+    "time": 1789977655053,
+    "updated": 1789977715053,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -100.6193,
+     35.6472,
+     14.7
+    ]
+   },
+   "id": "synthetic00139"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "223km 지점 (가짜 데이터)",
+    "time": 1789978691261,
+    "updated": 1789978751261,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -98.4927,
+     35.5772,
+     1.0
+    ]
+   },
+   "id": "synthetic00241"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "202km 지점 (가짜 데이터)",
+    "time": 1789978791425,
+    "updated": 1789978851425,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -154.4867,
+     18.8699,
+     27.7
+    ]
+   },
+   "id": "synthetic00279"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.2,
+    "place": "152km 지점 (가짜 데이터)",
+    "time": 1789978814021,
+    "updated": 1789978874021,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 28,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.2 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -152.0984,
+     62.6415,
+     32.0
+    ]
+   },
+   "id": "synthetic00135"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "170km 지점 (가짜 데이터)",
+    "time": 1789978915566,
+    "updated": 1789978975566,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.1458,
+     18.292,
+     3.9
+    ]
+   },
+   "id": "synthetic00216"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.1,
+    "place": "234km 지점 (가짜 데이터)",
+    "time": 1789978975044,
+    "updated": 1789979035044,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 24,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -117.999,
+     33.9187,
+     18.4
+    ]
+   },
+   "id": "synthetic00175"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 2.3,
+    "place": "107km 지점 (가짜 데이터)",
+    "time": 1789979031400,
+    "updated": 1789979091400,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 105,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 2.3 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -148.2493,
+     58.2699,
+     10.2
+    ]
+   },
+   "id": "synthetic00287"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.7,
+    "place": "178km 지점 (가짜 데이터)",
+    "time": 1789979095404,
+    "updated": 1789979155404,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 9,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -123.8203,
+     38.2496,
+     8.6
+    ]
+   },
+   "id": "synthetic00191"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.6,
+    "place": "94km 지점 (가짜 데이터)",
+    "time": 1789980278637,
+    "updated": 1789980338637,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 51,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -110.4992,
+     36.5464,
+     1.1
+    ]
+   },
+   "id": "synthetic00242"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 5.1,
+    "place": "130km 지점 (가짜 데이터)",
+    "time": 1789980680866,
+    "updated": 1789980740866,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 520,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 5.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     43.4614,
+     38.5817,
+     5.7
+    ]
+   },
+   "id": "synthetic00038"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "79km 지점 (가짜 데이터)",
+    "time": 1789980703301,
+    "updated": 1789980763301,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -147.1835,
+     57.7988,
+     22.1
+    ]
+   },
+   "id": "synthetic00225"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "13km 지점 (가짜 데이터)",
+    "time": 1789980798619,
+    "updated": 1789980858619,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -153.888,
+     19.1633,
+     18.6
+    ]
+   },
+   "id": "synthetic00113"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.4,
+    "place": "155km 지점 (가짜 데이터)",
+    "time": 1789981023631,
+    "updated": 1789981083631,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 39,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.4 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -157.1458,
+     60.8337,
+     3.5
+    ]
+   },
+   "id": "synthetic00211"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.8,
+    "place": "13km 지점 (가짜 데이터)",
+    "time": 1789981114182,
+    "updated": 1789981174182,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 64,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.8 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -112.243,
+     37.8135,
+     20.9
+    ]
+   },
+   "id": "synthetic00243"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.1,
+    "place": "114km 지점 (가짜 데이터)",
+    "time": 1789981574495,
+    "updated": 1789981634495,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 24,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -155.5385,
+     19.0659,
+     7.5
+    ]
+   },
+   "id": "synthetic00076"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "60km 지점 (가짜 데이터)",
+    "time": 1789982005113,
+    "updated": 1789982065113,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -122.102,
+     41.1254,
+     9.1
+    ]
+   },
+   "id": "synthetic00107"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 2.4,
+    "place": "162km 지점 (가짜 데이터)",
+    "time": 1789982124587,
+    "updated": 1789982184587,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 115,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 2.4 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -150.3441,
+     66.8796,
+     8.9
+    ]
+   },
+   "id": "synthetic00167"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.2,
+    "place": "71km 지점 (가짜 데이터)",
+    "time": 1789982259321,
+    "updated": 1789982319321,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 352,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.2 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     141.096,
+     36.2568,
+     490.2
+    ]
+   },
+   "id": "synthetic00026"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.7,
+    "place": "147km 지점 (가짜 데이터)",
+    "time": 1789982312628,
+    "updated": 1789982372628,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 9,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -156.2489,
+     19.2999,
+     22.1
+    ]
+   },
+   "id": "synthetic00215"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.7,
+    "place": "93km 지점 (가짜 데이터)",
+    "time": 1789983168326,
+    "updated": 1789983228326,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 9,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.8778,
+     18.2766,
+     6.7
+    ]
+   },
+   "id": "synthetic00188"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 2.1,
+    "place": "130km 지점 (가짜 데이터)",
+    "time": 1789983908455,
+    "updated": 1789983968455,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 88,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 2.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -150.9053,
+     61.0091,
+     6.1
+    ]
+   },
+   "id": "synthetic00117"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "131km 지점 (가짜 데이터)",
+    "time": 1789984015155,
+    "updated": 1789984075155,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -117.4858,
+     38.5078,
+     9.4
+    ]
+   },
+   "id": "synthetic00049"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.8,
+    "place": "170km 지점 (가짜 데이터)",
+    "time": 1789984016149,
+    "updated": 1789984076149,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 12,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.8 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -117.6656,
+     38.688,
+     3.8
+    ]
+   },
+   "id": "synthetic00155"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.9,
+    "place": "25km 지점 (가짜 데이터)",
+    "time": 1789984159063,
+    "updated": 1789984219063,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 16,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.9 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.3377,
+     17.3278,
+     2.6
+    ]
+   },
+   "id": "synthetic00227"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.0,
+    "place": "18km 지점 (가짜 데이터)",
+    "time": 1789984178215,
+    "updated": 1789984238215,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 20,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.0 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -153.8247,
+     19.9233,
+     24.0
+    ]
+   },
+   "id": "synthetic00063"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.1,
+    "place": "194km 지점 (가짜 데이터)",
+    "time": 1789984336921,
+    "updated": 1789984396921,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 24,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -118.8581,
+     38.89,
+     34.4
+    ]
+   },
+   "id": "synthetic00249"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.2,
+    "place": "49km 지점 (가짜 데이터)",
+    "time": 1789984487114,
+    "updated": 1789984547114,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 352,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.2 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     96.09,
+     27.1843,
+     9.5
+    ]
+   },
+   "id": "synthetic00002"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.9,
+    "place": "112km 지점 (가짜 데이터)",
+    "time": 1789984974806,
+    "updated": 1789985034806,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 480,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.9 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     148.3792,
+     -6.0665,
+     341.4
+    ]
+   },
+   "id": "synthetic00024"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "37km 지점 (가짜 데이터)",
+    "time": 1789985099911,
+    "updated": 1789985159911,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -95.5727,
+     36.8907,
+     29.6
+    ]
+   },
+   "id": "synthetic00075"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.1,
+    "place": "238km 지점 (가짜 데이터)",
+    "time": 1789986717951,
+    "updated": 1789986777951,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 24,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -146.3564,
+     67.9925,
+     460.5
+    ]
+   },
+   "id": "synthetic00193"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.7,
+    "place": "240km 지점 (가짜 데이터)",
+    "time": 1789987054814,
+    "updated": 1789987114814,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 9,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.3281,
+     17.8873,
+     10.9
+    ]
+   },
+   "id": "synthetic00078"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.8,
+    "place": "58km 지점 (가짜 데이터)",
+    "time": 1789987487588,
+    "updated": 1789987547588,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 12,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.8 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -156.2574,
+     19.9816,
+     17.7
+    ]
+   },
+   "id": "synthetic00174"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.7,
+    "place": "168km 지점 (가짜 데이터)",
+    "time": 1789987549762,
+    "updated": 1789987609762,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 57,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -64.8932,
+     18.5141,
+     19.3
+    ]
+   },
+   "id": "synthetic00259"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.1,
+    "place": "61km 지점 (가짜 데이터)",
+    "time": 1789988003642,
+    "updated": 1789988063642,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 24,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.4299,
+     16.991,
+     14.7
+    ]
+   },
+   "id": "synthetic00095"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "222km 지점 (가짜 데이터)",
+    "time": 1789988384361,
+    "updated": 1789988444361,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -119.3307,
+     33.2602,
+     14.2
+    ]
+   },
+   "id": "synthetic00090"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "189km 지점 (가짜 데이터)",
+    "time": 1789989389270,
+    "updated": 1789989449270,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -112.0959,
+     39.0736,
+     10.4
+    ]
+   },
+   "id": "synthetic00233"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.9,
+    "place": "201km 지점 (가짜 데이터)",
+    "time": 1789989453103,
+    "updated": 1789989513103,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 16,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.9 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -111.5269,
+     39.219,
+     4.8
+    ]
+   },
+   "id": "synthetic00265"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "13km 지점 (가짜 데이터)",
+    "time": 1789989618277,
+    "updated": 1789989678277,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -155.2808,
+     18.7399,
+     8.5
+    ]
+   },
+   "id": "synthetic00104"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "186km 지점 (가짜 데이터)",
+    "time": 1789989721881,
+    "updated": 1789989781881,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -151.6937,
+     55.6605,
+     10.2
+    ]
+   },
+   "id": "synthetic00070"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.8,
+    "place": "90km 지점 (가짜 데이터)",
+    "time": 1789989725645,
+    "updated": 1789989785645,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 12,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.8 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -101.7732,
+     37.295,
+     38.5
+    ]
+   },
+   "id": "synthetic00220"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.9,
+    "place": "18km 지점 (가짜 데이터)",
+    "time": 1789989774439,
+    "updated": 1789989834439,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 16,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.9 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -125.7689,
+     37.3255,
+     4.6
+    ]
+   },
+   "id": "synthetic00195"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.7,
+    "place": "230km 지점 (가짜 데이터)",
+    "time": 1789989974839,
+    "updated": 1789990034839,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 9,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -146.029,
+     61.2736,
+     11.7
+    ]
+   },
+   "id": "synthetic00281"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "153km 지점 (가짜 데이터)",
+    "time": 1789989998044,
+    "updated": 1789990058044,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -116.7951,
+     39.2477,
+     7.4
+    ]
+   },
+   "id": "synthetic00128"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "235km 지점 (가짜 데이터)",
+    "time": 1789990101823,
+    "updated": 1789990161823,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -151.2154,
+     60.2745,
+     6.5
+    ]
+   },
+   "id": "synthetic00258"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.9,
+    "place": "82km 지점 (가짜 데이터)",
+    "time": 1789990805625,
+    "updated": 1789990865625,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 16,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.9 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -117.5271,
+     40.0193,
+     13.5
+    ]
+   },
+   "id": "synthetic00239"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "162km 지점 (가짜 데이터)",
+    "time": 1789990939046,
+    "updated": 1789990999046,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.379,
+     16.9964,
+     6.2
+    ]
+   },
+   "id": "synthetic00200"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.1,
+    "place": "181km 지점 (가짜 데이터)",
+    "time": 1789991422303,
+    "updated": 1789991482303,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 24,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -97.7435,
+     36.4624,
+     3.7
+    ]
+   },
+   "id": "synthetic00092"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "34km 지점 (가짜 데이터)",
+    "time": 1789991482404,
+    "updated": 1789991542404,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -95.9364,
+     35.6224,
+     6.2
+    ]
+   },
+   "id": "synthetic00051"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "14km 지점 (가짜 데이터)",
+    "time": 1789991803547,
+    "updated": 1789991863547,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -118.8484,
+     36.2641,
+     26.1
+    ]
+   },
+   "id": "synthetic00271"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "240km 지점 (가짜 데이터)",
+    "time": 1789991931481,
+    "updated": 1789991991481,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -119.8286,
+     37.6331,
+     13.1
+    ]
+   },
+   "id": "synthetic00149"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.6,
+    "place": "71km 지점 (가짜 데이터)",
+    "time": 1789991981296,
+    "updated": 1789992041296,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 423,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -160.0216,
+     54.3969,
+     11.1
+    ]
+   },
+   "id": "synthetic00007"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 3.1,
+    "place": "222km 지점 (가짜 데이터)",
+    "time": 1789992248923,
+    "updated": 1789992308923,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 192,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 3.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -145.5075,
+     61.3472,
+     3.7
+    ]
+   },
+   "id": "synthetic00093"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.1,
+    "place": "76km 지점 (가짜 데이터)",
+    "time": 1789992578171,
+    "updated": 1789992638171,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 336,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -21.4293,
+     -43.4615,
+     6.3
+    ]
+   },
+   "id": "synthetic00033"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.6,
+    "place": "19km 지점 (가짜 데이터)",
+    "time": 1789992697476,
+    "updated": 1789992757476,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 423,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -72.437,
+     -31.0676,
+     14.9
+    ]
+   },
+   "id": "synthetic00000"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.2,
+    "place": "110km 지점 (가짜 데이터)",
+    "time": 1789992943204,
+    "updated": 1789993003204,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 28,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.2 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -156.8335,
+     19.5479,
+     9.9
+    ]
+   },
+   "id": "synthetic00052"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "231km 지점 (가짜 데이터)",
+    "time": 1789993000465,
+    "updated": 1789993060465,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -119.8006,
+     39.3131,
+     515.5
+    ]
+   },
+   "id": "synthetic00219"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "212km 지점 (가짜 데이터)",
+    "time": 1789993717415,
+    "updated": 1789993777415,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -107.8364,
+     40.4739,
+     12.4
+    ]
+   },
+   "id": "synthetic00269"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.7,
+    "place": "119km 지점 (가짜 데이터)",
+    "time": 1789994001916,
+    "updated": 1789994061916,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 9,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -68.2737,
+     17.1841,
+     11.5
+    ]
+   },
+   "id": "synthetic00105"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.1,
+    "place": "226km 지점 (가짜 데이터)",
+    "time": 1789994528395,
+    "updated": 1789994588395,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 336,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -44.0283,
+     22.2746,
+     164.4
+    ]
+   },
+   "id": "synthetic00017"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.5,
+    "place": "217km 지점 (가짜 데이터)",
+    "time": 1789994705482,
+    "updated": 1789994765482,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 405,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -125.6139,
+     44.3264,
+     17.6
+    ]
+   },
+   "id": "synthetic00027"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.2,
+    "place": "99km 지점 (가짜 데이터)",
+    "time": 1789994784391,
+    "updated": 1789994844391,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 352,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.2 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     171.6714,
+     -40.468,
+     21.8
+    ]
+   },
+   "id": "synthetic00013"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.3,
+    "place": "42km 지점 (가짜 데이터)",
+    "time": 1789995672536,
+    "updated": 1789995732536,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 33,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.3 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.2409,
+     17.3264,
+     356.3
+    ]
+   },
+   "id": "synthetic00199"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "164km 지점 (가짜 데이터)",
+    "time": 1789996203305,
+    "updated": 1789996263305,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.3456,
+     17.8801,
+     36.5
+    ]
+   },
+   "id": "synthetic00123"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.3,
+    "place": "149km 지점 (가짜 데이터)",
+    "time": 1789996453011,
+    "updated": 1789996513011,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 369,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.3 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     27.1433,
+     39.4295,
+     30.3
+    ]
+   },
+   "id": "synthetic00014"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.7,
+    "place": "200km 지점 (가짜 데이터)",
+    "time": 1789996679612,
+    "updated": 1789996739612,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 9,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -115.1536,
+     35.5765,
+     7.8
+    ]
+   },
+   "id": "synthetic00136"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "107km 지점 (가짜 데이터)",
+    "time": 1789996944330,
+    "updated": 1789997004330,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -118.3395,
+     39.5152,
+     19.3
+    ]
+   },
+   "id": "synthetic00186"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.2,
+    "place": "24km 지점 (가짜 데이터)",
+    "time": 1789997042833,
+    "updated": 1789997102833,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 28,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.2 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -149.066,
+     61.4214,
+     10.0
+    ]
+   },
+   "id": "synthetic00270"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "239km 지점 (가짜 데이터)",
+    "time": 1789997088852,
+    "updated": 1789997148852,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -154.4829,
+     60.8769,
+     2.8
+    ]
+   },
+   "id": "synthetic00100"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.7,
+    "place": "233km 지점 (가짜 데이터)",
+    "time": 1789997911349,
+    "updated": 1789997971349,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 9,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -119.606,
+     32.0937,
+     21.8
+    ]
+   },
+   "id": "synthetic00276"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "222km 지점 (가짜 데이터)",
+    "time": 1789998355047,
+    "updated": 1789998415047,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -114.3387,
+     42.0874,
+     18.7
+    ]
+   },
+   "id": "synthetic00286"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.0,
+    "place": "82km 지점 (가짜 데이터)",
+    "time": 1789998655717,
+    "updated": 1789998715717,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 20,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.0 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -149.139,
+     63.0107,
+     14.4
+    ]
+   },
+   "id": "synthetic00224"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.1,
+    "place": "157km 지점 (가짜 데이터)",
+    "time": 1789998865917,
+    "updated": 1789998925917,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 24,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -124.3609,
+     37.7224,
+     6.7
+    ]
+   },
+   "id": "synthetic00212"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.0,
+    "place": "19km 지점 (가짜 데이터)",
+    "time": 1789998969917,
+    "updated": 1789999029917,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 20,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.0 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -149.0249,
+     61.5593,
+     151.0
+    ]
+   },
+   "id": "synthetic00140"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.9,
+    "place": "114km 지점 (가짜 데이터)",
+    "time": 1789998993269,
+    "updated": 1789999053269,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 16,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.9 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -116.9564,
+     38.3614,
+     24.0
+    ]
+   },
+   "id": "synthetic00202"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.9,
+    "place": "30km 지점 (가짜 데이터)",
+    "time": 1789999503641,
+    "updated": 1789999563641,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 16,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.9 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -120.0058,
+     39.5355,
+     12.3
+    ]
+   },
+   "id": "synthetic00217"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.1,
+    "place": "161km 지점 (가짜 데이터)",
+    "time": 1789999863873,
+    "updated": 1789999923873,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 24,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -95.9882,
+     36.5756,
+     3.3
+    ]
+   },
+   "id": "synthetic00205"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.8,
+    "place": "76km 지점 (가짜 데이터)",
+    "time": 1789999904555,
+    "updated": 1789999964555,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 460,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.8 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     89.7012,
+     24.7483,
+     26.7
+    ]
+   },
+   "id": "synthetic00011"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.8,
+    "place": "189km 지점 (가짜 데이터)",
+    "time": 1790000192910,
+    "updated": 1790000252910,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 64,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.8 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -155.9609,
+     20.6019,
+     219.9
+    ]
+   },
+   "id": "synthetic00053"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 2.4,
+    "place": "6km 지점 (가짜 데이터)",
+    "time": 1790000398794,
+    "updated": 1790000458794,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 115,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 2.4 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -110.7065,
+     40.9553,
+     12.7
+    ]
+   },
+   "id": "synthetic00046"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.4,
+    "place": "148km 지점 (가짜 데이터)",
+    "time": 1790000785924,
+    "updated": 1790000845924,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 387,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.4 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -11.7148,
+     -36.711,
+     7.2
+    ]
+   },
+   "id": "synthetic00035"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "89km 지점 (가짜 데이터)",
+    "time": 1790000957386,
+    "updated": 1790001017386,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -99.8367,
+     35.8365,
+     5.1
+    ]
+   },
+   "id": "synthetic00180"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "231km 지점 (가짜 데이터)",
+    "time": 1790001281490,
+    "updated": 1790001341490,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -154.7078,
+     19.1129,
+     13.3
+    ]
+   },
+   "id": "synthetic00158"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "63km 지점 (가짜 데이터)",
+    "time": 1790001441044,
+    "updated": 1790001501044,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -122.3959,
+     39.5017,
+     37.3
+    ]
+   },
+   "id": "synthetic00201"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.8,
+    "place": "144km 지점 (가짜 데이터)",
+    "time": 1790001552253,
+    "updated": 1790001612253,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 12,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.8 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -98.411,
+     35.712,
+     11.1
+    ]
+   },
+   "id": "synthetic00250"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "83km 지점 (가짜 데이터)",
+    "time": 1790002293883,
+    "updated": 1790002353883,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -153.6579,
+     18.3882,
+     4.5
+    ]
+   },
+   "id": "synthetic00130"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.7,
+    "place": "87km 지점 (가짜 데이터)",
+    "time": 1790002412267,
+    "updated": 1790002472267,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 9,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -64.9579,
+     18.0026,
+     28.2
+    ]
+   },
+   "id": "synthetic00102"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.4,
+    "place": "164km 지점 (가짜 데이터)",
+    "time": 1790002751783,
+    "updated": 1790002811783,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 39,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.4 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -154.2548,
+     18.8788,
+     8.9
+    ]
+   },
+   "id": "synthetic00115"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.2,
+    "place": "139km 지점 (가짜 데이터)",
+    "time": 1790002800264,
+    "updated": 1790002860264,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 28,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.2 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -114.0709,
+     39.1734,
+     19.4
+    ]
+   },
+   "id": "synthetic00143"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.0,
+    "place": "77km 지점 (가짜 데이터)",
+    "time": 1790003434249,
+    "updated": 1790003494249,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 20,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.0 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -124.4161,
+     36.7092,
+     5.0
+    ]
+   },
+   "id": "synthetic00041"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.1,
+    "place": "144km 지점 (가짜 데이터)",
+    "time": 1790003554038,
+    "updated": 1790003614038,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 336,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -34.2522,
+     32.096,
+     43.1
+    ]
+   },
+   "id": "synthetic00020"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.2,
+    "place": "221km 지점 (가짜 데이터)",
+    "time": 1790003606860,
+    "updated": 1790003666860,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 28,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.2 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -110.7781,
+     37.4667,
+     2.8
+    ]
+   },
+   "id": "synthetic00133"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.9,
+    "place": "93km 지점 (가짜 데이터)",
+    "time": 1790003792219,
+    "updated": 1790003852219,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 16,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.9 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -123.269,
+     38.949,
+     36.7
+    ]
+   },
+   "id": "synthetic00087"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "14km 지점 (가짜 데이터)",
+    "time": 1790004162749,
+    "updated": 1790004222749,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.6994,
+     18.895,
+     13.1
+    ]
+   },
+   "id": "synthetic00061"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 3.0,
+    "place": "74km 지점 (가짜 데이터)",
+    "time": 1790004319991,
+    "updated": 1790004379991,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 180,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 3.0 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.9361,
+     17.1263,
+     19.8
+    ]
+   },
+   "id": "synthetic00127"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.9,
+    "place": "163km 지점 (가짜 데이터)",
+    "time": 1790004560981,
+    "updated": 1790004620981,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 16,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.9 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -111.143,
+     38.4893,
+     2.3
+    ]
+   },
+   "id": "synthetic00039"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 2.4,
+    "place": "176km 지점 (가짜 데이터)",
+    "time": 1790004994638,
+    "updated": 1790005054638,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 115,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 2.4 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -121.3907,
+     36.2525,
+     1.0
+    ]
+   },
+   "id": "synthetic00094"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.4,
+    "place": "177km 지점 (가짜 데이터)",
+    "time": 1790005008377,
+    "updated": 1790005068377,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 387,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.4 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -178.9392,
+     -24.5678,
+     16.6
+    ]
+   },
+   "id": "synthetic00018"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.8,
+    "place": "50km 지점 (가짜 데이터)",
+    "time": 1790006378251,
+    "updated": 1790006438251,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 12,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.8 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -155.5077,
+     19.1979,
+     106.6
+    ]
+   },
+   "id": "synthetic00161"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 5.5,
+    "place": "220km 지점 (가짜 데이터)",
+    "time": 1790006673689,
+    "updated": 1790006733689,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 605,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 5.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -13.5193,
+     -22.6171,
+     44.5
+    ]
+   },
+   "id": "synthetic00025"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.9,
+    "place": "69km 지점 (가짜 데이터)",
+    "time": 1790007566904,
+    "updated": 1790007626904,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 16,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.9 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -154.1122,
+     19.6376,
+     15.8
+    ]
+   },
+   "id": "synthetic00282"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.8,
+    "place": "78km 지점 (가짜 데이터)",
+    "time": 1790008005178,
+    "updated": 1790008065178,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 64,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.8 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.1955,
+     18.192,
+     12.7
+    ]
+   },
+   "id": "synthetic00210"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.8,
+    "place": "134km 지점 (가짜 데이터)",
+    "time": 1790008007906,
+    "updated": 1790008067906,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 12,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.8 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -119.1973,
+     38.8696,
+     71.9
+    ]
+   },
+   "id": "synthetic00045"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.0,
+    "place": "44km 지점 (가짜 데이터)",
+    "time": 1790008110074,
+    "updated": 1790008170074,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 320,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.0 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     130.6072,
+     -0.8166,
+     10.3
+    ]
+   },
+   "id": "synthetic00009"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.7,
+    "place": "85km 지점 (가짜 데이터)",
+    "time": 1790008600733,
+    "updated": 1790008660733,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 9,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -112.0338,
+     43.141,
+     5.2
+    ]
+   },
+   "id": "synthetic00283"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "91km 지점 (가짜 데이터)",
+    "time": 1790009162221,
+    "updated": 1790009222221,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -112.6188,
+     39.8505,
+     17.9
+    ]
+   },
+   "id": "synthetic00118"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "7km 지점 (가짜 데이터)",
+    "time": 1790009442599,
+    "updated": 1790009502599,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -155.7718,
+     18.411,
+     27.0
+    ]
+   },
+   "id": "synthetic00252"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.0,
+    "place": "235km 지점 (가짜 데이터)",
+    "time": 1790009533413,
+    "updated": 1790009593413,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 20,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.0 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -154.662,
+     19.0762,
+     25.4
+    ]
+   },
+   "id": "synthetic00234"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.9,
+    "place": "221km 지점 (가짜 데이터)",
+    "time": 1790009618877,
+    "updated": 1790009678877,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 16,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.9 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -155.5626,
+     18.0459,
+     20.9
+    ]
+   },
+   "id": "synthetic00253"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.9,
+    "place": "51km 지점 (가짜 데이터)",
+    "time": 1790009666662,
+    "updated": 1790009726662,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 16,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.9 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -118.3252,
+     39.7953,
+     4.4
+    ]
+   },
+   "id": "synthetic00159"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.0,
+    "place": "16km 지점 (가짜 데이터)",
+    "time": 1790010341896,
+    "updated": 1790010401896,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 20,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.0 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.0145,
+     18.0307,
+     6.4
+    ]
+   },
+   "id": "synthetic00040"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.7,
+    "place": "239km 지점 (가짜 데이터)",
+    "time": 1790010378771,
+    "updated": 1790010438771,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 9,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -112.9194,
+     39.8773,
+     19.8
+    ]
+   },
+   "id": "synthetic00069"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "105km 지점 (가짜 데이터)",
+    "time": 1790010500632,
+    "updated": 1790010560632,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -113.6048,
+     42.1132,
+     1.3
+    ]
+   },
+   "id": "synthetic00185"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.9,
+    "place": "178km 지점 (가짜 데이터)",
+    "time": 1790010961712,
+    "updated": 1790011021712,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 16,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.9 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -109.5049,
+     40.5256,
+     11.9
+    ]
+   },
+   "id": "synthetic00096"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.1,
+    "place": "156km 지점 (가짜 데이터)",
+    "time": 1790010965471,
+    "updated": 1790011025471,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 24,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -114.8838,
+     37.5077,
+     31.4
+    ]
+   },
+   "id": "synthetic00207"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "135km 지점 (가짜 데이터)",
+    "time": 1790010994540,
+    "updated": 1790011054540,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -123.5031,
+     33.6385,
+     30.0
+    ]
+   },
+   "id": "synthetic00142"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.0,
+    "place": "28km 지점 (가짜 데이터)",
+    "time": 1790011154364,
+    "updated": 1790011214364,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 20,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.0 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -120.6209,
+     36.8679,
+     14.7
+    ]
+   },
+   "id": "synthetic00289"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "62km 지점 (가짜 데이터)",
+    "time": 1790011643568,
+    "updated": 1790011703568,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.6083,
+     17.4421,
+     1.3
+    ]
+   },
+   "id": "synthetic00260"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.0,
+    "place": "38km 지점 (가짜 데이터)",
+    "time": 1790011855912,
+    "updated": 1790011915912,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 20,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.0 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.8425,
+     18.895,
+     15.6
+    ]
+   },
+   "id": "synthetic00232"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "194km 지점 (가짜 데이터)",
+    "time": 1790011874938,
+    "updated": 1790011934938,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -115.7501,
+     38.377,
+     20.0
+    ]
+   },
+   "id": "synthetic00221"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "113km 지점 (가짜 데이터)",
+    "time": 1790011966582,
+    "updated": 1790012026582,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -145.1566,
+     55.1707,
+     12.1
+    ]
+   },
+   "id": "synthetic00267"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "76km 지점 (가짜 데이터)",
+    "time": 1790012056180,
+    "updated": 1790012116180,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -120.4687,
+     38.9377,
+     17.9
+    ]
+   },
+   "id": "synthetic00098"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.8,
+    "place": "58km 지점 (가짜 데이터)",
+    "time": 1790012203323,
+    "updated": 1790012263323,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 12,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.8 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.1063,
+     17.5619,
+     23.3
+    ]
+   },
+   "id": "synthetic00206"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.1,
+    "place": "12km 지점 (가짜 데이터)",
+    "time": 1790012355548,
+    "updated": 1790012415548,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 24,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -114.5931,
+     39.6873,
+     24.6
+    ]
+   },
+   "id": "synthetic00124"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.3,
+    "place": "234km 지점 (가짜 데이터)",
+    "time": 1790013300998,
+    "updated": 1790013360998,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 33,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.3 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -112.3517,
+     42.1336,
+     24.4
+    ]
+   },
+   "id": "synthetic00057"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.0,
+    "place": "202km 지점 (가짜 데이터)",
+    "time": 1790013439641,
+    "updated": 1790013499641,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 20,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.0 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -121.7359,
+     38.3728,
+     19.7
+    ]
+   },
+   "id": "synthetic00147"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.7,
+    "place": "109km 지점 (가짜 데이터)",
+    "time": 1790013553437,
+    "updated": 1790013613437,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 9,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -109.0731,
+     41.5949,
+     10.3
+    ]
+   },
+   "id": "synthetic00054"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "191km 지점 (가짜 데이터)",
+    "time": 1790013601044,
+    "updated": 1790013661044,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -156.1272,
+     66.3244,
+     10.1
+    ]
+   },
+   "id": "synthetic00120"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.6,
+    "place": "54km 지점 (가짜 데이터)",
+    "time": 1790014145231,
+    "updated": 1790014205231,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 51,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -97.1716,
+     36.2562,
+     7.1
+    ]
+   },
+   "id": "synthetic00067"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.7,
+    "place": "211km 지점 (가짜 데이터)",
+    "time": 1790014173880,
+    "updated": 1790014233880,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 9,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -108.9257,
+     39.1037,
+     32.8
+    ]
+   },
+   "id": "synthetic00097"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.7,
+    "place": "86km 지점 (가짜 데이터)",
+    "time": 1790014440384,
+    "updated": 1790014500384,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 9,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -109.7213,
+     40.3274,
+     13.5
+    ]
+   },
+   "id": "synthetic00129"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.7,
+    "place": "209km 지점 (가짜 데이터)",
+    "time": 1790014468642,
+    "updated": 1790014528642,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 9,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.7656,
+     19.0252,
+     16.9
+    ]
+   },
+   "id": "synthetic00138"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 3.3,
+    "place": "92km 지점 (가짜 데이터)",
+    "time": 1790014477931,
+    "updated": 1790014537931,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 217,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 3.3 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -116.9316,
+     37.7706,
+     19.6
+    ]
+   },
+   "id": "synthetic00228"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.1,
+    "place": "56km 지점 (가짜 데이터)",
+    "time": 1790014495569,
+    "updated": 1790014555569,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 24,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -146.525,
+     62.4551,
+     9.9
+    ]
+   },
+   "id": "synthetic00254"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "55km 지점 (가짜 데이터)",
+    "time": 1790014671909,
+    "updated": 1790014731909,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -110.8495,
+     37.6389,
+     427.5
+    ]
+   },
+   "id": "synthetic00204"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "89km 지점 (가짜 데이터)",
+    "time": 1790014760309,
+    "updated": 1790014820309,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -96.3009,
+     35.0137,
+     19.9
+    ]
+   },
+   "id": "synthetic00235"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.8,
+    "place": "53km 지점 (가짜 데이터)",
+    "time": 1790015147589,
+    "updated": 1790015207589,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 12,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.8 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -96.5148,
+     36.498,
+     22.1
+    ]
+   },
+   "id": "synthetic00084"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.8,
+    "place": "58km 지점 (가짜 데이터)",
+    "time": 1790015311806,
+    "updated": 1790015371806,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 12,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.8 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -95.7634,
+     35.5337,
+     180.2
+    ]
+   },
+   "id": "synthetic00229"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "7km 지점 (가짜 데이터)",
+    "time": 1790015884447,
+    "updated": 1790015944447,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -150.6989,
+     59.663,
+     6.1
+    ]
+   },
+   "id": "synthetic00073"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.0,
+    "place": "68km 지점 (가짜 데이터)",
+    "time": 1790016076440,
+    "updated": 1790016136440,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 20,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.0 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -155.1327,
+     19.9027,
+     82.6
+    ]
+   },
+   "id": "synthetic00183"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.3,
+    "place": "51km 지점 (가짜 데이터)",
+    "time": 1790016225898,
+    "updated": 1790016285898,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 369,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.3 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -113.06,
+     34.039,
+     14.1
+    ]
+   },
+   "id": "synthetic00001"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "206km 지점 (가짜 데이터)",
+    "time": 1790016515752,
+    "updated": 1790016575752,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -121.2809,
+     39.8754,
+     14.5
+    ]
+   },
+   "id": "synthetic00203"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "84km 지점 (가짜 데이터)",
+    "time": 1790016645092,
+    "updated": 1790016705092,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -149.2142,
+     63.6335,
+     1.6
+    ]
+   },
+   "id": "synthetic00277"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.6,
+    "place": "237km 지점 (가짜 데이터)",
+    "time": 1790016775907,
+    "updated": 1790016835907,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 51,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.3895,
+     18.2691,
+     9.6
+    ]
+   },
+   "id": "synthetic00114"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.7,
+    "place": "137km 지점 (가짜 데이터)",
+    "time": 1790017447349,
+    "updated": 1790017507349,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 9,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -151.2843,
+     57.4681,
+     5.0
+    ]
+   },
+   "id": "synthetic00176"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.0,
+    "place": "180km 지점 (가짜 데이터)",
+    "time": 1790018334391,
+    "updated": 1790018394391,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 20,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.0 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.3779,
+     17.8245,
+     437.0
+    ]
+   },
+   "id": "synthetic00245"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.4,
+    "place": "109km 지점 (가짜 데이터)",
+    "time": 1790018469838,
+    "updated": 1790018529838,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 39,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.4 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -97.3415,
+     34.397,
+     7.8
+    ]
+   },
+   "id": "synthetic00284"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.7,
+    "place": "194km 지점 (가짜 데이터)",
+    "time": 1790018583688,
+    "updated": 1790018643688,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 9,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -114.9847,
+     38.271,
+     26.0
+    ]
+   },
+   "id": "synthetic00141"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.9,
+    "place": "3km 지점 (가짜 데이터)",
+    "time": 1790018706211,
+    "updated": 1790018766211,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 16,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.9 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -117.908,
+     36.9815,
+     2.4
+    ]
+   },
+   "id": "synthetic00074"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.1,
+    "place": "146km 지점 (가짜 데이터)",
+    "time": 1790018737254,
+    "updated": 1790018797254,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 24,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -122.9821,
+     37.6521,
+     27.7
+    ]
+   },
+   "id": "synthetic00196"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.9,
+    "place": "152km 지점 (가짜 데이터)",
+    "time": 1790018841315,
+    "updated": 1790018901315,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 16,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.9 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -96.854,
+     36.4639,
+     7.6
+    ]
+   },
+   "id": "synthetic00122"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.4,
+    "place": "215km 지점 (가짜 데이터)",
+    "time": 1790019369998,
+    "updated": 1790019429998,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 39,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.4 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -96.189,
+     37.4546,
+     10.1
+    ]
+   },
+   "id": "synthetic00194"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.7,
+    "place": "238km 지점 (가짜 데이터)",
+    "time": 1790020186690,
+    "updated": 1790020246690,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 9,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -119.7184,
+     39.6636,
+     376.1
+    ]
+   },
+   "id": "synthetic00153"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.1,
+    "place": "137km 지점 (가짜 데이터)",
+    "time": 1790020502632,
+    "updated": 1790020562632,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 336,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     84.9699,
+     28.1052,
+     13.8
+    ]
+   },
+   "id": "synthetic00015"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.4,
+    "place": "127km 지점 (가짜 데이터)",
+    "time": 1790020737934,
+    "updated": 1790020797934,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 39,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.4 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -116.8392,
+     33.3582,
+     33.2
+    ]
+   },
+   "id": "synthetic00278"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.1,
+    "place": "60km 지점 (가짜 데이터)",
+    "time": 1790020881055,
+    "updated": 1790020941055,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 336,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -38.2733,
+     29.6283,
+     9.6
+    ]
+   },
+   "id": "synthetic00005"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.9,
+    "place": "137km 지점 (가짜 데이터)",
+    "time": 1790021459388,
+    "updated": 1790021519388,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 16,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.9 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -112.8207,
+     36.6528,
+     1.1
+    ]
+   },
+   "id": "synthetic00121"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.7,
+    "place": "158km 지점 (가짜 데이터)",
+    "time": 1790021537326,
+    "updated": 1790021597326,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 9,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -144.2634,
+     62.0099,
+     18.6
+    ]
+   },
+   "id": "synthetic00106"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "134km 지점 (가짜 데이터)",
+    "time": 1790021768545,
+    "updated": 1790021828545,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -155.2616,
+     19.446,
+     19.3
+    ]
+   },
+   "id": "synthetic00154"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 2.0,
+    "place": "205km 지점 (가짜 데이터)",
+    "time": 1790022921948,
+    "updated": 1790022981948,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 80,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 2.0 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -114.2917,
+     41.0612,
+     24.0
+    ]
+   },
+   "id": "synthetic00266"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.0,
+    "place": "58km 지점 (가짜 데이터)",
+    "time": 1790022982797,
+    "updated": 1790023042797,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 20,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.0 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -108.4425,
+     39.7799,
+     6.6
+    ]
+   },
+   "id": "synthetic00119"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.3,
+    "place": "193km 지점 (가짜 데이터)",
+    "time": 1790023559225,
+    "updated": 1790023619225,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 369,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.3 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     118.1476,
+     -6.8642,
+     8.8
+    ]
+   },
+   "id": "synthetic00008"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "94km 지점 (가짜 데이터)",
+    "time": 1790024206496,
+    "updated": 1790024266496,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -155.3858,
+     19.5237,
+     11.9
+    ]
+   },
+   "id": "synthetic00177"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.8,
+    "place": "45km 지점 (가짜 데이터)",
+    "time": 1790024209583,
+    "updated": 1790024269583,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 12,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.8 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -97.3218,
+     36.4587,
+     4.6
+    ]
+   },
+   "id": "synthetic00108"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "10km 지점 (가짜 데이터)",
+    "time": 1790024278749,
+    "updated": 1790024338749,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.6938,
+     16.7444,
+     28.2
+    ]
+   },
+   "id": "synthetic00132"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.0,
+    "place": "106km 지점 (가짜 데이터)",
+    "time": 1790024557443,
+    "updated": 1790024617443,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 20,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.0 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -155.1021,
+     19.1177,
+     27.9
+    ]
+   },
+   "id": "synthetic00064"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.1,
+    "place": "10km 지점 (가짜 데이터)",
+    "time": 1790025225066,
+    "updated": 1790025285066,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 24,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -160.9009,
+     65.6738,
+     22.0
+    ]
+   },
+   "id": "synthetic00192"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.1,
+    "place": "107km 지점 (가짜 데이터)",
+    "time": 1790025781369,
+    "updated": 1790025841369,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 24,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -148.527,
+     58.8106,
+     578.4
+    ]
+   },
+   "id": "synthetic00218"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.9,
+    "place": "94km 지점 (가짜 데이터)",
+    "time": 1790026440718,
+    "updated": 1790026500718,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 16,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.9 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -121.6706,
+     37.3758,
+     21.2
+    ]
+   },
+   "id": "synthetic00077"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "80km 지점 (가짜 데이터)",
+    "time": 1790026679976,
+    "updated": 1790026739976,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -111.1777,
+     37.2831,
+     10.1
+    ]
+   },
+   "id": "synthetic00044"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.7,
+    "place": "153km 지점 (가짜 데이터)",
+    "time": 1790026687807,
+    "updated": 1790026747807,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 57,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -98.8533,
+     35.2679,
+     10.6
+    ]
+   },
+   "id": "synthetic00110"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "220km 지점 (가짜 데이터)",
+    "time": 1790026752209,
+    "updated": 1790026812209,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -119.7652,
+     36.9855,
+     5.6
+    ]
+   },
+   "id": "synthetic00145"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "187km 지점 (가짜 데이터)",
+    "time": 1790026803350,
+    "updated": 1790026863350,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -112.8501,
+     37.5472,
+     25.6
+    ]
+   },
+   "id": "synthetic00156"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.9,
+    "place": "123km 지점 (가짜 데이터)",
+    "time": 1790027718210,
+    "updated": 1790027778210,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 16,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.9 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.6752,
+     16.7489,
+     8.7
+    ]
+   },
+   "id": "synthetic00163"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "218km 지점 (가짜 데이터)",
+    "time": 1790027774380,
+    "updated": 1790027834380,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.2166,
+     17.4191,
+     37.7
+    ]
+   },
+   "id": "synthetic00071"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.8,
+    "place": "215km 지점 (가짜 데이터)",
+    "time": 1790027854956,
+    "updated": 1790027914956,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 12,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.8 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -115.2115,
+     37.8128,
+     10.6
+    ]
+   },
+   "id": "synthetic00112"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.7,
+    "place": "121km 지점 (가짜 데이터)",
+    "time": 1790027860299,
+    "updated": 1790027920299,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 9,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -120.2439,
+     36.1904,
+     1.0
+    ]
+   },
+   "id": "synthetic00066"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.8,
+    "place": "187km 지점 (가짜 데이터)",
+    "time": 1790028261563,
+    "updated": 1790028321563,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 12,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.8 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -156.6488,
+     19.2189,
+     23.2
+    ]
+   },
+   "id": "synthetic00251"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.3,
+    "place": "57km 지점 (가짜 데이터)",
+    "time": 1790028424367,
+    "updated": 1790028484367,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 369,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.3 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -18.0514,
+     -43.8206,
+     282.4
+    ]
+   },
+   "id": "synthetic00029"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 2.6,
+    "place": "194km 지점 (가짜 데이터)",
+    "time": 1790029049676,
+    "updated": 1790029109676,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 135,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 2.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -96.2876,
+     35.2755,
+     12.9
+    ]
+   },
+   "id": "synthetic00230"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.7,
+    "place": "94km 지점 (가짜 데이터)",
+    "time": 1790030123415,
+    "updated": 1790030183415,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 9,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.5977,
+     18.023,
+     7.0
+    ]
+   },
+   "id": "synthetic00262"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.2,
+    "place": "20km 지점 (가짜 데이터)",
+    "time": 1790030811817,
+    "updated": 1790030871817,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 352,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.2 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -131.6001,
+     53.6262,
+     2.5
+    ]
+   },
+   "id": "synthetic00037"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.1,
+    "place": "178km 지점 (가짜 데이터)",
+    "time": 1790030971181,
+    "updated": 1790031031181,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 24,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -98.3439,
+     35.2916,
+     18.8
+    ]
+   },
+   "id": "synthetic00171"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.9,
+    "place": "207km 지점 (가짜 데이터)",
+    "time": 1790031031071,
+    "updated": 1790031091071,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 16,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.9 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -154.2696,
+     19.4477,
+     7.9
+    ]
+   },
+   "id": "synthetic00043"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "13km 지점 (가짜 데이터)",
+    "time": 1790031176592,
+    "updated": 1790031236592,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -155.0026,
+     19.6405,
+     22.6
+    ]
+   },
+   "id": "synthetic00079"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.2,
+    "place": "98km 지점 (가짜 데이터)",
+    "time": 1790031456043,
+    "updated": 1790031516043,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 28,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.2 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -116.7046,
+     38.7152,
+     12.1
+    ]
+   },
+   "id": "synthetic00274"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.3,
+    "place": "35km 지점 (가짜 데이터)",
+    "time": 1790031760272,
+    "updated": 1790031820272,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 369,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.3 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -101.3183,
+     19.5578,
+     11.0
+    ]
+   },
+   "id": "synthetic00028"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.5,
+    "place": "36km 지점 (가짜 데이터)",
+    "time": 1790031850524,
+    "updated": 1790031910524,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 5,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.5 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -95.046,
+     36.5943,
+     20.4
+    ]
+   },
+   "id": "synthetic00125"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.7,
+    "place": "15km 지점 (가짜 데이터)",
+    "time": 1790031911086,
+    "updated": 1790031971086,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 9,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -154.7157,
+     19.7283,
+     259.2
+    ]
+   },
+   "id": "synthetic00223"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.7,
+    "place": "102km 지점 (가짜 데이터)",
+    "time": 1790032022239,
+    "updated": 1790032082239,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 9,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.7 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.9305,
+     18.2032,
+     544.3
+    ]
+   },
+   "id": "synthetic00248"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "180km 지점 (가짜 데이터)",
+    "time": 1790032730921,
+    "updated": 1790032790921,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -111.7201,
+     38.3547,
+     6.2
+    ]
+   },
+   "id": "synthetic00116"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 1.1,
+    "place": "69km 지점 (가짜 데이터)",
+    "time": 1790033343894,
+    "updated": 1790033403894,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 24,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 1.1 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -99.0891,
+     36.3888,
+     10.7
+    ]
+   },
+   "id": "synthetic00056"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "210km 지점 (가짜 데이터)",
+    "time": 1790034422784,
+    "updated": 1790034482784,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -143.9371,
+     58.4127,
+     11.2
+    ]
+   },
+   "id": "synthetic00222"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "116km 지점 (가짜 데이터)",
+    "time": 1790035011414,
+    "updated": 1790035071414,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -123.3578,
+     40.9128,
+     20.7
+    ]
+   },
+   "id": "synthetic00173"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 0.6,
+    "place": "22km 지점 (가짜 데이터)",
+    "time": 1790035146669,
+    "updated": 1790035206669,
+    "tz": null,
+    "status": "automatic",
+    "tsunami": 0,
+    "sig": 7,
+    "magType": "ml",
+    "type": "earthquake",
+    "title": "M 0.6 - 가짜 데이터"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -146.9524,
+     62.2722,
+     1.4
+    ]
+   },
+   "id": "synthetic00231"
+  }
+ ]
+}
