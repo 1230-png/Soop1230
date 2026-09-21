@@ -54,7 +54,7 @@ python3 channel_earth/build.py --window day --dump data/first_response.json
 | `lib/render.py` | 지도·점·고리·범례·막대. PIL 이 아니라 numpy 로 |
 | `lib/audio.py` | 지진 하나가 소리 하나. 높이는 깊이가, 크기는 규모가 |
 | `build.py` | 프레임을 ffmpeg 로 흘려보내고 소리와 합친다 |
-| `upload.py` | `EARTH_*` 전용. 대체 자격 증명 없음 |
+| `upload.py` | `RUSH_*` 전용. 대체 자격 증명 없음 |
 | `assets/` | NASA Blue Marble (1920×960 으로 줄여 저장소에 넣었다) |
 
 ### 왜 MoviePy 가 아닌가
@@ -90,8 +90,8 @@ MoviePy 는 결국 ffmpeg 래퍼인데, 프레임을 직접 만들어 내는 이
 
 **환경변수로만. 코드·커밋·로그에 절대 넣지 않는다.**
 
-`EARTH_CLIENT_ID` / `EARTH_CLIENT_SECRET` / `EARTH_REFRESH_TOKEN` /
-`EARTH_CHANNEL_ID`.
+`RUSH_CLIENT_ID` / `RUSH_CLIENT_SECRET` / `RUSH_REFRESH_TOKEN` /
+`RUSH_CHANNEL_ID`.
 
 **대체 경로를 두지 않는다.** `longform/upload.py:40` 은 `Y3B_*` 가 비면 공용
 `YT_*` 로 넘어가는데, 시크릿을 깜빡한 날 남의 채널로 조용히 올라간다.

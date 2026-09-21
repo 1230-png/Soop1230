@@ -125,12 +125,13 @@ jobs:
       - name: 유튜브에 올리기
         if: steps.cfg.outputs.upload == 'true'
         env:
-          # 이 채널 전용 값. 공용 YT_* 로 넘어가는 대체 경로는 없다 —
-          # 비어 있으면 upload.py 가 멈춘다.
-          EARTH_CLIENT_ID: ${{ secrets.EARTH_CLIENT_ID }}
-          EARTH_CLIENT_SECRET: ${{ secrets.EARTH_CLIENT_SECRET }}
-          EARTH_REFRESH_TOKEN: ${{ secrets.EARTH_REFRESH_TOKEN }}
-          EARTH_CHANNEL_ID: ${{ secrets.EARTH_CHANNEL_ID }}
+          # `RUSH_*` 는 @Rush22 에서 온 이름이지만 그 채널이 지금
+          # 「지구의 오늘」이다(방향만 바꿨다). 공용 YT_* 로 넘어가는 대체
+          # 경로는 없다 — 비어 있으면 upload.py 가 멈춘다.
+          RUSH_CLIENT_ID: ${{ secrets.RUSH_CLIENT_ID }}
+          RUSH_CLIENT_SECRET: ${{ secrets.RUSH_CLIENT_SECRET }}
+          RUSH_REFRESH_TOKEN: ${{ secrets.RUSH_REFRESH_TOKEN }}
+          RUSH_CHANNEL_ID: ${{ secrets.RUSH_CHANNEL_ID }}
         run: |
           python upload.py --dir '${{ steps.build.outputs.dir }}' \
             --privacy '${{ steps.cfg.outputs.privacy }}'

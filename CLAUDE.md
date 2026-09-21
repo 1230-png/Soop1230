@@ -12,9 +12,8 @@
 | `longform/` | @200-y3b — 롱폼 팩(주간 리뷰·섀도잉·상황별) | **가동 중** (GitHub Actions 무인 발행) |
 | `channel_health/` | 채널 지표 수집·보고 (**읽기 전용**) | **가동 중** (주 1회, 올리는 것 없음) |
 | `channel_jp/` | @귀트는일본어 — 한국어 화자용 일본어 듣기 롱폼 | **가동 중** (cron 무인 발행, 주 3편 공개) |
-| `channel_earth/` | @지구의오늘 — 공공 API 관측값 시각화 (지진) | **준비 중** (아래 참고) |
+| `channel_earth/` | @Rush22 를 「지구의 오늘」로 돌린 것 — 공공 API 관측값 시각화 | **준비 중** (아래 참고) |
 | `channel_sim/` | 알고리즘·시뮬레이션 시각화 롱폼 | **보류** (1편 완성, 채널 미개설) |
-| `channel_cs/` | CS 기초 강의 롱폼 | **중단** (자동 생성 티가 나서 접음) |
 
 `longform/` 은 같은 채널(@200-y3b)을 쓰지만 `channel_200y3b/` 와 **파일도 상태도
 공유하지 않는다.** 한쪽이 망가져도 다른 쪽은 그대로 돈다. 합치지 말 것 — 이유는
@@ -26,14 +25,23 @@
 세 가지를 만들어 보고 하나를 골랐다. 같은 함정을 다시 밟지 않도록 판단 근거를
 남긴다.
 
-- `channel_cs/` — 슬라이드 + edge-tts 음성. **접었다.** 3초 안에 자동
+- `channel_cs/` — 슬라이드 + edge-tts 음성. **접고 지웠다.** 3초 안에 자동
   생성물로 분류된다. 유튜브가 거르는 것은 "기계가 만들었다"가 아니라
   **"틀을 반복 재생산했다"**인데, 슬라이드에 글자만 갈아 끼우는 것이 정확히
-  그것이다. 코드는 기록으로 남겼다
+  그것이다. 되살리려면 `10cc3aa` 에 있다
 - `channel_sim/` — 정렬 알고리즘이 돌아가는 것을 그대로 보여 준다. 1편(12분)까지
   만들어 뒀고 외부 API 에 기대지 않아 언제든 살릴 수 있다. **보류**
 - `channel_earth/` — **이쪽으로 정했다.** 공공 API 의 관측값이라 매 편 실제로
   다른 자료가 들어온다. 아직 cron 을 걸지 않았다 — 아래를 볼 것
+
+**새 채널을 만들지 않는다.** @Rush22(숏츠 79편을 내던 채널)의 이름을 바꿔
+그대로 쓴다. `MV_*` 와 같은 상황이다 — 채널 이름을 바꿔도 채널 ID 는 그대로라
+`RUSH_*` 자격 증명과 구글 클라우드 프로젝트가 그대로 맞는다.
+
+**주의: 살아 있던 숏츠 자동화는 이 저장소가 아니라 별도 저장소
+`1230-png/rush22` 에서 돌았다**(그쪽 시크릿 이름은 `YOUTUBE_*` 다). 그쪽
+cron 은 2026-09-21 에 멈춰 뒀다. **시크릿은 저장소를 넘나들지 않으므로**
+여기서 쓸 `RUSH_*` 는 이 저장소에 있어야 한다.
 
 **`channel_earth` 는 실제 API 응답을 한 번도 확인하지 못한 상태다.** 이 코드를
 만든 환경의 egress 정책이 `earthquake.usgs.gov` 를 403 으로 막았다. 파서는
@@ -41,6 +49,13 @@
 한 번 확인하기 전에는 cron 을 걸지 말 것. 자세한 것은 `channel_earth/SETUP.md`.
 
 접은 것:
+
+- `channel_rush22/` — @Rush22 숏츠 파이프라인의 **이 저장소 쪽 초기 구현**.
+  한 번도 돌린 적이 없고(살아 있던 것은 별도 저장소 `1230-png/rush22` 였다),
+  같은 채널을 겨누는 파이프라인이 둘이면 어느 쪽이 올렸는지 알 수 없어진다.
+  2026-09-21 에 지웠다. 같이 지운 것: `run_rush22.yml` · `daily_build.yml`
+  (둘 다 하루 두 번 발행하는 cron 을 달고 있었다). 되살리려면 `10cc3aa` 에 있다.
+  **`RUSH_*` 시크릿은 지우지 말 것** — 지금 `channel_earth/` 가 쓴다.
 
 - `channel_food/` — "현실 속 기괴한 현상" 채널. 채널을 접어서 2026-09 에 지웠다.
   같이 지운 것: `channel_branding.yml` · `channel_report.yml`, `WEIRD_*` 시크릿을
@@ -82,8 +97,8 @@ cd channel_jp      && python -m pytest    # 문장 은행·발행 차단·업로
 - `channel_200y3b` → `Y3B_CLIENT_ID` / `Y3B_CLIENT_SECRET` / `Y3B_REFRESH_TOKEN`
 - `channel_jp` → `MV_CLIENT_ID` / `MV_CLIENT_SECRET` / `MV_REFRESH_TOKEN` /
   `MV_CHANNEL_ID`, 그리고 음성용 `ELEVENLABS_API_KEY`
-- `channel_earth` → `EARTH_CLIENT_ID` / `EARTH_CLIENT_SECRET` /
-  `EARTH_REFRESH_TOKEN` / `EARTH_CHANNEL_ID` (**아직 등록 전**)
+- `channel_earth` → `RUSH_CLIENT_ID` / `RUSH_CLIENT_SECRET` /
+  `RUSH_REFRESH_TOKEN` / `RUSH_CHANNEL_ID`
 - `channel_sim` → `SIM_*` (채널을 만들지 않아 아직 없다)
 
 **`MV_` 접두사는 머니로직에서 온 글자지만 그 채널은 없다.** 이름을 바꾼
