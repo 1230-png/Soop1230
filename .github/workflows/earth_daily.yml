@@ -1,0 +1,136 @@
+# 「지구의 오늘」 — USGS 지진 피드를 받아 하루치를 타임랩스로.
+#
+# **cron 은 일부러 걸지 않았다.** 이 코드를 만든 환경에서 USGS 응답을 한 번도
+# 받아 보지 못했다(egress 403). 파서는 문서로 공개된 스키마를 보고 쓴 것이라,
+# 실제 응답을 눈으로 확인하기 전에 무인 발행을 걸 수 없다.
+#
+# 순서는 이렇다.
+#   1. dry_run 으로 한 번 돌린다 (upload=false 가 기본이다)
+#   2. 산출물에 붙는 usgs-response 를 내려받아 형식을 확인한다
+#   3. 영상도 같이 받아 보고 화면과 소리를 확인한다
+#   4. 그때 아래 schedule 주석을 푼다
+#
+# cron 과 workflow_dispatch 는 **기본 브랜치의 워크플로만 본다.** 이 파일이
+# 작업 브랜치에만 있으면 목록에 뜨지도 않는다.
+
+name: 지구의 오늘 — 일일 빌드
+
+on:
+  # schedule:
+  #   # 전날 UTC 하루치가 다 모인 뒤. 23:00 UTC = 08:00 KST.
+  #   # GitHub 스케줄러는 25~70분 늦게 뜨는 일이 흔하다 — 정상이다.
+  #   - cron: '0 23 * * *'
+  workflow_dispatch:
+    inputs:
+      window:
+        description: '기간 (day=숏폼용, week=롱폼용)'
+        type: choice
+        options: [day, week, month]
+        default: day
+      size:
+        description: '화면 (1080x1920=세로 숏폼, 1920x1080=가로 롱폼)'
+        type: choice
+        options: ['1080x1920', '1920x1080']
+        default: '1080x1920'
+      lapse:
+        description: '타임랩스 본편 길이(초)'
+        default: '42'
+      upload:
+        description: '유튜브에 올린다 (끄면 만들기만 한다)'
+        type: boolean
+        default: false
+      privacy:
+        description: '공개 설정'
+        type: choice
+        options: [private, unlisted, public]
+        default: private
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: channel_earth
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 입력값 정하기
+        id: cfg
+        working-directory: .
+        # cron 으로 들어오면 inputs.* 가 전부 빈 값이다. 그대로 읽으면
+        # upload 가 거짓이 되어 만들기만 하고 끝난다 — 여기서 한 번 정하고
+        # 그 뒤로는 inputs 를 보지 않는다(CLAUDE.md 의 channel_jp.yml 규칙).
+        run: |
+          echo "window=${{ inputs.window || 'day' }}"   >> "$GITHUB_OUTPUT"
+          echo "size=${{ inputs.size || '1080x1920' }}"  >> "$GITHUB_OUTPUT"
+          echo "lapse=${{ inputs.lapse || '42' }}"       >> "$GITHUB_OUTPUT"
+          echo "privacy=${{ inputs.privacy || 'private' }}" >> "$GITHUB_OUTPUT"
+          # cron 으로 들어오면 올린다. 손으로 돌릴 때는 기본이 '안 올린다'다.
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "upload=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "upload=${{ inputs.upload || 'false' }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 의존성
+        run: |
+          python -m pip install --quiet --upgrade pip
+          python -m pip install --quiet -r requirements.txt
+          # 판을 고정한다. 안 그러면 ruff 가 규칙을 추가한 날 아침,
+          # 코드를 건드리지도 않았는데 발행이 멈춘다.
+          python -m pip install --quiet 'ruff==0.6.9' pytest
+
+      - name: 코드 검사
+        # 할당량을 쓰는 단계 앞에 둔다. 깨진 코드면 유튜브를 부르기 전에 멈춘다.
+        run: |
+          ruff check .
+          python -m pytest -q
+
+      - name: 영상 만들기 (응답도 같이 남긴다)
+        id: build
+        run: |
+          OUT=$(python build.py \
+            --window '${{ steps.cfg.outputs.window }}' \
+            --size   '${{ steps.cfg.outputs.size }}' \
+            --lapse  '${{ steps.cfg.outputs.lapse }}' \
+            --dump   build/usgs_response.json)
+          echo "dir=$OUT" >> "$GITHUB_OUTPUT"
+
+      - name: USGS 응답 남기기
+        # **첫 실행에서 이것을 받아 보는 것이 이 워크플로의 목적이다.**
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: usgs-response
+          path: channel_earth/build/usgs_response.json
+          retention-days: 14
+
+      - name: 영상 남기기
+        uses: actions/upload-artifact@v4
+        with:
+          name: video-${{ steps.cfg.outputs.window }}-${{ steps.cfg.outputs.size }}
+          path: |
+            ${{ steps.build.outputs.dir }}/video.mp4
+            ${{ steps.build.outputs.dir }}/metadata.json
+          retention-days: 14
+
+      - name: 유튜브에 올리기
+        if: steps.cfg.outputs.upload == 'true'
+        env:
+          # 이 채널 전용 값. 공용 YT_* 로 넘어가는 대체 경로는 없다 —
+          # 비어 있으면 upload.py 가 멈춘다.
+          EARTH_CLIENT_ID: ${{ secrets.EARTH_CLIENT_ID }}
+          EARTH_CLIENT_SECRET: ${{ secrets.EARTH_CLIENT_SECRET }}
+          EARTH_REFRESH_TOKEN: ${{ secrets.EARTH_REFRESH_TOKEN }}
+          EARTH_CHANNEL_ID: ${{ secrets.EARTH_CHANNEL_ID }}
+        run: |
+          python upload.py --dir '${{ steps.build.outputs.dir }}' \
+            --privacy '${{ steps.cfg.outputs.privacy }}'

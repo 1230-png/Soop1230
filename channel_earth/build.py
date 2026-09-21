@@ -242,7 +242,6 @@ def outro_card(layout: render.Layout, quakes: list) -> np.ndarray:
 def render_video(quakes: list, layout: render.Layout, lapse: float,
                  window: str, out_dir: Path) -> tuple[Path, float]:
     total_seconds = INTRO_SECONDS + lapse + OUTRO_SECONDS
-    total_frames = int(total_seconds * FPS)
 
     base = render.base_frame(layout)
     persistent = np.zeros((layout.height, layout.width, 3), dtype=np.float32)
