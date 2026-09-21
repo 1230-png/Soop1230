@@ -162,8 +162,10 @@ def load_quakes(window: str = "day", *, cache: Path | None = None,
         print(f"[source] 응답을 그대로 적었다: {dump}", file=sys.stderr)
 
     quakes = parse_quakes(payload)
-    print(f"[source] 지진 {len(quakes)}건 "
-          f"(규모 {min(q.mag for q in quakes):.1f}~"
-          f"{max(q.mag for q in quakes):.1f})" if quakes else "[source] 0건",
-          file=sys.stderr)
+    if quakes:
+        mags = [q.mag for q in quakes]
+        print(f"[source] 지진 {len(quakes)}건 "
+              f"(규모 {min(mags):.1f}~{max(mags):.1f})", file=sys.stderr)
+    else:
+        print("[source] 지진 0건", file=sys.stderr)
     return quakes

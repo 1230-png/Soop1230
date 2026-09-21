@@ -92,3 +92,25 @@ def test_에너지는_규모에_지수로_붙는다(payload):
     a = next(q for q in quakes if q.mag >= 4.0)
     ratio = sources.Quake(a.id, a.time, 0, 0, 0, a.mag + 2, "").energy / a.energy
     assert 999 < ratio < 1001
+
+
+def test_probe_가_픽스처를_통과시킨다(payload):
+    """확인용 스크립트가 정상 응답을 정상이라고 말하는가.
+
+    사람이 제일 먼저 돌리는 것이 이 스크립트다. 여기가 거짓 경보를 내면
+    형식이 맞는데도 맞지 않다고 보고하게 된다.
+    """
+    import sys as _sys
+    _sys.path.insert(0, str(ROOT / "tools"))
+    import probe
+
+    assert probe.report(payload) == 0
+
+
+def test_probe_가_깨진_응답을_잡는다():
+    import sys as _sys
+    _sys.path.insert(0, str(ROOT / "tools"))
+    import probe
+
+    assert probe.report({"type": "FeatureCollection"}) != 0
+    assert probe.report({"features": [{"attributes": {}} for _ in range(30)]}) != 0

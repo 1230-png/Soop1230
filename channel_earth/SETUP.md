@@ -4,33 +4,50 @@
 
 ---
 
-## 1. 실제 API 응답 확인 (10분, 계정·키 아무것도 필요 없음)
+## 1. 실제 API 응답 확인 (5분, **설치할 것이 아무것도 없다**)
 
 지금 가장 중요한 한 가지다. 이 코드를 만든 환경에서 USGS 에 닿지 못해
 (egress 403) **응답을 한 번도 못 봤다.** 파서는 문서로 공개된 스키마를 보고
 쓴 것이라, 실제 형식이 다르면 지금 있는 코드는 전부 헛것이다.
 
-본인 컴퓨터에서:
+파이썬만 있으면 된다. `pip install` 도 `ffmpeg` 도 필요 없다.
 
 ```bash
 git clone -b claude/youtube-automation-revenue-govgd7 \
   https://github.com/1230-png/Soop1230.git
-cd Soop1230/channel_earth
-pip install -r requirements.txt
-python3 build.py --window day --dump build/usgs_response.json
+cd Soop1230
+python3 channel_earth/tools/probe.py
 ```
 
-`ffmpeg` 이 없으면 먼저 깔아야 한다 (`brew install ffmpeg` / `winget install ffmpeg`).
+**잘 되면** 이렇게 끝난다.
 
-**잘 되면** `build/` 밑에 세로 영상 하나와 `usgs_response.json` 이 생긴다.
-로그에 `[source] 지진 NNN건 (규모 x.x~y.y)` 이 찍히면 형식이 맞은 것이다.
+```
+읽은 건수: 312 / 313
+규모 범위: 0.4 ~ 5.9
+M4.0 이상: 34건  M5.0 이상: 2건
+...
+형식이 우리가 아는 것과 맞다. 다음 단계로 가도 된다.
+```
 
-**안 되면** 로그를 그대로 보내 달라. 다음 둘 중 하나다.
-- `한 건도 읽지 못했다` → 스키마가 다르다. `usgs_response.json` 을 보고 고친다
-- `N건은 필요한 값이 없어 제외` 가 너무 많다 → 칸 이름이 일부 바뀌었다
+**안 되면** 마지막 줄이 파일 경로를 알려 준다
+(`channel_earth/build/usgs_response.json`). **그 파일을 그대로 보내 달라.**
+화면에 찍힌 것도 같이. 다음 둘 중 하나다.
 
+- `features 배열이 없다` / `한 건도 읽지 못했다` → 스키마가 다르다. 고친다
+- `N건은 필요한 값이 없어 제외` 가 대부분 → 칸 이름이 일부 바뀌었다
+
+### 1-b. 영상까지 만들어 보려면 (선택)
+
+형식이 맞는 것을 확인한 뒤, 실제 데이터로 영상을 뽑아 보고 싶으면:
+
+```bash
+pip install -r channel_earth/requirements.txt
+python3 channel_earth/build.py --window day
+```
+
+이쪽은 `ffmpeg` 이 있어야 한다 (`winget install ffmpeg` / `brew install ffmpeg`).
 기본 브랜치에 합친 뒤라면 Actions 에서 **「지구의 오늘 — 일일 빌드」**를
-손으로 돌려도 된다. 산출물에 `usgs-response` 와 영상이 붙는다.
+손으로 돌려도 된다 — 산출물에 응답과 영상이 같이 붙는다.
 
 ---
 
@@ -117,7 +134,7 @@ python3 get_refresh_token.py --client-secret ~/Downloads/client_secret_*.json
 
 | 할 일 | 걸리는 시간 | 막고 있는 것 |
 |---|---|---|
-| 1. 응답 확인 | 10분 | **지금 이게 전부를 막고 있다** |
+| 1. 응답 확인 | 5분 | **지금 이게 전부를 막고 있다** |
 | 2. 채널 만들기 | 5분 | — |
 | 3. GCP 프로젝트 | 15분 | 2번 |
 | 4. 토큰 발급 | 5분 | 3번 |

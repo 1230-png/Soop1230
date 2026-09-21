@@ -12,10 +12,33 @@
 | `longform/` | @200-y3b — 롱폼 팩(주간 리뷰·섀도잉·상황별) | **가동 중** (GitHub Actions 무인 발행) |
 | `channel_health/` | 채널 지표 수집·보고 (**읽기 전용**) | **가동 중** (주 1회, 올리는 것 없음) |
 | `channel_jp/` | @귀트는일본어 — 한국어 화자용 일본어 듣기 롱폼 | **가동 중** (cron 무인 발행, 주 3편 공개) |
+| `channel_earth/` | @지구의오늘 — 공공 API 관측값 시각화 (지진) | **준비 중** (아래 참고) |
+| `channel_sim/` | 알고리즘·시뮬레이션 시각화 롱폼 | **보류** (1편 완성, 채널 미개설) |
+| `channel_cs/` | CS 기초 강의 롱폼 | **중단** (자동 생성 티가 나서 접음) |
 
 `longform/` 은 같은 채널(@200-y3b)을 쓰지만 `channel_200y3b/` 와 **파일도 상태도
 공유하지 않는다.** 한쪽이 망가져도 다른 쪽은 그대로 돈다. 합치지 말 것 — 이유는
 `longform/README.md` 에 있다(쇼츠 시청 시간은 파트너 프로그램 3,000시간에 안 들어간다).
+
+### 2026-09 에 새로 만든 셋과 그 판단
+
+숏폼만으로는 수익화 요건에 닿지 못한다는 계산에서 롱폼 쪽으로 방향을 틀었고,
+세 가지를 만들어 보고 하나를 골랐다. 같은 함정을 다시 밟지 않도록 판단 근거를
+남긴다.
+
+- `channel_cs/` — 슬라이드 + edge-tts 음성. **접었다.** 3초 안에 자동
+  생성물로 분류된다. 유튜브가 거르는 것은 "기계가 만들었다"가 아니라
+  **"틀을 반복 재생산했다"**인데, 슬라이드에 글자만 갈아 끼우는 것이 정확히
+  그것이다. 코드는 기록으로 남겼다
+- `channel_sim/` — 정렬 알고리즘이 돌아가는 것을 그대로 보여 준다. 1편(12분)까지
+  만들어 뒀고 외부 API 에 기대지 않아 언제든 살릴 수 있다. **보류**
+- `channel_earth/` — **이쪽으로 정했다.** 공공 API 의 관측값이라 매 편 실제로
+  다른 자료가 들어온다. 아직 cron 을 걸지 않았다 — 아래를 볼 것
+
+**`channel_earth` 는 실제 API 응답을 한 번도 확인하지 못한 상태다.** 이 코드를
+만든 환경의 egress 정책이 `earthquake.usgs.gov` 를 403 으로 막았다. 파서는
+문서로 공개된 스키마를 보고 쓴 것이므로, `channel_earth/tools/probe.py` 로
+한 번 확인하기 전에는 cron 을 걸지 말 것. 자세한 것은 `channel_earth/SETUP.md`.
 
 접은 것:
 
@@ -59,6 +82,9 @@ cd channel_jp      && python -m pytest    # 문장 은행·발행 차단·업로
 - `channel_200y3b` → `Y3B_CLIENT_ID` / `Y3B_CLIENT_SECRET` / `Y3B_REFRESH_TOKEN`
 - `channel_jp` → `MV_CLIENT_ID` / `MV_CLIENT_SECRET` / `MV_REFRESH_TOKEN` /
   `MV_CHANNEL_ID`, 그리고 음성용 `ELEVENLABS_API_KEY`
+- `channel_earth` → `EARTH_CLIENT_ID` / `EARTH_CLIENT_SECRET` /
+  `EARTH_REFRESH_TOKEN` / `EARTH_CHANNEL_ID` (**아직 등록 전**)
+- `channel_sim` → `SIM_*` (채널을 만들지 않아 아직 없다)
 
 **`MV_` 접두사는 머니로직에서 온 글자지만 그 채널은 없다.** 이름을 바꾼
 것이지 지운 것이 아니라서, 같은 유튜브 채널이 지금 「귀트는 일본어」다.
@@ -97,6 +123,10 @@ cron 으로 실제 올리는 것은 셋이고, 두 채널이다.
 | `run_shorts.yml` | @200-y3b | 매일 | 쇼츠 3편 |
 | `longform.yml` | @200-y3b | 매일 | 롱폼 1편 |
 | `channel_jp.yml` | @귀트는일본어 | 화·목·금 21:00 KST | 롱폼 1편 (공개) |
+
+`earth_daily.yml` 은 있지만 **cron 이 주석 처리돼 있어 저절로 돌지 않는다.**
+손으로 돌리면 영상을 만들어 산출물로 남기고, 업로드는 기본이 꺼짐이다.
+USGS 응답을 눈으로 확인한 뒤에 주석을 풀 것.
 
 `channel_jp.yml` 은 2026-09 에 다섯 편(수면 3 · 상황별 2)을 손으로 내 보고
 cron 을 걸었다. **사람이 영상을 보고 공개하던 단계가 없다** — 발행을 막는 것은
