@@ -25,6 +25,12 @@
       "skillPath": "agent_skills/first-reader/SKILL.md",
       "computedHash": "74f8a5a0f0a8ab0a059f6ba4bcb12395a1f66d91345c2c9e3b9be1aff937c523"
     },
+    "h3-prompt-writing": {
+      "source": "MiniMax-AI/MiniMax-H3",
+      "sourceType": "github",
+      "skillPath": "skills/h3-prompt-writing/SKILL.md",
+      "computedHash": "77d059b596e34c1139b859bac30fe5049735bdf49acb70cd63ad8f4e7e329f3c"
+    },
     "project-graveyard": {
       "source": "Shubhamsaboo/awesome-llm-apps",
       "sourceType": "github",

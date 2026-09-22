@@ -23,3 +23,7 @@ channel_health/.pytest_cache/
 # channel_200y3b — 문장집은 파는 물건이라 매번 다시 만든다. 커밋하지 않는다.
 channel_200y3b/scripts/*.html
 channel_200y3b/.pytest_cache/
+
+# skills CLI 가 여러 에이전트 도구용으로 만드는 두 번째 사본이다.
+# 여기서 쓰는 것은 .claude/skills/ 쪽 하나뿐이라 같은 파일을 두 번 커밋하지 않는다.
+.agents/
