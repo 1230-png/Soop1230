@@ -66,6 +66,10 @@ BANNED_IN_TEXT = re.compile(
 # 완성된 영상이 target_minutes 에서 이만큼 넘게 벗어나면 발행하지 않는다.
 LENGTH_TOLERANCE = 0.3
 
+# shorts.py 가 쓰는 팩 이름과 허용 길이(초). 60초 미만 차단을 쇼츠에만 푼다.
+SHORTS_PACK = "shorts"
+SHORTS_SECONDS = (5, 59)
+
 
 def load_packs() -> dict:
     return yaml.safe_load(PACKS_FILE.read_text(encoding="utf-8"))
@@ -125,7 +129,15 @@ def verify_publishable(metadata: dict, minutes: int, target: int) -> None:
     if not metadata["phrase_ids"]:
         problems.append("영상에 들어간 문장이 하나도 없다")
 
-    if metadata["duration_seconds"] < 60:
+    if metadata.get("pack") == SHORTS_PACK:
+        # 쇼츠는 짧은 게 정상이다. 대신 60초를 넘기면 쇼츠 선반에 안 뜨고,
+        # 몇 초 안 되면 합성이 빠진 것이다.
+        low, high = SHORTS_SECONDS
+        if not low <= metadata["duration_seconds"] <= high:
+            problems.append(
+                f"쇼츠가 {metadata['duration_seconds']:.1f}초다 "
+                f"({low}~{high}초 밖)")
+    elif metadata["duration_seconds"] < 60:
         problems.append(
             f"영상이 {metadata['duration_seconds']:.0f}초뿐이다. "
             "합성이 대부분 실패했을 때 이렇게 된다")

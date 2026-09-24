@@ -117,6 +117,20 @@ python3 channel_jp/build.py --pack sleep_japanese                       # 진짜
 
 주 3편이면 한 달에 대략 25,000자다. 요금제를 고르기 전에 이 숫자를 볼 것.
 
+## 쇼츠
+
+```bash
+python3 channel_jp/shorts.py --offline      # 무음으로 시험 (used.json 안 건드림)
+```
+
+`channel_jp_shorts.yml` 이 하루 3편을 낸다. 한 편에 문장 하나, 약 10초 세로
+영상이다 (일본어 → 뜻 → 느리게 → 다시). 올리기는 롱폼과 같은 `upload.py` 다.
+
+**구독자를 데려오려고 낸다. 시청 시간은 벌지 않는다** (위 「왜 롱폼이고」).
+그래서 설명란이 롱폼 재생목록을 가리킨다. 문장 기록은 `used.json` 의
+`packs.shorts` 에 따로 쌓여, 903문장이면 300일을 간다. 한 편에 드는
+ElevenLabs 글자는 ja + ko 정도(30자 안팎)라 한 달 약 2,700자다.
+
 ## 카드
 
 배경은 밝고, **진행 막대를 두지 않는다.** 화면 아래 가로 막대는 재생 바로
