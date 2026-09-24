@@ -20,6 +20,7 @@ on:
     - cron: "0 12 * * 2"    # 화 21:00 KST — 상황별 (14분)
     - cron: "0 12 * * 4"    # 목 21:00 KST — 쉐도잉 (24분)
     - cron: "0 12 * * 5"    # 금 21:00 KST — 수면 (40분)
+    - cron: "0 12 * * 6"    # 토 21:00 KST — 수면 3시간
   workflow_dispatch:
     inputs:
       pack:
@@ -31,6 +32,7 @@ on:
           - situation_pack
           - shadowing_drill
           - sleep_japanese
+          - sleep_japanese_long
       limit:
         # string 이 아니라 choice 다. 빈 칸으로 "팩 기본값"을 뜻하게 했더니
         # 실제로는 그 뜻이 전달되지 않았다 — 빈 값을 넘기면 GitHub 이 여기
@@ -112,6 +114,7 @@ jobs:
               "0 12 * * 2") pack=situation_pack ;;
               "0 12 * * 4") pack=shadowing_drill ;;
               "0 12 * * 5") pack=sleep_japanese ;;
+              "0 12 * * 6") pack=sleep_japanese_long ;;
               *)
                 echo "::error::모르는 스케줄 '${{ github.event.schedule }}' — on.schedule 을 고쳤으면 이 case 도 같이 고칠 것. 짐작해서 만들지 않는다."
                 exit 1 ;;
@@ -141,6 +144,18 @@ jobs:
           # 아래 기록 단계가 `git pull --rebase` 를 한다. 얕은 클론이면
           # 그 자리에서 어긋난다.
           fetch-depth: 0
+
+      # 합성한 음성을 회차 사이에 남긴다. 러너는 매번 새것이라 data/tts_cache
+      # 가 비어서 시작하고, 그러면 이미 돈을 낸 문장을 ElevenLabs 에 또 보낸다.
+      # 롱폼·쇼츠 워크플로가 같은 이름을 쓴다 — 같은 문장이면 어느 쪽이 받았든 쓴다.
+      # 키가 매번 달라야 새로 받은 것까지 저장되고, restore-keys 가 가장
+      # 최근 것을 되살린다.
+      - name: 음성 캐시 되살리기
+        uses: actions/cache@v4
+        with:
+          path: channel_jp/data/tts_cache
+          key: channel-jp-tts-${{ github.run_id }}
+          restore-keys: channel-jp-tts-
 
       - uses: actions/setup-python@v5
         with:
