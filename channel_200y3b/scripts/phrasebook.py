@@ -33,21 +33,35 @@ CHANNEL = "@200-y3b"
 MIN_PER_TOPIC = 3
 
 STYLE = """
-@page { size: A4; margin: 18mm 16mm; }
+@page { size: A4; margin: 16mm 14mm; }
 * { box-sizing: border-box; }
-body { font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
-       color: #1a1a1a; line-height: 1.55; margin: 0; }
-h1 { font-size: 26pt; margin: 0 0 4pt; }
-.sub { color: #666; font-size: 10pt; margin-bottom: 24pt; }
-h2 { font-size: 15pt; margin: 22pt 0 8pt; padding-bottom: 4pt;
-     border-bottom: 2px solid #1a1a1a; page-break-after: avoid; }
-.item { padding: 7pt 0; border-bottom: 1px solid #e8e8e8;
-        page-break-inside: avoid; }
-.en { font-size: 12.5pt; font-weight: 600; }
-.ko { font-size: 10.5pt; color: #444; }
-.ex { font-size: 9.5pt; color: #777; margin-top: 3pt; }
-.id { font-size: 8pt; color: #aaa; float: right; }
-footer { margin-top: 26pt; padding-top: 8pt; border-top: 1px solid #ddd;
+body { font-family: 'Noto Sans KR', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+       color: #1a1a1a; line-height: 1.5; margin: 0; }
+.cover { height: 260mm; display: flex; flex-direction: column;
+         justify-content: center; page-break-after: always; }
+.cover .kicker { color: #0e6c8c; font-size: 13pt; font-weight: 700;
+                 letter-spacing: .08em; }
+.cover h1 { font-size: 34pt; line-height: 1.25; margin: 10pt 0 14pt; }
+.cover .sub { color: #555; font-size: 13pt; margin: 0 0 28pt; }
+.cover .how { border-left: 4px solid #0e6c8c; padding: 4pt 0 4pt 12pt;
+              color: #333; font-size: 11pt; }
+.cover .brand { margin-top: auto; color: #888; font-size: 10pt; }
+.toc { page-break-after: always; }
+.toc h2 { border: 0; }
+.toc ol { columns: 2; column-gap: 12mm; padding-left: 16pt; font-size: 11pt; }
+.toc li { margin: 3pt 0; }
+h2 { font-size: 15pt; margin: 0 0 8pt; padding-bottom: 4pt;
+     border-bottom: 2px solid #1a1a1a; }
+section { page-break-before: always; }
+.items { columns: 2; column-gap: 9mm; column-rule: 1px solid #eee; }
+.item { padding: 5pt 0 6pt; border-bottom: 1px solid #eee;
+        break-inside: avoid; page-break-inside: avoid; }
+.en { font-size: 11pt; font-weight: 700; }
+.en::before { content: "☐ "; color: #0e6c8c; font-weight: 400; }
+.ko { font-size: 9.5pt; color: #333; }
+.ex { font-size: 8.5pt; color: #777; margin-top: 2pt; }
+.id { font-size: 7pt; color: #bbb; float: right; }
+footer { margin-top: 20pt; padding-top: 8pt; border-top: 1px solid #ddd;
          font-size: 8.5pt; color: #888; }
 @media print { a { text-decoration: none; color: inherit; } }
 """
@@ -121,20 +135,38 @@ def _item_html(item):
 
 
 def render(items, title=DEFAULT_TITLE, min_per_topic=MIN_PER_TOPIC):
-    """인쇄용 HTML 한 장."""
+    """인쇄용 HTML 한 장. 표지 → 목차 → 주제마다 새 쪽, 2단.
+
+    돈을 받는 물건이라 영상 설명란처럼 보이면 안 된다. 표지와 목차가 있어야
+    "책"으로 읽히고, 2단으로 앉혀야 쪽수가 절반이 되어 인쇄해 쓸 수 있다.
+    ☐ 는 외운 표현을 지워 나가라는 칸이다 — 영상에는 없는, 이것만의 쓸모다.
+    """
     groups = group_by_topic(items, min_per_topic)
+    toc = "".join(f"<li>{html.escape(name)} <small>({len(group)})</small></li>"
+                  for name, group in groups.items())
     body = []
     for name, group in groups.items():
-        body.append(f"<h2>{html.escape(name)} <small>({len(group)})</small></h2>")
+        body.append(f"<section><h2>{html.escape(name)} "
+                    f"<small>({len(group)})</small></h2><div class=\"items\">")
         body.extend(_item_html(item) for item in group)
+        body.append("</div></section>")
+    days = max(1, -(-len(items) // 10))
     return f"""<!DOCTYPE html>
 <html lang="ko"><head><meta charset="utf-8">
 <title>{html.escape(title)}</title>
 <style>{STYLE}</style></head><body>
-<h1>{html.escape(title)}</h1>
-<div class="sub">{html.escape(CHANNEL)} · 표현 {len(items)}개 · 주제 {len(groups)}갈래</div>
+<div class="cover">
+  <div class="kicker">매일 영어 한마디</div>
+  <h1>{html.escape(title)}</h1>
+  <div class="sub">{html.escape(CHANNEL)} · 표현 {len(items)}개 · 주제 {len(groups)}갈래</div>
+  <div class="how">하루 10문장씩 {days}일이면 끝납니다.<br>
+  소리 내어 읽고, 외운 표현은 ☐ 에 표시하세요.<br>
+  예문까지 읽어야 언제 쓰는 말인지 감이 잡힙니다.</div>
+  <div class="brand">youtube.com/{html.escape(CHANNEL)} — 표현마다 원어민 발음 쇼츠가 있습니다.</div>
+</div>
+<div class="toc"><h2>목차</h2><ol>{toc}</ol></div>
 {"".join(body)}
-<footer>브라우저에서 인쇄(Ctrl+P) → 'PDF로 저장' 하면 배포용 파일이 됩니다.</footer>
+<footer>© {html.escape(CHANNEL)} 매일 영어 한마디. 개인 학습용으로만 사용할 수 있으며 재배포를 금합니다.</footer>
 </body></html>
 """
 
