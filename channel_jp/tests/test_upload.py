@@ -253,3 +253,15 @@ def test_a_comma_in_the_title_does_not_shift_the_columns(tmp_path):
         got = next(iter(csv.DictReader(handle)))
     assert got["title"] == "일본어, 상황별 30문장"
     assert got["video_id"] == "vid"
+
+
+def test_the_coupang_disclosure_comes_first_and_the_link_last():
+    """고지가 접히는 자리로 가면 표시하지 않은 것과 같다."""
+    desc = upload.video_body(sound_meta())["snippet"]["description"]
+    assert desc.splitlines()[0] == upload.DISCLOSURE
+    assert desc.rstrip().endswith(upload.COUPANG_LINK)
+
+
+def test_the_link_is_not_added_twice():
+    once = upload.with_affiliate("본문")
+    assert upload.with_affiliate(once) == once

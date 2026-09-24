@@ -64,6 +64,26 @@ CHANNEL_ID_ENV = f"{PREFIX}_CHANNEL_ID"
 # 잠깐 뒤 다시 해 보면 되는 응답들. 거절이 아니라 전파 지연이다.
 RETRY_STATUSES = {409, 500, 502, 503}
 
+# 쿠팡 파트너스 교재 링크 — 「일본어 첫걸음 기초 20일 독학 완성」(해커스,
+# 상품 5848726342). 2026-09-25 에 짧은 주소가 이 상품·제휴 태그로 넘어가는
+# 것을 확인했다. 고지 문구는 쿠팡 링크 생성 화면이 "반드시 기재"하라는 문장
+# 그대로다 — 다듬으면 수익금 지급이 멈출 수 있다.
+#
+# 고지는 **맨 앞**이다. 유튜브가 설명란 뒤쪽을 접어서, 접힌 자리의 고지는
+# 표시하지 않은 것과 같다.
+COUPANG_LINK = "https://link.coupang.com/a/hjkWkRsXEy"
+COUPANG_LABEL = "왕초보 일본어 교재 (쿠팡)"
+DISCLOSURE = ("이 포스팅은 쿠팡 파트너스 활동의 일환으로, "
+              "이에 따른 일정액의 수수료를 제공받습니다.")
+
+
+def with_affiliate(description: str) -> str:
+    """고지를 맨 앞에, 링크를 맨 뒤에. 이미 링크가 있으면 그대로 둔다."""
+    if not COUPANG_LINK or COUPANG_LINK in description:
+        return description
+    return "\n\n".join([DISCLOSURE, description.strip(),
+                        f"{COUPANG_LABEL}: {COUPANG_LINK}"])
+
 
 def credentials(env) -> dict:
     """`MV_*` 세 개. 하나라도 없으면 멈춘다.
@@ -230,7 +250,7 @@ def video_body(meta: dict, privacy: str = "") -> dict:
     return {
         "snippet": {
             "title": meta["title"],
-            "description": meta["description"],
+            "description": with_affiliate(meta["description"]),
             "tags": meta.get("tags", []),
             "categoryId": meta.get("categoryId", "27"),
             "defaultLanguage": "ko",
