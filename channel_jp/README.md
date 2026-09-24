@@ -86,6 +86,7 @@ python3 channel_jp/build.py --pack sleep_japanese                       # 진짜
 | `sleep_japanese` | 40분 | 150 | 금 |
 | `situation_pack` | 14분 | 30 | 화 |
 | `shadowing_drill` | 24분 | 45 | 목 |
+| `sleep_japanese_long` | 3시간 | 700 | 토 |
 
 `sleep_japanese` 가 주력이다. 사람들이 틀어 놓고 자기 때문에 1회당 시청
 시간이 가장 길다.
