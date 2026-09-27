@@ -143,10 +143,20 @@
 cron 은 2026-09-21 에 멈춰 뒀다. **시크릿은 저장소를 넘나들지 않으므로**
 여기서 쓸 `RUSH_*` 는 이 저장소에 있어야 한다.
 
-**`channel_earth` 는 실제 API 응답을 한 번도 확인하지 못한 상태다.** 이 코드를
-만든 환경의 egress 정책이 `earthquake.usgs.gov` 를 403 으로 막았다. 파서는
-문서로 공개된 스키마를 보고 쓴 것이므로, `channel_earth/tools/probe.py` 로
-한 번 확인하기 전에는 cron 을 걸지 말 것. 자세한 것은 `channel_earth/SETUP.md`.
+**`channel_earth` 의 USGS 응답은 2026-09-27 에 확인했다**(run 36297009327).
+`all_day` 175건이 **한 줄도 버려지지 않고** 읽혔다 — 파서가 실제 형식과 맞다.
+이 코드를 쓴 컨테이너는 `earthquake.usgs.gov` 가 403 으로 막혀 있어 문서만
+보고 썼는데, 확인이 Actions 에서 났다.
+
+**그 첫 실행은 그래도 실패했다 — 러너에 `ffmpeg` 가 없었다.** 영상을
+rawvideo 파이프로 만드는데 그것을 깔는 단계를 빠뜨렸다. `channel_jp.yml` ·
+`longform.yml` 은 처음부터 `apt-get install ffmpeg` 를 두고 있었고 새
+워크플로가 그것을 따라가지 않았다 — **렌더하는 워크플로를 새로 만들면
+글꼴과 ffmpeg 단계를 같이 옮길 것.**
+
+응답 형식은 이제 실행 로그에서 바로 보인다(`probe.py --cache` 를 돌리는
+단계가 `earth_daily.yml` 에 있다). 아티팩트를 내려받지 못하는 자리에서도
+확인되게 해 둔 것이다. 자세한 것은 `channel_earth/SETUP.md`.
 
 접은 것:
 

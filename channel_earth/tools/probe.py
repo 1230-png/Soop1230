@@ -104,26 +104,41 @@ def main() -> int:
         description="USGS 응답 형식 확인 (표준 라이브러리만)")
     parser.add_argument("--window", default="day",
                         choices=sorted(sources.FEEDS))
+    parser.add_argument("--cache", type=Path,
+                        help="이미 받아 둔 응답 파일. 주면 네트워크를 타지 "
+                             "않는다 — 워크플로가 --dump 로 떨어뜨린 것을 "
+                             "그대로 검사할 때 쓴다")
     parser.add_argument("--out", type=Path,
                         default=Path(__file__).resolve().parent.parent
                         / "build" / "usgs_response.json",
                         help="받은 응답을 그대로 적어 둘 곳")
     args = parser.parse_args()
 
-    url = sources.FEEDS[args.window]
-    print(f"받는 중: {url}\n")
-    try:
-        payload = sources.fetch_json(url)
-    except RuntimeError as error:
-        print(f"** 받지 못했다: {error} **")
-        print("\n인터넷이 막혀 있거나 USGS 가 점검 중이다. "
-              "브라우저로 위 주소가 열리는지 먼저 볼 것.")
-        return 3
+    if args.cache:
+        # 워크플로가 `--dump` 로 떨어뜨린 응답을 그대로 검사한다. 이 경로가
+        # 있는 이유: 아티팩트를 내려받지 못하는 자리에서도 **실행 로그만 보고**
+        # 형식이 맞는지 확인할 수 있어야 한다.
+        print(f"받아 둔 응답을 읽는다: {args.cache}\n")
+        try:
+            payload = json.loads(args.cache.read_text(encoding="utf-8"))
+        except (OSError, ValueError) as error:
+            print(f"** 읽지 못했다: {error} **")
+            return 3
+    else:
+        url = sources.FEEDS[args.window]
+        print(f"받는 중: {url}\n")
+        try:
+            payload = sources.fetch_json(url)
+        except RuntimeError as error:
+            print(f"** 받지 못했다: {error} **")
+            print("\n인터넷이 막혀 있거나 USGS 가 점검 중이다. "
+                  "브라우저로 위 주소가 열리는지 먼저 볼 것.")
+            return 3
 
-    args.out.parent.mkdir(parents=True, exist_ok=True)
-    args.out.write_text(json.dumps(payload, ensure_ascii=False, indent=2),
-                        encoding="utf-8")
-    print(f"응답을 적어 뒀다: {args.out}\n")
+        args.out.parent.mkdir(parents=True, exist_ok=True)
+        args.out.write_text(json.dumps(payload, ensure_ascii=False, indent=2),
+                            encoding="utf-8")
+        print(f"응답을 적어 뒀다: {args.out}\n")
 
     code = report(payload)
     if code:

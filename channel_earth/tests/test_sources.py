@@ -1,10 +1,12 @@
 """응답 파싱. **네트워크를 타지 않는다** — 픽스처만 읽는다.
 
-이 검사가 특히 중요한 이유: 이 저장소를 만든 컨테이너에서 USGS 에 닿지
-못했다(egress 403). 그래서 파서는 실제 응답이 아니라 **문서로 공개된
-스키마를 보고 쓴 것**이고, 여기서 잡히는 것은 "우리가 생각한 형식대로
-왔을 때 제대로 읽는가"까지다. 실제 형식이 다르면 첫 Actions 실행의
---dump 에서 잡아야 한다.
+2026-09-27 에 GitHub Actions 에서 **실제 응답으로 확인했다**
+(run 36297009327). `all_day` 175건이 **한 줄도 버려지지 않고** 읽혔고
+규모 범위는 0.0~5.6 이었다. 즉 `features[].properties.mag` · `.time` ·
+`.place` 와 `geometry.coordinates` 가 우리가 보고 쓴 그대로다.
+
+이 검사는 그래서 "맞는지 확인"이 아니라 **"틀어지면 알아차리는"** 쪽이다.
+피드 형식은 우리가 고칠 수 없는 남의 것이고 언제든 바뀔 수 있다.
 """
 
 import json
@@ -114,3 +116,47 @@ def test_probe_가_깨진_응답을_잡는다():
 
     assert probe.report({"type": "FeatureCollection"}) != 0
     assert probe.report({"features": [{"attributes": {}} for _ in range(30)]}) != 0
+
+
+class TestCoordinateRange:
+    """좌표가 지구 위에 있는지.
+
+    GeoJSON 은 `[경도, 위도]` 순서이고 USGS 도 그렇다(2026-09-27 실제 응답
+    175건이 전부 그 순서로 읽혔다). 하지만 만약 어느 날 뒤바뀌면
+    **파싱은 전부 성공하고 점만 엉뚱한 곳에 찍힌다** — 지도가 조용히
+    거짓말을 하고, 지진 정보를 사실처럼 내보내는 것이 이 채널에서 가장
+    나쁜 실패다. 위도가 ±90 을 넘는 줄이 쏟아지면 그때 알 수 있다.
+    """
+
+    def feature(self, lon, lat, mag=5.0):
+        return {"type": "Feature",
+                "properties": {"mag": mag, "time": 1_790_000_000_000,
+                               "place": "somewhere"},
+                "geometry": {"type": "Point", "coordinates": [lon, lat, 10.0]}}
+
+    def test_지구_밖_좌표는_버린다(self):
+        payload = {"features": [self.feature(139.7, 35.6),
+                                self.feature(35.6, 139.7)]}
+        quakes = sources.parse_quakes(payload)
+        assert len(quakes) == 1
+        assert quakes[0].lat == 35.6 and quakes[0].lon == 139.7
+
+    def test_경계값은_받는다(self):
+        payload = {"features": [self.feature(180.0, 90.0),
+                                self.feature(-180.0, -90.0)]}
+        assert len(sources.parse_quakes(payload)) == 2
+
+    def test_순서가_바뀌면_전부_버려지고_멈춘다(self):
+        # 경도·위도가 통째로 뒤바뀌면 대부분이 범위를 벗어난다. 그때는
+        # 빈 목록을 돌려주지 않고 예외를 낸다 — 조용히 빈 영상이 나오는
+        # 것이 제일 나쁘다.
+        swapped = {"features": [self.feature(45.0, 175.0),
+                                self.feature(-30.0, 160.0)]}
+        with pytest.raises(ValueError):
+            sources.parse_quakes(swapped)
+
+    def test_버린_건수를_알린다(self, capsys):
+        payload = {"features": [self.feature(139.7, 35.6),
+                                self.feature(35.6, 139.7)]}
+        sources.parse_quakes(payload)
+        assert "좌표가 지구 밖" in capsys.readouterr().err

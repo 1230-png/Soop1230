@@ -85,6 +85,20 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: 글꼴과 ffmpeg
+        # **첫 실행이 여기서 죽었다** — 러너에 ffmpeg 가 없어서
+        # `FileNotFoundError: 'ffmpeg'` 로 멈췄다(run 36297009327).
+        # 프레임을 rawvideo 로 파이프에 밀어 넣으므로 ffmpeg 가 없으면 영상이
+        # 한 장도 안 나온다.
+        #
+        # fonts-noto-cjk 는 화면의 한국어 글자에 쓴다. 없으면 render._pick 이
+        # 멈추므로 두부 글자가 나가지는 않지만, 여기서 깔아 두는 편이 빠르다.
+        working-directory: .
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk ffmpeg
+          ffmpeg -version | head -1
+
       - name: 의존성
         run: |
           python -m pip install --quiet --upgrade pip

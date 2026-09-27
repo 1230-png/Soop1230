@@ -1,12 +1,14 @@
 """공공 API에서 데이터를 받아 온다. 지금은 USGS 지진 피드 하나.
 
-**이 저장소를 만든 컨테이너에서는 이 API에 닿지 못했다.** 조직의 egress
-정책이 `earthquake.usgs.gov` 로 나가는 CONNECT 를 403 으로 막는다. 그래서
-아래 파싱 코드는 **USGS 가 문서로 공개한 스키마를 보고 쓴 것이지, 실제
-응답을 보고 쓴 것이 아니다.** GitHub Actions 에는 그 제한이 없으므로 거기서는
-돌지만, 첫 실행은 `--dump` 로 응답을 그대로 떨어뜨려 놓고 눈으로 확인할 것.
+2026-09-27 에 GitHub Actions 에서 **실제 응답으로 확인했다**
+(run 36297009327). `all_day` 175건이 **한 줄도 버려지지 않고** 읽혔고
+규모 범위는 0.0~5.6 이었다. 즉 `features[].properties.mag` · `.time` ·
+`.place` 와 `geometry.coordinates` 가 우리가 보고 쓴 그대로다.
 
-그래서 파서를 방어적으로 썼다. 모르는 칸이 있어도 죽지 않고, 필요한 칸이
+(이 코드를 쓴 컨테이너는 `earthquake.usgs.gov` 로 나가는 CONNECT 가 403 으로
+막혀 있어서 처음에는 문서만 보고 썼다. 그래서 확인이 Actions 에서 났다.)
+
+형식이 맞았다고 방어를 걷어내지 않는다. 피드는 남의 것이고 언제든 바뀐다. 모르는 칸이 있어도 죽지 않고, 필요한 칸이
 없는 줄만 버린다. 스키마가 예상과 다르면 **몇 줄이 버려졌는지 찍는다** —
 조용히 빈 영상이 나오는 것이 제일 나쁘다.
 """
@@ -102,6 +104,7 @@ def parse_quakes(payload: dict) -> list[Quake]:
 
     quakes: list[Quake] = []
     dropped = 0
+    out_of_range = 0
     for feature in features:
         try:
             props = feature["properties"]
@@ -110,6 +113,13 @@ def parse_quakes(payload: dict) -> list[Quake]:
             epoch_ms = props["time"]
             if mag is None or epoch_ms is None or lon is None or lat is None:
                 dropped += 1
+                continue
+            # 좌표가 지구 위에 있는지 본다. GeoJSON 은 [경도, 위도] 순서인데
+            # 만약 어느 날 [위도, 경도] 로 바뀌면 **파싱은 전부 성공하고 점만
+            # 엉뚱한 곳에 찍힌다** — 지도가 조용히 거짓말을 한다. 위도가
+            # ±90 을 넘는 줄이 쏟아지면 그때 알 수 있다.
+            if abs(float(lat)) > 90.0 or abs(float(lon)) > 180.0:
+                out_of_range += 1
                 continue
             quakes.append(Quake(
                 id=str(feature.get("id") or props.get("code") or len(quakes)),
@@ -123,6 +133,12 @@ def parse_quakes(payload: dict) -> list[Quake]:
         except (KeyError, TypeError, ValueError, IndexError):
             dropped += 1
 
+    if out_of_range:
+        # 조용히 넘기지 않는다. 한두 줄이면 자료 오류지만, 많으면 경도·위도
+        # 순서가 바뀐 것이고 그때는 지도 전체가 틀린다.
+        print(f"[source] {out_of_range}건은 좌표가 지구 밖이다 — 경도·위도 "
+              f"순서가 바뀌었는지 확인할 것 (전체 {len(features)}건)",
+              file=sys.stderr)
     if dropped:
         print(f"[source] {dropped}건은 필요한 값이 없어 제외 "
               f"(전체 {len(features)}건)", file=sys.stderr)

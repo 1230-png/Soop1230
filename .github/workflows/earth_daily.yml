@@ -80,6 +80,20 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: 글꼴과 ffmpeg
+        # **첫 실행이 여기서 죽었다** — 러너에 ffmpeg 가 없어서
+        # `FileNotFoundError: 'ffmpeg'` 로 멈췄다(run 36297009327).
+        # 프레임을 rawvideo 로 파이프에 밀어 넣으므로 ffmpeg 가 없으면 영상이
+        # 한 장도 안 나온다.
+        #
+        # fonts-noto-cjk 는 화면의 한국어 글자에 쓴다. 없으면 render._pick 이
+        # 멈추므로 두부 글자가 나가지는 않지만, 여기서 깔아 두는 편이 빠르다.
+        working-directory: .
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk ffmpeg
+          ffmpeg -version | head -1
+
       - name: 의존성
         run: |
           python -m pip install --quiet --upgrade pip
@@ -103,6 +117,14 @@ jobs:
             --lapse  '${{ steps.cfg.outputs.lapse }}' \
             --dump   build/usgs_response.json)
           echo "dir=$OUT" >> "$GITHUB_OUTPUT"
+
+      - name: 받은 응답의 형식 점검 (로그에 남는다)
+        # 아티팩트를 내려받지 못하는 자리에서도 **실행 로그만 보고** 스키마가
+        # 맞는지 확인할 수 있어야 한다. 빌드가 죽어도 응답은 떨어져 있으므로
+        # always() 로 돈다.
+        if: always()
+        continue-on-error: true
+        run: python tools/probe.py --cache build/usgs_response.json
 
       - name: USGS 응답 남기기
         # **첫 실행에서 이것을 받아 보는 것이 이 워크플로의 목적이다.**
