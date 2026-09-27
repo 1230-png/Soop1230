@@ -180,3 +180,82 @@ def test_every_channel_gets_a_section_even_with_no_data():
     text = report.build([], NOW)
     for channel in registry.CHANNELS:
         assert channel.label in text
+
+
+class TestGrowthSplit:
+    """증가분을 「기존 영상이 번 것」과 「새 영상이 번 것」으로 나누는 부분.
+
+    이 검사가 있는 이유는 실측이다. 2026-09-19→27 사이 @200-y3b 는 조회수가
+    22,276 늘었는데 기존 82편이 번 것은 1,108(5.0%)뿐이었다. 합계만 보는
+    보고서는 그 주를 「조회수 2만 증가」로 적었을 것이고, 그것은 **발행을
+    멈추면 0 이 되는 구조를 감추는 문장**이다.
+    """
+
+    def test_기존_영상과_신규_영상을_나눈다(self):
+        before = [{"video_id": "a", "views": "100"},
+                  {"video_id": "b", "views": "50"}]
+        after = [{"video_id": "a", "views": "130"},
+                 {"video_id": "b", "views": "52"},
+                 {"video_id": "c", "views": "900"}]
+        carried, fresh, count = report._split_growth(before, after)
+        assert (carried, fresh, count) == (32, 900, 2)
+
+    def test_줄어든_것도_센다(self):
+        # 조회수가 줄어드는 일은 드물지만(스팸 정리 등) 있다. 양수로
+        # 접으면 기존 영상이 실제보다 잘 버티는 것처럼 보인다.
+        carried, fresh, count = report._split_growth(
+            [{"video_id": "a", "views": "100"}],
+            [{"video_id": "a", "views": "90"}])
+        assert carried == -10 and fresh == 0 and count == 1
+
+    def test_id_없는_줄은_건너뛴다(self):
+        carried, fresh, _ = report._split_growth(
+            [{"views": "10"}], [{"views": "20"}, {"video_id": "x", "views": "5"}])
+        assert carried == 0 and fresh == 25
+
+    def test_빈_스냅샷(self):
+        assert report._split_growth([], []) == (0, 0, 0)
+
+    def test_기존_비중이_낮으면_짚는다(self):
+        found = report._carry_findings(carried=1108, fresh=21168,
+                                      carried_count=82, days=7)
+        assert found and "5.0%" in found[0]
+        assert "0 에 수렴" in found[0]
+
+    def test_기존_비중이_충분하면_조용하다(self):
+        # 자산이 쌓이고 있으면 이 줄은 나오지 않아야 한다. 매주 뜨는
+        # 경고는 안 읽힌다.
+        assert report._carry_findings(carried=800, fresh=1000,
+                                     carried_count=30, days=7) == []
+
+    def test_영상이_적으면_비율을_말하지_않는다(self):
+        # 세 편으로 비율을 내면 한 편 터진 것만으로 뒤집힌다.
+        assert report._carry_findings(carried=1, fresh=999,
+                                      carried_count=3, days=7) == []
+
+    def test_증가가_없으면_말하지_않는다(self):
+        assert report._carry_findings(carried=0, fresh=0,
+                                      carried_count=50, days=7) == []
+
+    def test_보고서_본문에_기존과_신규가_같이_적힌다(self):
+        rows = []
+        for stamp, bump in (("2026-09-01T00:00:00+00:00", 0),
+                            ("2026-09-08T00:00:00+00:00", 1)):
+            for index in range(10):
+                rows.append({
+                    "observed_at": stamp, "channel": "200y3b",
+                    "video_id": f"old{index}", "duration_s": "600",
+                    "published_at": "2026-08-01T00:00:00Z",
+                    "title": f"예전 {index}", "views": str(100 + bump),
+                    "likes": "0", "comments": "0"})
+            if bump:
+                rows.append({
+                    "observed_at": stamp, "channel": "200y3b",
+                    "video_id": "new1", "duration_s": "600",
+                    "published_at": "2026-09-07T00:00:00Z",
+                    "title": "새것", "views": "5000",
+                    "likes": "0", "comments": "0"})
+        text = report.build(rows, now=datetime(2026, 9, 8, tzinfo=timezone.utc))
+        assert "기존 10편이 번 것 +10" in text
+        assert "새로 올린 것 +5000" in text
+        assert "증가분의 0.2%만 기존 영상에서 왔다" in text

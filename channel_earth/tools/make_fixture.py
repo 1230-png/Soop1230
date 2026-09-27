@@ -44,6 +44,35 @@ BELTS = {
                  (62, 30), (72, 34), (82, 29), (92, 26), (97, 22)],
 }
 
+# 지진대마다 USGS 가 실제로 쓸 만한 지명. **형식까지 흉내내는 이유**는
+# `lib/titles.py` 가 `place` 의 마지막 쉼표 뒤를 보고 한국어 지역명을 뽑기
+# 때문이다. 피처가 "52km 지점" 같은 문자열을 주면 그 경로가 시험되지 않고,
+# 제목이 깨지는 것을 실제 발행에서야 알게 된다.
+BELT_REGIONS = {
+    "환태평양 동쪽": ["Chile", "Peru", "Mexico", "Guatemala", "Ecuador",
+                "CA", "Alaska"],
+    "환태평양 서쪽": ["Japan", "Taiwan", "Philippines", "Indonesia", "Russia"],
+    "남서태평양": ["Papua New Guinea", "Solomon Islands", "Vanuatu",
+              "Fiji", "New Zealand"],
+    "중앙해령": ["__Mid-Atlantic Ridge"],   # __ 는 쉼표 없는 해역 이름 표시
+    "알프스히말라야": ["Italy", "Greece", "Turkey", "Iran", "Afghanistan",
+                 "Nepal", "India", "Myanmar"],
+}
+
+TOWNS = ("Hasaki", "Anza", "Kirakira", "Lata", "Ternate", "Hihifo", "Nikolski",
+         "Ovalle", "Constitucion", "Tadine", "Sarangani", "Katsuura")
+DIRECTIONS = ("N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
+              "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW")
+
+
+def usgs_place(rng: random.Random, region: str) -> str:
+    """USGS 형식의 place 문자열. 쉼표 없는 해역 이름은 그대로 돌려준다."""
+    if region.startswith("__"):
+        return f"{rng.choice(('north of', 'south of', 'near'))} the {region[2:]}"
+    return (f"{rng.randint(4, 260)} km {rng.choice(DIRECTIONS)} of "
+            f"{rng.choice(TOWNS)}, {region}")
+
+
 # 관측망이 촘촘해 작은 지진까지 잡히는 곳. (경도, 위도, 퍼짐)
 DENSE_NETWORKS = [
     (-119.5, 36.5, 3.0, "California"),
@@ -59,8 +88,8 @@ DENSE_NETWORKS = [
 B_VALUE = 1.0
 
 
-def belt_point(rng: random.Random) -> tuple[float, float]:
-    """지진대 꺾은선 위의 한 점에 흔들림을 얹는다."""
+def belt_point(rng: random.Random) -> tuple[float, float, str]:
+    """지진대 꺾은선 위의 한 점에 흔들림을 얹는다. 지역명도 같이 준다."""
     name = rng.choice(list(BELTS))
     path = BELTS[name]
     index = rng.randrange(len(path) - 1)
@@ -68,12 +97,19 @@ def belt_point(rng: random.Random) -> tuple[float, float]:
     t = rng.random()
     lon = lon0 + (lon1 - lon0) * t + rng.gauss(0, 2.2)
     lat = lat0 + (lat1 - lat0) * t + rng.gauss(0, 1.8)
-    return _wrap(lon), max(-85.0, min(85.0, lat))
+    region = rng.choice(BELT_REGIONS[name])
+    return _wrap(lon), max(-85.0, min(85.0, lat)), region
 
 
-def network_point(rng: random.Random) -> tuple[float, float]:
-    lon, lat, spread, _ = rng.choice(DENSE_NETWORKS)
-    return _wrap(lon + rng.gauss(0, spread)), max(-85.0, min(85.0, lat + rng.gauss(0, spread * 0.7)))
+def network_point(rng: random.Random) -> tuple[float, float, str]:
+    lon, lat, spread, name = rng.choice(DENSE_NETWORKS)
+    # 미국 안쪽은 USGS 가 주 약자로 준다("…of Anza, CA"). 주 이름을 그대로
+    # 쓰면 titles 의 약자 경로가 시험되지 않는다.
+    region = {"California": "CA", "Alaska": "AK", "Oklahoma": "OK",
+              "Puerto Rico": "PR", "Hawaii": "HI", "Utah": "UT",
+              "Nevada": "NV"}.get(name, name)
+    return (_wrap(lon + rng.gauss(0, spread)),
+            max(-85.0, min(85.0, lat + rng.gauss(0, spread * 0.7))), region)
 
 
 def _wrap(lon: float) -> float:
@@ -112,10 +148,10 @@ def build(count: int, seed: int, day_start_ms: int) -> dict:
     global_count = min(count, max(0, int(round(rng.gauss(38, 6)))))
     for index in range(count):
         if index < global_count:
-            lon, lat = belt_point(rng)
+            lon, lat, region = belt_point(rng)
             mag = magnitude(rng, 4.0, 7.6)
         else:
-            lon, lat = network_point(rng)
+            lon, lat, region = network_point(rng)
             mag = magnitude(rng, 0.5, 4.0)
 
         epoch = day_start_ms + rng.randrange(0, 24 * 3600 * 1000)
@@ -123,7 +159,7 @@ def build(count: int, seed: int, day_start_ms: int) -> dict:
             "type": "Feature",
             "properties": {
                 "mag": mag,
-                "place": f"{rng.randint(1, 240)}km 지점 (가짜 데이터)",
+                "place": usgs_place(rng, region),
                 "time": epoch,
                 "updated": epoch + 60_000,
                 "tz": None,

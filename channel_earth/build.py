@@ -29,7 +29,7 @@ from pathlib import Path
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from lib import audio, render, sources  # noqa: E402
+from lib import audio, render, sources, titles  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent
 BUILD_ROOT = ROOT / "build"
@@ -354,10 +354,23 @@ def render_video(quakes: list, layout: render.Layout, lapse: float,
     return final, total_seconds
 
 
-def build_description(quakes: list, window: str, synthetic: bool) -> str:
+def build_description(quakes: list, window: str, synthetic: bool,
+                      headline_quake=None) -> str:
     top = sorted(quakes, key=lambda q: -q.mag)[:5]
     first, last = quakes[0].time, quakes[-1].time
-    lines = [
+    lines = []
+    # 검색 결과에는 설명의 **첫 두 줄만** 보인다. 그 자리에 "점의 색은 진원
+    # 깊이" 같은 설명을 넣으면 검색한 사람이 자기가 찾던 것인지 알 수 없다.
+    # 무슨 지진인지부터 적는다.
+    lead = headline_quake or (top[0] if top and top[0].mag >= 5.0 else None)
+    if lead is not None:
+        lines += [
+            f"{lead.time:%Y년 %m월 %d일 %H:%M}(UTC) "
+            f"{titles.region_ko(lead.place)}에서 규모 {lead.mag:.1f} 지진이 "
+            f"기록됐습니다. 진원 깊이 {lead.depth_km:.0f}km.",
+            "",
+        ]
+    lines += [
         f"{first:%Y년 %m월 %d일} {first:%H:%M}부터 {last:%m월 %d일} "
         f"{last:%H:%M}까지(UTC) 관측된 지진 {len(quakes)}건입니다.",
         "점의 색은 진원 깊이, 크기는 규모, 소리의 높이와 크기도 그 둘에서 나옵니다.",
@@ -417,6 +430,8 @@ def main() -> int:
     parser.add_argument("--cache", type=Path,
                         help="이 파일을 쓰고 네트워크를 타지 않는다")
     parser.add_argument("--dump", type=Path, help="받은 응답을 그대로 적는다")
+    parser.add_argument("--headline-id",
+                        help="이 지진을 제목 앞머리에 세운다 (이벤트 발행용)")
     parser.add_argument("--out", type=Path)
     args = parser.parse_args()
 
@@ -441,13 +456,29 @@ def main() -> int:
     video, seconds = render_video(quakes, layout, args.lapse, args.window, out_dir)
 
     first, last = quakes[0].time, quakes[-1].time
+
+    # --headline-id 가 오면 그 지진을 제목 앞머리에 세운다. 이벤트 발행이
+    # 쓰는 길이다 — 큰 지진이 난 직후 몇 시간이 검색 수요가 있는 유일한
+    # 때이고, 그때는 「오늘의 지도」가 아니라 그 지진이 제목이어야 한다.
+    headline_quake = None
+    if args.headline_id:
+        headline_quake = next((q for q in quakes if q.id == args.headline_id), None)
+        if headline_quake is None:
+            # 짐작해서 다른 지진을 세우지 않는다. 엉뚱한 제목보다 평범한
+            # 제목이 낫고, 왜 그렇게 됐는지는 로그에 남겨야 한다.
+            print(f"[build] --headline-id {args.headline_id} 를 피드에서 "
+                  f"못 찾았다 — 하루치 제목으로 낸다", file=sys.stderr)
+
     meta = {
         "window": args.window,
         "shape": shape,
-        "title": f"지구의 오늘 — {first:%m월 %d일} 지진 {len(quakes)}건",
-        "description": build_description(quakes, args.window, synthetic),
-        "tags": ["지진", "지구과학", "데이터시각화", "USGS", "실시간데이터",
-                 "earthquake"],
+        # 제목과 태그는 lib/titles.py 가 만든다. 검색어가 아닌 제목이
+        # 조회수를 어떻게 죽이는지는 그 파일 머리에 숫자로 적어 뒀다.
+        "title": (titles.alert_title(headline_quake, len(quakes))
+                  if headline_quake else titles.daily_title(quakes, args.window)),
+        "description": build_description(quakes, args.window, synthetic,
+                                        headline_quake),
+        "tags": titles.tags_for(quakes),
         "categoryId": "28",
         "privacyStatus": "private",
         "quake_count": len(quakes),

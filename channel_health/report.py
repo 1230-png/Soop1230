@@ -61,6 +61,66 @@ BASELINE_MIN = 2
 LONGFORM_LAG_RATIO = 0.25
 LONGFORM_MIN_FOR_COMPARISON = 2
 
+# 기존 영상이 새로 번 조회수가 전체 증가분에서 이 비율에 못 미치면 짚는다.
+# 0.2 를 고른 근거는 측정값이다 — 2026-09-19→27 사이 @200-y3b 는 조회수가
+# 21,131 늘었는데 그중 기존 82편이 번 것은 1,108(5.2%)뿐이었다. 나머지는
+# 새로 올린 24편의 초기 노출이다. **그 구조에서는 발행을 멈추는 순간
+# 조회수가 0 에 수렴한다** — 자산이 아니라 매번 사서 쓰는 도달이다.
+CARRY_RATIO = 0.2
+
+# 기존 영상이 몇 편 이상 있어야 위 비율을 말할 수 있는지. 세 편으로
+# 비율을 내면 한 편이 터진 것만으로 뒤집힌다.
+CARRY_MIN_VIDEOS = 8
+
+
+def _split_growth(before, after):
+    """증가분을 「기존 영상이 번 것」과 「새 영상이 번 것」으로 나눈다.
+
+    영상 id 로 맞춰 본다. 두 스냅샷에 다 있는 영상의 차이가 앞의 것이고,
+    뒤에만 있는 영상의 조회수가 뒤의 것이다.
+
+    돌려주는 것은 `(기존 증가분, 신규 조회수, 기존 영상 편수)`.
+    """
+    old_views = {}
+    for row in before:
+        value = _int(row.get("views"))
+        if row.get("video_id") and value is not None:
+            old_views[row["video_id"]] = value
+
+    carried = fresh = carried_count = 0
+    for row in after:
+        value = _int(row.get("views"))
+        if value is None:
+            continue
+        key = row.get("video_id")
+        if key in old_views:
+            carried += value - old_views[key]
+            carried_count += 1
+        else:
+            fresh += value
+    return carried, fresh, carried_count
+
+
+def _carry_findings(carried, fresh, carried_count, days):
+    """자산이 쌓이고 있는지. 안 쌓이면 그것이 가장 중요한 한 줄이다."""
+    total = carried + fresh
+    if carried_count < CARRY_MIN_VIDEOS or total <= 0:
+        return []
+    share = carried / total
+    if share >= CARRY_RATIO:
+        return []
+    per_video = carried / carried_count
+    window = f"{days}일" if days else "이 기간"
+    return [
+        f"**증가분의 {share:.1%}만 기존 영상에서 왔다** "
+        f"(기존 {carried_count}편이 {window} 동안 편당 평균 {per_video:+.1f}회). "
+        "나머지는 새로 올린 것의 초기 노출이다. 이 구조에서는 **발행을 멈추면 "
+        "조회수가 곧 0 에 수렴한다** — 쌓이는 자산이 아니라 매번 새로 사는 도달이다. "
+        "올리는 편수를 늘리는 것으로는 이 비율이 나아지지 않는다. "
+        "예전 영상이 계속 발견되게 만드는 것(검색에 걸리는 제목, "
+        "묶어 보게 하는 재생목록)이 여기를 고친다."
+    ]
+
 
 def channel_findings(rows, channel, now):
     """한 채널에서 짚을 것들. 없으면 빈 목록."""
@@ -130,14 +190,23 @@ def channel_findings(rows, channel, now):
         if idle >= 3:
             findings.append(f"마지막 발행이 {idle}일 전이다. 파이프라인이 도는지 볼 것.")
 
-    # 늘고 있나 — 스냅샷이 둘 이상일 때만
+    # 늘고 있나 — 그리고 **그 증가가 어디서 왔나**
+    #
+    # 합계 증가만 적으면 안 된다. 매일 새 영상을 밀어 넣는 채널은 합계가
+    # 늘 늘어나는데, 그 증가가 전부 신규 영상의 초기 노출에서 오고 예전
+    # 영상은 죽어 있을 수 있다. 그러면 발행을 멈추는 순간 0 에 수렴한다.
+    # 실제로 그랬다 — 근거는 CARRY_RATIO 주석에 있다.
     if len(stamps) >= 2:
-        before = at_snapshot(rows, channel.name, stamps[-2])
-        gained = sum(_views(latest)) - sum(_views(before))
         then, now_stamp = _when(stamps[-2]), _when(stamps[-1])
         days = (now_stamp - then).days if then and now_stamp else 0
         span = f"약 {days}일 사이" if days else "간격을 읽지 못했다"
-        findings.append(f"직전 기록 이후 조회수 합계 {gained:+d} ({span}).")
+        carried, fresh, carried_count = _split_growth(
+            at_snapshot(rows, channel.name, stamps[-2]), latest)
+        findings.append(
+            f"직전 기록 이후 조회수 합계 {carried + fresh:+d} ({span}) — "
+            f"그중 기존 {carried_count}편이 번 것 {carried:+d}, "
+            f"새로 올린 것 {fresh:+d}.")
+        findings.extend(_carry_findings(carried, fresh, carried_count, days))
     else:
         findings.append(
             "스냅샷이 하나뿐이라 증감을 말할 수 없다. 다음 회차부터 나온다.")

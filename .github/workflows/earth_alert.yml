@@ -1,0 +1,157 @@
+# 「지구의 오늘」 — 큰 지진이 나면 그때 바로 낸다.
+#
+# **왜 정해진 시각 발행과 따로 있는가.** 「지진」 검색량은 평소 낮고, 큰 것이
+# 하나 오면 몇 시간 치솟았다가 가라앉는다. 매일 08:00 에 「어제 하루치 지도」를
+# 내는 것은 수요가 없는 시각에 공급하는 것이다.
+#
+# 이 저장소의 측정 기록이 그 결과다(2026-09-27 스냅샷). @귀트는일본어 는
+# 정해진 시각에 롱폼을 꾸준히 냈고 **8편 중 7편이 0회**, 총 3회다. 구독자가
+# 7명이라 구독 피드가 없고, 추천은 시청 신호가 먼저 있어야 시작되므로
+# 부트스트랩이 안 되고, 검색은 제목이 검색어가 아니라서 안 걸렸다.
+# **구독자 0명에서 조회수가 들어올 길은 검색뿐이고, 검색은 수요가 있는
+# 순간에만 있다.**
+#
+# 30분마다 깨지만 거의 모든 실행은 몇 초에 끝난다 — USGS 피드를 한 번 읽고
+# 문턱을 넘은 것이 없으면 거기서 멈춘다. 유튜브 API 는 부르지 않으므로
+# 할당량도 쓰지 않는다.
+#
+# **할당량 계산.** 업로드 한 번이 1,600 단위이고 하루 한도가 10,000 이다.
+# 냉각 8시간이 있어 이벤트 발행은 하루 최대 3편(4,800)이고, 일일 숏폼
+# 1,600 을 더해도 6,400 이라 들어간다. 냉각 시간을 줄일 때 이 계산을 다시 할 것.
+#
+# cron 이 주석인 이유는 `earth_daily.yml` 과 같다 — USGS 응답을 눈으로
+# 확인하기 전에는 무인 발행을 걸지 않는다. **둘을 같이 풀 것.**
+# cron 과 workflow_dispatch 는 **기본 브랜치의 워크플로만 본다.**
+
+name: 지구의 오늘 — 큰 지진 발행
+
+on:
+  # schedule:
+  #   # 30분마다. 신선도 문턱이 6시간이라 한두 번 늦어도 놓치지 않는다.
+  #   - cron: '*/30 * * * *'
+  workflow_dispatch:
+    inputs:
+      force_upload:
+        description: '문턱을 넘었으면 실제로 올린다 (끄면 판단과 렌더만)'
+        type: boolean
+        default: false
+      privacy:
+        description: '공개 설정'
+        type: choice
+        options: [public, unlisted, private]
+        default: public
+
+permissions:
+  contents: write     # 발행 기록(published_alerts.json)을 커밋한다
+
+# 겹쳐 돌면 같은 지진을 두 번 낼 수 있다. 기록 파일은 업로드 뒤에야
+# 쓰이므로, 30분 간격이라도 렌더가 길어지면 앞 실행과 만난다.
+concurrency:
+  group: earth-alert
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: channel_earth
+    outputs:
+      publish: ${{ steps.look.outputs.publish }}
+      quake_id: ${{ steps.look.outputs.quake_id }}
+      magnitude: ${{ steps.look.outputs.magnitude }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # 판단만 하는 단계라 무거운 것을 깔지 않는다. 몇 초에 끝나야
+      # 30분마다 도는 것이 부담이 안 된다.
+      - name: 문턱을 넘은 지진이 있나
+        id: look
+        run: python tools/check_alert.py --window day
+
+  publish:
+    needs: check
+    if: needs.check.outputs.publish == 'true'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: channel_earth
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 의존성
+        run: |
+          python -m pip install --quiet --upgrade pip
+          python -m pip install --quiet -r requirements.txt
+          # 판을 고정한다. 안 그러면 ruff 가 규칙을 추가한 날,
+          # 코드를 건드리지도 않았는데 발행이 멈춘다.
+          python -m pip install --quiet 'ruff==0.6.9' pytest
+
+      - name: 코드 검사
+        # 할당량을 쓰는 단계 앞에 둔다(CLAUDE.md).
+        run: |
+          ruff check .
+          python -m pytest -q
+
+      - name: 영상 만들기
+        id: build
+        # 그 지진을 제목 앞머리에 세운다. 이 순간 검색되는 말은
+        # 「오늘의 지도」가 아니라 그 지진의 지역과 규모다.
+        run: |
+          OUT=$(python build.py \
+            --window day --size 1080x1920 --lapse 42 \
+            --headline-id '${{ needs.check.outputs.quake_id }}' \
+            --dump build/usgs_response.json)
+          echo "dir=$OUT" >> "$GITHUB_OUTPUT"
+          cat "$OUT/metadata.json"
+
+      - name: 영상 남기기
+        uses: actions/upload-artifact@v4
+        with:
+          name: alert-M${{ needs.check.outputs.magnitude }}-${{ needs.check.outputs.quake_id }}
+          path: |
+            ${{ steps.build.outputs.dir }}/video.mp4
+            ${{ steps.build.outputs.dir }}/metadata.json
+            channel_earth/build/usgs_response.json
+          retention-days: 14
+
+      - name: 유튜브에 올리기
+        id: upload
+        # cron 으로 들어오면 올린다. 손으로 돌릴 때는 기본이 '안 올린다'다
+        # (cron 에서는 inputs.* 가 전부 빈 값이다 — CLAUDE.md).
+        if: github.event_name == 'schedule' || inputs.force_upload
+        env:
+          # `RUSH_*` 는 @Rush22 에서 온 이름이지만 그 채널이 지금
+          # 「지구의 오늘」이다. 공용 YT_* 로 넘어가는 대체 경로는 없다.
+          RUSH_CLIENT_ID: ${{ secrets.RUSH_CLIENT_ID }}
+          RUSH_CLIENT_SECRET: ${{ secrets.RUSH_CLIENT_SECRET }}
+          RUSH_REFRESH_TOKEN: ${{ secrets.RUSH_REFRESH_TOKEN }}
+          RUSH_CHANNEL_ID: ${{ secrets.RUSH_CHANNEL_ID }}
+        run: |
+          python upload.py --dir '${{ steps.build.outputs.dir }}' \
+            --privacy '${{ inputs.privacy || 'public' }}'
+
+      - name: 발행 기록 남기기
+        # **업로드가 성공한 뒤에만 적는다.** 실패한 것을 "냈다"고 적으면
+        # 그 지진은 두 번 다시 나가지 않는다.
+        if: steps.upload.outcome == 'success'
+        # `--record` 는 피드를 다시 읽지 않는다. 여기서 네트워크를 타다가
+        # 실패하면 이미 올라간 영상을 기록하지 못해 30분 뒤 같은 지진이
+        # 또 나간다.
+        run: |
+          python tools/check_alert.py \
+            --record '${{ needs.check.outputs.quake_id }}' \
+            --meta '${{ steps.build.outputs.dir }}/metadata.json'
+          cd ..
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add channel_earth/data/published_alerts.json
+          git diff --cached --quiet || git commit -m \
+            "chore(earth): M${{ needs.check.outputs.magnitude }} 발행 기록 [skip ci]"
+          git push
