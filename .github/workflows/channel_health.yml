@@ -95,7 +95,13 @@ jobs:
           # `git add -A channel_health/` 로 뭉뚱그리지 않는 이유는, 그러면
           # 나중에 이 잡이 코드를 건드리게 됐을 때 그것까지 조용히 커밋되기
           # 때문이다. 기록 파일만 이름으로 넣는다.
-          for record in channel_health/metrics.csv channel_health/channel_stats.csv; do
+          # retention.csv 가 빠져 있었다 — 2026-09-27 실행이 지속률 3줄을
+          # 만들고도 커밋하지 않아 러너와 함께 버렸다. analytics.py 와
+          # CLAUDE.md 의 「기록은 세 파일이다」를 써 놓고 여기만 둘로
+          # 남겨 둔 탓이다. **세 파일을 같이 센다.**
+          for record in channel_health/metrics.csv \
+                        channel_health/channel_stats.csv \
+                        channel_health/retention.csv; do
             [ -f "$record" ] && git add "$record"
           done
           if git diff --cached --quiet; then
