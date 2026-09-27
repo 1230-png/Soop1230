@@ -72,6 +72,74 @@ CARRY_RATIO = 0.2
 # 비율을 내면 한 편이 터진 것만으로 뒤집힌다.
 CARRY_MIN_VIDEOS = 8
 
+# 무엇을 언제 바꿨는가. **여기에 적지 않으면 재시험이 되지 않는다** —
+# 몇 주 뒤에 조회수를 봐도 그것이 바뀐 것 때문인지 알 방법이 없다.
+#
+# 날짜는 그 변경이 들어간 첫 발행일(UTC)이다. 그날 이후에 올라간 영상이
+# 「바꾼 뒤」다.
+EXPERIMENTS = {
+    # 이 변경이 들어간 첫 발행일은 **기본 브랜치에 합친 다음 화요일**이다
+    # (jp 롱폼은 2026-09-27 부터 화요일 주 1편이다). 합치는 것이 화요일을
+    # 넘기면 그날 영상은 예전 제목으로 나가므로 **이 날짜를 다음 화요일로
+    # 미뤄야 한다** — 안 그러면 예전 제목 편이 「바꾼 뒤」에 섞인다.
+    #
+    # 확인하는 법: `channel_jp/data/published.csv` 의 title 칸을 본다.
+    # 새 제목은 「여행 일본어 …」처럼 검색어로 시작하고 「… 편 · 」이 들어 있다.
+    "jp": [("2026-09-29", "롱폼 제목을 검색어형으로 (channel_jp/lib/titles.py)")],
+}
+
+# 바꾼 뒤 영상이 이만큼 모이기 전에는 결론을 적지 않는다. 한두 편으로
+# 중앙값을 내면 그 한 편이 전부를 말하게 된다.
+#
+# jp 롱폼이 주 1편이라 이 값은 곧 **3주**다. 줄이고 싶으면 편수를 늘리는
+# 것이 아니라(조회수 0인 곳에 편수를 더하면 0이 늘어난다 — channel_jp.yml)
+# 그냥 기다리는 편이 맞다.
+EXPERIMENT_MIN_AFTER = 3
+
+
+def _experiment_findings(latest, channel_name, now):
+    """바꾼 것이 먹혔는지. **표본이 모이기 전에는 결론을 적지 않는다.**
+
+    롱폼만 본다. 숏폼은 Shorts 피드가 따로 배급해서 제목 영향이 다르게
+    나오고, 시청 시간에도 들어가지 않는다.
+    """
+    findings = []
+    for date_text, label in EXPERIMENTS.get(channel_name, ()):
+        marker = _when(date_text)
+        if marker is None:
+            continue
+        longs = [row for row in latest
+                 if not is_short(row) and _when(row.get("published_at"))]
+        before = [row for row in longs
+                  if _when(row["published_at"]) < marker]
+        after = [row for row in longs
+                 if _when(row["published_at"]) >= marker]
+        days = (now - marker).days
+
+        if len(after) < EXPERIMENT_MIN_AFTER:
+            findings.append(
+                f"[재시험 {days}일째] {label} — 바꾼 뒤 롱폼 {len(after)}편. "
+                f"{EXPERIMENT_MIN_AFTER}편은 모여야 말할 수 있다. "
+                "아직 결론을 내지 말 것.")
+            continue
+
+        before_median = _median(_views(before))
+        after_median = _median(_views(after))
+        line = (f"[재시험 {days}일째] {label} — "
+                f"바꾼 뒤 {len(after)}편 중앙값 {after_median:g}")
+        if before_median is None:
+            findings.append(line + " (바꾸기 전 롱폼이 없어 견줄 것이 없다).")
+            continue
+        line += f", 바꾸기 전 {len(before)}편 {before_median:g}"
+        if after_median > before_median:
+            findings.append(line + " — 올랐다. 다음 회차까지 더 볼 것.")
+        elif after_median == before_median:
+            findings.append(line + " — 그대로다.")
+        else:
+            findings.append(
+                line + " — **내렸다.** 제목이 아니라 형식 자체를 다시 볼 것.")
+    return findings
+
 
 def _split_growth(before, after):
     """증가분을 「기존 영상이 번 것」과 「새 영상이 번 것」으로 나눈다.
@@ -189,6 +257,8 @@ def channel_findings(rows, channel, now):
         idle = (now - newest).days
         if idle >= 3:
             findings.append(f"마지막 발행이 {idle}일 전이다. 파이프라인이 도는지 볼 것.")
+
+    findings.extend(_experiment_findings(latest, channel.name, now))
 
     # 늘고 있나 — 그리고 **그 증가가 어디서 왔나**
     #

@@ -19,6 +19,7 @@ thumbnail.png 로 떨어진다.
 """
 
 import argparse
+import csv
 import datetime
 import json
 import re
@@ -30,13 +31,25 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import build_bank  # noqa: E402
-from lib import cards, tts  # noqa: E402
+from lib import cards, titles, tts  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent
 PACKS_FILE = ROOT / "packs.yaml"
 PHRASES_FILE = ROOT / "data" / "phrases.json"
 USED_FILE = ROOT / "data" / "used.json"
 BUILD_ROOT = ROOT / "build"
+# 회차와 「이미 낸 제목」을 여기서 읽는다. upload.py 가 **업로드 성공 뒤에만**
+# 한 줄 늘리므로, 실패한 빌드가 회차를 먹지 않는다.
+PUBLISHED_PATH = ROOT / "data" / "published.csv"
+
+
+def published_rows(path=PUBLISHED_PATH):
+    """발행 기록. 없으면 빈 목록 — 첫 편에서 멈출 이유가 없다."""
+    try:
+        with open(path, newline="", encoding="utf-8") as handle:
+            return list(csv.DictReader(handle))
+    except (OSError, ValueError):
+        return []
 
 # 소리를 내는 단계와, 각각이 쓰는 음성·속도. 여기 없는 것은 전부 무음이다.
 SPOKEN = {
@@ -387,11 +400,15 @@ def main() -> int:
     phrases = load_phrases()
     state = load_used()
 
-    topic, include = "", None
+    topic, include, topic_label = "", None, ""
     if args.pack == "situation_pack":
         topics = config["topics"]
         entry = topics[state.get("topic_cursor", 0) % len(topics)]
+        # `name` 은 기록용, `search` 는 시청자에게 보이는 말이다. 나눈 이유는
+        # packs.yaml 의 topics 주석에 있다 — 내부 이름은 검색어가 아니다
+        # (「숙박·문제 해결 일본어」를 검색하는 사람은 없다).
         topic, include = entry["name"], entry["include"]
+        topic_label = entry.get("search") or entry["name"]
 
     count = args.limit or pack["phrase_count"]
     picked = pick_phrases(phrases, args.pack, count, state, include)
@@ -412,7 +429,7 @@ def main() -> int:
           + (" (offline)" if args.offline else ""), file=sys.stderr)
 
     segments, chapters, total, picked = build_segments(
-        pack, defaults, picked, topic, work, args.offline)
+        pack, defaults, picked, topic_label, work, args.offline)
     if len(picked) < count:
         print(f"[build] 합성 실패로 {count - len(picked)}개를 뺐다", file=sys.stderr)
     count = len(picked)
@@ -424,6 +441,8 @@ def main() -> int:
     duration = tts.duration_of(video)
     minutes = max(1, round(duration / 60))
 
+    records = published_rows()
+
     metadata = {
         # 팩 이름과 목표 길이를 남긴다. upload.py 가 올리기 직전에 같은 검사를
         # 다시 하는데, 그때 이 둘이 없으면 길이가 이름표와 맞는지 볼 수 없다.
@@ -432,8 +451,16 @@ def main() -> int:
         # 시작하면서 칸으로 필요해졌다(upload.py 의 published.csv).
         "topic": topic,
         "target_minutes": pack.get("target_minutes"),
-        "title": pack["title"].format(count=count, minutes=minutes, topic=topic),
-        "description": build_description(pack, chapters, count, topic, minutes),
+        # 제목은 lib/titles.py 가 만든다. 검색어를 앞에 두고, 편마다 다른
+        # 주제 구성을 넣고, 이미 낸 제목과 겹치면 회차를 붙인다. 예전에는
+        # 여기서 틀을 바로 format 했고 그 결과 수면 팩이 **평생 두 가지
+        # 제목만** 냈다 — 같은 제목끼리 검색에서 서로를 잡아먹는다.
+        "title": titles.compose(
+            pack["title"], count=count, minutes=minutes, topic=topic_label,
+            focus=titles.focus_from(picked),
+            episode=titles.episode_number(records, args.pack),
+            taken=titles.published_titles(records)),
+        "description": build_description(pack, chapters, count, topic_label, minutes),
         # 팩별 태그를 앞에 둔다. 태그는 앞쪽에 가중치가 있고, 공통 태그만으로는
         # 세 팩이 전부 같은 검색어를 두고 서로 경쟁한다.
         "tags": pack.get("tags", []) + [
@@ -456,7 +483,7 @@ def main() -> int:
 
     cards.render_thumbnail(
         out_dir / "thumbnail.png",
-        headline=topic if topic else pack["name"],
+        headline=topic_label if topic_label else pack["name"],
         sub=f"문장 {count}개 · {minutes}분")
 
     # --offline 은 파이프라인 시험이지 발행이 아니다. 여기서 문장을 기록하면
