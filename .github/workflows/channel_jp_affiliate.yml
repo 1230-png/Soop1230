@@ -1,0 +1,43 @@
+name: 귀트는 일본어 — 기존 영상에 교재 링크
+
+# cron 이 없다. 이미 올린 공개 영상의 설명란을 한 번 따라잡게 하는 손 실행용이다.
+# 새 영상은 upload.py 가 붙인다. 링크가 이미 있는 영상은 건드리지 않는다.
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "무엇이 바뀌는지만 본다 (보내지 않는다)"
+        required: true
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: channel-jp-affiliate
+  cancel-in-progress: false
+
+jobs:
+  affiliate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 파이썬 의존성
+        run: pip install --quiet -r channel_jp/requirements.txt
+
+      - name: 설명란에 링크 붙이기
+        env:
+          MV_CLIENT_ID: ${{ secrets.MV_CLIENT_ID }}
+          MV_CLIENT_SECRET: ${{ secrets.MV_CLIENT_SECRET }}
+          MV_REFRESH_TOKEN: ${{ secrets.MV_REFRESH_TOKEN }}
+          MV_CHANNEL_ID: ${{ secrets.MV_CHANNEL_ID }}
+        run: |
+          args=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then args="--dry-run"; fi
+          python3 channel_jp/add_affiliate.py $args | tee "$GITHUB_STEP_SUMMARY"

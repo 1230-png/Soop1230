@@ -35,6 +35,22 @@ from googleapiclient.http import MediaFileUpload
 SCOPES = None
 CHANNEL_ID = "UCeXsmdfyW4hoxgWV2K8EwFw"  # @200-y3b
 
+# 쿠팡 파트너스 교재 링크. channel_200y3b/scripts/upload_video.py 와 같은
+# 값의 사본이다 — 이 폴더는 그쪽을 import 하지 않는다(CLAUDE.md). 바꾸면
+# 두 곳을 같이 바꿀 것. 고지 문구는 쿠팡이 "반드시 기재"하라는 문장 그대로다.
+COUPANG_LINK = "https://link.coupang.com/a/hjjWUaBEJM"
+COUPANG_LABEL = "왕초보 기초영어 교재 (쿠팡)"
+DISCLOSURE = ("이 포스팅은 쿠팡 파트너스 활동의 일환으로, "
+              "이에 따른 일정액의 수수료를 제공받습니다.")
+
+
+def with_affiliate(description: str) -> str:
+    """고지를 맨 앞에(유튜브가 뒤를 접는다), 링크를 맨 뒤에 붙인다."""
+    if not COUPANG_LINK:
+        return description
+    return "\n\n".join([DISCLOSURE, description.strip(),
+                        f"📚 {COUPANG_LABEL}: {COUPANG_LINK}"])
+
 
 def credential(name: str) -> str:
     return os.environ.get(f"Y3B_{name}") or os.environ.get(f"YT_{name}") or ""
@@ -79,7 +95,7 @@ def upload(youtube, video_path: Path, meta: dict) -> str:
     body = {
         "snippet": {
             "title": meta["title"],
-            "description": meta["description"],
+            "description": with_affiliate(meta["description"]),
             "tags": meta.get("tags", []),
             "categoryId": meta.get("categoryId", "27"),
             "defaultLanguage": "ko",

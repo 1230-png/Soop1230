@@ -78,6 +78,36 @@ packs:
       - ja_normal
       - gap_sleep
 
+  sleep_japanese_long:
+    name: 자기 전 일본어 3시간
+    target_minutes: 180
+    # 40분짜리는 시청자가 아직 자는 중에 끝난다. 밤새 틀어 두는 한 번이
+    # sleep_japanese 다섯 번 값이다. 길이는 같은 음성을 되풀이하지 않고
+    # 문장을 늘려서 번다 — 되풀이한 파일은 수익화 심사에서 반복 콘텐츠로
+    # 읽힌다. 글자 값은 워크플로의 음성 캐시(actions/cache)가 줄인다:
+    # 한 번 합성한 문장은 다음 회차부터 돈이 안 든다.
+    phrase_count: 700
+    schedule: 매주 토요일
+    playlist: 자면서 듣는 일본어
+    title: "잠들기 전 일본어 3시간 | 자면서 듣는 일본어 회화 {count}문장 · 틀어 두고 주무세요"
+    tags: [자면서듣는일본어, 수면일본어, 일본어흘려듣기, 잠잘때듣는일본어, 일본어3시간]
+    hook: "잠들기 전에 틀어 두는 {minutes}분 일본어 듣기입니다. 문장 {count}개가 겹치지 않고 이어집니다."
+    howto: |-
+      따라 말하지 않으셔도 됩니다. 볼륨을 낮추고 그냥 틀어 두세요.
+      갑자기 커지는 소리나 배경 음악이 없어 잠을 깨우지 않습니다.
+      밤새 틀어 두셔도 같은 문장이 반복되지 않습니다.
+    intro_ko: 안녕하세요, 귀트는 일본어입니다. 세 시간 동안 편안하게 흘려듣는 일본어예요. 따라 말하지 않으셔도 됩니다. 그냥 틀어 두고 주무세요.
+    outro_ko: 오늘도 고생 많으셨습니다. 편안한 밤 되세요.
+    recipe:
+      - ja_normal
+      - gap_short
+      - ko
+      - gap_short
+      - ja_slow
+      - gap_sleep
+      - ja_normal
+      - gap_sleep
+
   situation_pack:
     name: 상황별 일본어
     target_minutes: 14

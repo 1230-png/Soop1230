@@ -24,6 +24,7 @@ on:
           - shadowing_drill
           - situation_pack
           - sleep_english
+          - sleep_english_long
           - monthly_master
 
 permissions:
@@ -70,7 +71,8 @@ jobs:
               # fortnightly: it is the longest pack and the one viewers leave
               # running, so it earns more watch time per view than the rest.
               by_weekday = {6: "weekly_review", 0: "shadowing_drill",
-                            2: "situation_pack", 4: "sleep_english"}
+                            2: "situation_pack", 4: "sleep_english",
+                            5: "sleep_english_long"}
               pack = by_weekday.get(kst.weekday(), "")
 
           print(f"pack={pack}")

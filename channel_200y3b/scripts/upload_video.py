@@ -43,7 +43,10 @@ ENV_FILE = ROOT / ".env.youtube"
 #
 # **여기를 채우기 전에 affiliate.py 를 읽을 것.** 대가성 고지는 선택이
 # 아니고, 이 값이 채워지는 순간 무인으로 발행된다.
-COUPANG_LINK = ""
+# 「처음부터 시작하는 어션영어의 진짜 기초영어」(동양북스, 상품 1985382079).
+# 2026-09-25 에 짧은 주소가 이 상품·제휴 태그로 넘어가는 것을 확인했다.
+COUPANG_LINK = "https://link.coupang.com/a/hjjWUaBEJM"
+COUPANG_LABEL = "왕초보 기초영어 교재 (쿠팡)"
 
 CHANNEL_ID = "UCeXsmdfyW4hoxgWV2K8EwFw"  # @200-y3b
 
@@ -276,7 +279,7 @@ def upload_video(
     # 설명란에 적어 넣은 링크는 assert_disclosed 가 잡아 업로드를 멈춘다.
     # 여기서 예외를 삼키면 고지 없는 링크가 그대로 나간다 — 삼키지 말 것.
     full_description = affiliate.assert_disclosed(
-        affiliate.with_disclosure(description, COUPANG_LINK))
+        affiliate.with_disclosure(description, COUPANG_LINK, COUPANG_LABEL))
 
     # Upload video
     body = {
