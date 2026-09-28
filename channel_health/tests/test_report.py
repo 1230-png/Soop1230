@@ -318,7 +318,7 @@ class TestExperiments:
 
     def test_실험이_없는_채널은_조용하다(self):
         assert report._experiment_findings(
-            [self.long_row("09-20", 5, channel="200y3b")], "200y3b",
+            [self.long_row("09-20", 5, channel="earth")], "earth",
             datetime(2026, 10, 11, tzinfo=timezone.utc)) == []
 
     def test_보고서_본문에_들어간다(self):

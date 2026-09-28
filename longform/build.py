@@ -1,6 +1,6 @@
 """Build one long-form pack: pick phrases, synthesize, render cards, encode.
 
-    python3 longform/build.py --pack weekly_review [--offline] [--limit N]
+    python3 longform/build.py --pack weekly_100 [--offline] [--limit N]
 
 Output lands in longform/build/<date>-<pack>/ as video.mp4, metadata.json
 and thumbnail.png. Nothing here touches the Shorts pipeline's files.
@@ -37,8 +37,14 @@ SPOKEN = {
 STAGE = {
     "en_normal": "en", "en_slow": "en", "ko": "ko",
     "example_en": "example", "example_ko": "example",
-    "shadow_gap": "shadow",
+    "shadow_gap": "shadow", "recall_gap": "recall",
 }
+
+# 유튜브 설명란은 5,000바이트까지다(한글은 한 글자 3바이트). 넘으면 영상을
+# 다 만든 뒤 업로드에서 invalidDescription 으로 죽는다 — 150문장 수면 팩과
+# 3시간 팩이 챕터를 문장마다 달다가 실제로 그렇게 죽었다(이슈 #28, #29).
+# upload.py 가 제휴 고지와 링크(~300바이트)를 덧붙이므로 여유를 둔다.
+DESCRIPTION_BUDGET = 4500
 
 
 def load_packs() -> dict:
@@ -119,7 +125,7 @@ def build_segments(pack: dict, defaults: dict, picked: list, topic: str,
     — a phrase whose TTS failed is dropped, so the title, the chapters and
     used.json all have to count from this rather than from what was asked for.
     """
-    segments, chapters, kept = [], [], []
+    segments, chapters = [], []
     total = 0.0
     count = len(picked)
 
@@ -141,69 +147,97 @@ def build_segments(pack: dict, defaults: dict, picked: list, topic: str,
 
     card_cache: dict = {}
 
-    def card_for(idx: int, phrase: dict, stage: str) -> Path:
-        key = (phrase["id"], stage)
+    def card_for(part_no: int, label: str, idx: int, phrase: dict,
+                 stage: str) -> Path:
+        key = (part_no, phrase["id"], stage)
         if key not in card_cache:
             card_cache[key] = cards.render(
-                work / f"card_{idx:03d}_{stage}.png",
-                phrase=phrase, index=idx, total=count, stage=stage, topic=topic,
+                work / f"card_{part_no}_{idx:03d}_{stage}.png",
+                phrase=phrase, index=idx, total=count, stage=stage, topic=label,
             )
         return card_cache[key]
 
-    for idx, phrase in enumerate(picked, start=1):
-        # Build each phrase into the segment list, but be ready to take it
-        # back out. A 150-phrase sleep pack makes ~450 edge-tts calls, so one
-        # of them exhausting its retries is not a remote possibility — and
-        # losing a 35-minute pack over a single sentence is a worse outcome
-        # than shipping it one sentence short. Rolling back to the mark keeps
-        # a half-built phrase from appearing with its steps missing.
-        mark, mark_total = len(segments), total
-        last_en_seconds = 0.0
+    # A pack is one recipe run over the phrases, or several `parts` run one
+    # after another. Only the first part decides which phrases survive a TTS
+    # failure; a later part dropping one just skips it there.
+    parts = pack.get("parts") or [{"recipe": pack["recipe"]}]
+    kept = picked
+    for part_no, part in enumerate(parts):
+        label = part.get("label", "") or topic
+        per_phrase_chapters = part.get("chapters", "phrases") == "phrases"
+        if not per_phrase_chapters:
+            chapters.append((total, label))
+        survivors = []
 
-        try:
-            for step in pack["recipe"]:
-                if step in SPOKEN:
-                    kind, voice_key, rate_key = SPOKEN[step]
-                    text = {
-                        "en": phrase["en"],
-                        "ko": phrase["ko"],
-                        "example": phrase.get("ex_en" if step == "example_en" else "ex_ko", ""),
-                    }[kind]
-                    if not text:
-                        continue  # phrase has no example; skip rather than emit silence
-                    rate = defaults[rate_key] if rate_key else "+0%"
-                    audio = tts.synthesize(text, defaults[voice_key], rate, offline=offline)
-                    if kind == "en" or step == "example_en":
-                        last_en_seconds = tts.duration_of(audio)
-                    add(audio, card_for(idx, phrase, STAGE[step]))
+        for idx, phrase in enumerate(kept, start=1):
+            # Build each phrase into the segment list, but be ready to take it
+            # back out. A 150-phrase sleep pack makes ~450 edge-tts calls, so
+            # one of them exhausting its retries is not a remote possibility —
+            # and losing a 35-minute pack over a single sentence is a worse
+            # outcome than shipping it one sentence short. Rolling back to the
+            # mark keeps a half-built phrase from appearing with steps missing.
+            mark, mark_total = len(segments), total
+            last_en_seconds = 0.0
 
-                elif step == "shadow_gap":
-                    # The whole point: long enough to actually say it back. A gap
-                    # the same length as the audio is not — the learner is still
-                    # drawing breath — hence the multiplier on top.
-                    seconds = (last_en_seconds * defaults.get("shadow_mult", 1.0)
-                               + defaults["shadow_pad"])
-                    audio = tts.make_silence(
-                        seconds, work / f"gap_{idx:03d}_{len(segments)}.mp3")
-                    add(audio, card_for(idx, phrase, "shadow"))
+            def card(stage):
+                return card_for(part_no, label, idx, phrase, stage)
 
-                elif step.startswith("gap_") and step in defaults:
-                    seconds = defaults[step]
-                    audio = tts.make_silence(
-                        seconds, work / f"gap_{idx:03d}_{len(segments)}.mp3")
-                    # Hold the last card rather than flashing a new one.
-                    add(audio, segments[-1]["card"] if segments else intro_card)
+            def silence(seconds):
+                return tts.make_silence(
+                    seconds, work / f"gap_{part_no}_{idx:03d}_{len(segments)}.mp3")
 
-                else:
-                    raise SystemExit(f"Unknown recipe step: {step}")
-        except tts.TTSError as e:
-            print(f"[build] dropping {phrase['id']}: {e}", file=sys.stderr)
-            del segments[mark:]
-            total = mark_total
-            continue
+            try:
+                for step in part["recipe"]:
+                    if step in SPOKEN:
+                        kind, voice_key, rate_key = SPOKEN[step]
+                        text = {
+                            "en": phrase["en"],
+                            "ko": phrase["ko"],
+                            "example": phrase.get("ex_en" if step == "example_en" else "ex_ko", ""),
+                        }[kind]
+                        if not text:
+                            continue  # phrase has no example; skip rather than emit silence
+                        rate = defaults[rate_key] if rate_key else "+0%"
+                        audio = tts.synthesize(text, defaults[voice_key], rate, offline=offline)
+                        if kind == "en" or step == "example_en":
+                            last_en_seconds = tts.duration_of(audio)
+                        add(audio, card(STAGE[step]))
 
-        chapters.append((mark_total, phrase["en"]))
-        kept.append(phrase)
+                    elif step in ("shadow_gap", "recall_gap"):
+                        # The whole point: long enough to actually say it back.
+                        # A gap the same length as the audio is not — the
+                        # learner is still drawing breath — hence the multiplier.
+                        # recall_gap comes *before* the English is heard, so it
+                        # measures the line it is about to play (cached, so
+                        # the en_normal that follows costs nothing extra).
+                        if step == "recall_gap":
+                            last_en_seconds = tts.duration_of(tts.synthesize(
+                                phrase["en"], defaults["voice_en"], "+0%",
+                                offline=offline))
+                        seconds = (last_en_seconds * defaults.get("shadow_mult", 1.0)
+                                   + defaults["shadow_pad"])
+                        add(silence(seconds), card(STAGE[step]))
+
+                    elif step.startswith("gap_") and step in defaults:
+                        # Hold the last card rather than flashing a new one.
+                        add(silence(defaults[step]),
+                            segments[-1]["card"] if segments else intro_card)
+
+                    else:
+                        raise SystemExit(f"Unknown recipe step: {step}")
+            except tts.TTSError as e:
+                print(f"[build] dropping {phrase['id']} from part {part_no + 1}: {e}",
+                      file=sys.stderr)
+                del segments[mark:]
+                total = mark_total
+                continue
+
+            if per_phrase_chapters:
+                chapters.append((mark_total, phrase["en"]))
+            survivors.append(phrase)
+
+        if part_no == 0:
+            kept = survivors
 
     # Outro
     outro_card = cards.render_title(
@@ -273,22 +307,61 @@ def build_description(pack: dict, chapters: list, count: int, topic: str,
         "",
         "타임스탬프",
     ]
-    lines += [f"{fmt_timestamp(t)} {label}" for t, label in chapters]
-    lines += [
+    tail = [
         "",
         "매일 영어 한마디 — 실생활에서 바로 쓰는 영어 표현을 매일 전해드립니다.",
         "구독: https://www.youtube.com/@200-y3b?sub_confirmation=1",
         "다른 몰아듣기 영상: https://www.youtube.com/@200-y3b/playlists",
         "",
         "[ 업로드 일정 ]",
+        "매주 일요일 아침 6시 — 1시간 영어회화 100문장",
         "매일 09시·15시·21시 — 오늘의 표현 한 개 (쇼츠)",
-        "일요일 주간 복습 · 월요일 쉐도잉 · 수요일 상황별 · 금요일 수면 영어",
-        "매월 말 — 한 달 총정리",
         "",
         " ".join(f"#{t}" for t in pack.get("tags", [])[:5]),
         "#영어공부 #영어회화 #매일영어한마디 #영어듣기 #dailyenglish",
     ]
-    return "\n".join(lines)
+    pinned = {"인트로", "마무리"} | {p.get("label") for p in pack.get("parts", [])}
+    return fit_description(lines, chapters, tail, pinned)
+
+
+def fit_description(head: list, chapters: list, tail: list,
+                    pinned: set = frozenset()) -> str:
+    """Thin the timestamps until the whole thing fits DESCRIPTION_BUDGET.
+
+    Every `step`-th phrase chapter survives, plus the pinned ones (0:00 has
+    to stay or YouTube shows no chapters at all). `<` and `>` are stripped
+    because the API rejects a description containing them.
+    """
+    step = 1
+    while True:
+        kept = [c for i, c in enumerate(chapters) if i % step == 0 or c[1] in pinned]
+        text = "\n".join(head + [f"{fmt_timestamp(t)} {label}" for t, label in kept]
+                         + tail).replace("<", "").replace(">", "")
+        if len(text.encode("utf-8")) <= DESCRIPTION_BUDGET or step > len(chapters):
+            return text
+        step += 1
+
+
+def pick_theme(pack_id: str, pack: dict, state: dict) -> dict:
+    """This week's entry from pack["themes"], with which lap of the rotation
+    it is on — the title needs that so a theme's second airing is not a
+    word-for-word copy of its first."""
+    themes = pack["themes"]
+    cursor = state.get("theme_cursor", {}).get(pack_id, 0)
+    return dict(themes[cursor % len(themes)], cursor=cursor,
+                round=cursor // len(themes) + 1)
+
+
+def make_title(pack: dict, count: int, minutes: int, topic: str,
+               theme: dict = None) -> str:
+    """YouTube refuses titles over 100 characters, after the whole build."""
+    title = pack["title"].format(
+        count=count, minutes=minutes, topic=topic,
+        hook=theme["hook"] if theme else "",
+        round=f" {theme['round']}탄" if theme and theme["round"] > 1 else "")
+    if len(title) > 100:
+        raise SystemExit(f"Title is {len(title)} chars (limit 100): {title}")
+    return title
 
 
 def main() -> int:
@@ -310,14 +383,22 @@ def main() -> int:
     phrases = load_phrases()
     state = load_used()
 
-    topic, include = "", None
+    topic, include, theme = "", None, None
     if args.pack == "situation_pack":
         topics = config["topics"]
         entry = topics[state.get("topic_cursor", 0) % len(topics)]
         topic, include = entry["name"], entry["include"]
+    elif "themes" in pack:
+        theme = pick_theme(args.pack, pack, state)
+        topic, include = theme["name"], theme["include"]
+        # 짧은 문장부터. 채널이 겨누는 검색어가 「왕초보」라 첫 몇 분이 쉬워야
+        # 남고, 한 편 안에서도 짧게 시작해 길어지는 순서가 따라 하기 쉽다.
+        phrases = sorted(phrases, key=lambda p: len(p["en"].split()))
 
     count = args.limit or pack["phrase_count"]
     picked = pick_phrases(phrases, args.pack, count, state, include)
+    if theme:
+        picked.sort(key=lambda p: len(p["en"].split()))
     if len(picked) < count:
         print(f"[build] pool holds {len(picked)} of the {count} phrases asked "
               f"for — the video will be correspondingly shorter", file=sys.stderr)
@@ -352,11 +433,12 @@ def main() -> int:
               f"target_minutes of {target}. Adjust phrase_count or the "
               f"recipe so the label matches what viewers get.", file=sys.stderr)
 
-    title = pack["title"].format(count=count, minutes=minutes, topic=topic)
+    title = make_title(pack, count, minutes, topic, theme)
     thumb = cards.render_thumbnail(
         out_dir / "thumbnail.png",
-        headline=topic if topic else pack["name"],
-        sub=f"표현 {count}개 · {minutes}분",
+        headline=pack["name"] if theme else (topic or pack["name"]),
+        sub=(f"{topic} · {minutes}분 흘려듣기" if theme
+             else f"표현 {count}개 · {minutes}분"),
     )
 
     metadata = {
@@ -387,7 +469,10 @@ def main() -> int:
         state.setdefault("packs", {}).setdefault(args.pack, {})
         for p in picked:
             state["packs"][args.pack][p["id"]] = date_str
-        if topic:
+        if theme:
+            state.setdefault("theme_cursor", {})
+            state["theme_cursor"][args.pack] = theme["cursor"] + 1
+        elif topic:
             state["topic_cursor"] = state.get("topic_cursor", 0) + 1
         save_used(state)
 

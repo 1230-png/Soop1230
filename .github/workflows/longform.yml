@@ -5,21 +5,22 @@ name: Long-form packs (@200-y3b)
 # that number moves. Runs early morning KST so a pack is up before commute.
 on:
   schedule:
-    # One daily slot; the chooser below decides what (if anything) to build.
-    # This used to be two crons — weekdays plus a 27-30 month-end window —
-    # which both fire on the same day whenever the 27th-30th lands on a
-    # build weekday. That is 26 days a year, and each one starts two runs
-    # that pick the same pack and upload it twice. 21:00 UTC = 06:00 KST.
-    - cron: "0 21 * * *"
+    # 2026-09-29: 주 5편(12~40분)에서 주 1편 · 1시간(weekly_100)으로 바꿨다.
+    # 짧은 편을 여럿 내니 편당 조회수가 8~330회였고 같은 제목끼리 서로를
+    # 잡아먹었다. 근거와 참고 채널은 packs.yaml 의 weekly_100 머리에 있다.
+    # 예전 팩들은 아래 손 실행 목록에 그대로 남는다.
+    # Sat 21:00 UTC = Sun 06:00 KST. Cron start lag (~2.5h seen) stays Sunday.
+    - cron: "0 21 * * 6"
   workflow_dispatch:
     inputs:
       pack:
-        description: "Pack id (blank = pick by date)"
+        description: "Pack id (blank = weekly_100)"
         required: false
         type: choice
         default: ""
         options:
           - ""
+          - weekly_100
           - weekly_review
           - shadowing_drill
           - situation_pack
@@ -54,26 +55,11 @@ jobs:
         id: pick
         run: |
           python3 - <<'PY' >> "$GITHUB_OUTPUT"
-          import calendar, datetime, os
+          import datetime, os
 
-          forced = os.environ.get("FORCED_PACK", "").strip()
-          # The runner is UTC; the schedule is written for KST, so decide on
-          # the KST date or every weekday boundary lands a day early.
+          # The runner is UTC; the date in the commit message is KST.
           kst = datetime.datetime.utcnow() + datetime.timedelta(hours=9)
-          last_day = calendar.monthrange(kst.year, kst.month)[1]
-
-          if forced:
-              pack = forced
-          elif kst.day == last_day:
-              pack = "monthly_master"
-          else:
-              # Monday=0 … Sunday=6. sleep_english is weekly rather than
-              # fortnightly: it is the longest pack and the one viewers leave
-              # running, so it earns more watch time per view than the rest.
-              by_weekday = {6: "weekly_review", 0: "shadowing_drill",
-                            2: "situation_pack", 4: "sleep_english",
-                            5: "sleep_english_long"}
-              pack = by_weekday.get(kst.weekday(), "")
+          pack = os.environ.get("FORCED_PACK", "").strip() or "weekly_100"
 
           print(f"pack={pack}")
           print(f"date={kst.date().isoformat()}")
