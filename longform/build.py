@@ -22,6 +22,8 @@ ROOT = Path(__file__).resolve().parent
 PACKS_FILE = ROOT / "packs.yaml"
 PHRASES_FILE = ROOT / "data" / "phrases.json"
 USED_FILE = ROOT / "data" / "used.json"
+# 한글 발음. phrases.json 은 import_queue.py 가 통째로 다시 쓰므로 따로 둔다.
+PRON_FILE = ROOT / "data" / "pron.tsv"
 BUILD_ROOT = ROOT / "build"
 
 # Steps that speak, and which voice/rate each uses. Everything not listed
@@ -57,7 +59,14 @@ def load_phrases() -> list:
             f"{PHRASES_FILE} not found. Build it first:\n"
             "  python3 longform/import_queue.py"
         )
-    return json.loads(PHRASES_FILE.read_text(encoding="utf-8"))
+    phrases = json.loads(PHRASES_FILE.read_text(encoding="utf-8"))
+    if PRON_FILE.exists():
+        pron = dict(line.split("	", 1) for line in
+                    PRON_FILE.read_text(encoding="utf-8").splitlines() if "	" in line)
+        for p in phrases:
+            if p["id"] in pron:
+                p["pron"] = pron[p["id"]].strip()
+    return phrases
 
 
 def load_used() -> dict:

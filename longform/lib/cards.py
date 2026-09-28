@@ -67,12 +67,16 @@ def _wrap(draw, text: str, font, max_width: int) -> list:
 
 
 def _centered_block(draw, text, font, top, fill, max_width, line_gap=14) -> int:
+    bbox = (0, 0, 0, 0)
     for line in _wrap(draw, text, font, max_width):
         w = draw.textlength(line, font=font)
         bbox = font.getbbox(line)
         draw.text(((WIDTH - w) / 2, top), line, font=font, fill=fill)
         top += (bbox[3] - bbox[1]) + line_gap
-    return top
+    # Ink starts bbox[1] below where a line is drawn. Between lines of one
+    # block that offset cancels out, but the block's last line still reaches
+    # bbox[1] past `top` — without this the next block overlaps it.
+    return top + bbox[1]
 
 
 def render(out_path: Path, *, phrase: dict, index: int, total: int,
@@ -107,27 +111,14 @@ def render(out_path: Path, *, phrase: dict, index: int, total: int,
         img.save(out_path)
         return out_path
 
-    en_lit = stage in ("en", "shadow")
-    ko_lit = stage == "ko"
-    ex_lit = stage == "example"
-
-    y = 250
-    y = _centered_block(draw, phrase["en"], _font(92), y,
-                        BODY if en_lit else DIM, max_w, line_gap=18)
-    y += 40
-    y = _centered_block(draw, phrase["ko"], _font(60), y,
-                        ACCENT if ko_lit else (DIM if not en_lit else MUTED), max_w)
-
-    if phrase.get("ex_en"):
-        y += 60
-        draw.line([(WIDTH / 2 - 180, y), (WIDTH / 2 + 180, y)], fill=RULE, width=2)
-        y += 50
-        y = _centered_block(draw, phrase["ex_en"], _font(46), y,
-                            BODY if ex_lit else DIM, max_w)
-        if phrase.get("ex_ko"):
-            y += 14
-            y = _centered_block(draw, phrase["ex_ko"], _font(40), y,
-                                MUTED if ex_lit else DIM, max_w)
+    # Shrink the whole body until it ends above the "따라 말해보세요" box.
+    # Every stage of a phrase gets the same scale — measured against the box
+    # even when it is not drawn — so the text does not jump between cards.
+    scale = 1.0
+    while scale > 0.5 and _body(ImageDraw.Draw(Image.new("RGB", (1, 1))),
+                                phrase, stage, max_w, scale) > HEIGHT - 300:
+        scale -= 0.05
+    _body(draw, phrase, stage, max_w, scale)
 
     if stage == "shadow":
         _prompt(draw, "따라 말해보세요")
@@ -135,6 +126,44 @@ def render(out_path: Path, *, phrase: dict, index: int, total: int,
     _progress(draw, index, total)
     img.save(out_path)
     return out_path
+
+
+def _body(draw, phrase: dict, stage: str, max_w: int, scale: float) -> int:
+    """Draw the phrase block; returns where it ends."""
+    en_lit = stage in ("en", "shadow")
+    ko_lit = stage == "ko"
+    ex_lit = stage == "example"
+
+    def f(size):
+        return _font(round(size * scale))
+
+    def gap(px):
+        return round(px * scale)
+
+    y = gap(250) if scale == 1.0 else 170
+    y = _centered_block(draw, phrase["en"], f(92), y,
+                        BODY if en_lit else DIM, max_w, line_gap=gap(18))
+    if phrase.get("pron"):
+        # 한글 발음은 영어를 들을 때만 밝힌다. 뜻을 읽는 순간에도 밝으면
+        # 눈이 발음 줄에 머물러 영어 문장을 안 본다.
+        y += gap(10)
+        y = _centered_block(draw, f"[{phrase['pron']}]", f(50), y,
+                            MUTED if en_lit else DIM, max_w)
+    y += gap(40)
+    y = _centered_block(draw, phrase["ko"], f(60), y,
+                        ACCENT if ko_lit else (DIM if not en_lit else MUTED), max_w)
+
+    if phrase.get("ex_en"):
+        y += gap(60)
+        draw.line([(WIDTH / 2 - 180, y), (WIDTH / 2 + 180, y)], fill=RULE, width=2)
+        y += gap(50)
+        y = _centered_block(draw, phrase["ex_en"], f(46), y,
+                            BODY if ex_lit else DIM, max_w)
+        if phrase.get("ex_ko"):
+            y += gap(14)
+            y = _centered_block(draw, phrase["ex_ko"], f(40), y,
+                                MUTED if ex_lit else DIM, max_w)
+    return y
 
 
 def _prompt(draw, prompt: str) -> None:
