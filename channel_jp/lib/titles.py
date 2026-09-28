@@ -75,30 +75,53 @@ def published_titles(published_rows) -> set:
 
 
 def compose(template: str, *, count, minutes, topic: str = "",
-            focus: str = "", episode: int = 1, taken=()) -> str:
+            focus: str = "", episode: int = 1, taken=(),
+            hook: str = "", round_label: str = "", strict: bool = False) -> str:
     """틀에 값을 넣고, 이미 낸 제목과 겹치면 회차를 붙인다.
 
-    `{focus}` 가 빈 값이면 그것이 든 ` | ` 조각을 통째로 버린다. 자리만
-    지우면 「| 편 · 흘려듣기 35분」처럼 뜻 없는 낱말이 남는다. 틀 쪽에
+    `{focus}` 나 `{hook}` 이 빈 값이면 그것이 든 ` | ` 조각을 통째로 버린다.
+    자리만 지우면 「| 편 · 흘려듣기 35분」처럼 뜻 없는 낱말이 남는다. 틀 쪽에
     조건을 두는 것보다 여기서 치우는 편이 낫다 — packs.yaml 은 자료이고
     자료에 분기를 넣으면 읽기 어려워진다.
+
+    `round_label` 은 주제가 도는 팩(weekly_100)이 쓴다. 주제 8개가 한 바퀴
+    돌고 나면 같은 주제가 다시 오는데, 그때 " 2탄" 이 붙어 **제목이 한 번도
+    겹치지 않는다.** 아래 `taken` 검사는 그것이 뚫렸을 때를 위한 두 번째 그물이다.
+
+    `strict` 면 상한을 넘을 때 뒤 조각을 버리지 않고 **멈춘다.** weekly_100 의
+    뒤 조각에는 「(한글 발음 포함)」과 회차가 들어 있어서, 버리면 지키지 못할
+    약속을 지운 제목이 조용히 나가고 회차 구분도 같이 사라진다. 조각을 버리는
+    쪽이 나은 팩(뒤가 길이·문장 수뿐인 것들)은 그대로 `strict=False` 다.
     """
-    if not focus:
-        # focus 가 비면 그것이 든 조각을 **통째로** 버린다. 자리만 지우면
-        # 「| 편 · 흘려듣기 35분」처럼 뜻 없는 낱말이 남는다. 이 채널 제목은
-        # ` | ` 로 나뉘어 있어서 조각 단위로 버릴 수 있다.
-        template = " | ".join(part for part in template.split(" | ")
-                              if "{focus}" not in part) or template
+    # 값이 빈 자리는 그것이 든 조각을 **통째로** 버린다. 자리만 지우면
+    # 「| 편 · 흘려듣기 35분」이나 「100문장 | | 52분」처럼 뜻 없는 낱말과
+    # 빈 칸이 남는다. 이 채널 제목은 ` | ` 로 나뉘어 있어서 조각 단위로
+    # 버릴 수 있다.
+    for name, value in (("focus", focus), ("hook", hook)):
+        if not value:
+            template = _drop_segment(template, name)
     title = _tidy(template.format(count=count, minutes=minutes, topic=topic,
-                                  focus=focus, episode=episode))
+                                  focus=focus, episode=episode, hook=hook,
+                                  round=round_label))
 
     taken = {t.strip() for t in taken}
-    if title not in taken:
-        return _fit(title, episode)
+    if title in taken:
+        # 겹쳤다. 회차를 붙인다 — 같은 제목을 두 번 내면 검색에서 서로를
+        # 잡아먹는다.
+        title = _tidy(f"{title} ({episode}회)")
 
-    # 겹쳤다. 회차를 붙인다 — 같은 제목을 두 번 내면 검색에서 서로를 잡아먹는다.
-    numbered = _tidy(f"{title} ({episode}회)")
-    return _fit(numbered, episode)
+    if strict and len(title) > TITLE_MAX:
+        raise SystemExit(
+            f"제목이 {len(title)}자다 (상한 {TITLE_MAX}). 뒤 조각을 버리면 "
+            f"「(한글 발음 포함)」이나 회차가 사라지므로 자르지 않는다 — "
+            f"packs.yaml 의 title 이나 hook 을 줄일 것:\n    {title}")
+    return _fit(title, episode)
+
+
+def _drop_segment(template: str, name: str) -> str:
+    """`{name}` 이 든 ` | ` 조각을 버린다. 조각이 그것뿐이면 틀을 그대로 둔다."""
+    kept = [part for part in template.split(" | ") if "{" + name + "}" not in part]
+    return " | ".join(kept) or template
 
 
 def _tidy(text: str) -> str:

@@ -137,6 +137,7 @@ class TestEveryPackTemplate:
     def test_모든_팩의_검색어가_앞부분에_있다(self):
         # 검색 결과와 휴대폰 목록에서는 제목 앞부분만 보인다.
         wanted = {
+            "weekly_100": "왕초보 일본어회화",
             "sleep_japanese": "자면서 듣는 일본어",
             "sleep_japanese_long": "자면서 듣는 일본어",
             "shadowing_drill": "일본어 쉐도잉",

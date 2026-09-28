@@ -29,6 +29,17 @@ MUTED = (104, 112, 124)
 RULE = (222, 217, 209)
 DIM = (176, 172, 165)      # 지금 차례가 아닌 줄. 배경보다는 확실히 진하게
 
+# 본문이 들어가는 세로 구간. 아래쪽 선은 「따라 말해보세요」 상자의 위쪽이다.
+#
+# **stage 마다 다르게 두지 않는다.** 예전에는 쉐도잉 카드만 상자를 피하고
+# 나머지는 화면 아래까지 썼는데, 그러면 같은 문장인데 카드가 넘어갈 때 글자가
+# 위아래로 움직였다. 지금은 모든 카드가 같은 구간에 같은 배율로 앉는다.
+BODY_TOP = 170
+BODY_BOTTOM = HEIGHT - 300
+# 이보다 더 줄이지는 않는다. 여기까지 왔으면 문장이 카드에 안 맞는 것이고,
+# 더 줄여도 읽히지 않는다.
+MIN_SCALE = 0.5
+
 # 가나가 있는 폰트를 앞에 둔다. 그래도 목록 순서만으로는 못 믿는다 —
 # 아래 has_kana() 가 실제 글리프를 확인한다.
 FONT_CANDIDATES = [
@@ -170,6 +181,9 @@ def render(out_path: Path, *, phrase: dict, index: int, total: int,
     나머지는 어둡게 둔다. 중간에 화면을 본 사람이 지금 무엇을 하는 중인지
     바로 알 수 있어야 한다.
 
+    `recall` 만 다른 카드다 — 2부 반복 훈련에서 일본어와 한글 발음을 가리고
+    뜻만 보여 준다.
+
     영어판과 줄 수가 다르다. 한국어 학습자는 **읽기(yomi)** 가 없으면
     일본어 문장을 따라올 수 없어서, 일본어와 뜻 사이에 한 줄이 더 들어간다.
     """
@@ -184,14 +198,43 @@ def render(out_path: Path, *, phrase: dict, index: int, total: int,
     draw.text((WIDTH - 80 - counter_w, 54), counter, font=_font(38), fill=MUTED)
     draw.line([(80, 120), (WIDTH - 80, 120)], fill=RULE, width=2)
 
+    if stage == "recall":
+        # 2부 반복 훈련. 뜻만 보여 주고 일본어와 **한글 발음까지** 가린다.
+        # 여기서 발음이 보이면 떠올리는 연습이 읽는 연습으로 바뀐다 — 한글만
+        # 읽어도 문장이 그대로 나오므로, 일본어를 가리고 발음을 남기는 것은
+        # 아무것도 가리지 않은 것과 같다.
+        y = _centered_block(draw, phrase["ko"], _font(80), 320, ACCENT, max_w,
+                            line_gap=18)
+        _centered_block(draw, "? ? ?", _font(88), y + 70, DIM, max_w)
+        _prompt(draw, "일본어로 말해 보세요")
+        img.save(out_path)
+        return out_path
+
+    _body(draw, phrase, stage, max_w)
+
+    if stage == "shadow":
+        _prompt(draw, "따라 말해보세요")
+
+    # 진행 막대를 두지 않는다. 화면 아래 가로 막대는 재생 바로 읽혀서,
+    # 시청자가 영상이 멈춘 줄 알고 화면을 건드리게 된다. 남은 분량은
+    # 오른쪽 위 "1 / 150" 이 이미 말해 준다.
+
+    img.save(out_path)
+    return out_path
+
+
+def _blocks_for(phrase: dict, stage: str) -> tuple:
+    """그릴 줄들: (글, 크기, 색, 위쪽 여백, 줄간격). 그리기 전에 높이를 재려고
+    따로 뒀다.
+
+    **어느 stage 에서도 줄 구성과 크기가 같다** — 다른 것은 색뿐이다. 그래서
+    아래 배율이 같은 문장의 모든 카드에서 같은 값으로 나오고, 카드가 넘어갈 때
+    글자가 위아래로 튀지 않는다.
+    """
     ja_lit = stage in ("ja", "shadow")
     ko_lit = stage == "ko"
     ex_lit = stage == "example"
 
-    # 그릴 줄을 먼저 모은다: (글, 크기, 색, 위쪽 여백, 줄간격).
-    # 재고 나서 그리는 이유는 세로 중앙을 맞추기 위해서다. 예문이 없는 문장과
-    # 있는 문장은 높이가 크게 다르고, 수면 팩에는 쉐도잉 안내가 없어서 아래가
-    # 통째로 빈다 — 40분 내내 그 상태로 있게 된다.
     blocks = [
         (phrase["ja"], 88, BODY if ja_lit else DIM, 0, 18),
         # 읽기는 일본어 줄과 같이 밝아진다. 소리를 듣는 순간 눈이 가야 할 곳이다.
@@ -209,41 +252,67 @@ def render(out_path: Path, *, phrase: dict, index: int, total: int,
         if phrase.get("ex_ko"):
             blocks.append((phrase["ex_ko"], 36,
                            MUTED if ex_lit else DIM, 10, 12))
+    return blocks, divider_after
 
-    total_height = sum(
-        gap + _block_height(draw, text, _font(size), max_w, line_gap)
+
+def _body_height(draw, blocks, max_w: int, scale: float) -> float:
+    return sum(
+        round(gap * scale)
+        + _block_height(draw, text, _font(round(size * scale)), max_w,
+                        round(line_gap * scale))
         for text, size, _, gap, line_gap in blocks)
 
-    # 쓸 수 있는 세로 구간. 쉐도잉 안내가 뜨는 카드는 그 상자를 피해야 한다.
-    top_edge, bottom_edge = 170, HEIGHT - (300 if stage == "shadow" else 110)
-    y = max(top_edge, top_edge + (bottom_edge - top_edge - total_height) / 2)
+
+def body_scale(draw, phrase: dict, stage: str, max_w: int) -> float:
+    """상자 위에 들어가는 가장 큰 배율. 안 줄여도 되면 1.0.
+
+    테스트가 부를 수 있게 밖으로 냈다 — 「가장 긴 문장도 상자와 겹치지
+    않는다」를 그림을 그려 보지 않고 확인할 수 있어야 한다.
+    """
+    blocks, _ = _blocks_for(phrase, stage)
+    scale = 1.0
+    while (scale > MIN_SCALE
+           and _body_height(draw, blocks, max_w, scale) > BODY_BOTTOM - BODY_TOP):
+        scale -= 0.05
+    return scale
+
+
+def _body(draw, phrase: dict, stage: str, max_w: int) -> None:
+    """문장 블록을 그린다. 상자 위에 들어갈 때까지 본문 전체를 줄인다.
+
+    예전에는 stage 마다 쓸 수 있는 세로 구간이 달랐다(쉐도잉 카드만 상자를
+    피했다). 그래서 긴 문장에서 두 가지가 같이 일어났다 — 같은 문장인데
+    카드가 넘어갈 때 글자가 위아래로 움직이고, 그러고도 안 들어가면 상자
+    위로 글자가 겹쳤다. 이제 **모든 stage 가 같은 구간**을 쓰고, 넘치면
+    글자를 자르는 대신 배율을 내린다.
+    """
+    blocks, divider_after = _blocks_for(phrase, stage)
+    scale = body_scale(draw, phrase, stage, max_w)
+    height = _body_height(draw, blocks, max_w, scale)
+    y = max(BODY_TOP, BODY_TOP + (BODY_BOTTOM - BODY_TOP - height) / 2)
 
     for position, (text, size, fill, gap, line_gap) in enumerate(blocks):
+        gap = round(gap * scale)
         y += gap
         if position - 1 == divider_after:
             # 예문 앞의 구분선. 여백 한가운데에 놓는다.
             rule_y = y - gap / 2
             draw.line([(WIDTH / 2 - 180, rule_y), (WIDTH / 2 + 180, rule_y)],
                       fill=RULE, width=2)
-        y = _centered_block(draw, text, _font(size), y, fill, max_w, line_gap)
+        y = _centered_block(draw, text, _font(round(size * scale)), y, fill,
+                            max_w, round(line_gap * scale))
 
-    if stage == "shadow":
-        prompt = "따라 말해보세요"
-        prompt_w = draw.textlength(prompt, font=_font(52))
-        box_y = HEIGHT - 250
-        draw.rounded_rectangle(
-            [(WIDTH - prompt_w) / 2 - 46, box_y - 24,
-             (WIDTH + prompt_w) / 2 + 46, box_y + 72],
-            radius=18, outline=ACCENT, width=3)
-        draw.text(((WIDTH - prompt_w) / 2, box_y), prompt,
-                  font=_font(52), fill=ACCENT)
 
-    # 진행 막대를 두지 않는다. 화면 아래 가로 막대는 재생 바로 읽혀서,
-    # 시청자가 영상이 멈춘 줄 알고 화면을 건드리게 된다. 남은 분량은
-    # 오른쪽 위 "1 / 150" 이 이미 말해 준다.
-
-    img.save(out_path)
-    return out_path
+def _prompt(draw, prompt: str) -> None:
+    """화면 아래 안내 상자. 1부는 「따라 말해보세요」, 2부는 「일본어로 말해 보세요」."""
+    prompt_w = draw.textlength(prompt, font=_font(52))
+    box_y = HEIGHT - 250
+    draw.rounded_rectangle(
+        [(WIDTH - prompt_w) / 2 - 46, box_y - 24,
+         (WIDTH + prompt_w) / 2 + 46, box_y + 72],
+        radius=18, outline=ACCENT, width=3)
+    draw.text(((WIDTH - prompt_w) / 2, box_y), prompt,
+              font=_font(52), fill=ACCENT)
 
 
 def render_title(out_path: Path, *, lines, subtitle: str = "",

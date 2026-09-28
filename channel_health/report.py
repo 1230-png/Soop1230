@@ -85,8 +85,22 @@ EXPERIMENTS = {
     #
     # 확인하는 법: `channel_jp/data/published.csv` 의 title 칸을 본다.
     # 새 제목은 「여행 일본어 …」처럼 검색어로 시작하고 「… 편 · 」이 들어 있다.
-    "jp": [("2026-09-29", "롱폼 제목을 검색어형으로 (channel_jp/lib/titles.py)")],
-    # 첫 발행은 합친 뒤 첫 일요일. 합치는 것이 10/4 를 넘기면 이 날짜도 미룰 것.
+    #
+    # **이 줄은 표본 0편으로 끝났다.** 시험 대상이던 상황별 팩이 첫 화요일을
+    # 맞기 전인 2026-09-29 에 weekly_100 으로 바뀌었다(아래 줄). 제목 규칙은
+    # 새 팩이 그대로 이어받았지만 **길이·구성·주제 묶음이 같이 바뀌었으므로,
+    # 앞으로의 조회수에서 제목 몫만 갈라낼 수는 없다.** 지우지 않고 남기는
+    # 것은 그 사실 자체가 기록이기 때문이다 — 지우면 몇 주 뒤에 이 자료를
+    # 보는 사람이 제목 재시험이 끝난 줄 안다.
+    "jp": [
+        ("2026-09-29", "롱폼 제목을 검색어형으로 (channel_jp/lib/titles.py) "
+                       "— 표본 0편에서 아래 변경에 흡수됐다"),
+        # 첫 발행은 합친 뒤 첫 일요일. 합치는 것이 10/4 를 넘기면 이 날짜도
+        # 미룰 것 — 안 그러면 예전 팩 편이 「바꾼 뒤」에 섞인다.
+        ("2026-10-04", "롱폼을 상황별 14분에서 주 1편 50분 100문장으로 "
+                       "(channel_jp weekly_100)"),
+    ],
+    # 두 채널이 같은 주에 같은 틀로 갈아탔다. 첫 발행도 같은 일요일이다.
     "200y3b": [("2026-10-04", "롱폼 주 5편 → 주 1편 1시간 100문장 (longform weekly_100)")],
 }
 
@@ -117,17 +131,21 @@ def _experiment_findings(latest, channel_name, now):
         after = [row for row in longs
                  if _when(row["published_at"]) >= marker]
         days = (now - marker).days
+        # 첫 발행일이 아직 오지 않은 변경도 등록해 둔다(합치는 날과 발행일이
+        # 다르므로). 그것을 「재시험 -4일째」로 적으면 읽는 사람이 날짜가
+        # 깨진 줄 안다.
+        when = f"재시험 {days}일째" if days >= 0 else f"첫 발행까지 {-days}일"
 
         if len(after) < EXPERIMENT_MIN_AFTER:
             findings.append(
-                f"[재시험 {days}일째] {label} — 바꾼 뒤 롱폼 {len(after)}편. "
+                f"[{when}] {label} — 바꾼 뒤 롱폼 {len(after)}편. "
                 f"{EXPERIMENT_MIN_AFTER}편은 모여야 말할 수 있다. "
                 "아직 결론을 내지 말 것.")
             continue
 
         before_median = _median(_views(before))
         after_median = _median(_views(after))
-        line = (f"[재시험 {days}일째] {label} — "
+        line = (f"[{when}] {label} — "
                 f"바꾼 뒤 {len(after)}편 중앙값 {after_median:g}")
         if before_median is None:
             findings.append(line + " (바꾸기 전 롱폼이 없어 견줄 것이 없다).")
