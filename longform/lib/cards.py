@@ -27,6 +27,7 @@ FONT_CANDIDATES = [
     "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
     "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
     "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+    "C:/Windows/Fonts/malgunbd.ttf",  # local runs on Windows
 ]
 
 
@@ -95,6 +96,17 @@ def render(out_path: Path, *, phrase: dict, index: int, total: int,
     draw.text((WIDTH - 80 - cw, 54), counter, font=_font(38), fill=MUTED)
     draw.line([(80, 120), (WIDTH - 80, 120)], fill=RULE, width=2)
 
+    if stage == "recall":
+        # 뜻만 보여 주고 영어는 가린다. 여기서 영어가 보이면 떠올리는 연습이
+        # 읽는 연습으로 바뀐다.
+        y = _centered_block(draw, phrase["ko"], _font(84), 320, ACCENT, max_w,
+                            line_gap=18)
+        _centered_block(draw, "? ? ?", _font(92), y + 70, DIM, max_w)
+        _prompt(draw, "영어로 말해 보세요")
+        _progress(draw, index, total)
+        img.save(out_path)
+        return out_path
+
     en_lit = stage in ("en", "shadow")
     ko_lit = stage == "ko"
     ex_lit = stage == "example"
@@ -118,25 +130,31 @@ def render(out_path: Path, *, phrase: dict, index: int, total: int,
                                 MUTED if ex_lit else DIM, max_w)
 
     if stage == "shadow":
-        prompt = "따라 말해보세요"
-        pw = draw.textlength(prompt, font=_font(56))
-        box_y = HEIGHT - 260
-        draw.rounded_rectangle(
-            [(WIDTH - pw) / 2 - 46, box_y - 26, (WIDTH + pw) / 2 + 46, box_y + 76],
-            radius=18, outline=ACCENT, width=3,
-        )
-        draw.text(((WIDTH - pw) / 2, box_y), prompt, font=_font(56), fill=ACCENT)
+        _prompt(draw, "따라 말해보세요")
 
-    # Progress bar — seeing how much is left measurably reduces drop-off.
+    _progress(draw, index, total)
+    img.save(out_path)
+    return out_path
+
+
+def _prompt(draw, prompt: str) -> None:
+    pw = draw.textlength(prompt, font=_font(56))
+    box_y = HEIGHT - 260
+    draw.rounded_rectangle(
+        [(WIDTH - pw) / 2 - 46, box_y - 26, (WIDTH + pw) / 2 + 46, box_y + 76],
+        radius=18, outline=ACCENT, width=3,
+    )
+    draw.text(((WIDTH - pw) / 2, box_y), prompt, font=_font(56), fill=ACCENT)
+
+
+def _progress(draw, index: int, total: int) -> None:
+    """Progress bar — seeing how much is left measurably reduces drop-off."""
     bar_y = HEIGHT - 90
     draw.rounded_rectangle([80, bar_y, WIDTH - 80, bar_y + 12], radius=6, fill=RULE)
     if total > 0:
         done = 80 + (WIDTH - 160) * (index / total)
         draw.rounded_rectangle([80, bar_y, max(done, 86), bar_y + 12],
                                radius=6, fill=ACCENT)
-
-    img.save(out_path)
-    return out_path
 
 
 def render_title(out_path: Path, *, lines, subtitle: str = "",
