@@ -30,3 +30,9 @@ def test_weekly_titles_never_repeat_and_fit():
         titles.append(build.make_title(pack, 100, 62, theme["name"], theme))
     assert len(set(titles)) == len(titles)
     assert all(len(t) <= 100 for t in titles)
+
+
+def test_every_phrase_has_hangul_pronunciation():
+    # 제목에 「한글 발음 포함」이라고 적는다. 문장을 새로 들이면 pron.tsv 도 채울 것.
+    missing = [p["id"] for p in build.load_phrases() if not p.get("pron")]
+    assert not missing, missing[:10]
