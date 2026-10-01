@@ -1,6 +1,6 @@
 """롱폼 팩 한 편을 만든다: 문장 고르기 → 합성 → 카드 → 인코딩.
 
-    python3 channel_jp/build.py --pack sleep_japanese [--offline] [--limit N]
+    python3 channel_jp/build.py --pack weekly_100 [--offline] [--limit N]
 
 결과는 `channel_jp/build/<날짜>-<팩>/` 에 video.mp4 · metadata.json ·
 thumbnail.png 로 떨어진다.
@@ -63,8 +63,16 @@ SPOKEN = {
 STAGE = {
     "ja_normal": "ja", "ja_slow": "ja", "ko": "ko",
     "example_ja": "example", "example_ko": "example",
-    "shadow_gap": "shadow",
+    "shadow_gap": "shadow", "recall_gap": "recall",
 }
+
+# 유튜브 설명란은 5,000바이트까지다(한글 한 글자가 3바이트). 넘으면 영상을 다
+# 만든 뒤 업로드에서 invalidDescription 으로 죽는다 — @200-y3b 쪽 수면 팩 두
+# 편이 문장마다 챕터를 달다가 실제로 그렇게 죽었다(이슈 #28, #29). 100문장
+# 팩은 챕터가 100개를 넘으므로 여기가 그냥 지나가는 자리가 아니다.
+# upload.py 의 with_affiliate 가 고지와 쿠팡 링크(~300바이트)를 덧붙이므로
+# 그만큼 여유를 둔다.
+DESCRIPTION_BUDGET = 4500
 
 # 제목·설명에 나오면 안 되는 것. 값이 깨졌을 때 파이썬이 남기는 흔적들이다.
 #
@@ -197,6 +205,16 @@ def pick_phrases(phrases: list, pack_id: str, count: int, state: dict,
     return picked
 
 
+def phrase_length(phrase: dict) -> int:
+    """문장 길이. **낱말이 아니라 글자로 센다.**
+
+    영어판은 `len(en.split())` 로 낱말 수를 셌다. 일본어는 낱말 사이에 공백이
+    없어서 그 값이 거의 언제나 1 이고, 그러면 「짧은 것부터」 정렬이 아무
+    일도 하지 않는다.
+    """
+    return len(phrase["ja"])
+
+
 def fmt_timestamp(seconds: float) -> str:
     total = int(seconds)
     hours, rest = divmod(total, 3600)
@@ -212,7 +230,7 @@ def build_segments(pack: dict, defaults: dict, picked: list, topic: str,
     문장은 빠지므로, 제목·챕터·used.json 은 **요청한 수가 아니라 kept** 를
     세야 한다.
     """
-    segments, chapters, kept = [], [], []
+    segments, chapters = [], []
     total = 0.0
     count = len(picked)
 
@@ -234,71 +252,106 @@ def build_segments(pack: dict, defaults: dict, picked: list, topic: str,
 
     card_cache: dict = {}
 
-    def card_for(index: int, phrase: dict, stage: str) -> Path:
-        key = (phrase["id"], stage)
+    def card_for(part_no: int, label: str, index: int, phrase: dict,
+                 stage: str) -> Path:
+        key = (part_no, phrase["id"], stage)
         if key not in card_cache:
             card_cache[key] = cards.render(
-                work / f"card_{index:03d}_{stage}.png",
+                work / f"card_{part_no}_{index:03d}_{stage}.png",
                 phrase=phrase, index=index, total=count, stage=stage,
-                topic=topic)
+                topic=label)
         return card_cache[key]
 
-    for index, phrase in enumerate(picked, start=1):
-        # 문장 하나를 구간 목록에 쌓되 되물릴 준비를 한다. 수면 팩 한 편이
-        # edge-tts 를 450번 부르므로 그중 하나가 재시도를 다 쓰는 것은 드문
-        # 일이 아니다. 한 문장 때문에 40분짜리를 통째로 잃는 것보다 한 문장
-        # 짧게 내보내는 편이 낫고, 표시로 되감으면 반쯤 만들어진 문장이
-        # 단계가 빠진 채 나오지 않는다.
-        mark, mark_total = len(segments), total
-        last_ja_seconds = 0.0
+    # 팩은 레시피 한 바퀴이거나, `parts` 로 적힌 여러 바퀴다. **어느 문장이
+    # 살아남는지는 첫 바퀴만 정한다** — 뒤 바퀴에서 합성이 실패하면 그
+    # 바퀴에서만 빠지고, 이미 1부에 나온 문장을 통째로 되물리지는 않는다.
+    parts = pack.get("parts") or [{"recipe": pack["recipe"]}]
+    kept = picked
+    for part_no, part in enumerate(parts):
+        label = part.get("label", "") or topic
+        # 카드 오른쪽 위 칸은 좁다. 챕터에는 긴 이름을 그대로 쓰고, 카드에는
+        # 앞 조각만 쓴다("반복 훈련 · 듣고 일본어로 말하기" → "반복 훈련").
+        card_label = label.split(" · ")[0]
+        per_phrase_chapters = part.get("chapters", "phrases") == "phrases"
+        if not per_phrase_chapters:
+            chapters.append((total, label))
+        survivors = []
 
-        try:
-            for step in pack["recipe"]:
-                if step in SPOKEN:
-                    kind, voice_key, rate_key = SPOKEN[step]
-                    text = {
-                        "ja": phrase["ja"],
-                        "ko": phrase["ko"],
-                        "example_ja": phrase.get("ex_ja", ""),
-                        "example_ko": phrase.get("ex_ko", ""),
-                    }[kind]
-                    if not text:
-                        continue    # 예문이 없는 문장. 무음을 넣지 말고 건너뛴다
-                    rate = defaults[rate_key] if rate_key else "+0%"
-                    audio = tts.synthesize(
-                        text, defaults[voice_key], rate, offline=offline,
-                        engine=defaults.get("engine", "elevenlabs"))
-                    if kind in ("ja", "example_ja"):
-                        last_ja_seconds = tts.duration_of(audio)
-                    add(audio, card_for(index, phrase, STAGE[step]))
+        for index, phrase in enumerate(kept, start=1):
+            # 문장 하나를 구간 목록에 쌓되 되물릴 준비를 한다. 수면 팩 한 편이
+            # 합성을 450번 부르므로 그중 하나가 재시도를 다 쓰는 것은 드문
+            # 일이 아니다. 한 문장 때문에 40분짜리를 통째로 잃는 것보다 한 문장
+            # 짧게 내보내는 편이 낫고, 표시로 되감으면 반쯤 만들어진 문장이
+            # 단계가 빠진 채 나오지 않는다.
+            mark, mark_total = len(segments), total
+            last_ja_seconds = 0.0
 
-                elif step == "shadow_gap":
-                    # 요점은 이것이다: 실제로 따라 말할 수 있을 만큼 길어야
-                    # 한다. 음성과 같은 길이로는 안 된다 — 그때 학습자는 아직
-                    # 숨을 고르는 중이다. 그래서 배수를 얹는다.
-                    seconds = (last_ja_seconds * defaults.get("shadow_mult", 1.0)
-                               + defaults["shadow_pad"])
-                    audio = tts.make_silence(
-                        seconds, work / f"gap_{index:03d}_{len(segments)}.mp3")
-                    add(audio, card_for(index, phrase, "shadow"))
+            def card(stage, _part_no=part_no, _label=card_label, _index=index,
+                     _phrase=phrase):
+                return card_for(_part_no, _label, _index, _phrase, stage)
 
-                elif step.startswith("gap_") and step in defaults:
-                    audio = tts.make_silence(
-                        defaults[step],
-                        work / f"gap_{index:03d}_{len(segments)}.mp3")
-                    # 새 카드를 번쩍이지 말고 직전 카드를 붙들고 있는다.
-                    add(audio, segments[-1]["card"] if segments else intro_card)
+            def silence(seconds, _part_no=part_no, _index=index):
+                return tts.make_silence(
+                    seconds,
+                    work / f"gap_{_part_no}_{_index:03d}_{len(segments)}.mp3")
 
-                else:
-                    raise SystemExit(f"모르는 레시피 단계: {step}")
-        except tts.TTSError as error:
-            print(f"[build] {phrase['id']} 를 뺀다: {error}", file=sys.stderr)
-            del segments[mark:]
-            total = mark_total
-            continue
+            try:
+                for step in part["recipe"]:
+                    if step in SPOKEN:
+                        kind, voice_key, rate_key = SPOKEN[step]
+                        text = {
+                            "ja": phrase["ja"],
+                            "ko": phrase["ko"],
+                            "example_ja": phrase.get("ex_ja", ""),
+                            "example_ko": phrase.get("ex_ko", ""),
+                        }[kind]
+                        if not text:
+                            continue    # 예문이 없는 문장. 무음을 넣지 말고 건너뛴다
+                        rate = defaults[rate_key] if rate_key else "+0%"
+                        audio = tts.synthesize(
+                            text, defaults[voice_key], rate, offline=offline,
+                            engine=defaults.get("engine", "elevenlabs"))
+                        if kind in ("ja", "example_ja"):
+                            last_ja_seconds = tts.duration_of(audio)
+                        add(audio, card(STAGE[step]))
 
-        chapters.append((mark_total, phrase["ja"]))
-        kept.append(phrase)
+                    elif step in ("shadow_gap", "recall_gap"):
+                        # 요점은 이것이다: 실제로 말할 수 있을 만큼 길어야
+                        # 한다. 음성과 같은 길이로는 안 된다 — 그때 학습자는
+                        # 아직 숨을 고르는 중이다. 그래서 배수를 얹는다.
+                        #
+                        # recall_gap 은 일본어를 **듣기 전에** 온다. 그래서
+                        # 곧 나올 그 줄의 길이를 미리 재서 쓴다 — 캐시에
+                        # 들어가므로 바로 뒤의 ja_normal 은 값이 더 안 든다.
+                        if step == "recall_gap":
+                            last_ja_seconds = tts.duration_of(tts.synthesize(
+                                phrase["ja"], defaults["voice_ja"], "+0%",
+                                offline=offline,
+                                engine=defaults.get("engine", "elevenlabs")))
+                        seconds = (last_ja_seconds * defaults.get("shadow_mult", 1.0)
+                                   + defaults["shadow_pad"])
+                        add(silence(seconds), card(STAGE[step]))
+
+                    elif step.startswith("gap_") and step in defaults:
+                        # 새 카드를 번쩍이지 말고 직전 카드를 붙들고 있는다.
+                        add(silence(defaults[step]),
+                            segments[-1]["card"] if segments else intro_card)
+
+                    else:
+                        raise SystemExit(f"모르는 레시피 단계: {step}")
+            except tts.TTSError as error:
+                print(f"[build] {phrase['id']} 를 {part_no + 1}부에서 뺀다: "
+                      f"{error}", file=sys.stderr)
+                del segments[mark:]
+                total = mark_total
+                continue
+
+            if per_phrase_chapters:
+                chapters.append((mark_total, phrase["ja"]))
+            survivors.append(phrase)
+
+        if part_no == 0:
+            kept = survivors
 
     outro_card = cards.render_title(
         work / "card_outro.png",
@@ -367,18 +420,56 @@ def build_description(pack: dict, chapters: list, count: int, topic: str,
         "",
         "타임스탬프",
     ]
-    lines += [f"{fmt_timestamp(at)} {label}" for at, label in chapters]
-    lines += [
+    tail = [
         "",
         "귀트는 일본어 — 한국어로 배우는 일본어 회화를 매주 전해드립니다.",
         "",
         "[ 업로드 일정 ]",
-        "화요일 상황별 일본어 · 목요일 쉐도잉 · 금요일 자기 전 일본어 · 토요일 3시간 수면",
+        "매주 일요일 아침 6시 — 왕초보 일본어회화 100문장 (약 50분)",
+        "매일 08시·12시 30분·19시 — 오늘의 한마디 (쇼츠)",
         "",
         " ".join(f"#{tag}" for tag in pack.get("tags", [])[:5]),
         "#일본어공부 #일본어회화 #일본어듣기 #JLPT #일본어초보",
     ]
-    return "\n".join(lines)
+    # 인트로·마무리와 각 부의 머리는 솎아 내지 않는다. 0:00 이 빠지면
+    # 유튜브가 챕터를 **하나도** 보여 주지 않는다.
+    pinned = {"인트로", "마무리"} | {
+        part["label"] for part in pack.get("parts", []) if part.get("label")}
+    return fit_description(lines, chapters, tail, pinned)
+
+
+def fit_description(head: list, chapters: list, tail: list,
+                    pinned=frozenset()) -> str:
+    """설명란이 DESCRIPTION_BUDGET 안에 들 때까지 타임스탬프를 솎는다.
+
+    `step` 칸마다 하나씩 남기고, `pinned` 에 든 것은 늘 남긴다. 챕터를 아예
+    빼지 않는 이유는 그것이 긴 영상에서 실제로 쓰이는 장치이기 때문이다 —
+    100문장을 다 남기지 못해도 열 문장에 하나는 짚을 자리가 된다.
+
+    `<` 와 `>` 는 지운다. 그것이 든 설명란은 API 가 통째로 거절한다.
+    """
+    step = 1
+    while True:
+        kept = [chapter for position, chapter in enumerate(chapters)
+                if position % step == 0 or chapter[1] in pinned]
+        text = "\n".join(
+            head + [f"{fmt_timestamp(at)} {label}" for at, label in kept]
+            + tail).replace("<", "").replace(">", "")
+        if len(text.encode("utf-8")) <= DESCRIPTION_BUDGET or step > len(chapters):
+            return text
+        step += 1
+
+
+def pick_theme(pack_id: str, pack: dict, state: dict) -> dict:
+    """이번 주 주제와, 그것이 몇 바퀴째인지.
+
+    바퀴 수가 제목에 필요하다 — 같은 주제가 두 번째로 돌 때 제목이 첫 번째와
+    한 글자도 다르지 않으면, 그 둘이 검색에서 서로를 잡아먹는다(lib/titles.py).
+    """
+    themes = pack["themes"]
+    cursor = state.get("theme_cursor", {}).get(pack_id, 0)
+    return dict(themes[cursor % len(themes)], cursor=cursor,
+                round=cursor // len(themes) + 1)
 
 
 def main() -> int:
@@ -400,7 +491,7 @@ def main() -> int:
     phrases = load_phrases()
     state = load_used()
 
-    topic, include, topic_label = "", None, ""
+    topic, include, topic_label, theme = "", None, "", None
     if args.pack == "situation_pack":
         topics = config["topics"]
         entry = topics[state.get("topic_cursor", 0) % len(topics)]
@@ -409,9 +500,21 @@ def main() -> int:
         # (「숙박·문제 해결 일본어」를 검색하는 사람은 없다).
         topic, include = entry["name"], entry["include"]
         topic_label = entry.get("search") or entry["name"]
+    elif "themes" in pack:
+        theme = pick_theme(args.pack, pack, state)
+        topic, include = theme["name"], theme["include"]
+        topic_label = theme.get("search") or theme["name"]
+        # 짧은 문장부터 고르고, 그 순서로 낸다. 이 팩이 겨누는 검색어가
+        # 「왕초보」라 첫 몇 분이 쉬워야 사람이 남고, 한 편 안에서도 짧게
+        # 시작해 길어지는 순서가 따라 하기 쉽다.
+        phrases = sorted(phrases, key=phrase_length)
 
     count = args.limit or pack["phrase_count"]
     picked = pick_phrases(phrases, args.pack, count, state, include)
+    if theme:
+        # pick_phrases 는 재사용분을 날짜순으로 뒤에 붙인다. 낼 순서는
+        # 그것과 상관없이 짧은 것부터여야 한다.
+        picked.sort(key=phrase_length)
     if len(picked) < count:
         print(f"[build] 후보가 {len(picked)}개뿐이다 (요청 {count}개) — "
               f"영상이 그만큼 짧아진다", file=sys.stderr)
@@ -458,6 +561,14 @@ def main() -> int:
         "title": titles.compose(
             pack["title"], count=count, minutes=minutes, topic=topic_label,
             focus=titles.focus_from(picked),
+            # 주제가 도는 팩만 쓴다. {hook} 은 주제별 한 줄이고, {round} 는
+            # 같은 주제의 두 바퀴째에 " 2탄" 이 된다 — 제목이 절대 겹치지
+            # 않게 하는 장치다. strict 는 100자를 넘을 때 뒤를 버리지 말고
+            # 멈추라는 뜻이다(titles.compose 의 독스트링).
+            hook=theme["hook"] if theme else "",
+            round_label=(f" {theme['round']}탄"
+                         if theme and theme["round"] > 1 else ""),
+            strict=bool(theme),
             episode=titles.episode_number(records, args.pack),
             taken=titles.published_titles(records)),
         "description": build_description(pack, chapters, count, topic_label, minutes),
@@ -483,8 +594,11 @@ def main() -> int:
 
     cards.render_thumbnail(
         out_dir / "thumbnail.png",
-        headline=topic_label if topic_label else pack["name"],
-        sub=f"문장 {count}개 · {minutes}분")
+        # 주제가 도는 팩은 팩 이름이 검색어다("왕초보 일본어회화 100문장").
+        # 썸네일에서 가장 큰 글자가 그것이어야 하고, 주제는 아래 줄로 간다.
+        headline=pack["name"] if theme else (topic_label or pack["name"]),
+        sub=(f"{topic_label} · {minutes}분 흘려듣기" if theme
+             else f"문장 {count}개 · {minutes}분"))
 
     # --offline 은 파이프라인 시험이지 발행이 아니다. 여기서 문장을 기록하면
     # 다음 진짜 빌드에서 그 문장들이 이미 쓴 것으로 빠진다.
@@ -494,7 +608,10 @@ def main() -> int:
         state.setdefault("packs", {}).setdefault(args.pack, {})
         for phrase in picked:
             state["packs"][args.pack][phrase["id"]] = date_str
-        if topic:
+        if theme:
+            state.setdefault("theme_cursor", {})
+            state["theme_cursor"][args.pack] = theme["cursor"] + 1
+        elif topic:
             state["topic_cursor"] = state.get("topic_cursor", 0) + 1
         save_used(state)
 

@@ -280,9 +280,20 @@ class TestExperiments:
         latest = [self.long_row("09-20", 0), self.long_row("09-29", 40)]
         found = report._experiment_findings(
             latest, "jp", datetime(2026, 9, 30, tzinfo=timezone.utc))
-        assert len(found) == 1
-        assert "아직 결론을 내지 말 것" in found[0]
+        # 등록된 변경마다 한 줄. 한 채널에 여러 개가 걸릴 수 있다 — jp 는
+        # 제목 재시험이 끝나기 전에 팩 자체가 바뀌어서 지금 둘이다.
+        assert len(found) == len(report.EXPERIMENTS["jp"])
+        assert all("아직 결론을 내지 말 것" in line for line in found)
         assert "바꾼 뒤 롱폼 1편" in found[0]
+
+    def test_첫_발행일이_아직_오지_않았으면_그렇게_적는다(self):
+        """합친 날과 첫 발행일은 다르다. 그 사이의 보고서가 「재시험 -4일째」
+        라고 적으면 읽는 사람이 날짜가 깨진 줄 안다."""
+        found = report._experiment_findings(
+            [self.long_row("09-20", 0)], "jp",
+            datetime(2026, 9, 30, tzinfo=timezone.utc))
+        assert any("첫 발행까지 4일" in line for line in found)
+        assert not any("-" in line.split("]")[0] for line in found)
 
     def test_올랐으면_올랐다고_적는다(self):
         latest = [self.long_row("09-20", 0), self.long_row("09-21", 0),
