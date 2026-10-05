@@ -37,9 +37,9 @@ def response(rows, names=("video", "views", "estimatedMinutesWatched",
 
 def test_a_video_row_carries_what_a_format_comparison_needs():
     got = analytics.video_rows(
-        response([["vid1", 120, 400, 200, 35.5]]), "jp", "관측시각", days=90)
+        response([["vid1", 120, 400, 200, 35.5]]), "earth", "관측시각", days=90)
     assert got == [{
-        "observed_at": "관측시각", "channel": "jp", "scope": "video",
+        "observed_at": "관측시각", "channel": "earth", "scope": "video",
         "video_id": "vid1", "days": "90", "views": "120",
         "minutes_watched": "400", "avg_view_seconds": "200",
         "avg_view_percent": "35.5",
@@ -56,7 +56,7 @@ def test_columns_are_read_by_name_not_position():
         response([[35.5, 400, "vid1", 200, 120]],
                  names=("averageViewPercentage", "estimatedMinutesWatched",
                         "video", "averageViewDuration", "views")),
-        "jp", "관측시각", days=90)
+        "earth", "관측시각", days=90)
     assert got[0]["video_id"] == "vid1"
     assert got[0]["views"] == "120"
     assert got[0]["avg_view_percent"] == "35.5"
@@ -64,14 +64,15 @@ def test_columns_are_read_by_name_not_position():
 
 def test_no_rows_is_not_an_error():
     """올린 지 얼마 안 된 채널은 돌려줄 것이 없다. 빈 것은 실패가 아니다."""
-    assert analytics.video_rows({"columnHeaders": []}, "jp", "t", days=90) == []
+    assert analytics.video_rows(
+        {"columnHeaders": []}, "earth", "t", days=90) == []
 
 
 def test_a_missing_column_is_blank_not_zero():
     """0 은 '아무도 안 봤다'는 뜻이다. 모르는 것과 다르다."""
     got = analytics.video_rows(
         response([["vid1", 120]], names=("video", "views")),
-        "jp", "t", days=90)
+        "earth", "t", days=90)
     assert got[0]["minutes_watched"] == ""
     assert got[0]["views"] == "120"
 
@@ -79,7 +80,7 @@ def test_a_missing_column_is_blank_not_zero():
 def test_the_channel_row_has_no_video_id():
     got = analytics.channel_row(
         response([[5000]], names=("estimatedMinutesWatched",)),
-        "jp", "관측시각", days=365)
+        "earth", "관측시각", days=365)
     assert got["scope"] == "channel"
     assert got["video_id"] == ""
     assert got["minutes_watched"] == "5000"
@@ -148,8 +149,8 @@ def test_rows_come_back_when_the_scope_is_there():
     import collect
 
     class Channel:
-        name = "jp"
-        label = "@귀트는일본어"
+        name = "earth"
+        label = "@지구의 오늘"
 
     sentinel = [{"video_id": "v1"}]
     rows = collect.retention_rows_for(

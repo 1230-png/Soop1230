@@ -6,11 +6,11 @@ CI 에서 돌리지 않는다. 브라우저 로그인이 필요하고, 여기서
     pip install google-auth-oauthlib
 
     # 1) 클라우드 콘솔에서 받은 JSON 으로
-    python3 channel_jp/get_refresh_token.py \
+    python3 channel_sim/get_refresh_token.py \
         --client-secret-file client_secret.json --with-analytics
 
     # 2) JSON 없이 값으로
-    python3 channel_jp/get_refresh_token.py \
+    python3 channel_sim/get_refresh_token.py \
         --client-id "...apps.googleusercontent.com" \
         --client-secret "GOCSPX-..." --with-analytics
 

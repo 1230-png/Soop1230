@@ -230,30 +230,36 @@ def test_a_declared_channel_id_that_is_missing_is_refused():
     assert "X_CHANNEL_ID" in str(caught.value)
 
 
-# --- 귀트는 일본어 -------------------------------------------------------
+# --- 지구의 오늘 ---------------------------------------------------------
+#
+# 이 세 가지는 2026-10 까지 @귀트는일본어(MV_*) 로 걸려 있었다. 그 채널을
+# 접으면서 같은 모양의 채널로 옮겼다 — 코드에 채널 ID 사본이 없고 시크릿
+# 하나가 원본인 쪽은 이제 earth 뿐이다. 검사 자체를 지우면 "ID 를 박지
+# 않는다"와 "대체 경로를 두지 않는다"가 아무도 안 보는 규칙이 된다.
 
-JP = registry.BY_NAME["jp"]
-JP_ENV = {"MV_CLIENT_ID": "id", "MV_CLIENT_SECRET": "secret",
-          "MV_REFRESH_TOKEN": "token", "MV_CHANNEL_ID": "UC-일본어"}
-
-
-def test_the_japanese_channel_keeps_its_id_out_of_the_code():
-    """channel_jp/upload.py 와 같은 규칙이다 — 채널 ID 를 코드에 박지 않는다."""
-    assert JP.expected_channel_id == ""
-    assert JP.channel_id_env == "MV_CHANNEL_ID"
-    assert JP.target_channel_id(JP_ENV) == "UC-일본어"
+EARTH = registry.BY_NAME["earth"]
+EARTH_ENV = {"RUSH_CLIENT_ID": "id", "RUSH_CLIENT_SECRET": "secret",
+             "RUSH_REFRESH_TOKEN": "token", "RUSH_CHANNEL_ID": "UC-지구"}
 
 
-def test_the_japanese_channel_uses_its_own_credentials():
+def test_the_earth_channel_keeps_its_id_out_of_the_code():
+    """channel_earth/upload.py 와 같은 규칙이다 — 채널 ID 를 코드에 박지 않는다."""
+    assert EARTH.expected_channel_id == ""
+    assert EARTH.channel_id_env == "RUSH_CHANNEL_ID"
+    assert EARTH.target_channel_id(EARTH_ENV) == "UC-지구"
+
+
+def test_the_earth_channel_uses_its_own_credentials():
     """공용 YT_* 로 넘어가는 대체 경로를 두지 않는다(CLAUDE.md)."""
-    missing = JP.credentials_missing({"YT_CLIENT_ID": "남의 것"})
-    assert missing == ["MV_CLIENT_ID", "MV_CLIENT_SECRET", "MV_REFRESH_TOKEN"]
+    missing = EARTH.credentials_missing({"YT_CLIENT_ID": "남의 것"})
+    assert missing == ["RUSH_CLIENT_ID", "RUSH_CLIENT_SECRET",
+                       "RUSH_REFRESH_TOKEN"]
 
 
-def test_a_japanese_run_without_its_channel_id_records_nothing():
-    """MV_CHANNEL_ID 가 없으면 짐작해서 적지 않는다."""
-    youtube = FakeYouTube(channel_items=[channel_item("UC-일본어", "UU-일본어")])
-    env = {k: v for k, v in JP_ENV.items() if k != "MV_CHANNEL_ID"}
+def test_an_earth_run_without_its_channel_id_records_nothing():
+    """RUSH_CHANNEL_ID 가 없으면 짐작해서 적지 않는다."""
+    youtube = FakeYouTube(channel_items=[channel_item("UC-지구", "UU-지구")])
+    env = {k: v for k, v in EARTH_ENV.items() if k != "RUSH_CHANNEL_ID"}
     with pytest.raises(collect.CollectError) as caught:
-        collect.uploads_playlist(youtube, JP, env)
-    assert "MV_CHANNEL_ID" in str(caught.value)
+        collect.uploads_playlist(youtube, EARTH, env)
+    assert "RUSH_CHANNEL_ID" in str(caught.value)

@@ -2,15 +2,20 @@
 
 Data API(collect.py)에는 시청 시간이 없다. 거기서 읽히는 것은 조회수까지이고,
 파트너 프로그램이 세는 시간과 "사람이 끝까지 보는가"는 여기에 있다. 조회수만
-보면 **어느 형식이 사람을 붙잡는지 알 수 없다** — 수면 팩과 상황별 팩 중
+보면 **어느 형식이 사람을 붙잡는지 알 수 없다** — 긴 편과 짧은 편 중
 뭐가 나은지 물어도 답할 자료가 없었다.
 
 **여기도 읽기만 한다.** Analytics API 에는 쓰기가 없다. channel_health 를
 cron 에 걸어 둔 근거가 "올리는 것이 없다"이니 그 전제는 그대로다.
 
-`yt-analytics.readonly` 스코프가 있어야 한다. 토큰마다 다르다 — 지금
-@귀트는일본어 에는 있고 @200-y3b 에는 없다. **없는 채널은 건너뛴다.**
-한 채널이 못 읽는다고 나머지 수집을 포기하지 않는다.
+`yt-analytics.readonly` 스코프가 있어야 한다. 토큰마다 다르다. **2026-10-05
+현재 그 스코프를 가진 채널이 하나도 없다** — 유일하게 가지고 있던
+@귀트는일본어 를 접었고, @200-y3b 토큰에는 없다. 즉 이 파일은 돌지만
+`retention.csv` 에 들어갈 줄이 안 나온다. `channel_earth` 쪽
+`get_refresh_token.py` 가 `--with-analytics` 로 받게 되어 있으니, 그 채널
+토큰을 발급하는 순간 다시 살아난다.
+
+**없는 채널은 건너뛴다.** 한 채널이 못 읽는다고 나머지 수집을 포기하지 않는다.
 """
 
 import csv
@@ -44,7 +49,7 @@ VIDEO_METRICS = ("views", "estimatedMinutesWatched",
 
 SCOPE_HINT = (
     "토큰에 yt-analytics.readonly 가 없다. "
-    "channel_jp/README.md 의 「토큰 재발급」을 볼 것.")
+    "channel_earth/get_refresh_token.py 의 머리글(--with-analytics)을 볼 것.")
 
 _COLUMN = {
     "video": "video_id",
