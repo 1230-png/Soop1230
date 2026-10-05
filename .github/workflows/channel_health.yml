@@ -52,19 +52,15 @@ jobs:
           Y3B_CLIENT_ID: ${{ secrets.Y3B_CLIENT_ID }}
           Y3B_CLIENT_SECRET: ${{ secrets.Y3B_CLIENT_SECRET }}
           Y3B_REFRESH_TOKEN: ${{ secrets.Y3B_REFRESH_TOKEN }}
-          # 「귀트는 일본어」. MV_ 는 머니로직에서 온 글자지만 그 채널은 없다 —
-          # 이름을 바꾼 것이지 지운 것이 아니라서 같은 채널이다(CLAUDE.md).
+          # `MV_*` 가 여기 있었다 — @귀트는일본어 를 읽던 값이다. 2026-10-05
+          # 에 그 채널을 접고 `channels.py` 에서 뺐으므로 넘겨도 쓰는 곳이
+          # 없다. 시크릿 자체는 저장소 설정에 남아 있을 수 있으니 쓰지 말 것
+          # (CLAUDE.md 「접은 것」).
           #
-          # MV_CHANNEL_ID 를 반드시 같이 넘긴다. 없으면 collect 가 이 채널을
-          # 건너뛴다 — 어느 채널인지 모르는 채로 숫자를 적느니 빠뜨리는 편이
-          # 낫다. 한 채널이 멈춰도 @200-y3b 쪽 기록은 그대로 쌓인다.
-          #
-          # 여기서도 읽기만 한다. 같은 자격 증명이 channel_jp 에서는 업로드에
-          # 쓰이지만, 이 폴더에는 쓰기 호출이 하나도 없다.
-          MV_CLIENT_ID: ${{ secrets.MV_CLIENT_ID }}
-          MV_CLIENT_SECRET: ${{ secrets.MV_CLIENT_SECRET }}
-          MV_REFRESH_TOKEN: ${{ secrets.MV_REFRESH_TOKEN }}
-          MV_CHANNEL_ID: ${{ secrets.MV_CHANNEL_ID }}
+          # `RUSH_*`(@지구의 오늘)는 아직 여기 없다. `channels.py` 에는
+          # 등록돼 있어서 매주 「자격 증명이 없다」 경고가 한 줄 남는다 —
+          # 그 채널 토큰을 발급하면 이 자리에 넷을 같이 넣을 것
+          # (`RUSH_CHANNEL_ID` 를 빠뜨리면 collect 가 건너뛴다).
         run: python -m collect
 
       - name: 보고서

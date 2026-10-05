@@ -265,11 +265,15 @@ class TestExperiments:
     """바꾼 것이 먹혔는지 읽는 부분.
 
     **여기 없으면 재시험이 되지 않는다** — 몇 주 뒤에 조회수를 봐도 그것이
-    바꾼 것 때문인지 알 방법이 없다. jp 롱폼 제목을 2026-09-27 에 검색어형으로
-    바꿨고, 그 판단이 맞았는지는 이 줄이 말해 준다.
+    바꾼 것 때문인지 알 방법이 없다. @200-y3b 롱폼을 2026-10-04 에 주 5편에서
+    주 1편으로 바꿨고, 그 판단이 맞았는지는 이 줄이 말해 준다.
+
+    날짜가 모두 10-04 를 기준으로 앞뒤에 놓인 것은 그것이 `EXPERIMENTS` 에
+    적힌 그 채널의 변경일이기 때문이다. 2026-10-05 까지는 jp(2026-09-29)로
+    걸려 있었고, 그 채널을 접으면서 옮겼다.
     """
 
-    def long_row(self, day, views, channel="jp"):
+    def long_row(self, day, views, channel="200y3b"):
         return {"observed_at": "2026-10-11T00:00:00+00:00", "channel": channel,
                 "video_id": f"v{day}{views}", "duration_s": "1200",
                 "published_at": f"2026-{day}T00:00:00Z", "title": "제목",
@@ -277,28 +281,28 @@ class TestExperiments:
 
     def test_표본이_모이기_전에는_결론을_내지_않는다(self):
         # 한두 편으로 중앙값을 내면 그 한 편이 전부를 말하게 된다.
-        latest = [self.long_row("09-20", 0), self.long_row("09-29", 40)]
+        latest = [self.long_row("09-20", 0), self.long_row("10-05", 40)]
         found = report._experiment_findings(
-            latest, "jp", datetime(2026, 9, 30, tzinfo=timezone.utc))
+            latest, "200y3b", datetime(2026, 10, 6, tzinfo=timezone.utc))
         assert len(found) == 1
         assert "아직 결론을 내지 말 것" in found[0]
         assert "바꾼 뒤 롱폼 1편" in found[0]
 
     def test_올랐으면_올랐다고_적는다(self):
         latest = [self.long_row("09-20", 0), self.long_row("09-21", 0),
-                  self.long_row("09-29", 30), self.long_row("09-30", 50),
-                  self.long_row("10-01", 40)]
+                  self.long_row("10-05", 30), self.long_row("10-06", 50),
+                  self.long_row("10-07", 40)]
         found = report._experiment_findings(
-            latest, "jp", datetime(2026, 10, 11, tzinfo=timezone.utc))
+            latest, "200y3b", datetime(2026, 10, 18, tzinfo=timezone.utc))
         assert "올랐다" in found[0] and "바꾼 뒤 3편 중앙값 40" in found[0]
 
     def test_내렸으면_형식을_다시_보라고_적는다(self):
         # 제목을 고쳐도 안 되면 다음에 볼 것은 제목이 아니다.
         latest = [self.long_row("09-20", 100), self.long_row("09-21", 100),
-                  self.long_row("09-29", 1), self.long_row("09-30", 2),
-                  self.long_row("10-01", 0)]
+                  self.long_row("10-05", 1), self.long_row("10-06", 2),
+                  self.long_row("10-07", 0)]
         found = report._experiment_findings(
-            latest, "jp", datetime(2026, 10, 11, tzinfo=timezone.utc))
+            latest, "200y3b", datetime(2026, 10, 18, tzinfo=timezone.utc))
         assert "내렸다" in found[0] and "형식 자체를 다시 볼 것" in found[0]
 
     def test_숏폼은_세지_않는다(self):
@@ -307,13 +311,13 @@ class TestExperiments:
         latest = [self.long_row("09-20", 0)]
         for index in range(5):
             latest.append({"observed_at": "2026-10-11T00:00:00+00:00",
-                           "channel": "jp", "video_id": f"s{index}",
+                           "channel": "200y3b", "video_id": f"s{index}",
                            "duration_s": "10",
-                           "published_at": "2026-09-30T00:00:00Z",
+                           "published_at": "2026-10-06T00:00:00Z",
                            "title": "쇼츠", "views": "500",
                            "likes": "0", "comments": "0"})
         found = report._experiment_findings(
-            latest, "jp", datetime(2026, 10, 11, tzinfo=timezone.utc))
+            latest, "200y3b", datetime(2026, 10, 18, tzinfo=timezone.utc))
         assert "바꾼 뒤 롱폼 0편" in found[0]
 
     def test_실험이_없는_채널은_조용하다(self):
@@ -324,4 +328,4 @@ class TestExperiments:
     def test_보고서_본문에_들어간다(self):
         rows = [self.long_row("09-20", 0), self.long_row("09-29", 10)]
         text = report.build(rows, now=datetime(2026, 10, 4, tzinfo=timezone.utc))
-        assert "재시험" in text and "제목을 검색어형으로" in text
+        assert "재시험" in text and "주 1편 1시간 100문장" in text
